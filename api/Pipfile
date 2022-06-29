@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+sqlalchemy = "*"
+python-multipart = "*"
+psycopg2-binary = "*"
+boto3 = "*"
+python-decouple = "*"
+unipath = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+start = "uvicorn main:app --reload --host 0.0.0.0"
+prod = "uvicorn main:app --host 0.0.0.0"
+dataInsertion =  "python data.py"
