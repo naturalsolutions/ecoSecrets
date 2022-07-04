@@ -9,11 +9,39 @@ services:
     volumes:
       - ./api:/app
       - .env:/app/.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://api:8000/openapi.json"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
     depends_on:
       db:
         condition: service_healthy
+      minio:
+        condition: service_healthy
     ports:
       - "3654:8000"
+    networks:
+      - annotation_nw
+
+  frontend:
+    container_name: annotation_front
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
     networks:
       - annotation_nw
 
@@ -57,6 +85,17 @@ services:
     networks:
       - annotation_nw
 
+  keycloak:
+    container_name: annotation_keycloak
+    image: quay.io/keycloak/keycloak:18.0.2
+    ports:
+      - "8888:8080"
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}   
+    command: start-dev
+    networks:
+      - annotation_nw
 
 volumes:
   db_data:
