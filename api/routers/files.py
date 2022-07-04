@@ -1,4 +1,7 @@
+from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
+from fastapi.responses import StreamingResponse
+from sqlalchemy.orm import Session
 from dependencies import get_token_header
 from connectors import s3
 from connectors.database import get_db
@@ -32,25 +35,66 @@ def file_as_bytes(file):
     with file:
         return file.read()
 
-@router.post("/")
-async def put_hash(file: UploadFile = File(...)):
-    return hashlib.sha256(file_as_bytes(file.file)).hexdigest()
+@router.get("/")
+def files( db: Session = Depends(get_db)):
+    files =  crud_files.get_files(db)
+    for f in files:
+        url = s3.get_url(f"{f.hash}.{f.extension}")
+        f["url"] = url
+    return files
+
+@router.get("/urls/")
+def display_file(name: str):
+    return s3.get_url(name)
 
 
-@router.post("/uploadfile/")
-def upload_file(file: UploadFile = File(...)):
-    return s3.upload_file_obj(file.file,file.filename)
+@router.post("/upload/")
+def upload_file( hash: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db)):
+    # hash -> nom
+    # sauvegarde sur minio
+    # test sauvegarde
+    # sauvegarder fichier en bdd
+    # id_hash = crud_files.get_hash(file.file)
+    ext = file.filename.split(".")[1]
+    try:
+        s3.upload_file_obj(file.file,f"{hash}.{ext}")
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Impossible to save the file")
+    metadata = {"id":str(uuid4()),"hash": hash, "name": file.filename, "extension":ext , "bucket": "jean-paul-bucket", "date": '2022-01-22'}
+    try:
+        return crud_files.create_file(db=db, file=metadata)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Impossible to save the file")
 
-files
+@router.get("/download/{id}")
+def download_file (id: str, db: Session = Depends(get_db)):
+    f = crud_files.get_file(db, id)
+    my_file = s3.download_file_obj(f"{f.hash}.{f.extension}")
 
-id(sha256)   |  name(original filename)  |  extension   |   bucket   |    date  |  lng-lt  |  id_deploiement | id_sequences  |  list_carac
+    response = StreamingResponse(my_file, media_type="application/x-zip-compressed")
+    response.headers["Content-Disposition"] = f"attachment; filename={f.name}"
+    response.headers["Content-Length"] = str(my_file.getbuffer().nbytes)
+    return response
 
-carac {
-    espece
-    Nb
-    sexe
-    comportement
-}
+# @router.get("/geturl/{name}")
+# def display_file(name: str):
+#     return s3.get_url(name)
+
+@router.get("/{id}")
+def file():
+    #renvoie toutes les datas d'un fichier
+    pass
+
+# files
+
+# id(sha256)   |  name(original filename)  |  extension   |   bucket   |    date  |  lng-lt  |  id_deploiement | id_sequences  |  list_carac
+
+# carac {
+#     espece
+#     Nb
+#     sexe
+#     comportement
+# }
 
 
 # @router.post("/uploadfile/")

@@ -54,7 +54,7 @@ def upload_file_obj(file_obj, filename: str, metadata: Optional[dict] = None):
     extra_args = None
     if metadata is not None:
         extra_args = {"Metadata": metadata}
-    s3.Bucket(get_bucket_name()).upload_fileobj(file_obj, filename, ExtraArgs=extra_args)
+    return s3.Bucket(get_bucket_name()).upload_fileobj(file_obj, filename, ExtraArgs=extra_args)
 
 
 def download_file_obj(filename: str):

@@ -6,10 +6,6 @@ import hashlib
 
 from fastapi import File, UploadFile, Form
 
-def hash_file():
-    m = hashlib.sha224(b"Nobody inspects the spammish repetition").hexdigest()
-    return m
-
 # async def stockage_image(file):
 #     try :
 #         contents = await file.read()
@@ -22,6 +18,13 @@ def hash_file():
     
 #     return {"message": f"Successfuly uploaded {file.filename}"}
 
+def file_as_bytes(file):
+    with file:
+        return file.read()
+
+def get_hash(file):
+    return hashlib.sha256(file_as_bytes(file)).hexdigest()
+
 def get_files(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.File).offset(skip).limit(limit).all()
 
@@ -29,23 +32,27 @@ def get_file(db: Session, file_id: int):
     return db.query(models.File).filter(models.File.id == file_id).first()
 
 def create_file(db: Session, file: schemas.File):
-    path = file.path
-    db_file = models.File(path=file.path, name= file.name)
+    db_file = models.File(id = file["id"],
+                        hash = file["hash"],
+                        name = file["name"],
+                        extension = file["extension"],
+                        bucket = file["extension"],
+                        date = file["date"])
     db.add(db_file)
     db.commit()
     db.refresh(db_file)
     return db_file
 
-def get_file_by_path(db: Session, path: str):
-    return db.query(models.File).filter(models.File.path == path).first()
+# def get_file_by_path(db: Session, path: str):
+#     return db.query(models.File).filter(models.File.path == path).first()
 
 
-def update_file(db: Session, file: schemas.File):
-    db_file = db.query(models.File).filter(models.File.id == file.id).first()
-    db_file.name = file.name
-    db.commit()
-    db.refresh(db_file)
-    return db_file
+# def update_file(db: Session, file: schemas.File):
+#     db_file = db.query(models.File).filter(models.File.id == file.id).first()
+#     db_file.name = file.name
+#     db.commit()
+#     db.refresh(db_file)
+#     return db_file
 
 def delete_file(db: Session, id: int):
     db_user = db.query(models.File).filter(models.File.id == id).first()

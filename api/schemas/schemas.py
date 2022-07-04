@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from pydantic import BaseModel
-
+from datetime import datetime
 
 class ItemBase(BaseModel):
     title: str
@@ -42,8 +42,15 @@ class User(UserBase):
 
 ####################  FILES  ###############################
 ############################################################
+class FileInfo(BaseModel):
+    hash: str
+
+
 class File(BaseModel):
-    id: int
+    id: str
     name: str
-    path: str
+    extension: str
+    bucket: str
+    date: datetime
+    url: str
     

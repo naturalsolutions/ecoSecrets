@@ -1,8 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException, File, UploadFile, Form
 
 import services.crud
-from models import models
-from connectors.database import engine
+from connectors.database import init_db
 from connectors.s3 import init_bucket
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,7 +10,6 @@ from dependencies import get_query_token, get_token_header
 from internal import admin
 from routers import items, users, files
 
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()#dependencies=[Depends(get_query_token)]
 
@@ -44,4 +42,5 @@ async def root():
 
 @app.on_event("startup")
 def on_startup():
+    init_db()
     init_bucket()

@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from connectors.database import Base
@@ -13,17 +13,16 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
 
-    items = relationship("File", back_populates="owner")
 
 class File(Base):
     __tablename__ = "files"
 
-    id = Column(Integer, primary_key=True, index=True)
-    id_hash = Column(String, unique=True, index=True)
+    id = Column(String, primary_key=True, index=True)
+    hash = Column(String, index=True)
     name = Column(String, index=True)
-    path = Column(String, unique=True, index=True)
-
-    items = relationship("User", back_populates="files")
+    extension = Column(String)
+    bucket = Column(String)
+    date = Column(DateTime)
 
 class Item(Base):
     __tablename__ = "items"
@@ -33,4 +32,3 @@ class Item(Base):
     description = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
-    owner = relationship("User", back_populates="items")
