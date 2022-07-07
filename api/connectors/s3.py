@@ -7,7 +7,7 @@ from botocore.exceptions import ClientError
 
 
 config_dict = {
-    "endpoint_url": "http://172.19.0.3:9000",
+    "endpoint_url": "http://minio:9000",
     "aws_access_key_id": "jeanpaul",
     "aws_secret_access_key": "456azerty123",
     "config": Config(

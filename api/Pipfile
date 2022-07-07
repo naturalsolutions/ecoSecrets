@@ -12,6 +12,9 @@ psycopg2-binary = "*"
 boto3 = "*"
 python-decouple = "*"
 unipath = "*"
+sqlmodel = "*"
+sqlalchemy-utils = "*"
+exif = "*"
 
 [dev-packages]
 

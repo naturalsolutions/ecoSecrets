@@ -1,7 +1,7 @@
 from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 from dependencies import get_token_header
 from connectors import s3
 from connectors.database import get_db
@@ -38,15 +38,29 @@ def file_as_bytes(file):
 @router.get("/")
 def files( db: Session = Depends(get_db)):
     files =  crud_files.get_files(db)
+    res = []
     for f in files:
+        new_f = f.dict()
         url = s3.get_url(f"{f.hash}.{f.extension}")
-        f["url"] = url
-    return files
+        new_f["url"] = url
+        res.append(new_f)
+    return res
 
 @router.get("/urls/")
 def display_file(name: str):
     return s3.get_url(name)
 
+@router.post("/exif/")
+def upload_file( file: UploadFile = File(...), db: Session = Depends(get_db)):
+    from exif import Image
+    exif_data = Image(file_as_bytes(file.file))
+    res = {}
+    for key in exif_data.list_all():
+        try:
+            res[key] = exif_data[key]
+        except Exception as e:
+            res[key] = "Erreu inconnuepour le moment"
+    return res
 
 @router.post("/upload/")
 def upload_file( hash: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db)):
@@ -59,12 +73,13 @@ def upload_file( hash: str = Form(), file: UploadFile = File(...), db: Session =
     try:
         s3.upload_file_obj(file.file,f"{hash}.{ext}")
     except Exception as e:
-        raise HTTPException(status_code=404, detail="Impossible to save the file")
+        raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
     metadata = {"id":str(uuid4()),"hash": hash, "name": file.filename, "extension":ext , "bucket": "jean-paul-bucket", "date": '2022-01-22'}
     try:
         return crud_files.create_file(db=db, file=metadata)
     except Exception as e:
-        raise HTTPException(status_code=404, detail="Impossible to save the file")
+        print(e)
+        raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
 
 @router.get("/download/{id}")
 def download_file (id: str, db: Session = Depends(get_db)):
