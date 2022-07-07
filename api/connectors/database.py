@@ -1,30 +1,37 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlmodel import create_engine, SQLModel, Session
+from sqlalchemy_utils import create_database, drop_database, database_exists
 from decouple import config
+from services import crud
 from models import models
+from schemas.schemas import UserCreate
 
 db_user = config('DB_USER')
 db_pwd = config('DB_PASSWORD')
 db_name = config('DB_NAME')
 
-SQLALCHEMY_DATABASE_URL = f"postgresql://{db_user}:{db_pwd}@annotation_db/{db_name}"
+DATABASE_URL = f"postgresql://{db_user}:{db_pwd}@annotation_db/{db_name}"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={}
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-Base = declarative_base()
+engine = create_engine(DATABASE_URL, echo=True)
+if database_exists(engine.url):
+    drop_database(engine.url)
+create_database(engine.url)
 
 def init_db():
-    models.Base.metadata.drop_all(bind=engine)
-    models.Base.metadata.create_all(bind=engine)
+    SQLModel.metadata.drop_all(engine)
+    SQLModel.metadata.create_all(engine)
+    with Session(engine) as session:
+        role = models.Roles(role="user", description= "default_user")
+        session.add(role)
+        session.commit()
+        crud.create_user(db=session, user=UserCreate(name='jeanjacques', email='jj@gmail.com', password='password'))
+        project = models.Projects(name="frist project", description="desc firt project", owner_id=1, contact_id=1 )
+        session.add(project)
+        session.commit()
+        deploy = models.Deployments(name="frist deploy", description="desc firt project", bait="aurélie", feature="fruitin tree", project_id=1 )
+        session.add(deploy)
+        session.commit()
 
 # Dependency
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    with Session(engine) as session:
+        yield session
