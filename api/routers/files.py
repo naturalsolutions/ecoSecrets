@@ -11,6 +11,7 @@ from models import models
 from schemas import schemas
 from typing import List
 from zipfile import ZipFile
+import tempfile
 
 router = APIRouter(
     prefix="/files",
@@ -60,15 +61,13 @@ def upload_file( file: UploadFile = File(...), db: Session = Depends(get_db)):
         try:
             res[key] = exif_data[key]
         except Exception as e:
-            res[key] = "Erreu inconnuepour le moment"
+            res[key] = "Erreu inconnue pour le moment"
     return res
 
 @router.post("/upload/")
 def upload_file( hash: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db)):
     ext = file.filename.split(".")[1]
-    print(ext)
-    print(type(file))
-    insert = files.upload_file(db, hash, file, ext)
+    insert = files.upload_file(db, hash, file.file, file.filename, ext)
     return insert
 
 @router.get("/download/{id}")
@@ -113,100 +112,19 @@ def upload_zip(hash: List[str] = Form(), zipFile: UploadFile = File(...), db: Se
     if ext == "zip":
         with ZipFile(io.BytesIO(zipFile.file.read()), "r") as myzip:
             res = []
-            print(myzip)
             for info, hash in zip(myzip.infolist(), listHash):
-                print(info)
-                print(hash)
-                with myzip.open(info.filename) as myfile:
-                    print('ICI')
-                    print(type(myfile))
-                    insert = files.upload_file(db, hash, myfile, 'JPG')
+                bytes = myzip.read(info.filename)
+                with tempfile.SpooledTemporaryFile() as tf:
+                    tf.write(bytes)
+                    tf.seek(0)
+                    insert = files.upload_file(db, hash, tf, info.filename, 'JPG')
                     res.append(insert)
-            # for info in zip.infolist():
-            #     from exif import Image
-            #     exif_data = Image(zip.read(info.filename))
-            #     infoFile = {}
-            #     for key in exif_data.list_all():
-            #         try:
-            #             infoFile[key] = exif_data[key]
-            #         except Exception as e:
-            #             infoFile[key] = "Erreur inconnue pour le moment"
             return res
     else:
-        return "Vous ne pouvez déposer que fichier .zip"
-
+        raise HTTPException(status_code=500, detail="Vous ne pouvez déposer que des fichiers.zip")
         
-        
-        #     for hash, file in zip(listHash,listFiles) :
-        #         print(hash, file)
-        #         ext = file.filename.split(".")[1]
-        #         try:
-        #             s3.upload_file_obj(file.file,f"{hash}.{ext}")
-        #         except Exception as e:
-        #             raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
-        #         metadata = {"id":str(uuid4()),"hash": hash, "name": file.filename, "extension":ext , "bucket": "jean-paul-bucket", "date": '2022-01-22'}
-        #         try:
-        #             files.create_file(db=db, file=metadata)
-        #         except Exception as e:
-        #             print(e)
-        #             raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
-        #     return 'Files créés !'
-        # else:
-        #     return "Erreur : le nombre de hash ne correspond pas au nombre de fichiers transmis"
+
+
+
     
 
-
-
-# @router.get("/geturl/{name}")
-# def display_file(name: str):
-#     return s3.get_url(name)
-
-# @router.get("/{id}")
-# def file():
-#     #renvoie toutes les datas d'un fichier
-#     pass
-
-# files
-
-# id(sha256)   |  name(original filename)  |  extension   |   bucket   |    date  |  lng-lt  |  id_deploiement | id_sequences  |  list_carac
-
-# carac {
-#     espece
-#     Nb
-#     sexe
-#     comportement
-# }
-
-
-# @router.post("/uploadfile/")
-# async def upload_file(file: UploadFile = File(...)):
-    
-#     try :
-#         contents = await file.read()
-#         with open(f'{file.filename}',"wb") as f:
-#             f.write(contents)
-#     except Exception:
-#         return {"message": "There was an error uploading the file"}
-#     finally:
-#         await file.close()
-        
-#     return {"message": f"Successfuly uploaded {file.filename}"}
-
-# @router.post("/", response_model=schemas.File)
-# def create_upload_file(file: UploadFile, db: Session = Depends(get_db)):
-#     file_details = {"name": file.filename ,"path": 'test' }
-#     db_file = crud. get_file_by_path(db, path = 'test' )
-#     if db_file:
-#         raise HTTPException(status_code=400, detail="Path already registered")
-    
-#     return crud.create_file(db=db, file=file)
-
-
-# @router.put("/{file_id}", response_model=schemas.File)
-# def update_file(file_id: int, file: schemas.File, db: Session = Depends(get_db)):
-#     return crud.update_file(db=db, file=file)
-    
-
-# @router.delete("/{file_id}")
-# def delete_file(file_id: int, db: Session = Depends(get_db)):
-#     return crud.delete_file(db=db, id=file_id)

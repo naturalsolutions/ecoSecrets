@@ -1,3 +1,4 @@
+import tempfile
 from sqlmodel import Session
 from models import models
 # import schemas.schemas
@@ -64,15 +65,15 @@ def delete_file(db: Session, id: int):
     return db_file
 
 
-def upload_file(db: Session,hash: str, new_file: File, ext:str ):
+def upload_file(db: Session,hash: str, new_file: tempfile.SpooledTemporaryFile, filename: str, ext:str ):
     
     try:
-        s3.upload_file_obj(new_file.file,f"{hash}.{ext}")
+        s3.upload_file_obj(new_file,f"{hash}.{ext}")
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
-    metadata = {"id":str(uuid4()),"hash": hash, "name": new_file.filename, "extension":ext , "bucket": "jean-paul-bucket", "date": '2022-01-22'}
+    metadata = {"id":str(uuid4()),"hash": hash, "name": filename, "extension":ext , "bucket": "jean-paul-bucket", "date": '2022-01-22'}
     try:
         return create_file(db=db, file=metadata)
     except Exception as e:
-        print(e)
         raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
