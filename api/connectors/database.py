@@ -1,7 +1,7 @@
 from sqlmodel import create_engine, SQLModel, Session
 from sqlalchemy_utils import create_database, drop_database, database_exists
 from decouple import config
-from services import crud
+from services import user
 from models import models
 from schemas.schemas import UserCreate
 
@@ -23,7 +23,7 @@ def init_db():
         role = models.Roles(role="user", description= "default_user")
         session.add(role)
         session.commit()
-        crud.create_user(db=session, user=UserCreate(name='jeanjacques', email='jj@gmail.com', password='password'))
+        user.create_user(db=session, user=UserCreate(name='jeanjacques', email='jj@gmail.com', password='password'))
         project = models.Projects(name="frist project", description="desc firt project", owner_id=1, contact_id=1 )
         session.add(project)
         session.commit()
@@ -31,7 +31,7 @@ def init_db():
         session.add(deploy)
         session.commit()
 
-# Dependency
+# Dependency 
 def get_db():
     with Session(engine) as session:
         yield session

@@ -20,7 +20,7 @@ class Files(SQLModel, table=True):
     date : date
     deployment_id : int = Field(foreign_key = "deployments.id")
     megadetector_id: Optional[int]  = Field(foreign_key = "megadetector.id")
-    deepfaune_id: Optional[int]  = Field(foreign_key = "deepfaune.id")   
+    deepfaune_id: Optional[int]  = Field(foreign_key = "deepfaune.id")
 
 # class Item(SQLModel, table=True):
 #     # __tablename__ = "items"
@@ -72,14 +72,14 @@ class Sequences_Files(SQLModel,table=True):
 
 class Devices (SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
-    name: str = Field
+    name: str
     model:str
     purchase_date: date
     price: float
     description: str
     detection_area: float
     status : str
-    exif_id: int = Field(foreign_key = "exifkeymodel.id")
+    exif_id: Optional[int] = Field(foreign_key = "exifkeymodel.id")
 
 class Annotations(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)

@@ -3,8 +3,10 @@ from models import models
 # import schemas.schemas
 from schemas import schemas
 import hashlib
-
-from fastapi import File, UploadFile, Form
+from uuid import uuid4
+from fastapi import File, UploadFile, Form, HTTPException
+from connectors import s3
+from typing import List
 
 # async def stockage_image(file):
 #     try :
@@ -29,7 +31,7 @@ def get_files(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Files).offset(skip).limit(limit).all()
 
 def get_file(db: Session, file_id: int):
-    return db.query(models.Files).filter(models.File.id == file_id).first()
+    return db.query(models.Files).filter(models.Files.id == file_id).first()
 
 def create_file(db: Session, file: schemas.File):
     db_file = models.Files(id = file["id"],
@@ -60,3 +62,17 @@ def delete_file(db: Session, id: int):
     db.delete(db_file)
     db.commit()
     return db_file
+
+
+def upload_file(db: Session,hash: str, new_file: File, ext:str ):
+    
+    try:
+        s3.upload_file_obj(new_file.file,f"{hash}.{ext}")
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
+    metadata = {"id":str(uuid4()),"hash": hash, "name": new_file.filename, "extension":ext , "bucket": "jean-paul-bucket", "date": '2022-01-22'}
+    try:
+        return create_file(db=db, file=metadata)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
