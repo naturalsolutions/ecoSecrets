@@ -10,10 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />}></Route>
         <Route path="/project/:projectId" element={<Project />}></Route>
-        <Route
-          path="/project/:projectId/deployment/:deploymentId"
-          element={<Deployment />}
-        ></Route>
+        <Route path="deployment/:deploymentId" element={<Deployment />}></Route>
         <Route path="*" element={<Main />}></Route>
       </Routes>
     </BrowserRouter>

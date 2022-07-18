@@ -22,7 +22,7 @@ export default function ImageMasonry() {
   return (
     <Box sx={{ width: "100%", minHeight: 829 }}>
       <Masonry columns={6} spacing={2}>
-        {files.map((item, index) => (
+        {files?.map((item, index) => (
           <div key={index}>
             <Label>{item.name}</Label>
             <img

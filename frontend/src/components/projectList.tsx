@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
 
 const ProjectList = () => {
@@ -5,7 +6,9 @@ const ProjectList = () => {
   return (
     <>
       {projects.map((p) => (
-        <li key={p.name}>{p.name}</li>
+        <li key={p.name}>
+          <Link to={`/project/${p.name}`}>{p.name}</Link>
+        </li>
       ))}
     </>
   );
