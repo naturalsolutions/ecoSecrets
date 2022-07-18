@@ -4,7 +4,7 @@ import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
 import ProjectProvider from "../contexts/projectProvider";
 
-function Second() {
+function Project() {
   return (
     <div className="Main">
       <ProjectProvider>
@@ -14,4 +14,4 @@ function Second() {
   );
 }
 
-export default Second;
+export default Project;

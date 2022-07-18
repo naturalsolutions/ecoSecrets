@@ -2,14 +2,19 @@ import First from "../components/first";
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
-import ProjectProvider from "../contexts/projectProvider";
+import MainContextProvider from "../contexts/mainContext";
+import ProjectList from "../components/projectList";
 
 function Main() {
   return (
     <div className="Main">
-      <ProjectProvider>
-        <MainLayout Header={<HeadBar />} Side={<Drawer />} Main={<First />} />
-      </ProjectProvider>
+      <MainContextProvider>
+        <MainLayout
+          Header={<HeadBar />}
+          Side={<Drawer />}
+          Main={<ProjectList />}
+        />
+      </MainContextProvider>
     </div>
   );
 }
