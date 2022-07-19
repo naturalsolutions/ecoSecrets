@@ -71,7 +71,7 @@ def create_file(db: Session, file: schemas.File):
 
 
 def delete_file(db: Session, id: int):
-    db_user = db.query(models.Files).filter(models.Files.id == id).first()
+    db_file = db.query(models.Files).filter(models.Files.id == id).first()
     db.delete(db_file)
     db.commit()
     return db_file
@@ -106,3 +106,7 @@ def upload_file(
         raise HTTPException(
             status_code=404, detail="Impossible to save the file in bdd"
         )
+
+
+def get_deployment_files(db: Session, id: int):
+    return db.query(models.Files).filter(models.Files.deployment_id == id)

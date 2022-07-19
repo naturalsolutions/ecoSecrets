@@ -35,7 +35,7 @@ def read_deployment(deployment_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=schemas.Deployment)
 def create_deployment(
-    new_deployment: schemas.Deployment, db: Session = Depends(get_db)
+    new_deployment: schemas.DeploymentBase, db: Session = Depends(get_db)
 ):
     db_deployment = deployment.get_deployment_by_name(
         db, name_deployment=new_deployment.name
@@ -48,7 +48,7 @@ def create_deployment(
 @router.put("/{deployment_id}", response_model=schemas.Deployment)
 def update_deployment(
     deployment_id: int,
-    data_deployment: schemas.Deployment,
+    data_deployment: schemas.DeploymentBase,
     db: Session = Depends(get_db),
 ):
     return deployment.update_deployment(
@@ -59,3 +59,8 @@ def update_deployment(
 @router.delete("/{deployment_id}")
 def delete_deployment(deployment_id: int, db: Session = Depends(get_db)):
     return deployment.delete_deployment(db=db, id=deployment_id)
+
+
+@router.get("/{project_id}", response_model=List[schemas.Deployment])
+def read_project_deployments(project_id: int, db: Session = Depends(get_db)):
+    return deployment.get_project_deployments(db=db, id=project_id)

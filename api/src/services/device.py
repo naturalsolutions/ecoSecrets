@@ -16,7 +16,7 @@ def get_device_by_name(db: Session, name_device: str):
     return db.query(models.Devices).filter(models.Devices.name == name_device).first()
 
 
-def create_device(db: Session, device: schemas.Device):
+def create_device(db: Session, device: schemas.DeviceBase):
     db_device = models.Devices(
         name=device.name,
         description=device.description,
@@ -33,7 +33,7 @@ def create_device(db: Session, device: schemas.Device):
     return db_device
 
 
-def update_device(db: Session, device: schemas.Device, id: int):
+def update_device(db: Session, device: schemas.DeviceBase, id: int):
     db_device = db.query(models.Devices).filter(models.Devices.id == id).first()
     db_device.name = device.name
     db_device.description = device.description

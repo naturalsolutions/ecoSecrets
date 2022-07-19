@@ -3,6 +3,7 @@ from sqlmodel import Session
 
 from src.models import models
 from src.schemas import schemas
+from src.services import deployment
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
@@ -19,7 +20,7 @@ def get_project_by_name(db: Session, name_project: str):
     )
 
 
-def create_project(db: Session, project: schemas.Project):
+def create_project(db: Session, project: schemas.ProjectBase):
     db_project = models.Projects(
         name=project.name,
         description=project.description,
@@ -35,7 +36,7 @@ def create_project(db: Session, project: schemas.Project):
     return db_project
 
 
-def update_project(db: Session, project: schemas.Project, id: int):
+def update_project(db: Session, project: schemas.ProjectBase, id: int):
     db_project = db.query(models.Projects).filter(models.Projects.id == id).first()
     db_project.name = project.name
     db_project.description = project.description
@@ -54,3 +55,19 @@ def delete_project(db: Session, id: int):
     db.delete(db_project)
     db.commit()
     return db_project
+
+
+def get_projects_with_deployments(db: Session, skip: int = 0, limit: int = 100):
+    projects = get_projects(db, skip=skip, limit=limit)
+    list_projects = []
+    for p in projects:
+        new_p = p.dict()
+        project_id = p.id
+        deployments = deployment.get_project_deployments(db=db, id=project_id)
+        list_deployments = []
+        for d in deployments:
+            new_d = d.dict()
+            list_deployments.append(new_d)
+        new_p["deployments"] = list_deployments
+        list_projects.append(new_p)
+    return list_projects

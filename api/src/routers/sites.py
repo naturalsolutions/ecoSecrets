@@ -34,7 +34,7 @@ def read_site(site_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=schemas.Site)
-def create_site(new_site: schemas.Site, db: Session = Depends(get_db)):
+def create_site(new_site: schemas.SiteBase, db: Session = Depends(get_db)):
     db_site = site.get_site_by_name(db, name_site=new_site.name)
     if db_site:
         raise HTTPException(status_code=400, detail="Name already registered")
@@ -42,7 +42,9 @@ def create_site(new_site: schemas.Site, db: Session = Depends(get_db)):
 
 
 @router.put("/{site_id}", response_model=schemas.Site)
-def update_site(site_id: int, data_site: schemas.Site, db: Session = Depends(get_db)):
+def update_site(
+    site_id: int, data_site: schemas.SiteBase, db: Session = Depends(get_db)
+):
     return site.update_site(db=db, site=data_site, id=site_id)
 
 

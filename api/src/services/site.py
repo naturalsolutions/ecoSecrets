@@ -16,7 +16,7 @@ def get_site_by_name(db: Session, name_site: str):
     return db.query(models.Sites).filter(models.Sites.name == name_site).first()
 
 
-def create_site(db: Session, site: schemas.Site):
+def create_site(db: Session, site: schemas.SiteBase):
     db_site = models.Sites(
         name=site.name, description=site.description, habitat=site.habitat
     )
@@ -26,7 +26,7 @@ def create_site(db: Session, site: schemas.Site):
     return db_site
 
 
-def update_site(db: Session, site: schemas.Site, id: int):
+def update_site(db: Session, site: schemas.SiteBase, id: int):
     db_site = db.query(models.Sites).filter(models.Sites.id == id).first()
     db_site.name = site.name
     db_site.description = site.description

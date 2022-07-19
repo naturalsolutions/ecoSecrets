@@ -34,7 +34,7 @@ def read_device(device_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=schemas.Device)
-def create_device(new_device: schemas.Device, db: Session = Depends(get_db)):
+def create_device(new_device: schemas.DeviceBase, db: Session = Depends(get_db)):
     db_device = device.get_device_by_name(db, name_device=new_device.name)
     if db_device:
         raise HTTPException(status_code=400, detail="Name already registered")
@@ -43,7 +43,7 @@ def create_device(new_device: schemas.Device, db: Session = Depends(get_db)):
 
 @router.put("/{device_id}", response_model=schemas.Device)
 def update_device(
-    device_id: int, data_device: schemas.Device, db: Session = Depends(get_db)
+    device_id: int, data_device: schemas.DeviceBase, db: Session = Depends(get_db)
 ):
     return device.update_device(db=db, device=data_device, id=device_id)
 

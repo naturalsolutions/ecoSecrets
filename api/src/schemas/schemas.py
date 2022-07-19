@@ -62,7 +62,7 @@ class File(BaseModel):
 ##############################################################
 
 
-class Project(BaseModel):
+class ProjectBase(BaseModel):
     name: str
     description: str
     creation_date: Optional[datetime]
@@ -72,12 +72,15 @@ class Project(BaseModel):
     contact_id: int
 
 
+class Project(ProjectBase):
+    id: int
+
+
 ####################  DEPLOYMENT  ############################
 ##############################################################
 
 
-class Deployment(BaseModel):
-    id: Optional[int]
+class DeploymentBase(BaseModel):
     name: str
     start_date: Optional[datetime]
     end_date: Optional[datetime]
@@ -90,23 +93,27 @@ class Deployment(BaseModel):
     template_sequence_id: Optional[int]
 
 
+class Deployment(DeploymentBase):
+    id: int
+
+
 ####################  SITE  ###############################
 ###########################################################
 
 
-class Site(BaseModel):
-    id: int
+class SiteBase(BaseModel):
     name: str
     habitat: str
     description: str
 
 
-####################  DEVICE  ###############################
-###########################################################
-
-
-class Device(BaseModel):
+class Site(SiteBase):
     id: int
+
+
+####################  DEVICE  ###############################
+#############################################################
+class DeviceBase(BaseModel):
     name: str
     model: str
     purchase_date: date
@@ -115,3 +122,7 @@ class Device(BaseModel):
     detection_area: float
     status: str
     exif_id: Optional[int]
+
+
+class Device(DeviceBase):
+    id: int

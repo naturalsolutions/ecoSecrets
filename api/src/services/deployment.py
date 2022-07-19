@@ -24,7 +24,7 @@ def get_deployment_by_name(db: Session, name_deployment: str):
     )
 
 
-def create_deployment(db: Session, deployment: schemas.Deployment):
+def create_deployment(db: Session, deployment: schemas.DeploymentBase):
     db_deployment = models.Deployments(
         name=deployment.name,
         description=deployment.description,
@@ -43,7 +43,7 @@ def create_deployment(db: Session, deployment: schemas.Deployment):
     return db_deployment
 
 
-def update_deployment(db: Session, deployment: schemas.Deployment, id: int):
+def update_deployment(db: Session, deployment: schemas.DeploymentBase, id: int):
     db_deployment = (
         db.query(models.Deployments).filter(models.Deployments.id == id).first()
     )
@@ -69,3 +69,7 @@ def delete_deployment(db: Session, id: int):
     db.delete(db_deployment)
     db.commit()
     return db_deployment
+
+
+def get_project_deployments(db: Session, id: int):
+    return db.query(models.Deployments).filter(models.Deployments.project_id == id)

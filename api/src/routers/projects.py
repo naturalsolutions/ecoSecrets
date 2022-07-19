@@ -10,7 +10,7 @@ from src.connectors.database import get_db
 from src.dependencies import get_token_header
 from src.models import models
 from src.schemas import schemas
-from src.services import project
+from src.services import deployment, project
 
 router = APIRouter(
     prefix="/projects",
@@ -35,7 +35,7 @@ def read_project(project_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=schemas.Project)
-def create_project(new_project: schemas.Project, db: Session = Depends(get_db)):
+def create_project(new_project: schemas.ProjectBase, db: Session = Depends(get_db)):
     db_project = project.get_project_by_name(db, name_project=new_project.name)
     if db_project:
         raise HTTPException(status_code=400, detail="Name already registered")
@@ -44,7 +44,7 @@ def create_project(new_project: schemas.Project, db: Session = Depends(get_db)):
 
 @router.put("/{project_id}", response_model=schemas.Project)
 def update_project(
-    project_id: int, data_project: schemas.Project, db: Session = Depends(get_db)
+    project_id: int, data_project: schemas.ProjectBase, db: Session = Depends(get_db)
 ):
     return project.update_project(db=db, project=data_project, id=project_id)
 
@@ -52,3 +52,10 @@ def update_project(
 @router.delete("/{project_id}")
 def delete_project(project_id: int, db: Session = Depends(get_db)):
     return project.delete_project(db=db, id=project_id)
+
+
+@router.get("/withdeployments/")
+def read_projects_with_deployments(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+):
+    return project.get_projects_with_deployments(db, skip=skip, limit=limit)
