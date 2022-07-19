@@ -9,4 +9,4 @@ RUN pip3 install pipenv
 
 EXPOSE 8000
 
-CMD python3 -m pipenv install --skip-lock; python3 -m pipenv run start
+CMD python3 -m pipenv install --skip-lock --system; python3 -m pipenv run start

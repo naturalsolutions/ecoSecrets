@@ -15,6 +15,11 @@ unipath = "*"
 sqlmodel = "*"
 sqlalchemy-utils = "*"
 exif = "*"
+pytest = "*"
+pytest-cov = "*"
+requests = "*"
+black = "*"
+isort = "*"
 
 [dev-packages]
 
@@ -25,3 +30,4 @@ python_version = "3.8"
 start = "uvicorn main:app --reload --host 0.0.0.0"
 prod = "uvicorn main:app --host 0.0.0.0"
 dataInsertion =  "python data.py"
+test = "pytest tests/. --cov-report html:/app/htmlcov --cov=."
