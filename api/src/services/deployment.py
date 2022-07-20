@@ -1,31 +1,23 @@
 from sqlmodel import Session
 
-from src.models import models
+from src.models.deployment import Deployments
 from src.schemas import schemas
 
 
 def get_deployments(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Deployments).offset(skip).limit(limit).all()
+    return db.query(Deployments).offset(skip).limit(limit).all()
 
 
 def get_deployment(db: Session, deployment_id: int):
-    return (
-        db.query(models.Deployments)
-        .filter(models.Deployments.id == deployment_id)
-        .first()
-    )
+    return db.query(Deployments).filter(Deployments.id == deployment_id).first()
 
 
 def get_deployment_by_name(db: Session, name_deployment: str):
-    return (
-        db.query(models.Deployments)
-        .filter(models.Deployments.name == name_deployment)
-        .first()
-    )
+    return db.query(Deployments).filter(Deployments.name == name_deployment).first()
 
 
 def create_deployment(db: Session, deployment: schemas.DeploymentBase):
-    db_deployment = models.Deployments(
+    db_deployment = Deployments(
         name=deployment.name,
         description=deployment.description,
         start_date=deployment.start_date,
@@ -44,9 +36,7 @@ def create_deployment(db: Session, deployment: schemas.DeploymentBase):
 
 
 def update_deployment(db: Session, deployment: schemas.DeploymentBase, id: int):
-    db_deployment = (
-        db.query(models.Deployments).filter(models.Deployments.id == id).first()
-    )
+    db_deployment = db.query(Deployments).filter(Deployments.id == id).first()
     db_deployment.name = deployment.name
     db_deployment.description = deployment.description
     db_deployment.start_date = deployment.start_date
@@ -63,13 +53,11 @@ def update_deployment(db: Session, deployment: schemas.DeploymentBase, id: int):
 
 
 def delete_deployment(db: Session, id: int):
-    db_deployment = (
-        db.query(models.Deployments).filter(models.Deployments.id == id).first()
-    )
+    db_deployment = db.query(Deployments).filter(Deployments.id == id).first()
     db.delete(db_deployment)
     db.commit()
     return db_deployment
 
 
 def get_project_deployments(db: Session, id: int):
-    return db.query(models.Deployments).filter(models.Deployments.project_id == id)
+    return db.query(Deployments).filter(Deployments.project_id == id)

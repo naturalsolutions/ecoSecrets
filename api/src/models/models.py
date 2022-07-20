@@ -1,7 +1,11 @@
 from datetime import date, datetime
-from typing import Optional
+from typing import TYPE_CHECKING, List, Optional
 
-from sqlmodel import JSON, Column, Field, SQLModel
+from sqlmodel import JSON, Column, Field, Relationship, SQLModel
+
+if TYPE_CHECKING:  # pragma: no cover
+
+    from .deployment import Deployments
 
 
 class Users(SQLModel, table=True):
@@ -41,23 +45,9 @@ class Projects(SQLModel, table=True):
     creation_date: Optional[datetime]
     end_date: Optional[datetime]
     status: Optional[str]
-    owner_id: int = Field(foreign_key="users.id")
-    contact_id: int = Field(foreign_key="users.id")
-
-
-class Deployments(SQLModel, table=True):
-    id: Optional[int] = Field(primary_key=True, index=True)
-    name: str
-    start_date: Optional[datetime]
-    end_date: Optional[datetime]
-    site_id: Optional[int] = Field(foreign_key="sites.id")
-    device_id: Optional[int] = Field(foreign_key="devices.id")
-    bait: str
-    feature: str
-    description: str
-    project_id: int = Field(foreign_key="projects.id")
-    template_sequence_id: Optional[int] = Field(foreign_key="templatesequence.id")
-    # mode:  Field(foreign_key = "users.id")
+    owner_id: Optional[int] = Field(foreign_key="users.id")
+    contact_id: Optional[int] = Field(foreign_key="users.id")
+    deployments: Optional[List["Deployments"]] = Relationship(back_populates="project")
 
 
 class Sites(SQLModel, table=True):

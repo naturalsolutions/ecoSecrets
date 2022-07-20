@@ -1,10 +1,10 @@
 from datetime import date, datetime
 from typing import List, Optional, Union
 
-from pydantic import BaseModel
+from sqlmodel import SQLModel
 
 
-class ItemBase(BaseModel):
+class ItemBase(SQLModel):
     title: str
     description: Union[str, None] = None
 
@@ -25,7 +25,7 @@ class Item(ItemBase):
 ###########################################################
 
 
-class UserBase(BaseModel):
+class UserBase(SQLModel):
     email: str
     name: str
 
@@ -45,11 +45,11 @@ class User(UserBase):
 
 ####################  FILES  ###############################
 ############################################################
-class FileInfo(BaseModel):
+class FileInfo(SQLModel):
     hash: str
 
 
-class File(BaseModel):
+class File(SQLModel):
     id: str
     name: str
     extension: str
@@ -62,14 +62,14 @@ class File(BaseModel):
 ##############################################################
 
 
-class ProjectBase(BaseModel):
+class ProjectBase(SQLModel):
     name: str
     description: str
     creation_date: Optional[datetime]
     end_date: Optional[datetime]
     status: Optional[str]
-    owner_id: int
-    contact_id: int
+    owner_id: Optional[int]
+    contact_id: Optional[int]
 
 
 class Project(ProjectBase):
@@ -80,7 +80,7 @@ class Project(ProjectBase):
 ##############################################################
 
 
-class DeploymentBase(BaseModel):
+class DeploymentBase(SQLModel):
     name: str
     start_date: Optional[datetime]
     end_date: Optional[datetime]
@@ -97,11 +97,15 @@ class Deployment(DeploymentBase):
     id: int
 
 
+class ProjectWithDeployments(Project):
+    deployments: List[Deployment] = []
+
+
 ####################  SITE  ###############################
 ###########################################################
 
 
-class SiteBase(BaseModel):
+class SiteBase(SQLModel):
     name: str
     habitat: str
     description: str
@@ -113,7 +117,7 @@ class Site(SiteBase):
 
 ####################  DEVICE  ###############################
 #############################################################
-class DeviceBase(BaseModel):
+class DeviceBase(SQLModel):
     name: str
     model: str
     purchase_date: date

@@ -54,8 +54,8 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
     return project.delete_project(db=db, id=project_id)
 
 
-@router.get("/withdeployments/")
+@router.get("/deployments/", response_model=List[schemas.ProjectWithDeployments])
 def read_projects_with_deployments(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
-    return project.get_projects_with_deployments(db, skip=skip, limit=limit)
+    return project.get_projects(db, skip=skip, limit=limit)
