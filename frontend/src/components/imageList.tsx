@@ -2,25 +2,22 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 import "../css/first.css";
 
-import api from "../utils/api";
 import ImageMasonry from "./masonry";
 import Dropzone from "react-dropzone";
 import { Button } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { FilesService } from "../client";
 
-const First: FC<{}> = () => {
+const ImageList: FC<{}> = () => {
   const [files, setFiles] = useState<any[]>([]);
-  const { updateListFile, setDeployment, project, projects, deployment } =
-    useMainContext();
+  const { projects, updateListFile, setCurrentDeployment } = useMainContext();
   let params = useParams();
-  const refInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     (async () => {
-      setDeployment(params.deploymentId);
-      updateListFile();
+      setCurrentDeployment(Number(params.deploymentId));
     })();
-  }, []);
+  }, [projects]);
 
   const Uint8ArrayToHexString = (ui8array: Uint8Array) => {
     var hexstring = "",
@@ -49,16 +46,9 @@ const First: FC<{}> = () => {
         digest.then((res) => {
           let result = new Uint8Array(res);
           var hash = Uint8ArrayToHexString(result);
-          api
-            .postForm(
-              "files/upload/",
-              { hash, file },
-              { headers: { "Content-Type": "multipart/form-data" } }
-            )
-            .then((res) => {
-              updateListFile();
-            })
-            .catch((err) => console.log(err));
+          FilesService.uploadFileFilesUploadPost({ hash, file }).then((res) => {
+            updateListFile();
+          });
         });
       };
     }
@@ -107,4 +97,4 @@ const First: FC<{}> = () => {
   );
 };
 
-export default First;
+export default ImageList;

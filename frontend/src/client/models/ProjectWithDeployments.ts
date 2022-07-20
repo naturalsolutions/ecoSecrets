@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProjectBase = {
+import type { Deployment } from './Deployment';
+
+export type ProjectWithDeployments = {
     name: string;
     description: string;
     creation_date?: string;
@@ -10,5 +12,7 @@ export type ProjectBase = {
     status?: string;
     owner_id?: number;
     contact_id?: number;
+    id: number;
+    deployments?: Array<Deployment>;
 };
 

@@ -1,7 +1,11 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { DeploymentsService, FilesService, ProjectsService } from "../client";
-import api from "../utils/api";
+import {
+  Deployment,
+  DeploymentsService,
+  FilesService,
+  ProjectsService,
+} from "../client";
+import { ProjectWithDeployments } from "../client/models/ProjectWithDeployments";
 
 export interface MainContextProps {
   name?: string;
@@ -12,26 +16,18 @@ export const MainContext = createContext({} as any);
 export const useMainContext = () => useContext(MainContext);
 
 const MainContextProvider: FC<MainContextProps> = ({ children }) => {
-  const [projects, setProjects] = useState<any[]>([]);
-  const [project, setProject] = useState<string | null>(null);
-  const [deployments, setDeployments] = useState<any[]>([]);
-  const [deployment, setDeployment] = useState<string | null>(null);
+  const [projects, setProjects] = useState<ProjectWithDeployments[]>([]);
+  const [currentProject, setCurrentProject] = useState<number | null>(null);
+  const [currentDeployment, setCurrentDeployment] = useState<number | null>(
+    null
+  );
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
 
-  const updateProjectsFile = () => {
-    ProjectsService.readProjectsProjectsGet()
-      .then((res) => {
-        setProjects(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const updateDeploymentsFile = () => {
-    DeploymentsService.readDeploymentsDeploymentsGet()
-      .then((res) => {
-        setDeployments(res);
+  const updateProjects = () => {
+    ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
+      .then((projects) => {
+        setProjects(projects);
       })
       .catch((err) => {
         console.log(err);
@@ -39,37 +35,60 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   };
 
   const updateListFile = () => {
-    debugger;
-    FilesService.getFilesFilesGet()
-      .then((res) => {
-        setFiles(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    currentDeployment &&
+      FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
+        .then((files) => {
+          setFiles(files);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  };
+
+  const project = (): ProjectWithDeployments | undefined => {
+    return projects.find((p) => p.id === currentProject);
+  };
+
+  const deployment = (): Deployment | undefined => {
+    return projects
+      .find((p) => p.id === currentProject)
+      ?.deployments?.find((d) => d.id === currentDeployment);
   };
 
   useEffect(() => {
     (async () => {
-      updateProjectsFile();
+      updateProjects();
     })();
   }, []);
 
   useEffect(() => {
     (async () => {
-      updateDeploymentsFile();
+      ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
+        .then((projects) => {
+          projects.forEach((p) => {
+            const goodP = p.deployments?.find(
+              (d) => d.id === currentDeployment
+            );
+            goodP && setCurrentProject(p.id);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      updateListFile();
     })();
-  }, [project]);
+  }, [currentDeployment]);
 
   return (
     <MainContext.Provider
       value={{
         projects,
         project,
-        setProject,
-        deployments,
+        setCurrentProject,
         deployment,
-        setDeployment,
+        setCurrentDeployment,
+        currentImage,
+        setCurrentImage,
         files,
         updateListFile,
       }}

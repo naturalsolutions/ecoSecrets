@@ -1,4 +1,13 @@
-import { Card, CardMedia, CardContent, CardHeader, Divider, Grid, CardActions, IconButton } from "@mui/material";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  CardActions,
+  IconButton,
+} from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
@@ -6,17 +15,17 @@ import { useMainContext } from "../contexts/mainContext";
 
 const ProjectList = () => {
   const { projects } = useMainContext();
-  
+
   return (
-    <Grid 
-      container
-      direction="row"
-    >
+    <Grid container direction="row">
       {projects.map((p) => (
         <Card sx={{ width: 450 }} key={p.name}>
-          <CardHeader 
+          <CardHeader
             title={
-              <Link to={`/project/${p.name}`} style={{ textDecoration: 'none', color: 'black' }}>
+              <Link
+                to={`/project/${p.id}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
                 {p.name}
               </Link>
             }
@@ -29,12 +38,10 @@ const ProjectList = () => {
           />
           <CardContent>{p.description || "No description"}</CardContent>
           <CardActions disableSpacing>
-            <IconButton 
-              aria-label="Import data" 
-            >
+            <IconButton aria-label="Import data">
               <DownloadIcon />
             </IconButton>
-            <IconButton 
+            <IconButton
               aria-label="Inspect project"
               component={Link}
               to={`/project/${p.name}`}

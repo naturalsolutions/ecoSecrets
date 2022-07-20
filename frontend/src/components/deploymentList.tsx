@@ -3,22 +3,26 @@ import { Link, useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
 
 const DeploymentList = () => {
-  const { project, setProject, deployments } = useMainContext();
+  const { project, setCurrentProject } = useMainContext();
   let params = useParams();
   useEffect(() => {
     (async () => {
-      setProject(params.projectId);
+      setCurrentProject(Number(params.projectId));
     })();
   }, []);
 
   return (
     <>
-      <h2>{project}</h2>
-      {deployments.map((d) => (
-        <li key={d.name}>
-          <Link to={`/deployment/${d.name}`}>{d.name}</Link>
-        </li>
-      ))}
+      {project() !== undefined && (
+        <>
+          <h2>{project().name}</h2>
+          {project().deployments.map((d) => (
+            <li key={d.name}>
+              <Link to={`/deployment/${d.id}`}>{d.name}</Link>
+            </li>
+          ))}
+        </>
+      )}
     </>
   );
 };

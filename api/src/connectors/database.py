@@ -36,8 +36,8 @@ def init_db():
         project.create_project(
             db=session,
             project=ProjectBase(
-                name="frist project",
-                description="desc firt project",
+                name="first project",
+                description="desc first project",
                 owner_id=1,
                 contact_id=1,
             ),
@@ -54,8 +54,8 @@ def init_db():
         deployment.create_deployment(
             db=session,
             deployment=DeploymentBase(
-                name="frist deploy",
-                description="desc firt project",
+                name="first deploy",
+                description="desc first project",
                 bait="aurélie",
                 feature="fruitin tree",
                 project_id=1,

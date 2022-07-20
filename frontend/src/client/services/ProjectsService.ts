@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type { Project } from '../models/Project';
 import type { ProjectBase } from '../models/ProjectBase';
+import type { ProjectWithDeployments } from '../models/ProjectWithDeployments';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -130,16 +131,16 @@ export class ProjectsService {
      * Read Projects With Deployments
      * @param skip
      * @param limit
-     * @returns any Successful Response
+     * @returns ProjectWithDeployments Successful Response
      * @throws ApiError
      */
-    public static readProjectsWithDeploymentsProjectsWithdeploymentsGet(
+    public static readProjectsWithDeploymentsProjectsDeploymentsGet(
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Array<ProjectWithDeployments>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/projects/withdeployments/',
+            url: '/projects/deployments/',
             query: {
                 'skip': skip,
                 'limit': limit,

@@ -17,6 +17,7 @@ export type { DeviceBase } from './models/DeviceBase';
 export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { Project } from './models/Project';
 export type { ProjectBase } from './models/ProjectBase';
+export type { ProjectWithDeployments } from './models/ProjectWithDeployments';
 export type { Site } from './models/Site';
 export type { SiteBase } from './models/SiteBase';
 export type { User } from './models/User';
