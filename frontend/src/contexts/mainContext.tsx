@@ -63,18 +63,16 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
-        .then((projects) => {
-          projects.forEach((p) => {
-            const goodP = p.deployments?.find(
-              (d) => d.id === currentDeployment
-            );
-            goodP && setCurrentProject(p.id);
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+      currentDeployment &&
+        projects.forEach((p) => {
+          const goodP = p.deployments?.find((d) => d.id === currentDeployment);
+          goodP && setCurrentProject(p.id);
         });
+    })();
+  }, [projects]);
+
+  useEffect(() => {
+    (async () => {
       updateListFile();
     })();
   }, [currentDeployment]);
