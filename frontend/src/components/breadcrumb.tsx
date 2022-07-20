@@ -95,7 +95,16 @@ const NavigationPath: FC<{}> = () => {
         <StyledActiveBreadcrumb key="project" label={project().name} />,
       ];
     } else {
-      return [<StyledActiveBreadcrumb key="accueil" label="Accueil" />];
+      return [
+        <StyledBreadcrumb
+          component={Link}
+          href="/"
+          key="accueil"
+          underline="hover"
+          label="Accueil"
+          icon={<HomeIcon fontSize="small" />}
+        />,
+      ];
     }
   };
 

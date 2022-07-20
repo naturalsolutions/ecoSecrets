@@ -10,7 +10,8 @@ import { FilesService } from "../client";
 
 const ImageList: FC<{}> = () => {
   const [files, setFiles] = useState<any[]>([]);
-  const { projects, updateListFile, setCurrentDeployment } = useMainContext();
+  const { projects, updateListFile, setCurrentDeployment, project } =
+    useMainContext();
   let params = useParams();
 
   useEffect(() => {
@@ -76,23 +77,31 @@ const ImageList: FC<{}> = () => {
 
   return (
     <>
-      <Dropzone onDrop={loadFile} multiple maxFiles={10}>
-        {({ getRootProps, getInputProps }) => (
-          <section id="dropzone">
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              {dropZoneDisplayText()}
-            </div>
-          </section>
-        )}
-      </Dropzone>
-      <Button variant="outlined" onClick={clear}>
-        clear
-      </Button>
-      <Button variant="outlined" onClick={save}>
-        save
-      </Button>
-      <ImageMasonry></ImageMasonry>
+      {project() ? (
+        <>
+          <Dropzone onDrop={loadFile} multiple maxFiles={10}>
+            {({ getRootProps, getInputProps }) => (
+              <section id="dropzone">
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  {dropZoneDisplayText()}
+                </div>
+              </section>
+            )}
+          </Dropzone>
+          <Button variant="outlined" onClick={clear}>
+            clear
+          </Button>
+          <Button variant="outlined" onClick={save}>
+            save
+          </Button>
+          <ImageMasonry></ImageMasonry>
+        </>
+      ) : (
+        <>
+          <h2>deploiement inconnu</h2>
+        </>
+      )}
     </>
   );
 };

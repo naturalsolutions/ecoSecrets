@@ -55,7 +55,7 @@ const Annotation = () => {
 
   return (
     <>
-      {image() && (
+      {image() ? (
         <>
           <img
             src={`${image().url}`}
@@ -74,6 +74,10 @@ const Annotation = () => {
           <Button variant="contained" onClick={() => next()}>
             NEXT
           </Button>
+        </>
+      ) : (
+        <>
+          <h2>image inconnue</h2>
         </>
       )}
     </>

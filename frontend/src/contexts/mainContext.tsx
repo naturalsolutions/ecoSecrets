@@ -66,7 +66,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       currentDeployment &&
         projects.forEach((p) => {
           const goodP = p.deployments?.find((d) => d.id === currentDeployment);
-          goodP && setCurrentProject(p.id);
+          if (goodP) {
+            setCurrentProject(p.id);
+          }
         });
     })();
   }, [projects]);

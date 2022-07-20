@@ -13,7 +13,7 @@ const DeploymentList = () => {
 
   return (
     <>
-      {project() !== undefined && (
+      {project() !== undefined ? (
         <>
           <h2>{project().name}</h2>
           {project().deployments.map((d) => (
@@ -21,6 +21,10 @@ const DeploymentList = () => {
               <Link to={`/deployment/${d.id}`}>{d.name}</Link>
             </li>
           ))}
+        </>
+      ) : (
+        <>
+          <h2>projet inconnu</h2>
         </>
       )}
     </>
