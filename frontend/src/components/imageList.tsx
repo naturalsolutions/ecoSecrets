@@ -1,16 +1,27 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { useProjectContext } from "../contexts/projectProvider";
+import { useMainContext } from "../contexts/mainContext";
 import "../css/first.css";
 
 import api from "../utils/api";
 import ImageMasonry from "./masonry";
 import Dropzone from "react-dropzone";
 import { Button } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 const First: FC<{}> = () => {
   const [files, setFiles] = useState<any[]>([]);
-  const { updateListFile } = useProjectContext();
+  const { updateListFile, setDeployment, project, projects, deployment } = useMainContext();
+  let params = useParams();
+  console.log(params);
   const refInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    (async () => {
+      setDeployment(params.deploymentId);
+      updateListFile();
+      console.log(project, deployment, projects);
+    })();
+  }, []);
 
   const Uint8ArrayToHexString = (ui8array: Uint8Array) => {
     var hexstring = "",

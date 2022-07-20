@@ -6,13 +6,14 @@ import { useMainContext } from "../contexts/mainContext";
 
 const ProjectList = () => {
   const { projects } = useMainContext();
+  
   return (
     <Grid 
       container
       direction="row"
     >
       {projects.map((p) => (
-        <Card sx={{ width: 450 }}>
+        <Card sx={{ width: 450 }} key={p.name}>
           <CardHeader 
             title={
               <Link to={`/project/${p.name}`} style={{ textDecoration: 'none', color: 'black' }}>

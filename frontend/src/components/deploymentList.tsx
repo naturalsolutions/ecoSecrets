@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useProjectContext } from "../contexts/projectContext";
+import { useMainContext } from "../contexts/mainContext";
 
 const DeploymentList = () => {
-  const { project, setProject, deployments } = useProjectContext();
+  const { project, setProject, deployments } = useMainContext();
   let params = useParams();
   useEffect(() => {
     (async () => {

@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
 import api from "../utils/api";
-import { useProjectContext } from "../contexts/projectProvider";
+import { useMainContext } from "../contexts/mainContext";
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -17,7 +17,7 @@ const Label = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ImageMasonry() {
-  const { files } = useProjectContext();
+  const { files } = useMainContext();
 
   return (
     <Box sx={{ width: "100%", minHeight: 829 }}>
