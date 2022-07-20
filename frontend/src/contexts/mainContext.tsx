@@ -1,5 +1,6 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { DeploymentsService, FilesService, ProjectsService } from "../client";
 import api from "../utils/api";
 
 export interface MainContextProps {
@@ -18,10 +19,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [files, setFiles] = useState<any[]>([]);
 
   const updateProjectsFile = () => {
-    api
-      .get("projects/")
+    ProjectsService.readProjectsProjectsGet()
       .then((res) => {
-        setProjects(res.data);
+        setProjects(res);
       })
       .catch((err) => {
         console.log(err);
@@ -29,10 +29,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   };
 
   const updateDeploymentsFile = () => {
-    api
-      .get(`deployments/`)
+    DeploymentsService.readDeploymentsDeploymentsGet()
       .then((res) => {
-        setDeployments(res.data);
+        setDeployments(res);
       })
       .catch((err) => {
         console.log(err);
@@ -40,10 +39,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   };
 
   const updateListFile = () => {
-    api
-      .get("files/")
+    debugger;
+    FilesService.getFilesFilesGet()
       .then((res) => {
-        setFiles(res.data);
+        setFiles(res);
       })
       .catch((err) => {
         console.log(err);

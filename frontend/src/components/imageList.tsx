@@ -10,16 +10,15 @@ import { useParams } from "react-router-dom";
 
 const First: FC<{}> = () => {
   const [files, setFiles] = useState<any[]>([]);
-  const { updateListFile, setDeployment, project, projects, deployment } = useMainContext();
+  const { updateListFile, setDeployment, project, projects, deployment } =
+    useMainContext();
   let params = useParams();
-  console.log(params);
   const refInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     (async () => {
       setDeployment(params.deploymentId);
       updateListFile();
-      console.log(project, deployment, projects);
     })();
   }, []);
 
