@@ -17,39 +17,52 @@ const ProjectList = () => {
   const { projects } = useMainContext();
 
   return (
-    <Grid container direction="row">
+    <Grid 
+      container 
+      direction="row"
+      spacing={2}
+    >
       {projects.map((p) => (
-        <Card sx={{ width: 450 }} key={p.name}>
-          <CardHeader
-            title={
-              <Link
-                to={`/project/${p.id}`}
-                style={{ textDecoration: "none", color: "black" }}
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={3} 
+          lg={2} 
+          key={projects.indexOf(p)}
+        >
+          <Card key={p.name}>
+            <CardHeader
+              title={
+                <Link
+                  to={`/project/${p.id}`}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  {p.name}
+                </Link>
+              }
+              subheader={p.creation_date || "Unknown creation date"}
+            />
+            <CardMedia
+              component="img"
+              height="194"
+              image="https://cdn.pixabay.com/photo/2022/06/25/23/41/ladybug-7284337_960_720.jpg"
+            />
+            <CardContent>{p.description || "No description"}</CardContent>
+            <CardActions disableSpacing>
+              <IconButton aria-label="Import data">
+                <DownloadIcon />
+              </IconButton>
+              <IconButton
+                aria-label="Inspect project"
+                component={Link}
+                to={`/project/${p.name}`}
               >
-                {p.name}
-              </Link>
-            }
-            subheader={p.creation_date || "Unknown creation date"}
-          />
-          <CardMedia
-            component="img"
-            height="194"
-            image="https://cdn.pixabay.com/photo/2022/06/25/23/41/ladybug-7284337_960_720.jpg"
-          />
-          <CardContent>{p.description || "No description"}</CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="Import data">
-              <DownloadIcon />
-            </IconButton>
-            <IconButton
-              aria-label="Inspect project"
-              component={Link}
-              to={`/project/${p.name}`}
-            >
-              <VisibilityIcon />
-            </IconButton>
-          </CardActions>
-        </Card>
+                <VisibilityIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
+        </Grid>
       ))}
     </Grid>
   );

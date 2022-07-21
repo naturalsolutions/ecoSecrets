@@ -1,4 +1,5 @@
 import { Box, Grid } from "@mui/material";
+import { Container } from "@mui/system";
 
 type MainLayoutProps = {
   Header?: JSX.Element;
@@ -14,16 +15,21 @@ export const MainLayout = ({
   Side,
   ...rest
 }: MainLayoutProps) => (
+  <Container style={{
+    minWidth: "100%",
+    height: "100vh",
+  }}>
   <Box sx={{ flexGrow: 1 }}>
     {Header}
     <Grid container sx={{ py: 2 }} spacing={2}>
-      <Grid item>{Side}</Grid>
-      <Grid item xs={12} md={6} lg={8}>
+      <Grid item xs={12} md={1} lg={1}>{Side}</Grid>
+      <Grid item xs={12} md={11} lg={11}>
         {Navigation}
         {Main}
       </Grid>
     </Grid>
   </Box>
+  </Container>
 );
 
 export default MainLayout;
