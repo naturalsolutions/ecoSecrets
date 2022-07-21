@@ -113,7 +113,7 @@ const Annotation = () => {
   }
 
   const imageIndex = () => {
-    return (files && files.findIndex((f) => f.id === currentImage));
+    return (files && files.findIndex((f) => f.id === currentImage)+1);
   } 
 
   return (
