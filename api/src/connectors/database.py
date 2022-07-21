@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 from decouple import config
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import Session, SQLModel, create_engine
@@ -10,7 +13,7 @@ from src.schemas.schemas import (
     SiteBase,
     UserCreate,
 )
-from src.services import deployment, device, project, site, user
+from src.services import deployment, device, files, project, site, user
 
 DATABASE_URL = config("DB_URL")
 
@@ -77,7 +80,12 @@ def init_db():
                 status="blabla",
             ),
         )
-
+        path=Path(__file__).parent.parent.parent
+        for fileName in os.listdir(os.path.join(path, "img")):
+            fileNameSplit=fileName.split(".")
+            print(os.path.join(path, "img", fileName))
+            with open(os.path.join(path, "img", fileName), 'rb') as file:
+                files.upload_file(db=session, hash=fileNameSplit[0], ext=fileNameSplit[1], filename=fileName, new_file=file)
 
 # Dependency
 def get_db():
