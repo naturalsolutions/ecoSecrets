@@ -1,4 +1,4 @@
-import { Box, Button, Grid, IconButton, MenuItem, Stack, styled, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, Stack, styled, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
@@ -9,6 +9,7 @@ import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwo
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { v4 as uuidv4 } from 'uuid';
 import "../css/annotation.css";
+import React from "react";
 
 const LayoutImageContainer = styled("div")({
   flexGrow: 1,
@@ -35,6 +36,17 @@ const LayoutImageForm = styled("div")(({ theme }) => ({
   overflowY: "scroll",
 }));
 
+type AnnotationType = {
+  id:string;
+  species:string, 
+  number: number, 
+  sex: string, 
+  behaviour: string, 
+  lifeStage: string, 
+  biologicalState: string;
+  comment: string;
+}
+
 const Annotation = () => {
   const {
     projects,
@@ -58,9 +70,7 @@ const Annotation = () => {
   }, [projects]);
 
   const updateUrl = (id) => {
-    console.log(window.location);
     const url = new URL(window.location.toString());
-    console.log(url);
     url.pathname = `deployment/${Number(params.deploymentId)}/${id}`;
     window.history.pushState({}, "", url);
   };
@@ -70,6 +80,7 @@ const Annotation = () => {
       if (f.id === currentImage) {
         let ind = i === 0 ? (i = files.length) : i;
         setCurrentImage(files[ind - 1].id);
+        setObservations([])
         updateUrl(files[ind - 1].id);
       }
     });
@@ -80,12 +91,14 @@ const Annotation = () => {
       if (f.id === currentImage) {
         let ind = i === files.length - 1 ? -1 : i;
         setCurrentImage(files[ind + 1].id);
+        setObservations([])
         updateUrl(files[ind + 1].id);
       }
     });
   };
 
   const save = () => {
+    console.log(observations)
   };
 
   const saveandnext = () => {
@@ -98,16 +111,15 @@ const Annotation = () => {
   const lifeStageList = ["Oeuf", "Juvénile", "Adulte"];
   const biologicalStateList = ["Vivant", "Mort"];
   
-  const [observations, setObservations] = useState([{ id: uuidv4(), species: '', number: '', sex: '', behaviour: '', lifeStage: '', biologicalSate: '' }]);
+  const [observations, setObservations] = useState<AnnotationType[]>([]);
 
   const handleAddObservation = () => {
-    setObservations([...observations, { id: uuidv4(), species: '', number: '', sex: '', behaviour: '', lifeStage: '', biologicalSate: '' }])
+    setObservations([...observations, { id: uuidv4(), species: '', number: 0, sex: '', behaviour: '', lifeStage: '', biologicalState: '', comment: "" }])
   }
 
   const handleDeleteObservation = (id: string) => {
     let i = observations && observations.findIndex((obs) => obs.id === id);
     let tmp_obs = [...observations]
-    console.log(i);
     i !== -1 && tmp_obs.splice(i,1);
     i !== -1 && setObservations(tmp_obs);
   }
@@ -115,6 +127,16 @@ const Annotation = () => {
   const imageIndex = () => {
     return (files && files.findIndex((f) => f.id === currentImage));
   } 
+
+  const handleChange = (id: string, params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
+    let tmp_obs = [...observations]
+    tmp_obs.forEach(ob => {
+      if(ob.id === id){
+        ob[params] = e.target.value
+      }
+    })
+    setObservations(tmp_obs);
+  }
 
   return (
     <LayoutImageContainer>
@@ -163,6 +185,7 @@ const Annotation = () => {
       <LayoutImageForm>
         <Stack spacing={2}>
           <Typography variant="h3">Annotation</Typography>
+          <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
           {
             observations.map((observation) => (
               <form key={observation.id}>
@@ -185,6 +208,8 @@ const Annotation = () => {
                       label="Espèce"
                       size="small"
                       fullWidth
+                      value={observation.species}
+                      onChange={(e) => handleChange(observation.id, "species", e)}
                     />
                   </Grid>
                   <Grid item lg={6}>
@@ -193,13 +218,17 @@ const Annotation = () => {
                       label="Nombre d'individus"
                       size="small"
                       inputProps={{ type: 'number' }}
+                      value={observation.number}
+                      onChange={(e) => handleChange(observation.id, "number", e)}
                     />
                   </Grid>
                   <Grid item lg={6}>
                     <TextField
+                      id="sexe"
                       select
                       label="Sexe"
-                      value=""
+                      value={observation.sex}
+                      onChange={(e) => handleChange(observation.id, "sex", e)}
                       size="small"
                       fullWidth
                     >
@@ -212,10 +241,12 @@ const Annotation = () => {
                   </Grid>
                   <Grid item lg={6}>
                     <TextField
+                      id="behaviour"
                       select
                       label="Comportement"
                       size="small"
-                      value=""
+                      value={observation.behaviour}
+                      onChange = {(e) => handleChange(observation.id, "behaviour",e)}
                       fullWidth
                     >
                       {behaviourList.map((item) => (
@@ -227,10 +258,12 @@ const Annotation = () => {
                   </Grid>
                   <Grid item lg={6}>
                     <TextField
+                      id="lifeStage"
                       select
                       label="Stade de vie"
                       size="small"
-                      value=""
+                      value={observation.lifeStage}
+                      onChange={(e) => handleChange(observation.id, "lifeStage", e)}
                       fullWidth
                     >
                       {lifeStageList.map((item) => (
@@ -242,10 +275,12 @@ const Annotation = () => {
                   </Grid>
                   <Grid item lg={6}>
                     <TextField
+                      id="biologicalState"
                       select
                       label="Etat biologique"
                       size="small"
-                      value=""
+                      value={observation.biologicalState}
+                      onChange={(e) => handleChange(observation.id, "biologicalState", e)}
                       fullWidth
                     >
                       {biologicalStateList.map((item) => (
@@ -257,9 +292,12 @@ const Annotation = () => {
                   </Grid>
                   <Grid item lg={12}>
                     <TextField
+                      id="comment"
                       name="comment"
                       label="Commentaire"
                       size="small"
+                      value={observation.comment}
+                      onChange={(e) => handleChange(observation.id, "comment", e)}
                       fullWidth
                       />
                   </Grid>
