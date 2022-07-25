@@ -125,7 +125,7 @@ const Annotation = () => {
   }
 
   const imageIndex = () => {
-    return (files && files.findIndex((f) => f.id === currentImage));
+    return (files && files.findIndex((f) => f.id === currentImage)+1);
   } 
 
   const handleChange = (id: string, params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
