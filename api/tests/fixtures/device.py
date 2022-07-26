@@ -2,11 +2,11 @@ from datetime import datetime
 
 import pytest
 
-from src.schemas.schemas import Device
+from src.schemas.device import DeviceBase
 from src.services.device import create_device
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def device(db):
     name = "test"
     model = "panasonic"
@@ -15,8 +15,7 @@ def device(db):
     description = "description"
     detection_area = 150.0
     status = "status"
-    device = Device(
-        id=1,
+    device = DeviceBase(
         name=name,
         model=model,
         purchase_date=purchase_date,

@@ -10,10 +10,7 @@ from sqlmodel import Session
 
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.dependencies import get_token_header
-from src.models import models
-from src.schemas import schemas
-from src.services import files, user
+from src.services import files
 
 router = APIRouter(
     prefix="/files",
@@ -68,7 +65,7 @@ def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
         try:
             res[key] = exif_data[key]
         except Exception as e:
-            res[key] = "Erreu inconnue pour le moment"
+            res[key] = "Erreur inconnue pour le moment"
     return res
 
 

@@ -1,27 +1,25 @@
 # Service projet
 from sqlmodel import Session
 
-from src.models import models
-from src.schemas import schemas
+from src.models.project import Projects
+from src.schemas.project import Project, ProjectBase
 from src.services import deployment
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Projects).offset(skip).limit(limit).all()
+    return db.query(Projects).offset(skip).limit(limit).all()
 
 
 def get_project(db: Session, project_id: int):
-    return db.query(models.Projects).filter(models.Projects.id == project_id).first()
+    return db.query(Projects).filter(Projects.id == project_id).first()
 
 
 def get_project_by_name(db: Session, name_project: str):
-    return (
-        db.query(models.Projects).filter(models.Projects.name == name_project).first()
-    )
+    return db.query(Projects).filter(Projects.name == name_project).first()
 
 
-def create_project(db: Session, project: schemas.ProjectBase):
-    db_project = models.Projects(
+def create_project(db: Session, project: ProjectBase):
+    db_project = Projects(
         name=project.name,
         description=project.description,
         creation_date=project.creation_date,
@@ -36,8 +34,8 @@ def create_project(db: Session, project: schemas.ProjectBase):
     return db_project
 
 
-def update_project(db: Session, project: schemas.ProjectBase, id: int):
-    db_project = db.query(models.Projects).filter(models.Projects.id == id).first()
+def update_project(db: Session, project: ProjectBase, id: int):
+    db_project = db.query(Projects).filter(Projects.id == id).first()
     db_project.name = project.name
     db_project.description = project.description
     db_project.creation_date = project.creation_date
@@ -51,7 +49,7 @@ def update_project(db: Session, project: schemas.ProjectBase, id: int):
 
 
 def delete_project(db: Session, id: int):
-    db_project = db.query(models.Projects).filter(models.Projects.id == id).first()
+    db_project = db.query(Projects).filter(Projects.id == id).first()
     db.delete(db_project)
     db.commit()
     return db_project
