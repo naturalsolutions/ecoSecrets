@@ -3,12 +3,12 @@ from typing import Generator
 import pytest
 from fastapi.testclient import TestClient
 
+from src.connectors.database import get_db
+from src.main import app
+
 # from app.s3.base import init_bucket, remove_bucket
 from tests.utils.overrides import override_get_session
 from tests.utils.test_db import init_test_db
-
-from src.connectors.database import get_db
-from src.main import app
 
 app.dependency_overrides[get_db] = override_get_session
 
@@ -38,4 +38,9 @@ def client() -> Generator:
 
 
 # Add fixtures here
-pytest_plugins = ["tests.fixtures.device"]
+pytest_plugins = [
+    "tests.fixtures.device",
+    "tests.fixtures.deployment",
+    "tests.fixtures.site",
+    "tests.fixtures.project",
+]

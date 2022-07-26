@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.schemas.schemas import Device
+from src.schemas.device import Device
 from src.services.device import create_device, get_devices
 
 

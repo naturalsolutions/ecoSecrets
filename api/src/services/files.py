@@ -7,10 +7,10 @@ from fastapi import File, Form, HTTPException, UploadFile
 from sqlmodel import Session
 
 from src.connectors import s3
-from src.models import models
+from src.models.file import Files
 
 # import schemas.schemas
-from src.schemas import schemas
+from src.schemas.file import File, FileInfo
 
 # async def stockage_image(file):
 #     try :
@@ -35,15 +35,15 @@ def get_hash(file):
 
 
 def get_files(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Files).offset(skip).limit(limit).all()
+    return db.query(Files).offset(skip).limit(limit).all()
 
 
 def get_file(db: Session, file_id: int):
-    return db.query(models.Files).filter(models.Files.id == file_id).first()
+    return db.query(Files).filter(Files.id == file_id).first()
 
 
-def create_file(db: Session, file: schemas.File):
-    db_file = models.Files(
+def create_file(db: Session, file: File):
+    db_file = Files(
         id=file["id"],
         hash=file["hash"],
         name=file["name"],
@@ -59,11 +59,11 @@ def create_file(db: Session, file: schemas.File):
 
 
 # def get_file_by_path(db: Session, path: str):
-#     return db.query(models.File).filter(models.File.path == path).first()
+#     return db.query(File).filter(File.path == path).first()
 
 
 # def update_file(db: Session, file: schemas.File):
-#     db_file = db.query(models.File).filter(models.File.id == file.id).first()
+#     db_file = db.query(File).filter(File.id == file.id).first()
 #     db_file.name = file.name
 #     db.commit()
 #     db.refresh(db_file)
@@ -71,7 +71,7 @@ def create_file(db: Session, file: schemas.File):
 
 
 def delete_file(db: Session, id: int):
-    db_file = db.query(models.Files).filter(models.Files.id == id).first()
+    db_file = db.query(Files).filter(Files.id == id).first()
     db.delete(db_file)
     db.commit()
     return db_file
@@ -109,4 +109,4 @@ def upload_file(
 
 
 def get_deployment_files(db: Session, id: int):
-    return db.query(models.Files).filter(models.Files.deployment_id == id)
+    return db.query(Files).filter(Files.deployment_id == id)
