@@ -15,7 +15,7 @@ from src.schemas.device import DeviceBase
 from src.schemas.project import ProjectBase
 from src.schemas.schemas import UserCreate
 from src.schemas.site import SiteBase
-from src.services import deployment, device, project, site, user
+from src.services import deployment, device, files, project, site, user
 
 DATABASE_URL = config("DB_URL")
 

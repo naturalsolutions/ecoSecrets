@@ -10,6 +10,7 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { v4 as uuidv4 } from 'uuid';
 import "../css/annotation.css";
 import React from "react";
+import { FilesService } from "../client";
 
 const LayoutImageContainer = styled("div")({
   flexGrow: 1,
@@ -38,12 +39,12 @@ const LayoutImageForm = styled("div")(({ theme }) => ({
 
 type AnnotationType = {
   id:string;
-  species:string, 
+  specie:string, 
   number: number, 
   sex: string, 
   behaviour: string, 
-  lifeStage: string, 
-  biologicalState: string;
+  life_stage: string, 
+  biological_state: string;
   comment: string;
 }
 
@@ -52,9 +53,9 @@ const Annotation = () => {
     projects,
     setCurrentDeployment,
     setCurrentImage,
-    currentDeployment,
     currentImage,
     files,
+    updateListFile
   } = useMainContext();
   let params = useParams();
 
@@ -69,6 +70,12 @@ const Annotation = () => {
     })();
   }, [projects]);
 
+  useEffect(() => {
+    (async () => {
+      image() && setObservations(image().annotations);
+    })();
+  }, [files, currentImage]);
+
   const updateUrl = (id) => {
     const url = new URL(window.location.toString());
     url.pathname = `deployment/${Number(params.deploymentId)}/${id}`;
@@ -80,7 +87,7 @@ const Annotation = () => {
       if (f.id === currentImage) {
         let ind = i === 0 ? (i = files.length) : i;
         setCurrentImage(files[ind - 1].id);
-        setObservations([])
+        
         updateUrl(files[ind - 1].id);
       }
     });
@@ -91,14 +98,14 @@ const Annotation = () => {
       if (f.id === currentImage) {
         let ind = i === files.length - 1 ? -1 : i;
         setCurrentImage(files[ind + 1].id);
-        setObservations([])
         updateUrl(files[ind + 1].id);
       }
     });
   };
 
   const save = () => {
-    console.log(observations)
+    FilesService.updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations).then(res => updateListFile())
+    // WARNING remplacer le updateListFile par une mise à jour local des fichiers
   };
 
   const saveandnext = () => {
@@ -114,7 +121,7 @@ const Annotation = () => {
   const [observations, setObservations] = useState<AnnotationType[]>([]);
 
   const handleAddObservation = () => {
-    setObservations([...observations, { id: uuidv4(), species: '', number: 0, sex: '', behaviour: '', lifeStage: '', biologicalState: '', comment: "" }])
+    setObservations([...observations, { id: uuidv4(), specie: '', number: 0, sex: '', behaviour: '', life_stage: '', biological_state: '', comment: "" }])
   }
 
   const handleDeleteObservation = (id: string) => {
@@ -185,7 +192,7 @@ const Annotation = () => {
       <LayoutImageForm>
         <Stack spacing={2}>
           <Typography variant="h3">Annotation</Typography>
-          <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
+          <FormControlLabel control={<Checkbox defaultChecked />} label="Média vide" />
           {
             observations.map((observation) => (
               <form key={observation.id}>
@@ -208,8 +215,8 @@ const Annotation = () => {
                       label="Espèce"
                       size="small"
                       fullWidth
-                      value={observation.species}
-                      onChange={(e) => handleChange(observation.id, "species", e)}
+                      value={observation.specie}
+                      onChange={(e) => handleChange(observation.id, "specie", e)}
                     />
                   </Grid>
                   <Grid item lg={6}>
@@ -262,8 +269,8 @@ const Annotation = () => {
                       select
                       label="Stade de vie"
                       size="small"
-                      value={observation.lifeStage}
-                      onChange={(e) => handleChange(observation.id, "lifeStage", e)}
+                      value={observation.life_stage}
+                      onChange={(e) => handleChange(observation.id, "life_stage", e)}
                       fullWidth
                     >
                       {lifeStageList.map((item) => (
@@ -279,8 +286,8 @@ const Annotation = () => {
                       select
                       label="Etat biologique"
                       size="small"
-                      value={observation.biologicalState}
-                      onChange={(e) => handleChange(observation.id, "biologicalState", e)}
+                      value={observation.biological_state}
+                      onChange={(e) => handleChange(observation.id, "biological_state", e)}
                       fullWidth
                     >
                       {biologicalStateList.map((item) => (

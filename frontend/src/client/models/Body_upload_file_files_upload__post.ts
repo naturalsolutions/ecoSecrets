@@ -3,7 +3,6 @@
 /* eslint-disable */
 
 export type Body_upload_file_files_upload__post = {
-    hash: string;
     file: Blob;
 };
 

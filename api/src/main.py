@@ -40,5 +40,5 @@ async def root():
 
 @app.on_event("startup")
 def on_startup():
-    init_db()
     init_bucket()
+    init_db()

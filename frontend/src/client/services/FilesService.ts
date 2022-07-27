@@ -1,10 +1,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Annotation } from '../models/Annotation';
 import type { Body_upload_file_files_exif__post } from '../models/Body_upload_file_files_exif__post';
 import type { Body_upload_file_files_upload__post } from '../models/Body_upload_file_files_upload__post';
 import type { Body_upload_files_files_upload_files__post } from '../models/Body_upload_files_files_upload_files__post';
 import type { Body_upload_zip_files_upload_zip__post } from '../models/Body_upload_zip_files_upload_zip__post';
+import type { Files } from '../models/Files';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -23,6 +25,32 @@ export class FilesService {
             url: '/files/',
             errors: {
                 404: `Not found`,
+            },
+        });
+    }
+
+    /**
+     * Update Annotations
+     * @param fileId
+     * @param requestBody
+     * @returns Files Successful Response
+     * @throws ApiError
+     */
+    public static updateAnnotationsFilesAnnotationFileIdPatch(
+        fileId: string,
+        requestBody: Array<Annotation>,
+    ): CancelablePromise<Files> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/files/annotation/{file_id}',
+            path: {
+                'file_id': fileId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
             },
         });
     }
@@ -92,6 +120,27 @@ export class FilesService {
     }
 
     /**
+     * Upload Files
+     * @param formData
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static uploadFilesFilesUploadFilesPost(
+        formData: Body_upload_files_files_upload_files__post,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/upload_files/',
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Download File
      * @param id
      * @returns any Successful Response
@@ -106,27 +155,6 @@ export class FilesService {
             path: {
                 'id': id,
             },
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    /**
-     * Upload Files
-     * @param formData
-     * @returns any Successful Response
-     * @throws ApiError
-     */
-    public static uploadFilesFilesUploadFilesPost(
-        formData: Body_upload_files_files_upload_files__post,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/files/upload_files/',
-            formData: formData,
-            mediaType: 'multipart/form-data',
             errors: {
                 404: `Not found`,
                 422: `Validation Error`,

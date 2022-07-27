@@ -40,15 +40,26 @@ def get_hash(file):
 
 
 def get_files(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(Files).offset(skip).limit(limit).all()
+    return db.query(Files).order_by(Files.name).offset(skip).limit(limit).all()
 
 
 def get_file(db: Session, file_id: uuid_pkg.UUID):
     return db.query(Files).filter(Files.id == file_id).first()
 
 
+def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
+    return (
+        db.query(Files)
+        .filter(Files.deployment_id == id)
+        .order_by(Files.name)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
+
 def create_file(db: Session, file: CreateFiles):
-    db_file = Files(**file.dict())
+    db_file = Files(**file.dict(), annotations=[])
     db.add(db_file)
     db.commit()
     db.refresh(db_file)
@@ -124,7 +135,3 @@ def upload_file(
         raise HTTPException(
             status_code=404, detail="Impossible to save the file in bdd"
         )
-
-
-def get_deployment_files(db: Session, id: int):
-    return db.query(Files).filter(Files.deployment_id == id)
