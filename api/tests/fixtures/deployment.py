@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 
 from src.models.deployment import Deployments
-from src.schemas.schemas import DeploymentBase
+from src.schemas.deployment import DeploymentBase
 from src.services.deployment import create_deployment
 
 

@@ -2,8 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from src.models.models import Projects
-from src.schemas.schemas import ProjectBase
+from src.models.project import Projects
+from src.schemas.project import ProjectBase
 from src.services.project import create_project
 
 

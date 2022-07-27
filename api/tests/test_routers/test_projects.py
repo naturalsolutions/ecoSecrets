@@ -3,7 +3,7 @@ from fastapi import status
 from src.main import app
 
 
-def test_read_projects(client):
+def test_read_projects(client, project, deployment):
     url = app.url_path_for("read_projects")
 
     response = client.get(url)

@@ -5,15 +5,17 @@ from decouple import config
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import Session, SQLModel, create_engine
 
-from src.models import models
-from src.schemas.schemas import (
-    DeploymentBase,
-    DeviceBase,
-    ProjectBase,
-    SiteBase,
-    UserCreate,
-)
-from src.services import deployment, device, files, project, site, user
+from src.models.deployment import Deployments
+from src.models.device import Devices
+from src.models.models import Roles
+from src.models.project import Projects
+from src.models.site import Sites
+from src.schemas.deployment import DeploymentBase
+from src.schemas.device import DeviceBase
+from src.schemas.project import ProjectBase
+from src.schemas.schemas import UserCreate
+from src.schemas.site import SiteBase
+from src.services import deployment, device, project, site, user
 
 DATABASE_URL = config("DB_URL")
 
@@ -27,7 +29,7 @@ def init_db():
     SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
     with Session(engine) as session:
-        role = models.Roles(role="user", description="default_user")
+        role = Roles(role="user", description="default_user")
         session.add(role)
         session.commit()
         user.create_user(
@@ -80,12 +82,19 @@ def init_db():
                 status="blabla",
             ),
         )
-        path=Path(__file__).parent.parent.parent
+        path = Path(__file__).parent.parent.parent
         for fileName in os.listdir(os.path.join(path, "img")):
-            fileNameSplit=fileName.split(".")
+            fileNameSplit = fileName.split(".")
             print(os.path.join(path, "img", fileName))
-            with open(os.path.join(path, "img", fileName), 'rb') as file:
-                files.upload_file(db=session, hash=fileNameSplit[0], ext=fileNameSplit[1], filename=fileName, new_file=file)
+            with open(os.path.join(path, "img", fileName), "rb") as file:
+                files.upload_file(
+                    db=session,
+                    hash=fileNameSplit[0],
+                    ext=fileNameSplit[1],
+                    filename=fileName,
+                    new_file=file,
+                )
+
 
 # Dependency
 def get_db():

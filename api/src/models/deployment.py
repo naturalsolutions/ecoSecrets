@@ -5,7 +5,7 @@ from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:  # pragma: no cover
 
-    from .models import Projects
+    from .project import Projects
 
 
 class Deployments(SQLModel, table=True):

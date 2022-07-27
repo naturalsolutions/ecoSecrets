@@ -8,7 +8,7 @@ from src.connectors import s3
 from src.connectors.database import get_db
 from src.dependencies import get_token_header
 from src.models import models
-from src.schemas import schemas
+from src.schemas.device import Device, DeviceBase
 from src.services import device
 
 router = APIRouter(
@@ -19,13 +19,13 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[schemas.Device])
+@router.get("/", response_model=List[Device])
 def read_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     devices = device.get_devices(db, skip=skip, limit=limit)
     return devices
 
 
-@router.get("/{device_id}", response_model=schemas.Device)
+@router.get("/{device_id}", response_model=Device)
 def read_device(device_id: int, db: Session = Depends(get_db)):
     db_device = device.get_device(db, device_id=device_id)
     if db_device is None:
@@ -33,17 +33,17 @@ def read_device(device_id: int, db: Session = Depends(get_db)):
     return db_device
 
 
-@router.post("/", response_model=schemas.Device)
-def create_device(new_device: schemas.DeviceBase, db: Session = Depends(get_db)):
+@router.post("/", response_model=Device)
+def create_device(new_device: DeviceBase, db: Session = Depends(get_db)):
     db_device = device.get_device_by_name(db, name_device=new_device.name)
     if db_device:
         raise HTTPException(status_code=400, detail="Name already registered")
     return device.create_device(db=db, device=new_device)
 
 
-@router.put("/{device_id}", response_model=schemas.Device)
+@router.put("/{device_id}", response_model=Device)
 def update_device(
-    device_id: int, data_device: schemas.DeviceBase, db: Session = Depends(get_db)
+    device_id: int, data_device: DeviceBase, db: Session = Depends(get_db)
 ):
     return device.update_device(db=db, device=data_device, id=device_id)
 
