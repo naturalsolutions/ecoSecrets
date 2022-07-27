@@ -7,7 +7,7 @@ from fastapi import File, Form, HTTPException, UploadFile
 from sqlmodel import Session
 
 from src.connectors import s3
-from src.models.file import Files
+from src.models.file import CreateFiles, Files
 
 # import schemas.schemas
 from src.schemas.file import File, FileInfo
@@ -42,16 +42,8 @@ def get_file(db: Session, file_id: int):
     return db.query(Files).filter(Files.id == file_id).first()
 
 
-def create_file(db: Session, file: File):
-    db_file = Files(
-        id=file["id"],
-        hash=file["hash"],
-        name=file["name"],
-        extension=file["extension"],
-        bucket=file["extension"],
-        date=file["date"],
-        deployment_id=1,
-    )
+def create_file(db: Session, file: CreateFiles):
+    db_file = Files(**file.dict())
     db.add(db_file)
     db.commit()
     db.refresh(db_file)

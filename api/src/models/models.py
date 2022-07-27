@@ -1,3 +1,4 @@
+import uuid as uuid_pkg
 from datetime import date, datetime
 from typing import TYPE_CHECKING, List, Optional
 
@@ -30,18 +31,7 @@ class Sequences(SQLModel, table=True):
 class Sequences_Files(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
     sequence_id: int = Field(foreign_key="sequences.id")
-    file_id: str = Field(foreign_key="files.id")
-
-
-class Annotations(SQLModel, table=True):
-    id: int = Field(primary_key=True, index=True)
-    specie_id: int
-    behavior: str
-    sexe: str
-    life_stage: str
-    biological_state: str
-    ind_number: int
-    file_id: str = Field(foreign_key="files.id")
+    file_id: uuid_pkg.UUID = Field(foreign_key="files.id")
 
 
 class Megadetector(SQLModel, table=True):
