@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import io
 import tempfile
+import uuid as uuid_pkg
 from datetime import datetime
 from distutils import extension
 from typing import List
-from uuid import uuid4
 from zipfile import ZipFile
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
@@ -14,8 +14,8 @@ from sqlmodel import Session
 
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import CreateFiles
-from src.schemas.annotation import annotation
+from src.models.file import CreateFiles, Files, ReadFiles
+from src.schemas.annotation import Annotation
 from src.services import dependencies, files
 
 router = APIRouter(
@@ -56,6 +56,13 @@ def get_files(db: Session = Depends(get_db)):
     return res
 
 
+@router.patch("/annotation/{file_id}", response_model=Files)
+def update_annotations(
+    file_id: uuid_pkg.UUID, data: List[Annotation], db: Session = Depends(get_db)
+):
+    return files.update_annotations(db, file_id=file_id, data=data)
+
+
 @router.get("/urls/")
 def display_file(name: str):
     return s3.get_url(name)
@@ -76,23 +83,13 @@ def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
 
 
 @router.post("/upload/")
-def upload_file(
-    hash: str = Form(), file: UploadFile = File(...), db: Session = Depends(get_db)
-):
+def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    hash = dependencies.generate_checksum(file)
     ext = file.filename.split(".")[1]
-    insert = files.upload_file(db, hash, file.file, file.filename, ext)
+    insert = files.upload_file(
+        db=db, hash=hash, new_file=file.file, filename=file.filename, ext=ext
+    )
     return insert
-
-
-@router.get("/download/{id}")
-def download_file(id: str, db: Session = Depends(get_db)):
-    f = files.get_file(db, id)
-    my_file = s3.download_file_obj(f"{f.hash}.{f.extension}")
-
-    response = StreamingResponse(my_file, media_type="application/x-zip-compressed")
-    response.headers["Content-Disposition"] = f"attachment; filename={f.name}"
-    response.headers["Content-Length"] = str(my_file.getbuffer().nbytes)
-    return response
 
 
 @router.post("/upload_files/")
@@ -140,6 +137,17 @@ def upload_files(
 
     else:
         return "Erreur: le nombre de fichiers à importer est limité à 20"
+
+
+@router.get("/download/{id}")
+def download_file(id: str, db: Session = Depends(get_db)):
+    f = files.get_file(db, id)
+    my_file = s3.download_file_obj(f"{f.hash}.{f.extension}")
+
+    response = StreamingResponse(my_file, media_type="application/x-zip-compressed")
+    response.headers["Content-Disposition"] = f"attachment; filename={f.name}"
+    response.headers["Content-Length"] = str(my_file.getbuffer().nbytes)
+    return response
 
 
 @router.post("/upload_zip/")

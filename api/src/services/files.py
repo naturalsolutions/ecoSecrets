@@ -1,16 +1,21 @@
 import hashlib
 import tempfile
+import uuid as uuid_pkg
+from datetime import datetime
 from typing import List
 from uuid import uuid4
 
 from fastapi import File, Form, HTTPException, UploadFile
+from sqlalchemy import JSON
 from sqlmodel import Session
 
 from src.connectors import s3
 from src.models.file import CreateFiles, Files
+from src.schemas.annotation import Annotation
 
 # import schemas.schemas
 from src.schemas.file import File, FileInfo
+from src.services import dependencies
 
 # async def stockage_image(file):
 #     try :
@@ -38,13 +43,21 @@ def get_files(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Files).offset(skip).limit(limit).all()
 
 
-def get_file(db: Session, file_id: int):
+def get_file(db: Session, file_id: uuid_pkg.UUID):
     return db.query(Files).filter(Files.id == file_id).first()
 
 
 def create_file(db: Session, file: CreateFiles):
     db_file = Files(**file.dict())
     db.add(db_file)
+    db.commit()
+    db.refresh(db_file)
+    return db_file
+
+
+def update_annotations(db: Session, file_id: int, data: List[Annotation]):
+    db_file = get_file(db=db, file_id=file_id)
+    db_file.annotations = [d.dict() for d in data]
     db.commit()
     db.refresh(db_file)
     return db_file
@@ -92,6 +105,14 @@ def upload_file(
         "bucket": "jean-paul-bucket",
         "date": "2022-01-22",
     }
+    metadata = CreateFiles(
+        hash=hash,
+        name=filename,
+        extension=ext,
+        bucket="jean-paul-bucket",
+        date=datetime.fromisoformat("2022-01-22"),
+        deployment_id=1,
+    )
     try:
         return create_file(db=db, file=metadata)
     except Exception as e:

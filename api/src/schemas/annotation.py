@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class annotation(BaseModel):
+class Annotation(BaseModel):
     specie: str
     life_stage: str
     biological_state: str
