@@ -125,7 +125,6 @@ def upload_files(
                 date=datetime.fromisoformat("2022-01-22"),
                 deployment_id=1,
             )
-            a = metadata.dict()
             try:
                 files.create_file(db=db, file=metadata)
             except Exception as e:

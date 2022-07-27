@@ -1,8 +1,14 @@
 import io
+from datetime import datetime
 from random import randrange
 
 import pytest
+from fastapi import UploadFile
 from PIL import Image
+
+from src.models.file import CreateFiles
+from src.services.dependencies import generate_checksum
+from src.services.files import create_file
 
 
 def gen_img():
@@ -33,3 +39,18 @@ def pillow_image() -> io.BytesIO:
     """
     img = gen_img()
     return save_img(img=img)
+
+
+@pytest.fixture
+def file_object(deployment, pillow_image, db):
+    upload_file = UploadFile(filename="test.jpg", file=pillow_image)
+    hash = generate_checksum(upload_file)
+    metadata = CreateFiles(
+        hash=hash,
+        name=upload_file.filename,
+        extension="jpg",
+        bucket="jean-paul-bucket",
+        date=datetime.fromisoformat("2022-01-22"),
+        deployment_id=deployment.id,
+    )
+    return create_file(db=db, file=metadata)

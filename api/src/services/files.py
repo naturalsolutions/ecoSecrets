@@ -57,6 +57,11 @@ def create_file(db: Session, file: CreateFiles):
 
 def update_annotations(db: Session, file_id: int, data: List[Annotation]):
     db_file = get_file(db=db, file_id=file_id)
+    if db_file is None:
+        raise HTTPException(
+            status_code=404,
+            detail="No file found",
+        )
     db_file.annotations = [d.dict() for d in data]
     db.commit()
     db.refresh(db_file)
