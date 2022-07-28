@@ -33,7 +33,7 @@ def test_update_annotations(client, file_object, db):
             "comment": "string",
             "behaviour": "string",
             "sexe": "string",
-            "number": 0,
+            "number": 1,
         }
     ]
 
@@ -42,9 +42,8 @@ def test_update_annotations(client, file_object, db):
     assert response.status_code == status.HTTP_200_OK
     content = response.json()
     assert content["id"] == str(file_object.id)
+    db.expire_all()  ## Prevent SQLAlchemy from caching
 
     current_file = get_file(db=db, file_id=file_object.id)
-
-    list_files = get_files(db=db)
 
     assert current_file.annotations == annotations
