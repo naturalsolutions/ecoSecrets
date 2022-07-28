@@ -12,8 +12,8 @@ class Projects(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
     name: str
     description: str
-    creation_date: Optional[datetime]
-    end_date: Optional[datetime]
+    creation_date: Optional[date]
+    end_date: Optional[date]
     status: Optional[str]
     owner_id: Optional[int] = Field(foreign_key="users.id")
     contact_id: Optional[int] = Field(foreign_key="users.id")

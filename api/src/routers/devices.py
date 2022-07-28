@@ -7,8 +7,8 @@ from sqlmodel import Session
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.dependencies import get_token_header
-from src.models import models
-from src.schemas.device import Device, DeviceBase
+from src.models.device import Devices
+from src.schemas.device import DeviceBase
 from src.services import device
 
 router = APIRouter(
@@ -19,13 +19,13 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[Device])
+@router.get("/", response_model=List[Devices])
 def read_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     devices = device.get_devices(db, skip=skip, limit=limit)
     return devices
 
 
-@router.get("/{device_id}", response_model=Device)
+@router.get("/{device_id}", response_model=Devices)
 def read_device(device_id: int, db: Session = Depends(get_db)):
     db_device = device.get_device(db, device_id=device_id)
     if db_device is None:
@@ -33,7 +33,7 @@ def read_device(device_id: int, db: Session = Depends(get_db)):
     return db_device
 
 
-@router.post("/", response_model=Device)
+@router.post("/", response_model=Devices)
 def create_device(new_device: DeviceBase, db: Session = Depends(get_db)):
     db_device = device.get_device_by_name(db, name_device=new_device.name)
     if db_device:
@@ -41,7 +41,7 @@ def create_device(new_device: DeviceBase, db: Session = Depends(get_db)):
     return device.create_device(db=db, device=new_device)
 
 
-@router.put("/{device_id}", response_model=Device)
+@router.put("/{device_id}", response_model=Devices)
 def update_device(
     device_id: int, data_device: DeviceBase, db: Session = Depends(get_db)
 ):
