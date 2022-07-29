@@ -6,11 +6,10 @@ from src.models.deployment import Deployments
 from src.models.device import Devices
 from src.models.models import Roles
 from src.models.project import ProjectBase
-from src.models.site import Sites
+from src.models.site import SiteBase, Sites
 from src.schemas.deployment import DeploymentBase
 from src.schemas.device import DeviceBase
 from src.schemas.schemas import UserCreate
-from src.schemas.site import SiteBase
 from src.services import deployment, device, project, site, user
 
 DATABASE_URL = config("DB_URL")

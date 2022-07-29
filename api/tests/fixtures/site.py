@@ -1,7 +1,6 @@
 import pytest
 
-from src.models.site import Sites
-from src.schemas.site import SiteBase
+from src.models.site import SiteBase, Sites
 from src.services.site import create_site
 
 
