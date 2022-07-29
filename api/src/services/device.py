@@ -1,7 +1,6 @@
 from sqlmodel import Session
 
-from src.models.device import Devices
-from src.schemas.device import DeviceBase
+from src.models.device import DeviceBase, Devices
 
 
 def get_devices(db: Session, skip: int = 0, limit: int = 100):

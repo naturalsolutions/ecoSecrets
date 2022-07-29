@@ -1,9 +1,18 @@
 from datetime import date
 from typing import Optional
 
-from sqlmodel import Field
+from sqlmodel import Field, SQLModel
 
-from src.schemas.device import DeviceBase
+
+class DeviceBase(SQLModel):
+    name: str
+    model: str
+    purchase_date: date
+    price: float
+    description: str
+    detection_area: float
+    status: str
+    exif_id: Optional[int] = Field(foreign_key="exifkeymodel.id")
 
 
 class Devices(DeviceBase, table=True):

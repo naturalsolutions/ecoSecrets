@@ -7,8 +7,7 @@ from sqlmodel import Session
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.dependencies import get_token_header
-from src.models.device import Devices
-from src.schemas.device import DeviceBase
+from src.models.device import DeviceBase, Devices
 from src.services import device
 
 router = APIRouter(
