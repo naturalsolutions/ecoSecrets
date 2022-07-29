@@ -2,12 +2,11 @@ from decouple import config
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import Session, SQLModel, create_engine
 
-from src.models.deployment import Deployments
+from src.models.deployment import DeploymentBase, Deployments
 from src.models.device import DeviceBase, Devices
 from src.models.models import Roles
 from src.models.project import ProjectBase
 from src.models.site import SiteBase, Sites
-from src.schemas.deployment import DeploymentBase
 from src.schemas.schemas import UserCreate
 from src.services import deployment, device, project, site, user
 

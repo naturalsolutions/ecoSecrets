@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
-from src.schemas.deployment import Deployment
+from src.models.deployment import Deployments
 
 if TYPE_CHECKING:  # pragma: no cover
 
@@ -30,4 +30,4 @@ class ReadProject(ProjectBase):
 
 
 class ProjectWithDeployment(ReadProject):
-    deployments: Optional[List[Deployment]]
+    deployments: Optional[List[Deployments]]
