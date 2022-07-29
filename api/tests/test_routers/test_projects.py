@@ -3,8 +3,6 @@ from datetime import datetime
 from fastapi import status
 
 from src.main import app
-from src.models.project import Projects
-from src.schemas.project import Project
 from src.services.project import get_project
 
 

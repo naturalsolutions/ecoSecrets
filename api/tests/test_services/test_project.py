@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.schemas.project import Project, ProjectBase
+from src.models.project import ProjectBase
 from src.services.project import create_project, get_projects
 
 

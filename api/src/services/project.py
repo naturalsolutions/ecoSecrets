@@ -1,8 +1,7 @@
 # Service projet
 from sqlmodel import Session
 
-from src.models.project import Projects
-from src.schemas.project import Project, ProjectBase
+from src.models.project import ProjectBase, Projects
 from src.services import deployment
 
 
@@ -19,15 +18,7 @@ def get_project_by_name(db: Session, name_project: str):
 
 
 def create_project(db: Session, project: ProjectBase):
-    db_project = Projects(
-        name=project.name,
-        description=project.description,
-        creation_date=project.creation_date,
-        end_date=project.end_date,
-        status=project.status,
-        owner_id=project.owner_id,
-        contact_id=project.contact_id,
-    )
+    db_project = Projects(**project.dict())
     db.add(db_project)
     db.commit()
     db.refresh(db_project)

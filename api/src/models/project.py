@@ -3,13 +3,14 @@ from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
+from src.schemas.deployment import Deployment
+
 if TYPE_CHECKING:  # pragma: no cover
 
     from .deployment import Deployments
 
 
-class Projects(SQLModel, table=True):
-    id: Optional[int] = Field(primary_key=True, index=True)
+class ProjectBase(SQLModel):
     name: str
     description: str
     creation_date: Optional[date]
@@ -17,4 +18,16 @@ class Projects(SQLModel, table=True):
     status: Optional[str]
     owner_id: Optional[int] = Field(foreign_key="users.id")
     contact_id: Optional[int] = Field(foreign_key="users.id")
+
+
+class Projects(ProjectBase, table=True):
+    id: Optional[int] = Field(primary_key=True, index=True)
     deployments: Optional[List["Deployments"]] = Relationship(back_populates="project")
+
+
+class ReadProject(ProjectBase):
+    id: int
+
+
+class ProjectWithDeployment(ReadProject):
+    deployments: Optional[List[Deployment]]

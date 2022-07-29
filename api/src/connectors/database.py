@@ -5,11 +5,10 @@ from sqlmodel import Session, SQLModel, create_engine
 from src.models.deployment import Deployments
 from src.models.device import Devices
 from src.models.models import Roles
-from src.models.project import Projects
+from src.models.project import ProjectBase
 from src.models.site import Sites
 from src.schemas.deployment import DeploymentBase
 from src.schemas.device import DeviceBase
-from src.schemas.project import ProjectBase
 from src.schemas.schemas import UserCreate
 from src.schemas.site import SiteBase
 from src.services import deployment, device, project, site, user
