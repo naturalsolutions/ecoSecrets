@@ -34,6 +34,11 @@ def test_read_projects_with_deployments(client, project, deployment, db):
     assert response.status_code == status.HTTP_200_OK
     assert get_project(db, project_id=project.id)
 
+    content = response.json()
+    d = deployment.dict()
+    for key, value in d.items():
+        assert content[0]["deployments"][0][key] == value
+
 
 def test_create_project(client, db):
     url = app.url_path_for("create_project")
