@@ -8,10 +8,11 @@ from src.services.deployment import create_deployment
 
 @pytest.fixture()
 def deployment(db, device, project, site) -> Deployments:
+    date = datetime.now()
     data = DeploymentBase(
         name="1er deployment",
-        start_date=datetime.fromisoformat("2022-04-12"),
-        end_date=datetime.fromisoformat("2022-04-19"),
+        start_date=date.isoformat(),
+        end_date=date.isoformat(),
         site_id=site.id,
         device_id=device.id,
         bait="bait",

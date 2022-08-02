@@ -50,7 +50,7 @@ def update_deployment(
     )
 
 
-@router.delete("/{deployment_id}")
+@router.delete("/{deployment_id}", response_model=Deployments)
 def delete_deployment(deployment_id: int, db: Session = Depends(get_db)):
     return deployment.delete_deployment(db=db, id=deployment_id)
 
