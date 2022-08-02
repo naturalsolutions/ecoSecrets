@@ -11,6 +11,9 @@ def test_read_devices(client, device):
 
     assert response.status_code == status.HTTP_200_OK
 
+    content = response.json()
+    # assert device.dict() in content
+
 
 def test_create_device(client):
     url = app.url_path_for("create_device")
