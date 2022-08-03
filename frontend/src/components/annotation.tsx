@@ -119,9 +119,29 @@ const Annotation = () => {
   const biologicalStateList = ["Vivant", "Mort"];
   
   const [observations, setObservations] = useState<AnnotationType[]>([]);
+  const [checked, setChecked] = React.useState(observations.length === 0);
+  const [isSpecies, setIsSpecies] = React.useState(true);
+  
+  useEffect(() => {
+    (async () => {
+      setChecked(observations.length === 0);
+    })();
+  }, [observations]);
+
+  const handleCheckChange = () => {
+    setChecked(!checked);
+    if (checked === false) {
+      setObservations([]);
+      setIsSpecies(true);
+    };
+  };
 
   const handleAddObservation = () => {
-    setObservations([...observations, { id: uuidv4(), specie: '', number: 0, sex: '', behaviour: '', life_stage: '', biological_state: '', comment: "" }])
+    if (isSpecies) {
+      setObservations([...observations, { id: uuidv4(), specie: '', number: 0, sex: '', behaviour: '', life_stage: '', biological_state: '', comment: "" }])
+    };
+    if (checked) { setChecked(false) };
+    setIsSpecies(false);
   }
 
   const handleDeleteObservation = (id: string) => {
@@ -129,17 +149,21 @@ const Annotation = () => {
     let tmp_obs = [...observations]
     i !== -1 && tmp_obs.splice(i,1);
     i !== -1 && setObservations(tmp_obs);
+    i === observations.length-1 && setIsSpecies(true);
   }
 
   const imageIndex = () => {
     return (files && files.findIndex((f) => f.id === currentImage)+1);
   } 
 
-  const handleChange = (id: string, params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
+  const handleFormChange = (id: string, params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
     let tmp_obs = [...observations]
     tmp_obs.forEach(ob => {
       if(ob.id === id){
-        ob[params] = e.target.value
+        ob[params] = e.target.value;
+        if (params === 'specie') {
+          setIsSpecies(true);
+        }
       }
     })
     setObservations(tmp_obs);
@@ -192,7 +216,13 @@ const Annotation = () => {
       <LayoutImageForm>
         <Stack spacing={2}>
           <Typography variant="h3">Annotation</Typography>
-          <FormControlLabel control={<Checkbox defaultChecked />} label="Média vide" />
+          <FormControlLabel control={
+            <Checkbox 
+              checked={checked}
+              onChange={handleCheckChange}
+            />} 
+            label="Média vide" 
+          />
           {
             observations.map((observation) => (
               <form key={observation.id}>
@@ -216,7 +246,7 @@ const Annotation = () => {
                       size="small"
                       fullWidth
                       value={observation.specie}
-                      onChange={(e) => handleChange(observation.id, "specie", e)}
+                      onChange={(e) => handleFormChange(observation.id, "specie", e)}
                     />
                   </Grid>
                   <Grid item lg={6}>
@@ -226,7 +256,7 @@ const Annotation = () => {
                       size="small"
                       inputProps={{ type: 'number' }}
                       value={observation.number}
-                      onChange={(e) => handleChange(observation.id, "number", e)}
+                      onChange={(e) => handleFormChange(observation.id, "number", e)}
                     />
                   </Grid>
                   <Grid item lg={6}>
@@ -235,7 +265,7 @@ const Annotation = () => {
                       select
                       label="Sexe"
                       value={observation.sex}
-                      onChange={(e) => handleChange(observation.id, "sex", e)}
+                      onChange={(e) => handleFormChange(observation.id, "sex", e)}
                       size="small"
                       fullWidth
                     >
@@ -253,7 +283,7 @@ const Annotation = () => {
                       label="Comportement"
                       size="small"
                       value={observation.behaviour}
-                      onChange = {(e) => handleChange(observation.id, "behaviour",e)}
+                      onChange = {(e) => handleFormChange(observation.id, "behaviour",e)}
                       fullWidth
                     >
                       {behaviourList.map((item) => (
@@ -270,7 +300,7 @@ const Annotation = () => {
                       label="Stade de vie"
                       size="small"
                       value={observation.life_stage}
-                      onChange={(e) => handleChange(observation.id, "life_stage", e)}
+                      onChange={(e) => handleFormChange(observation.id, "life_stage", e)}
                       fullWidth
                     >
                       {lifeStageList.map((item) => (
@@ -287,7 +317,7 @@ const Annotation = () => {
                       label="Etat biologique"
                       size="small"
                       value={observation.biological_state}
-                      onChange={(e) => handleChange(observation.id, "biological_state", e)}
+                      onChange={(e) => handleFormChange(observation.id, "biological_state", e)}
                       fullWidth
                     >
                       {biologicalStateList.map((item) => (
@@ -304,7 +334,7 @@ const Annotation = () => {
                       label="Commentaire"
                       size="small"
                       value={observation.comment}
-                      onChange={(e) => handleChange(observation.id, "comment", e)}
+                      onChange={(e) => handleFormChange(observation.id, "comment", e)}
                       fullWidth
                       />
                   </Grid>
