@@ -13,7 +13,8 @@ if TYPE_CHECKING:  # pragma: no cover
 class ProjectBase(SQLModel):
     name: str
     description: str
-    creation_date: Optional[date]
+    creation_date: date
+    start_date: Optional[date]
     end_date: Optional[date]
     status: Optional[str]
     owner_id: Optional[int] = Field(foreign_key="users.id")
