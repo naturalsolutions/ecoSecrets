@@ -1,23 +1,15 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, Grid, Stack, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import { useStatsContext } from "../contexts/statsContext";
 
 
-// [
-// {'key': 'Médias', 
-// 'value': 9050},
-// {'key': 'Mes sites',
-// 'value': 12},
-// ...
-// ]
-
-
-const stats = {
-    'medias': 9050,
-    'sites': 15,
-    'dispositifs': 35,
-    'annotations': 650
-}
+// const stats = {
+//     'medias': 9050,
+//     'sites': 15,
+//     'dispositifs': 35,
+//     'annotations': 650
+// }
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -27,6 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 const Stats = () => {
+    const {stats} = useStatsContext();
     return (
         <Grid 
             container
