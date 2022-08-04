@@ -1,42 +1,18 @@
-from datetime import date, datetime
-from typing import List, Optional, Union
-
-from sqlmodel import SQLModel
-
-# class ItemBase(SQLModel):
-#     title: str
-#     description: Union[str, None] = None
+from pydantic import BaseModel
 
 
-# class ItemCreate(ItemBase):
-#     pass
+class Annotation(BaseModel):
+    specie: str
+    life_stage: str
+    biological_state: str
+    comment: str
+    behaviour: str
+    sexe: str
+    number: int
 
 
-# class Item(ItemBase):
-#     id: int
-#     owner_id: int
-
-#     class Config:
-#         orm_mode = True
-
-
-########################  USER  ###########################
-###########################################################
-
-
-class UserBase(SQLModel):
-    email: str
-    name: str
-
-
-class UserCreate(UserBase):
-    password: str
-
-
-class User(UserBase):
-    id: int
-    is_active: bool
-    # items: List[Item] = []
-
-    class Config:
-        orm_mode = True
+class Stats(BaseModel):
+    medias: int
+    sites: int
+    device: int
+    annotations: int

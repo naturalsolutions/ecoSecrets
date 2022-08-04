@@ -7,7 +7,7 @@ from src.models.device import DeviceBase, Devices
 from src.models.models import Roles
 from src.models.project import ProjectBase
 from src.models.site import SiteBase, Sites
-from src.schemas.schemas import UserCreate
+from src.schemas.user import UserCreate
 from src.services import deployment, device, project, site, user
 
 DATABASE_URL = config("DB_URL")

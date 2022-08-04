@@ -11,10 +11,10 @@ from sqlmodel import Session
 
 from src.connectors import s3
 from src.models.file import CreateFiles, Files
-from src.schemas.annotation import Annotation
 
 # import schemas.schemas
 from src.schemas.file import File, FileInfo
+from src.schemas.schemas import Annotation
 from src.services import dependencies
 
 # async def stockage_image(file):
