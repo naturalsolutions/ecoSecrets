@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from decouple import config
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import Session, SQLModel, create_engine
@@ -36,6 +38,7 @@ def init_db():
             project=ProjectBase(
                 name="frist project",
                 description="desc firt project",
+                creation_date=dt.fromisoformat("2022-04-12"),
                 owner_id=1,
                 contact_id=1,
             ),
@@ -44,6 +47,7 @@ def init_db():
             db=session,
             project=ProjectBase(
                 name="second project",
+                creation_date=dt.fromisoformat("2022-04-12"),
                 description="desc second project",
                 owner_id=1,
                 contact_id=1,

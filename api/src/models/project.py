@@ -4,10 +4,12 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 from src.models.deployment import Deployments
+from src.models.file import Files
 
 if TYPE_CHECKING:  # pragma: no cover
 
     from .deployment import Deployments
+    from .file import Files
 
 
 class ProjectBase(SQLModel):
@@ -17,6 +19,7 @@ class ProjectBase(SQLModel):
     start_date: Optional[date]
     end_date: Optional[date]
     status: Optional[str]
+    targeted_species: Optional[str]
     owner_id: Optional[int] = Field(foreign_key="users.id")
     contact_id: Optional[int] = Field(foreign_key="users.id")
 
@@ -32,3 +35,6 @@ class ReadProject(ProjectBase):
 
 class ProjectWithDeployment(ReadProject):
     deployments: Optional[List[Deployments]]
+
+class ProjectWithDeploymentAndFiles(ProjectWithDeployment):
+    files: Optional[List[Files]]

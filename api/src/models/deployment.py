@@ -5,6 +5,7 @@ from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:  # pragma: no cover
 
+    from .file import Files
     from .project import Projects
 
 
@@ -24,4 +25,5 @@ class DeploymentBase(SQLModel):
 class Deployments(DeploymentBase, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
     project: "Projects" = Relationship(back_populates="deployments")
+    files: Optional[List["Files"]] = Relationship(back_populates="deployment")
     # mode:  Field(foreign_key = "users.id")

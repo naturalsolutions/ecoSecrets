@@ -1,7 +1,10 @@
 # Service projet
-from sqlmodel import Session
+from sqlmodel import Session, select
 
+from src.models.deployment import Deployments
+from src.models.file import Files
 from src.models.project import ProjectBase, Projects
+from src.schemas.annotation import Stats_Project
 from src.services import deployment
 
 
@@ -46,17 +49,45 @@ def delete_project(db: Session, id: int):
     return db_project
 
 
-def get_projects_with_deployments(db: Session, skip: int = 0, limit: int = 100):
-    projects = get_projects(db, skip=skip, limit=limit)
-    list_projects = []
-    for p in projects:
-        new_p = p.dict()
-        project_id = p.id
-        deployments = deployment.get_project_deployments(db=db, id=project_id)
-        list_deployments = []
-        for d in deployments:
-            new_d = d.dict()
-            list_deployments.append(new_d)
-        new_p["deployments"] = list_deployments
-        list_projects.append(new_p)
-    return list_projects
+# def get_projects_with_deployments(db: Session, skip: int = 0, limit: int = 100):
+#     projects = get_projects(db, skip=skip, limit=limit)
+#     list_projects = []
+#     for p in projects:
+#         new_p = p.dict()
+#         project_id = p.id
+#         deployments = deployment.get_project_deployments(db=db, id=project_id)
+#         list_deployments = []
+#         for d in deployments:
+#             new_d = d.dict()
+#             list_deployments.append(new_d)
+#         new_p["deployments"] = list_deployments
+#         list_projects.append(new_p)
+#     return list_projects
+
+def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
+ 
+    # projects_and_deployments_and_images = db.query(Projects, Deployments, Files).filter(Projects.id == Deployments.project_id).filter(Deployments.id == Files.deployment_id).all()
+
+    projects_and_deployments_and_images = get_projects(db)
+
+    result = []
+    for project in projects_and_deployments_and_images:
+        name = project.name
+        status = project.status
+        targeted_species = project.targeted_species
+        deployment_number = len(project.deployments)
+
+        unique_site = []
+        site_number = 0
+        unique_device = []
+        device_number = 0
+        for deployment in project.deployments:
+            if deployment.site_id not in unique_site:
+                unique_site.append(deployment.site_id)
+                site_number += 1
+            if deployment.device_id not in unique_device:
+                unique_device.append(deployment.device_id)
+                device_number += 1
+            
+        result.append(Stats_Project(name, status, media_number, deployment_number, site_number, device_number, targeted_species, annotation_percentage))
+    return result
