@@ -41,8 +41,9 @@ class Files(BaseFiles, table=True):
     megadetector_id: Optional[int] = Field(foreign_key="megadetector.id")
     deepfaune_id: Optional[int] = Field(foreign_key="deepfaune.id")
     deployment_id: int = Field(foreign_key="deployments.id")
-    annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default={})
+    annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default=[])
     deployment: "Deployments" = Relationship(back_populates="files")
+
 
 class CreateFiles(BaseFiles):
     deployment_id: int

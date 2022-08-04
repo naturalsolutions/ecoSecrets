@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from src.connectors.database import get_db
-from src.models.deployment import DeploymentBase, Deployments
+from src.models.deployment import DeploymentBase, Deployments, DeploymentWithFile
 from src.services import deployment
 
 router = APIRouter(
@@ -58,3 +58,11 @@ def delete_deployment(deployment_id: int, db: Session = Depends(get_db)):
 @router.get("/{project_id}", response_model=List[Deployments])
 def read_project_deployments(project_id: int, db: Session = Depends(get_db)):
     return deployment.get_project_deployments(db=db, id=project_id)
+
+
+@router.get("/files/", response_model=List[DeploymentWithFile])
+def read_deployments_with_files(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+):
+    deployments = deployment.get_deployments(db, skip=skip, limit=limit)
+    return deployments

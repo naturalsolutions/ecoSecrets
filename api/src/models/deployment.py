@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
+from src.models.file import Files
+
 if TYPE_CHECKING:  # pragma: no cover
 
     from .file import Files
@@ -27,3 +29,11 @@ class Deployments(DeploymentBase, table=True):
     project: "Projects" = Relationship(back_populates="deployments")
     files: Optional[List["Files"]] = Relationship(back_populates="deployment")
     # mode:  Field(foreign_key = "users.id")
+
+
+class ReadDeployment(DeploymentBase):
+    id: int
+
+
+class DeploymentWithFile(ReadDeployment):
+    files: Optional[List[Files]]

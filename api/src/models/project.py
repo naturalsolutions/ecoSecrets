@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
-from src.models.deployment import Deployments
+from src.models.deployment import Deployments, DeploymentWithFile
 from src.models.file import Files
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -36,5 +36,6 @@ class ReadProject(ProjectBase):
 class ProjectWithDeployment(ReadProject):
     deployments: Optional[List[Deployments]]
 
-class ProjectWithDeploymentAndFiles(ProjectWithDeployment):
-    files: Optional[List[Files]]
+
+class ProjectWithDeploymentAndFiles(ReadProject):
+    deployments: Optional[List[DeploymentWithFile]]
