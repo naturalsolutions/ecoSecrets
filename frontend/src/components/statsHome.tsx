@@ -23,6 +23,7 @@ const Stats = () => {
     return (
         <Grid 
             container
+            xs={12}
         >
             <Grid item xs={12}>
                 <Typography variant="h2" gutterBottom >
