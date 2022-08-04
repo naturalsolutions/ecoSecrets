@@ -4,6 +4,7 @@ import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
 import MainContextProvider from "../contexts/mainContext";
 import ProjectList from "../components/projectList";
+import Stats from "../components/statsHome";
 
 function Main() {
   return (
@@ -12,7 +13,7 @@ function Main() {
         <MainLayout
           Header={<HeadBar />}
           Side={<Drawer />}
-          Main={<ProjectList />}
+          Main={<Stats/>}
         />
       </MainContextProvider>
     </div>
