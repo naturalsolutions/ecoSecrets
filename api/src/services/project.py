@@ -81,6 +81,7 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         site_number = 0
         unique_device = []
         device_number = 0
+        media_number = 0
         for deployment in project.deployments:
             if deployment.site_id not in unique_site:
                 unique_site.append(deployment.site_id)
@@ -88,6 +89,9 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
             if deployment.device_id not in unique_device:
                 unique_device.append(deployment.device_id)
                 device_number += 1
-            
+            media_number += len(deployment.files)
+        # TO ADD annotation%
+        annotation_percentage = 10.4
         result.append(Stats_Project(name, status, media_number, deployment_number, site_number, device_number, targeted_species, annotation_percentage))
+    print(result)
     return result
