@@ -4,7 +4,7 @@ from sqlmodel import Session, select
 from src.models.deployment import Deployments
 from src.models.file import Files
 from src.models.project import ProjectBase, Projects
-from src.schemas.annotation import Stats_Project
+from src.schemas.schemas import Stats_Project
 from src.services import deployment
 
 

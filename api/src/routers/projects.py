@@ -16,7 +16,7 @@ from src.models.project import (
     ProjectWithDeploymentAndFiles,
     ReadProject,
 )
-from src.schemas.annotation import Stats_Project
+from src.schemas.schemas import Stats_Project
 from src.services import deployment, project
 
 router = APIRouter(

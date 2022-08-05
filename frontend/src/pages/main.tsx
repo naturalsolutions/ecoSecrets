@@ -2,8 +2,7 @@ import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
 import NavigationPath from '../components/breadcrumb';
-import ProjectList from "../components/projectList";
-import Stats from "../components/statsHome";
+import Home from "../components/home";
 
 function Main() {
   return (
@@ -12,7 +11,7 @@ function Main() {
         Header={<HeadBar />}
         Side={<Drawer />}
         Navigation={<NavigationPath />}
-        Main={<ProjectList />}
+        Main={<Home />}
       />
     </div>
   );

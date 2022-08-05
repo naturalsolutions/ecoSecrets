@@ -1,5 +1,5 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
-import api from "../utils/api";
+// import api from "../utils/api";
 
 export interface StatsContextProps {
     name?: string;
@@ -12,22 +12,22 @@ export interface StatsContextProps {
   const StatsContextProvider: FC<StatsContextProps> = ({ children }) => {
     const [stats, setStats] = useState<any[]>([]);
 
-    const updateStats = () => {
-        api
-          .get("home/stats")
-          .then((res) => {
-            setStats(res.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      };
+    // const updateStats = () => {
+    //     api
+    //       .get("home/stats")
+    //       .then((res) => {
+    //         setStats(res.data);
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //       });
+    //   };
     
-      useEffect(() => {
-        (async () => {
-          updateStats();
-        })();
-      }, []);
+    //   useEffect(() => {
+    //     (async () => {
+    //       updateStats();
+    //     })();
+    //   }, []);
     
 
     return (
