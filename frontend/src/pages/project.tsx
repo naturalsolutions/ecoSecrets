@@ -1,19 +1,18 @@
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
-import ProjectContextProvider from "../contexts/projectContext";
 import DeploymentList from "../components/deploymentList";
+import NavigationPath from "../components/breadcrumb";
 
 function Project() {
   return (
     <div className="Main">
-      <ProjectContextProvider>
-        <MainLayout
-          Header={<HeadBar />}
-          Side={<Drawer />}
-          Main={<DeploymentList />}
-        />
-      </ProjectContextProvider>
+      <MainLayout
+        Header={<HeadBar />}
+        Side={<Drawer />}
+        Navigation={<NavigationPath />}
+        Main={<DeploymentList />}
+      />
     </div>
   );
 }

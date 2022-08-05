@@ -1,11 +1,10 @@
-from datetime import date, datetime
-from typing import TYPE_CHECKING, List, Optional
+from datetime import date
+from typing import Optional
 
-from sqlmodel import JSON, Column, Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
 
-class Devices(SQLModel, table=True):
-    id: int = Field(primary_key=True, index=True)
+class DeviceBase(SQLModel):
     name: str
     model: str
     purchase_date: date
@@ -14,3 +13,7 @@ class Devices(SQLModel, table=True):
     detection_area: float
     status: str
     exif_id: Optional[int] = Field(foreign_key="exifkeymodel.id")
+
+
+class Devices(DeviceBase, table=True):
+    id: int = Field(primary_key=True, index=True)

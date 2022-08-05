@@ -1,14 +1,11 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.dependencies import get_token_header
-from src.models import models
-from src.schemas.site import Site, SiteBase
+from src.models.site import SiteBase, Sites
 from src.services import site
 
 router = APIRouter(
@@ -19,13 +16,13 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[Site])
+@router.get("/", response_model=List[Sites])
 def read_sites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     sites = site.get_sites(db, skip=skip, limit=limit)
     return sites
 
 
-@router.get("/{site_id}", response_model=Site)
+@router.get("/{site_id}", response_model=Sites)
 def read_site(site_id: int, db: Session = Depends(get_db)):
     db_site = site.get_site(db, site_id=site_id)
     if db_site is None:
@@ -33,7 +30,7 @@ def read_site(site_id: int, db: Session = Depends(get_db)):
     return db_site
 
 
-@router.post("/", response_model=Site)
+@router.post("/", response_model=Sites)
 def create_site(new_site: SiteBase, db: Session = Depends(get_db)):
     db_site = site.get_site_by_name(db, name_site=new_site.name)
     if db_site:
@@ -41,7 +38,7 @@ def create_site(new_site: SiteBase, db: Session = Depends(get_db)):
     return site.create_site(db=db, site=new_site)
 
 
-@router.put("/{site_id}", response_model=Site)
+@router.put("/{site_id}", response_model=Sites)
 def update_site(site_id: int, data_site: SiteBase, db: Session = Depends(get_db)):
     return site.update_site(db=db, site=data_site, id=site_id)
 

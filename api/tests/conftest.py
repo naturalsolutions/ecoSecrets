@@ -43,4 +43,5 @@ pytest_plugins = [
     "tests.fixtures.deployment",
     "tests.fixtures.site",
     "tests.fixtures.project",
+    "tests.fixtures.file",
 ]

@@ -1,18 +1,18 @@
+import os
+from datetime import datetime as dt
+from pathlib import Path
+
 from decouple import config
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import Session, SQLModel, create_engine
 
-from src.models.deployment import Deployments
-from src.models.device import Devices
+from src.models.deployment import DeploymentBase, Deployments
+from src.models.device import DeviceBase, Devices
 from src.models.models import Roles
-from src.models.project import Projects
-from src.models.site import Sites
-from src.schemas.deployment import DeploymentBase
-from src.schemas.device import DeviceBase
-from src.schemas.project import ProjectBase
-from src.schemas.schemas import UserCreate
-from src.schemas.site import SiteBase
-from src.services import deployment, device, project, site, user
+from src.models.project import ProjectBase
+from src.models.site import SiteBase, Sites
+from src.schemas.user import UserCreate
+from src.services import deployment, device, files, project, site, user
 
 DATABASE_URL = config("DB_URL")
 
@@ -40,6 +40,7 @@ def init_db():
             project=ProjectBase(
                 name="frist project",
                 description="desc firt project",
+                creation_date=dt.fromisoformat("2022-04-12"),
                 owner_id=1,
                 contact_id=1,
             ),
@@ -48,6 +49,7 @@ def init_db():
             db=session,
             project=ProjectBase(
                 name="second project",
+                creation_date=dt.fromisoformat("2022-04-12"),
                 description="desc second project",
                 owner_id=1,
                 contact_id=1,
@@ -56,8 +58,8 @@ def init_db():
         deployment.create_deployment(
             db=session,
             deployment=DeploymentBase(
-                name="frist deploy",
-                description="desc firt project",
+                name="first deploy",
+                description="desc first project",
                 bait="aurélie",
                 feature="fruitin tree",
                 project_id=1,
@@ -79,6 +81,18 @@ def init_db():
                 status="blabla",
             ),
         )
+        path = Path(__file__).parent.parent.parent
+        for fileName in os.listdir(os.path.join(path, "img")):
+            fileNameSplit = fileName.split(".")
+            print(os.path.join(path, "img", fileName))
+            with open(os.path.join(path, "img", fileName), "rb") as file:
+                files.upload_file(
+                    db=session,
+                    hash=fileNameSplit[0],
+                    ext=fileNameSplit[1],
+                    filename=fileName,
+                    new_file=file,
+                )
 
 
 # Dependency

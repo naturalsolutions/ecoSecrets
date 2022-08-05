@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from src.schemas.device import DeviceBase
+from src.models.device import DeviceBase
 from src.services.device import create_device
 
 

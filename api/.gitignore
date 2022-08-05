@@ -1,2 +1,5 @@
 *.pyc
 venv/
+
+# dossier d'image pour l'insertion en base de données
+img/

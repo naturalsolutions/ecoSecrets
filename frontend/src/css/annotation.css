@@ -1,0 +1,10 @@
+.numero {
+    border: 1px solid;
+    padding: 8px;
+}
+
+.groupNumber {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+}

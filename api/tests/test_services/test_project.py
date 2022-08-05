@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from src.schemas.project import Project, ProjectBase
-from src.services.project import create_project, get_projects
+from src.models.project import ProjectBase
+from src.services.project import create_project, get_projects, get_projects_stats
 
 
 def test_create_project(db):
@@ -27,3 +27,7 @@ def test_get_projects(db, project):
 
     assert isinstance(projects, list)
     assert project in projects
+
+def test_get_projects_stats(db, project, deployment, file_object):
+    stats = get_projects_stats(db)
+    

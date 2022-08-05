@@ -2,18 +2,31 @@ import "./App.css";
 import Main from "./pages/main";
 import Project from "./pages/project";
 import Deployment from "./pages/deployment";
+import Image from "./pages/image";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MainContextProvider from "./contexts/mainContext";
+import NewDeployment from "./pages/newdeployment";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main />}></Route>
-        <Route path="/project/:projectId" element={<Project />}></Route>
-        <Route path="deployment/:deploymentId" element={<Deployment />}></Route>
-        <Route path="*" element={<Main />}></Route>
-      </Routes>
-    </BrowserRouter>
+    <MainContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />}></Route>
+          <Route path="/project/:projectId" element={<Project />}></Route>
+          <Route path="/deployment/new" element={<NewDeployment />}></Route>
+          <Route
+            path="deployment/:deploymentId"
+            element={<Deployment />}
+          ></Route>
+          <Route
+            path="deployment/:deploymentId/:imageId"
+            element={<Image />}
+          ></Route>
+          <Route path="*" element={<Main />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </MainContextProvider>
   );
 }
 

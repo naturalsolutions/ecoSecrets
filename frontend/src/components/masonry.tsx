@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
-import api from "../utils/api";
-import { useProjectContext } from "../contexts/projectProvider";
+import { useMainContext } from "../contexts/mainContext";
+import { useNavigate } from "react-router-dom";
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -17,7 +17,13 @@ const Label = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ImageMasonry() {
-  const { files } = useProjectContext();
+  const { files, currentDeployment } = useMainContext();
+
+  let navigate = useNavigate();
+
+  const displayImg = (id: string) => {
+    navigate(`${id}`);
+  };
 
   return (
     <Box sx={{ width: "100%", minHeight: 829 }}>
@@ -29,6 +35,7 @@ export default function ImageMasonry() {
               src={`${item.url}`}
               alt={item.name}
               loading="lazy"
+              onClick={() => displayImg(item.id)}
               style={{
                 borderBottomLeftRadius: 4,
                 borderBottomRightRadius: 4,

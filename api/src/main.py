@@ -5,7 +5,7 @@ from src.connectors.database import init_db
 from src.connectors.s3 import init_bucket
 from src.dependencies import get_query_token, get_token_header
 from src.internal import admin
-from src.routers import deployments, devices, files, items, projects, sites, users
+from src.routers import deployments, devices, files, home, items, projects, sites, users
 
 app = FastAPI()  # dependencies=[Depends(get_query_token)]
 
@@ -16,6 +16,7 @@ app.include_router(projects.router)
 app.include_router(deployments.router)
 app.include_router(sites.router)
 app.include_router(devices.router)
+app.include_router(home.router)
 app.include_router(
     admin.router,
     prefix="/admin",
@@ -40,5 +41,5 @@ async def root():
 
 @app.on_event("startup")
 def on_startup():
-    init_db()
     init_bucket()
+    init_db()
