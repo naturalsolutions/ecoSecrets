@@ -1,6 +1,6 @@
 
 import { Stack } from "@mui/material";
-import ProjectList from "../components/projectList";
+import ProjectList from "./projectList";
 import StatsHome from "./statsHome";
 
 const Home = () => {
@@ -14,5 +14,4 @@ const Home = () => {
         </Stack>
     );
 };
-
 export default Home;

@@ -1,11 +1,8 @@
 # Service projet
 from sqlmodel import Session, select
 
-from src.models.deployment import Deployments
-from src.models.file import Files
 from src.models.project import ProjectBase, Projects
-from src.schemas.schemas import Stats_Project
-from src.services import deployment
+from src.schemas.schemas import StatsProject
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
@@ -48,30 +45,12 @@ def delete_project(db: Session, id: int):
     db.commit()
     return db_project
 
-
-# def get_projects_with_deployments(db: Session, skip: int = 0, limit: int = 100):
-#     projects = get_projects(db, skip=skip, limit=limit)
-#     list_projects = []
-#     for p in projects:
-#         new_p = p.dict()
-#         project_id = p.id
-#         deployments = deployment.get_project_deployments(db=db, id=project_id)
-#         list_deployments = []
-#         for d in deployments:
-#             new_d = d.dict()
-#             list_deployments.append(new_d)
-#         new_p["deployments"] = list_deployments
-#         list_projects.append(new_p)
-#     return list_projects
-
 def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
- 
-    # projects_and_deployments_and_images = db.query(Projects, Deployments, Files).filter(Projects.id == Deployments.project_id).filter(Deployments.id == Files.deployment_id).all()
-
     projects_and_deployments_and_images = get_projects(db)
 
     result = []
     for project in projects_and_deployments_and_images:
+        id = project.id
         name = project.name
         status = project.status
         targeted_species = project.targeted_species
@@ -92,6 +71,16 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
             media_number += len(deployment.files)
         # TO ADD annotation%
         annotation_percentage = 10.4
-        result.append(Stats_Project(name, status, media_number, deployment_number, site_number, device_number, targeted_species, annotation_percentage))
-    print(result)
+        stats = StatsProject(
+            id=id,
+            name=name, 
+            status=status, 
+            media_number=media_number, 
+            deployment_number=deployment_number, 
+            site_number=site_number, 
+            device_number=device_number, 
+            targeted_species=targeted_species, 
+            annotation_percentage=annotation_percentage
+        )
+        result.append(stats.dict())
     return result

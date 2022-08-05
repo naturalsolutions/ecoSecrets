@@ -1,8 +1,6 @@
 from typing import List
-from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
 from src.connectors import s3
@@ -11,18 +9,16 @@ from src.dependencies import get_token_header
 from src.models import models
 from src.models.project import (
     ProjectBase,
-    Projects,
     ProjectWithDeployment,
     ProjectWithDeploymentAndFiles,
     ReadProject,
 )
-from src.schemas.schemas import Stats_Project
-from src.services import deployment, project
+from src.schemas.schemas import StatsProject
+from src.services import project
 
 router = APIRouter(
     prefix="/projects",
     tags=["projects"],
-    # dependencies=[Depends(get_token_header)],
     responses={404: {"description": "Not found"}},
 )
 
@@ -77,6 +73,6 @@ def read_projects_with_deployments(
     return project.get_projects(db, skip=skip, limit=limit)
 
 
-@router.get("/stats_projects/", response_model=List[Stats_Project])
+@router.get("/stats_projects/", response_model=List[StatsProject])
 def get_stats_projects(db: Session = Depends(get_db)):
     return project.get_projects_stats(db)
