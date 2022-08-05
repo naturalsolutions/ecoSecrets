@@ -25,7 +25,7 @@ export type { ReadProject } from './models/ReadProject';
 export type { SiteBase } from './models/SiteBase';
 export type { Sites } from './models/Sites';
 export type { Stats } from './models/Stats';
-export type { Stats_Project } from './models/Stats_Project';
+export type { StatsProject } from './models/StatsProject';
 export type { User } from './models/User';
 export type { UserCreate } from './models/UserCreate';
 export type { ValidationError } from './models/ValidationError';

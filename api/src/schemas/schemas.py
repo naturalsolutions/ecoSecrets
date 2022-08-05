@@ -1,5 +1,6 @@
+from email.policy import default
 from pydantic import BaseModel
-
+from sqlmodel import Field
 
 class Annotation(BaseModel):
     specie: str
@@ -17,14 +18,14 @@ class Stats(BaseModel):
     device: int
     annotations: int
 
-class Stats_Project(BaseModel):
+class StatsProject(BaseModel):
     id: str
     name: str
-    status: str
+    status: str = Field(default=None)
     media_number: int
     deployment_number: int
     site_number: int
     device_number: int
-    targeted_species: str
+    targeted_species: str = Field(default=None)
     annotation_percentage: float
 

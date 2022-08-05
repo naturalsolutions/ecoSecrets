@@ -5,7 +5,7 @@ import type { ProjectBase } from '../models/ProjectBase';
 import type { ProjectWithDeployment } from '../models/ProjectWithDeployment';
 import type { ProjectWithDeploymentAndFiles } from '../models/ProjectWithDeploymentAndFiles';
 import type { ReadProject } from '../models/ReadProject';
-import type { Stats_Project } from '../models/Stats_Project';
+import type { StatsProject } from '../models/StatsProject';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -181,10 +181,10 @@ export class ProjectsService {
 
     /**
      * Get Stats Projects
-     * @returns Stats_Project Successful Response
+     * @returns StatsProject Successful Response
      * @throws ApiError
      */
-    public static getStatsProjectsProjectsStatsProjectsGet(): CancelablePromise<Array<Stats_Project>> {
+    public static getStatsProjectsProjectsStatsProjectsGet(): CancelablePromise<Array<StatsProject>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/stats_projects/',
