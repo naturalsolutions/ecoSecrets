@@ -33,18 +33,51 @@ def test_update_annotations(client, file_object, db):
             "comment": "string",
             "behaviour": "string",
             "sexe": "string",
-            "number": 0,
+            "number": 1,
         }
     ]
 
     response = client.patch(url, json=annotations)
 
     assert response.status_code == status.HTTP_200_OK
+
     content = response.json()
     assert content["id"] == str(file_object.id)
+    db.expire_all()  ## Prevent SQLAlchemy from caching
 
     current_file = get_file(db=db, file_id=file_object.id)
+    assert current_file.annotations == annotations
 
+
+def test_get_files(client, file_object):
+    url = app.url_path_for("get_files")
+
+    response = client.get(url)
+
+    assert response.status_code == status.HTTP_200_OK
+
+    content = response.json()
+
+    # assert file_object.json() in content
+
+
+def test_display_file(client, db, file_object):
+    url = app.url_path_for("display_file")
+
+    response = client.get(url, params={"name": file_object.minio_filename})
+    print(response.json())
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+def test_upload_file(client, pillow_image, db):
+    url = app.url_path_for("upload_file")
+
+    response = client.post(url, files={"file": (FILENAME, pillow_image, "image/jpeg")})
+
+    assert response.status_code == status.HTTP_200_OK
+
+    content = response.json()
     list_files = get_files(db=db)
 
-    assert current_file.annotations == annotations
+    assert content in list_files

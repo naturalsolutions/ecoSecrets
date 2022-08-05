@@ -1,7 +1,6 @@
 from sqlmodel import Session
 
-from src.models.deployment import Deployments
-from src.schemas.deployment import Deployment, DeploymentBase
+from src.models.deployment import DeploymentBase, Deployments
 
 
 def get_deployments(db: Session, skip: int = 0, limit: int = 100):

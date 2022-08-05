@@ -69,7 +69,7 @@ def display_file(name: str):
 
 
 @router.post("/exif/")
-def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
+def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
     from exif import Image
 
     exif_data = Image(file_as_bytes(file.file))

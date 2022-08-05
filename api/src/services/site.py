@@ -1,7 +1,6 @@
 from sqlmodel import Session
 
-from src.models.site import Sites
-from src.schemas.site import Site, SiteBase
+from src.models.site import SiteBase, Sites
 
 
 def get_sites(db: Session, skip: int = 0, limit: int = 100):

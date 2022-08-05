@@ -1,7 +1,7 @@
 from fastapi import status
 
 from src.main import app
-from src.services.device import get_devices
+from src.services.device import get_device, get_devices
 
 
 def test_read_devices(client, device):
@@ -10,6 +10,9 @@ def test_read_devices(client, device):
     response = client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
+
+    content = response.json()
+    # assert device.dict() in content
 
 
 def test_create_device(client):
@@ -64,5 +67,4 @@ def test_delete_device(client, device, db):
     assert content["name"] == device.name
     assert content["id"] == device.id
 
-    list_devices = get_devices(db=db, limit=100000)
-    assert device not in list_devices
+    assert get_device(db, device_id=device.id) == None

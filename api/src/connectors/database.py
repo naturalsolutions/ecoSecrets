@@ -1,18 +1,16 @@
 import os
+from datetime import datetime as dt
 from pathlib import Path
 
 from decouple import config
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import Session, SQLModel, create_engine
 
-from src.models.deployment import Deployments
-from src.models.device import Devices
+from src.models.deployment import DeploymentBase, Deployments
+from src.models.device import DeviceBase, Devices
 from src.models.models import Roles
-from src.models.project import Projects
-from src.models.site import Sites
-from src.schemas.deployment import DeploymentBase
-from src.schemas.device import DeviceBase
-from src.schemas.project import ProjectBase
+from src.models.project import ProjectBase
+from src.models.site import SiteBase, Sites
 from src.schemas.schemas import UserCreate
 from src.schemas.site import SiteBase
 from src.services import deployment, device, files, project, site, user
@@ -41,8 +39,9 @@ def init_db():
         project.create_project(
             db=session,
             project=ProjectBase(
-                name="first project",
-                description="desc first project",
+                name="frist project",
+                description="desc firt project",
+                creation_date=dt.fromisoformat("2022-04-12"),
                 owner_id=1,
                 contact_id=1,
             ),
@@ -51,6 +50,7 @@ def init_db():
             db=session,
             project=ProjectBase(
                 name="second project",
+                creation_date=dt.fromisoformat("2022-04-12"),
                 description="desc second project",
                 owner_id=1,
                 contact_id=1,

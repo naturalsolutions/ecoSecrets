@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.schemas.device import Device
+from src.models.device import Devices
 from src.services.device import create_device, get_devices
 
 
@@ -12,7 +12,7 @@ def test_create_device(db):
     description = "description"
     detection_area = 150.0
     status = "status"
-    device = Device(
+    device = Devices(
         id=1,
         name=name,
         model=model,

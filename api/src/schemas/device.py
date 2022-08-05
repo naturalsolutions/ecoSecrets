@@ -1,19 +1,18 @@
-from datetime import date, datetime
-from typing import List, Optional, Union
+from datetime import date
+from typing import Optional
 
-from sqlmodel import SQLModel
+from sqlmodel import Field, SQLModel
+
+# class DeviceBase(SQLModel):
+#     name: str
+#     model: str
+#     purchase_date: date
+#     price: float
+#     description: str
+#     detection_area: float
+#     status: str
+#     exif_id: Optional[int] = Field(foreign_key="exifkeymodel.id")
 
 
-class DeviceBase(SQLModel):
-    name: str
-    model: str
-    purchase_date: date
-    price: float
-    description: str
-    detection_area: float
-    status: str
-    exif_id: Optional[int]
-
-
-class Device(DeviceBase):
-    id: int
+# class Device(DeviceBase):
+#     id: int
