@@ -3,7 +3,7 @@ from sqlmodel import Session
 from src.models import models
 
 # import schemas.schemas
-from src.schemas import schemas
+from src.schemas import user
 
 
 def get_user(db: Session, user_id: int):
@@ -18,7 +18,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Users).offset(skip).limit(limit).all()
 
 
-def create_user(db: Session, user: schemas.UserCreate):
+def create_user(db: Session, user: user.UserCreate):
     fake_hashed_password = user.password + "notreallyhashed"
     db_user = models.Users(
         email=user.email, name=user.name, hashed_password=fake_hashed_password
@@ -29,7 +29,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def update_user(db: Session, user: schemas.User, id: int):
+def update_user(db: Session, user: user.User, id: int):
     db_user = db.query(models.Users).filter(models.Users.id == id).first()
     db_user.email = user.email
     db_user.name = user.name

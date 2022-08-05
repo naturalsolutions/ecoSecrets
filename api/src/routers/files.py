@@ -15,7 +15,7 @@ from sqlmodel import Session
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files, ReadFiles
-from src.schemas.annotation import Annotation
+from src.schemas.schemas import Annotation
 from src.services import dependencies, files
 
 router = APIRouter(

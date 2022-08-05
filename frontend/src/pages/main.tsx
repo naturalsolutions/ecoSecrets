@@ -3,6 +3,7 @@ import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
 import NavigationPath from '../components/breadcrumb';
 import ProjectList from "../components/projectList";
+import Stats from "../components/statsHome";
 
 function Main() {
   return (
