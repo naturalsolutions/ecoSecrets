@@ -18,6 +18,7 @@ const ProjectList = () => {
   // const { projects } = useMainContext();
   const statsProject = [
     {
+      'id': 1,
       'name' : 'First Project',
       'status':'A venir',
       'medias' : 0,
@@ -28,6 +29,7 @@ const ProjectList = () => {
       'Annotation': 80
     },
     {
+      'id': 2,
       'name' : 'Second Project',
       'status': 'En cours',
       'medias' : 1500,
@@ -38,6 +40,7 @@ const ProjectList = () => {
       'Annotation': 80
     },
     {
+      'id': 3,
       'name' : 'Thrid Project',
       'status' :'A annoter',
       'medias' : 500,
@@ -48,6 +51,7 @@ const ProjectList = () => {
       'Annotation': 80
     },
     {
+      'id': 4,
       'name' : 'Fourth Project',
       'status' : 'Terminé',
       'medias' : 624,
@@ -98,77 +102,87 @@ const ProjectList = () => {
       direction="row"
       spacing={2}
     >
-      {statsProject.map((p) => (
-        <Card sx={{ width: 450 }}>
-          <CardHeader
-          
-            avatar = {testStatus(p.status)}
-            
-              title={
-                <Link to={`/project/${p.name}`} style={{ textDecoration: 'none', color: 'black', fontSize: '23px' }}>
-                  {p.name}
-                </Link>
-              }
-           
-            subheader={(p.medias === 0 ? "Pas de médias" : p.medias + ' médias')}
-          />
-          <CardMedia
-            component="img"
-            height="194"
-            image="https://cdn.pixabay.com/photo/2022/06/25/23/41/ladybug-7284337_960_720.jpg"
-          />
-          <CardContent>
-            <Typography variant="body1" gutterBottom>
-              <NaturePeopleIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-              {(p.Deploiements === 0 ? "Aucun déploiement" : 'Déploiements : ' + p.Deploiements )}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              <LocationOnIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-              {(p.Sites === 0 ? "Aucun site" : 'Sites : ' + p.Sites )}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              <PhotoCameraIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-              {(p.Dispositifs === 0 ? "Aucun dispositif" : (p.Dispositifs === 1 ? 'Dispositif : ' + p.Dispositifs : 'Dispositifs : '+ p.Dispositifs ))}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              <EmojiNatureIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-              {(p.espece === '' ? "Etude de communauté" : 'Espèce cible : '+ p.espece )}
-            </Typography>
-            <Typography variant="body1" gutterBottom >
-              < NotesIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-              {("Annotation : " + p.Annotation + "%")}
-            </Typography>
-           
-          </CardContent>
-          <Stack direction='row' justifyContent='center'>
+      {statsProject.map((s) => (
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={3} 
+          lg={2} 
+          key={statsProject.indexOf(s)}
+        >
 
-            <Button 
-              variant="outlined" 
-              size="small"
-              aria-label="download"
-              component={Link}
-              to={`/project/${p.name}`}
-            >
-              <CloudDownloadIcon style={{verticalAlign:"baseline", minWidth: '40px'}}/>
-              <Typography variant="overline">import médias</Typography>
-            </Button>
+          <Card>
+            <CardHeader
             
-          </Stack>
-          {/* <CardActions disableSpacing>
-            <IconButton 
-              aria-label="Import data" 
-            >
-              <DownloadIcon />
-            </IconButton>
-            <IconButton 
-              aria-label="Inspect project"
-              component={Link}
-              to={`/project/${p.name}`}
-            >
-              <VisibilityIcon />
-            </IconButton>
-          </CardActions> */}
-        </Card>
+              avatar = {testStatus(s.status)}
+              
+                title={
+                  <Link to={`/project/${s.id}`} style={{ textDecoration: 'none', color: 'black', fontSize: '23px' }}>
+                    {s.name}
+                  </Link>
+                }
+            
+              subheader={(s.medias === 0 ? "Pas de médias" : s.medias + ' médias')}
+            />
+            <CardMedia
+              component="img"
+              height="194"
+              image="https://cdn.pixabay.com/photo/2022/06/25/23/41/ladybug-7284337_960_720.jpg"
+            />
+            <CardContent>
+              <Typography variant="body1" gutterBottom>
+                <NaturePeopleIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                {(s.Deploiements === 0 ? "Aucun déploiement" : 'Déploiements : ' + s.Deploiements )}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <LocationOnIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                {(s.Sites === 0 ? "Aucun site" : 'Sites : ' + s.Sites )}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <PhotoCameraIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                {(s.Dispositifs === 0 ? "Aucun dispositif" : (s.Dispositifs === 1 ? 'Dispositif : ' + s.Dispositifs : 'Dispositifs : '+ s.Dispositifs ))}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                <EmojiNatureIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                {(s.espece === '' ? "Etude de communauté" : 'Espèce cible : '+ s.espece )}
+              </Typography>
+              <Typography variant="body1" gutterBottom >
+                < NotesIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                {("Annotation : " + s.Annotation + "%")}
+              </Typography>
+            
+            </CardContent>
+            <Stack direction='row' justifyContent='center'>
+
+              <Button 
+                variant="outlined" 
+                size="small"
+                aria-label="download"
+                component={Link}
+                to={`/project/${s.id}`}
+              >
+                <CloudDownloadIcon style={{verticalAlign:"baseline", minWidth: '40px'}}/>
+                <Typography variant="overline">import médias</Typography>
+              </Button>
+              
+            </Stack>
+            {/* <CardActions disableSpacing>
+              <IconButton 
+                aria-label="Import data" 
+              >
+                <DownloadIcon />
+              </IconButton>
+              <IconButton 
+                aria-label="Inspect project"
+                component={Link}
+                to={`/project/${s.name}`}
+              >
+                <VisibilityIcon />
+              </IconButton>
+            </CardActions> */}
+          </Card>
+        </Grid>
       ))}
     </Grid>
   );

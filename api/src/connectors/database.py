@@ -12,7 +12,6 @@ from src.models.models import Roles
 from src.models.project import ProjectBase
 from src.models.site import SiteBase, Sites
 from src.schemas.schemas import UserCreate
-from src.schemas.site import SiteBase
 from src.services import deployment, device, files, project, site, user
 
 DATABASE_URL = config("DB_URL")
