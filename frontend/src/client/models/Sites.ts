@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Site = {
+export type Sites = {
     name: string;
     habitat: string;
     description: string;

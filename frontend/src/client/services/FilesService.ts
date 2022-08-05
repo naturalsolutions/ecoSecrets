@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Annotation } from '../models/Annotation';
-import type { Body_upload_file_files_exif__post } from '../models/Body_upload_file_files_exif__post';
+import type { Body_extract_exif_files_exif__post } from '../models/Body_extract_exif_files_exif__post';
 import type { Body_upload_file_files_upload__post } from '../models/Body_upload_file_files_upload__post';
 import type { Body_upload_files_files_upload_files__post } from '../models/Body_upload_files_files_upload_files__post';
 import type { Body_upload_zip_files_upload_zip__post } from '../models/Body_upload_zip_files_upload_zip__post';
@@ -78,13 +78,13 @@ export class FilesService {
     }
 
     /**
-     * Upload File
+     * Extract Exif
      * @param formData
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static uploadFileFilesExifPost(
-        formData: Body_upload_file_files_exif__post,
+    public static extractExifFilesExifPost(
+        formData: Body_extract_exif_files_exif__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',

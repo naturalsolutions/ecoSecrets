@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Device = {
+export type Devices = {
     name: string;
     model: string;
     purchase_date: string;

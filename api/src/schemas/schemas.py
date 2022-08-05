@@ -7,7 +7,7 @@ class Annotation(BaseModel):
     biological_state: str
     comment: str
     behaviour: str
-    sexe: str
+    sex: str
     number: int
 
 

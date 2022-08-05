@@ -1,8 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Deployment } from '../models/Deployment';
 import type { DeploymentBase } from '../models/DeploymentBase';
+import type { Deployments } from '../models/Deployments';
+import type { DeploymentWithFile } from '../models/DeploymentWithFile';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -14,13 +15,13 @@ export class DeploymentsService {
      * Read Deployments
      * @param skip
      * @param limit
-     * @returns Deployment Successful Response
+     * @returns Deployments Successful Response
      * @throws ApiError
      */
     public static readDeploymentsDeploymentsGet(
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<Array<Deployment>> {
+    ): CancelablePromise<Array<Deployments>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/',
@@ -38,12 +39,12 @@ export class DeploymentsService {
     /**
      * Create Deployment
      * @param requestBody
-     * @returns Deployment Successful Response
+     * @returns Deployments Successful Response
      * @throws ApiError
      */
     public static createDeploymentDeploymentsPost(
         requestBody: DeploymentBase,
-    ): CancelablePromise<Deployment> {
+    ): CancelablePromise<Deployments> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/deployments/',
@@ -59,12 +60,12 @@ export class DeploymentsService {
     /**
      * Read Deployment
      * @param deploymentId
-     * @returns Deployment Successful Response
+     * @returns Deployments Successful Response
      * @throws ApiError
      */
     public static readDeploymentDeploymentsDeploymentIdGet(
         deploymentId: number,
-    ): CancelablePromise<Deployment> {
+    ): CancelablePromise<Deployments> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/{deployment_id}',
@@ -82,13 +83,13 @@ export class DeploymentsService {
      * Update Deployment
      * @param deploymentId
      * @param requestBody
-     * @returns Deployment Successful Response
+     * @returns Deployments Successful Response
      * @throws ApiError
      */
     public static updateDeploymentDeploymentsDeploymentIdPut(
         deploymentId: number,
         requestBody: DeploymentBase,
-    ): CancelablePromise<Deployment> {
+    ): CancelablePromise<Deployments> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/deployments/{deployment_id}',
@@ -107,12 +108,12 @@ export class DeploymentsService {
     /**
      * Delete Deployment
      * @param deploymentId
-     * @returns any Successful Response
+     * @returns Deployments Successful Response
      * @throws ApiError
      */
     public static deleteDeploymentDeploymentsDeploymentIdDelete(
         deploymentId: number,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Deployments> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/deployments/{deployment_id}',
@@ -129,17 +130,42 @@ export class DeploymentsService {
     /**
      * Read Project Deployments
      * @param projectId
-     * @returns Deployment Successful Response
+     * @returns Deployments Successful Response
      * @throws ApiError
      */
     public static readProjectDeploymentsDeploymentsProjectIdGet(
         projectId: number,
-    ): CancelablePromise<Array<Deployment>> {
+    ): CancelablePromise<Array<Deployments>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/{project_id}',
             path: {
                 'project_id': projectId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Read Deployments With Files
+     * @param skip
+     * @param limit
+     * @returns DeploymentWithFile Successful Response
+     * @throws ApiError
+     */
+    public static readDeploymentsWithFilesDeploymentsFilesGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<Array<DeploymentWithFile>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/deployments/files/',
+            query: {
+                'skip': skip,
+                'limit': limit,
             },
             errors: {
                 404: `Not found`,

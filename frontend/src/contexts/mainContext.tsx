@@ -1,11 +1,8 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
-import {
-  Deployment,
-  DeploymentsService,
-  FilesService,
-  ProjectsService,
-} from "../client";
-import { ProjectWithDeployments } from "../client/models/ProjectWithDeployments";
+import { Deployments } from "../client/models/Deployments";
+import { FilesService } from "../client/services/FilesService";
+import { ProjectWithDeployment } from "../client/models/ProjectWithDeployment";
+import { ProjectsService } from "../client/services/ProjectsService";
 
 export interface MainContextProps {
   name?: string;
@@ -16,7 +13,7 @@ export const MainContext = createContext({} as any);
 export const useMainContext = () => useContext(MainContext);
 
 const MainContextProvider: FC<MainContextProps> = ({ children }) => {
-  const [projects, setProjects] = useState<ProjectWithDeployments[]>([]);
+  const [projects, setProjects] = useState<ProjectWithDeployment[]>([]);
   const [currentProject, setCurrentProject] = useState<number | null>(null);
   const [currentDeployment, setCurrentDeployment] = useState<number | null>(
     null
@@ -45,11 +42,11 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         });
   };
 
-  const project = (): ProjectWithDeployments | undefined => {
+  const project = (): ProjectWithDeployment | undefined => {
     return projects.find((p) => p.id === currentProject);
   };
 
-  const deployment = (): Deployment | undefined => {
+  const deployment = (): Deployments | undefined => {
     return projects
       .find((p) => p.id === currentProject)
       ?.deployments?.find((d) => d.id === currentDeployment);

@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Deployment = {
+export type Deployments = {
     name: string;
     start_date?: string;
     end_date?: string;
@@ -13,6 +13,6 @@ export type Deployment = {
     description: string;
     project_id: number;
     template_sequence_id?: number;
-    id: number;
+    id?: number;
 };
 

@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProjectBase = {
+import type { DeploymentWithFile } from './DeploymentWithFile';
+
+export type ProjectWithDeploymentAndFiles = {
     name: string;
     description: string;
     creation_date: string;
@@ -12,5 +14,7 @@ export type ProjectBase = {
     targeted_species?: string;
     owner_id?: number;
     contact_id?: number;
+    id: number;
+    deployments?: Array<DeploymentWithFile>;
 };
 

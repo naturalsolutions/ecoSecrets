@@ -32,7 +32,7 @@ def test_update_annotations(client, file_object, db):
             "biological_state": "string",
             "comment": "string",
             "behaviour": "string",
-            "sexe": "string",
+            "sex": "string",
             "number": 1,
         }
     ]

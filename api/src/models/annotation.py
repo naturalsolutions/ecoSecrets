@@ -12,7 +12,7 @@ class Annotations(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
     specie_id: int
     behavior: str
-    sexe: str
+    sex: str
     life_stage: str
     biological_state: str
     ind_number: int

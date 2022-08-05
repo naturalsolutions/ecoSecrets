@@ -3,7 +3,6 @@
 /* eslint-disable */
 
 export type Annotation = {
-    id: string;
     specie: string;
     life_stage: string;
     biological_state: string;

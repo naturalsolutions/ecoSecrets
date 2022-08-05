@@ -1,9 +1,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Project } from '../models/Project';
 import type { ProjectBase } from '../models/ProjectBase';
-import type { ProjectWithDeployments } from '../models/ProjectWithDeployments';
+import type { ProjectWithDeployment } from '../models/ProjectWithDeployment';
+import type { ProjectWithDeploymentAndFiles } from '../models/ProjectWithDeploymentAndFiles';
+import type { ReadProject } from '../models/ReadProject';
+import type { Stats_Project } from '../models/Stats_Project';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -15,13 +17,13 @@ export class ProjectsService {
      * Read Projects
      * @param skip
      * @param limit
-     * @returns Project Successful Response
+     * @returns ReadProject Successful Response
      * @throws ApiError
      */
     public static readProjectsProjectsGet(
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<Array<Project>> {
+    ): CancelablePromise<Array<ReadProject>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/',
@@ -39,12 +41,12 @@ export class ProjectsService {
     /**
      * Create Project
      * @param requestBody
-     * @returns Project Successful Response
+     * @returns ReadProject Successful Response
      * @throws ApiError
      */
     public static createProjectProjectsPost(
         requestBody: ProjectBase,
-    ): CancelablePromise<Project> {
+    ): CancelablePromise<ReadProject> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/projects/',
@@ -60,12 +62,12 @@ export class ProjectsService {
     /**
      * Read Project
      * @param projectId
-     * @returns Project Successful Response
+     * @returns ReadProject Successful Response
      * @throws ApiError
      */
     public static readProjectProjectsProjectIdGet(
         projectId: number,
-    ): CancelablePromise<Project> {
+    ): CancelablePromise<ReadProject> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/{project_id}',
@@ -83,13 +85,13 @@ export class ProjectsService {
      * Update Project
      * @param projectId
      * @param requestBody
-     * @returns Project Successful Response
+     * @returns ReadProject Successful Response
      * @throws ApiError
      */
     public static updateProjectProjectsProjectIdPut(
         projectId: number,
         requestBody: ProjectBase,
-    ): CancelablePromise<Project> {
+    ): CancelablePromise<ReadProject> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/projects/{project_id}',
@@ -131,13 +133,13 @@ export class ProjectsService {
      * Read Projects With Deployments
      * @param skip
      * @param limit
-     * @returns ProjectWithDeployments Successful Response
+     * @returns ProjectWithDeployment Successful Response
      * @throws ApiError
      */
     public static readProjectsWithDeploymentsProjectsDeploymentsGet(
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<Array<ProjectWithDeployments>> {
+    ): CancelablePromise<Array<ProjectWithDeployment>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/deployments/',
@@ -148,6 +150,46 @@ export class ProjectsService {
             errors: {
                 404: `Not found`,
                 422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Read Projects With Deployments
+     * @param skip
+     * @param limit
+     * @returns ProjectWithDeploymentAndFiles Successful Response
+     * @throws ApiError
+     */
+    public static readProjectsWithDeploymentsProjectsDeploymentsAndFilesGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<Array<ProjectWithDeploymentAndFiles>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/deployments_and_files/',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Get Stats Projects
+     * @returns Stats_Project Successful Response
+     * @throws ApiError
+     */
+    public static getStatsProjectsProjectsStatsProjectsGet(): CancelablePromise<Array<Stats_Project>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/stats_projects/',
+            errors: {
+                404: `Not found`,
             },
         });
     }

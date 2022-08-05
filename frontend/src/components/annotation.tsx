@@ -261,7 +261,7 @@ const Annotation = () => {
                   </Grid>
                   <Grid item lg={6}>
                     <TextField
-                      id="sexe"
+                      id="sex"
                       select
                       label="Sexe"
                       value={observation.sex}

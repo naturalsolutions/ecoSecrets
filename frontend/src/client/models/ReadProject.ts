@@ -2,17 +2,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Deployment } from './Deployment';
-
-export type ProjectWithDeployments = {
+export type ReadProject = {
     name: string;
     description: string;
-    creation_date?: string;
+    creation_date: string;
+    start_date?: string;
     end_date?: string;
     status?: string;
+    targeted_species?: string;
     owner_id?: number;
     contact_id?: number;
     id: number;
-    deployments?: Array<Deployment>;
 };
 
