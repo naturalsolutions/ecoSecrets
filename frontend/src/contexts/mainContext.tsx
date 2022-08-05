@@ -3,6 +3,8 @@ import { Deployments } from "../client/models/Deployments";
 import { FilesService } from "../client/services/FilesService";
 import { ProjectWithDeployment } from "../client/models/ProjectWithDeployment";
 import { ProjectsService } from "../client/services/ProjectsService";
+import { Stats } from "../client/models/Stats";
+import { HomeService } from "../client/services/HomeService";
 
 export interface MainContextProps {
   name?: string;
@@ -20,6 +22,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   );
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
+  const [globalStats, setGlobalStats] = useState<Stats>();
 
   const updateProjects = () => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
@@ -42,6 +45,16 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         });
   };
 
+  const updateGlobalStats = () => {
+    HomeService.getUserStatsHomeStatsGet()
+      .then((globalStats) => {
+        setGlobalStats(globalStats);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const project = (): ProjectWithDeployment | undefined => {
     return projects.find((p) => p.id === currentProject);
   };
@@ -51,10 +64,11 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       .find((p) => p.id === currentProject)
       ?.deployments?.find((d) => d.id === currentDeployment);
   };
-
+  
   useEffect(() => {
     (async () => {
       updateProjects();
+      updateGlobalStats();
     })();
   }, []);
 
@@ -88,6 +102,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         setCurrentImage,
         files,
         updateListFile,
+        globalStats,
       }}
     >
       {children}
