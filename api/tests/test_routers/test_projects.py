@@ -1,9 +1,8 @@
-from datetime import datetime
-
 from fastapi import status
 
 from src.main import app
 from src.services.project import get_project
+from tests.utils.date import compare_date
 
 
 def test_read_projects(client, project, deployment, db):
@@ -27,17 +26,27 @@ def test_read_project(client, project):
     assert project.id == content["id"]
 
 
-def test_read_projects_with_deployments(client, project, deployment, db):
+def test_read_projects_with_deployments(client, deployment, db):
     url = app.url_path_for("read_projects_with_deployments")
     response = client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    assert get_project(db, project_id=project.id)
+    assert get_project(db, project_id=deployment.project_id)
 
     content = response.json()
-    d = deployment.dict()
-    for key, value in d.items():
-        assert content[0]["deployments"][0][key] == value
+    first_deploy = [
+        one_content["deployments"][0]
+        for one_content in content
+        if len(one_content["deployments"]) > 0 and one_content["deployments"][0]["id"] == deployment.id
+    ][0]
+    assert set(deployment.dict().keys()) == set(first_deploy.keys())
+
+    for date_attr in ("start_date", "end_date"):
+        current_date = first_deploy.pop(date_attr)
+        assert compare_date(current_date, getattr(deployment, date_attr))
+
+    for key, value in first_deploy.items():
+        assert deployment.dict()[key] == value, key
 
 
 def test_create_project(client, db):
