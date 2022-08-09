@@ -5,12 +5,11 @@ from src.connectors.database import init_db
 from src.connectors.s3 import init_bucket
 from src.dependencies import get_query_token, get_token_header
 from src.internal import admin
-from src.routers import deployments, devices, files, home, items, projects, sites, users
+from src.routers import deployments, devices, files, home, projects, sites, users
 
 app = FastAPI()  # dependencies=[Depends(get_query_token)]
 
 app.include_router(users.router)
-# app.include_router(items.router)
 app.include_router(files.router)
 app.include_router(projects.router)
 app.include_router(deployments.router)
