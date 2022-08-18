@@ -3,9 +3,9 @@
 /* eslint-disable */
 import type { Annotation } from '../models/Annotation';
 import type { Body_extract_exif_files_exif__post } from '../models/Body_extract_exif_files_exif__post';
-import type { Body_upload_file_files_upload__post } from '../models/Body_upload_file_files_upload__post';
-import type { Body_upload_files_files_upload_files__post } from '../models/Body_upload_files_files_upload_files__post';
-import type { Body_upload_zip_files_upload_zip__post } from '../models/Body_upload_zip_files_upload_zip__post';
+import type { Body_upload_file_files_upload__deployment_id__post } from '../models/Body_upload_file_files_upload__deployment_id__post';
+import type { Body_upload_files_files_upload_files__deployment_id__post } from '../models/Body_upload_files_files_upload_files__deployment_id__post';
+import type { Body_upload_zip_files_upload_zip__deployment_id__post } from '../models/Body_upload_zip_files_upload_zip__deployment_id__post';
 import type { Files } from '../models/Files';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -100,16 +100,21 @@ export class FilesService {
 
     /**
      * Upload File
+     * @param deploymentId
      * @param formData
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static uploadFileFilesUploadPost(
-        formData: Body_upload_file_files_upload__post,
+    public static uploadFileFilesUploadDeploymentIdPost(
+        deploymentId: number,
+        formData: Body_upload_file_files_upload__deployment_id__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/files/upload/',
+            url: '/files/upload/{deployment_id}',
+            path: {
+                'deployment_id': deploymentId,
+            },
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
@@ -121,16 +126,21 @@ export class FilesService {
 
     /**
      * Upload Files
+     * @param deploymentId
      * @param formData
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static uploadFilesFilesUploadFilesPost(
-        formData: Body_upload_files_files_upload_files__post,
+    public static uploadFilesFilesUploadFilesDeploymentIdPost(
+        deploymentId: number,
+        formData: Body_upload_files_files_upload_files__deployment_id__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/files/upload_files/',
+            url: '/files/upload_files/{deployment_id}',
+            path: {
+                'deployment_id': deploymentId,
+            },
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
@@ -164,16 +174,21 @@ export class FilesService {
 
     /**
      * Upload Zip
+     * @param deploymentId
      * @param formData
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static uploadZipFilesUploadZipPost(
-        formData: Body_upload_zip_files_upload_zip__post,
+    public static uploadZipFilesUploadZipDeploymentIdPost(
+        deploymentId: number,
+        formData: Body_upload_zip_files_upload_zip__deployment_id__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/files/upload_zip/',
+            url: '/files/upload_zip/{deployment_id}',
+            path: {
+                'deployment_id': deploymentId,
+            },
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {

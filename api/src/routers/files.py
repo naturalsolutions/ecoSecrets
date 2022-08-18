@@ -82,18 +82,26 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
     return res
 
 
-@router.post("/upload/")
-def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
+@router.post("/upload/{deployment_id}")
+def upload_file(
+    deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)
+):
     hash = dependencies.generate_checksum(file)
     ext = file.filename.split(".")[1]
     insert = files.upload_file(
-        db=db, hash=hash, new_file=file.file, filename=file.filename, ext=ext
+        db=db,
+        hash=hash,
+        new_file=file.file,
+        filename=file.filename,
+        ext=ext,
+        deployment_id=deployment_id,
     )
     return insert
 
 
-@router.post("/upload_files/")
+@router.post("/upload_files/{deployment_id}")
 def upload_files(
+    deployment_id: int,
     list_files: List[UploadFile] = File(...),
     db: Session = Depends(get_db),
 ):
@@ -123,7 +131,7 @@ def upload_files(
                 extension=ext,
                 bucket="jean-paul-bucket",
                 date=datetime.fromisoformat("2022-01-22"),
-                deployment_id=1,
+                deployment_id=deployment_id,
             )
             try:
                 files.create_file(db=db, file=metadata)
@@ -149,8 +157,9 @@ def download_file(id: str, db: Session = Depends(get_db)):
     return response
 
 
-@router.post("/upload_zip/")
+@router.post("/upload_zip/{deployment_id}")
 def upload_zip(
+    deployment_id: int,
     hash: List[str] = Form(),
     zipFile: UploadFile = File(...),
     db: Session = Depends(get_db),
@@ -165,7 +174,9 @@ def upload_zip(
                 with tempfile.SpooledTemporaryFile() as tf:
                     tf.write(bytes)
                     tf.seek(0)
-                    insert = files.upload_file(db, hash, tf, info.filename, "JPG")
+                    insert = files.upload_file(
+                        db, hash, tf, info.filename, "JPG", deployment_id
+                    )
                     res.append(insert)
             return res
     else:

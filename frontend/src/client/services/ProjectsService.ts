@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ProjectBase } from '../models/ProjectBase';
+import type { ProjectSheet } from '../models/ProjectSheet';
 import type { ProjectWithDeployment } from '../models/ProjectWithDeployment';
 import type { ProjectWithDeploymentAndFiles } from '../models/ProjectWithDeploymentAndFiles';
 import type { ReadProject } from '../models/ReadProject';
@@ -62,12 +63,12 @@ export class ProjectsService {
     /**
      * Read Project
      * @param projectId
-     * @returns ReadProject Successful Response
+     * @returns ProjectWithDeployment Successful Response
      * @throws ApiError
      */
     public static readProjectProjectsProjectIdGet(
         projectId: number,
-    ): CancelablePromise<ReadProject> {
+    ): CancelablePromise<ProjectWithDeployment> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/{project_id}',
@@ -190,6 +191,28 @@ export class ProjectsService {
             url: '/projects/stats_projects/',
             errors: {
                 404: `Not found`,
+            },
+        });
+    }
+
+    /**
+     * Get Informations Project
+     * @param projectId
+     * @returns ProjectSheet Successful Response
+     * @throws ApiError
+     */
+    public static getInformationsProjectProjectsProjectInformationsProjectIdGet(
+        projectId: number,
+    ): CancelablePromise<ProjectSheet> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/project_informations/{project_id}',
+            path: {
+                'project_id': projectId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
             },
         });
     }

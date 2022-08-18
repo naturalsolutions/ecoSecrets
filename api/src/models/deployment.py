@@ -11,12 +11,15 @@ if TYPE_CHECKING:  # pragma: no cover
     from .project import Projects
 
 
-class DeploymentBase(SQLModel):
+class DeploymentEssentials(SQLModel):
     name: str
     start_date: Optional[datetime]
     end_date: Optional[datetime]
     site_id: Optional[int] = Field(foreign_key="sites.id")
     device_id: Optional[int] = Field(foreign_key="devices.id")
+
+
+class DeploymentBase(DeploymentEssentials):
     bait: str
     feature: str
     description: str
@@ -37,3 +40,9 @@ class ReadDeployment(DeploymentBase):
 
 class DeploymentWithFile(ReadDeployment):
     files: Optional[List[Files]]
+
+
+class DeploymentForProjectSheet(DeploymentEssentials):
+    id: int
+    site_name: Optional[str]
+    device_name: Optional[str]

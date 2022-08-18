@@ -38,9 +38,13 @@ def init_db():
         project.create_project(
             db=session,
             project=ProjectBase(
-                name="frist project",
+                name="First project",
                 description="desc firt project",
+                targeted_species="Loup",
+                protocole="Protocole A",
                 creation_date=dt.fromisoformat("2022-04-12"),
+                start_date=dt.fromisoformat("2022-04-12"),
+                end_date=dt.fromisoformat("2022-04-12"),
                 owner_id=1,
                 contact_id=1,
             ),
@@ -48,31 +52,24 @@ def init_db():
         project.create_project(
             db=session,
             project=ProjectBase(
-                name="second project",
+                name="Second project",
                 creation_date=dt.fromisoformat("2022-04-12"),
+                start_date=dt.fromisoformat("2022-04-12"),
+                end_date=dt.fromisoformat("2022-04-12"),
                 description="desc second project",
                 owner_id=1,
                 contact_id=1,
             ),
         )
-        deployment.create_deployment(
-            db=session,
-            deployment=DeploymentBase(
-                name="first deploy",
-                description="desc first project",
-                bait="aurélie",
-                feature="fruitin tree",
-                project_id=1,
-            ),
-        )
+
         site.create_site(
             db=session,
-            site=SiteBase(name="first site", habitat="toto", description="description"),
+            site=SiteBase(name="First site", habitat="toto", description="description"),
         )
         device.create_device(
             db=session,
             device=DeviceBase(
-                name="first device",
+                name="First device",
                 model="model",
                 purchase_date="2022-07-19",
                 price=120,
@@ -81,6 +78,22 @@ def init_db():
                 status="blabla",
             ),
         )
+
+        deployment.create_deployment(
+            db=session,
+            deployment=DeploymentBase(
+                name="First deploy",
+                site_id=1,
+                device_id=1,
+                start_date=dt.fromisoformat("2022-04-12"),
+                end_date=dt.fromisoformat("2022-04-12"),
+                description="desc first deploy",
+                bait="aurélie",
+                feature="fruitin tree",
+                project_id=1,
+            ),
+        )
+
         path = Path(__file__).parent.parent.parent
         for fileName in os.listdir(os.path.join(path, "img")):
             fileNameSplit = fileName.split(".")
@@ -92,6 +105,7 @@ def init_db():
                     ext=fileNameSplit[1],
                     filename=fileName,
                     new_file=file,
+                    deployment_id=1,
                 )
 
 

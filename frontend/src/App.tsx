@@ -6,6 +6,8 @@ import Image from "./pages/image";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainContextProvider from "./contexts/mainContext";
 import NewDeployment from "./pages/newdeployment";
+import ProjectSheet from "./pages/projectSheet";
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
           <Route path="/" element={<Main />}></Route>
           <Route path="/project/:projectId" element={<Project />}></Route>
           <Route path="/deployment/new" element={<NewDeployment />}></Route>
+          <Route path="/projectsheet/:projectId" element={<ProjectSheet />}></Route>
           <Route
             path="deployment/:deploymentId"
             element={<Deployment />}

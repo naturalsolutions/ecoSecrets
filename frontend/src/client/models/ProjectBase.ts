@@ -8,6 +8,7 @@ export type ProjectBase = {
     creation_date: string;
     start_date?: string;
     end_date?: string;
+    protocole?: string;
     status?: string;
     targeted_species?: string;
     owner_id?: number;

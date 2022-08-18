@@ -3,14 +3,14 @@
 /* eslint-disable */
 
 export type StatsProject = {
+    media_number: number;
+    annotation_percentage: number;
     id: string;
     name: string;
     status?: string;
-    media_number: number;
     deployment_number: number;
     site_number: number;
     device_number: number;
     targeted_species?: string;
-    annotation_percentage: number;
 };
 

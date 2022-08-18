@@ -1,13 +1,14 @@
-import { Grid,  Typography } from "@mui/material";
+import { Button, Grid,  Typography } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
 
 
 const StatsHome = () => {
     const {globalStats} = useMainContext();
+    const buttonLabels = {"medias": "Nombre de médias", "annotations": "Nombre d'annotations", "device":"Nombre de dispositifs", "sites": "Nombre de sites"};
     return (
         <Grid container>
             <Grid item xs={12}>
-                <Typography variant="h2" gutterBottom >
+                <Typography variant="h4" gutterBottom >
                     Mes statistiques
                 </Typography>
             </Grid>
@@ -28,14 +29,17 @@ const StatsHome = () => {
                             alignItems='center'
                         >
                             <Grid item >
-                                <Typography gutterBottom variant = "h2">
+                                <Typography gutterBottom variant = "h2" sx={{display: {color: "#BCAAA4"}}}>
                                     {JSON.stringify(value)}
                                 </Typography>   
                             </Grid>
                             <Grid item >
-                                <Typography gutterBottom variant = "h4">
-                                    {key}
-                                </Typography>
+                                <Button 
+                                    variant="outlined"
+                                    style={{color: "#2FA37C", borderColor:"#2FA37C" }}
+                                >
+                                    {buttonLabels[key]}
+                                </Button>
                             </Grid>
                         </Grid>
                     </Grid>

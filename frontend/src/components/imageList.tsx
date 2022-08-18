@@ -10,7 +10,7 @@ import { FilesService } from "../client";
 
 const ImageList: FC<{}> = () => {
   const [files, setFiles] = useState<any[]>([]);
-  const { projects, updateListFile, setCurrentDeployment, project } =
+  const { projects, updateListFile, setCurrentDeployment, project, currentDeployment } =
     useMainContext();
   let params = useParams();
 
@@ -47,7 +47,7 @@ const ImageList: FC<{}> = () => {
       //   digest.then((res) => {
       //     let result = new Uint8Array(res);
       //     var hash = Uint8ArrayToHexString(result);
-          FilesService.uploadFileFilesUploadPost({ file }).then((res) => {
+          FilesService.uploadFileFilesUploadDeploymentIdPost(currentDeployment, { file }).then((res) => {
             updateListFile();
           });
     //     });
