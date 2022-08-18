@@ -133,12 +133,12 @@ export class DeploymentsService {
      * @returns Deployments Successful Response
      * @throws ApiError
      */
-    public static readProjectDeploymentsDeploymentsProjectIdGet(
+    public static readProjectDeploymentsDeploymentsProjectProjectIdGet(
         projectId: number,
     ): CancelablePromise<Array<Deployments>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/deployments/{project_id}',
+            url: '/deployments/project/{project_id}',
             path: {
                 'project_id': projectId,
             },

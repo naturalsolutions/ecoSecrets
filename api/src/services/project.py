@@ -1,8 +1,13 @@
 # Service projet
 from sqlmodel import Session, select
 
-from src.models.project import ProjectBase, Projects
+from src.models.deployment import DeploymentForProjectSheet
+from src.models.device import Devices
+from src.models.file import Files
+from src.models.project import ProjectBase, Projects, ProjectWithDeployment
+from src.models.site import Sites
 from src.schemas.schemas import StatsProject
+from src.services import deployment
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
@@ -30,7 +35,10 @@ def update_project(db: Session, project: ProjectBase, id: int):
     db_project.name = project.name
     db_project.description = project.description
     db_project.creation_date = project.creation_date
+    db_project.start_date = project.start_date
     db_project.end_date = project.end_date
+    db_project.protocole = project.protocole
+    db_project.targeted_species = project.targeted_species
     db_project.status = project.status
     db_project.owner_id = project.owner_id
     db_project.contact_id = project.contact_id
@@ -44,6 +52,36 @@ def delete_project(db: Session, id: int):
     db.delete(db_project)
     db.commit()
     return db_project
+
+
+def get_informations(db: Session, id: int):
+    project = get_project(db, id)
+    deploy = deployment.get_project_deployments(db=db, id=id)
+    deploys = []
+    media_number = 0
+    if len(deploy) > 0:
+        for d in deploy:
+            site = db.query(Sites.name).filter(Sites.id == d.site_id).first()
+            device = db.query(Devices.name).filter(Devices.id == d.device_id).first()
+            media = db.query(Files).filter(Files.deployment_id == d.id).count()
+            data_deployment = DeploymentForProjectSheet(
+                id=d.id,
+                site_name=site.name,
+                device_name=device.name,
+                name=d.name,
+                start_date=d.start_date,
+                end_date=d.end_date,
+                site_id=d.site_id,
+                device_id=d.device_id,
+            )
+            media_number += media
+            deploys.append(data_deployment)
+    project_data = ProjectWithDeployment(**project.dict())
+    project_data = project_data.dict()
+    project_data["deployments"] = deploys
+    project_data["stats"] = {"media_number": media_number, "annotation_percentage": 50}
+    return project_data
+
 
 def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
     projects_and_deployments_and_images = get_projects(db)
@@ -73,14 +111,14 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         annotation_percentage = 10.4
         stats = StatsProject(
             id=id,
-            name=name, 
-            status=status, 
-            media_number=media_number, 
-            deployment_number=deployment_number, 
-            site_number=site_number, 
-            device_number=device_number, 
-            targeted_species=targeted_species, 
-            annotation_percentage=annotation_percentage
+            name=name,
+            status=status,
+            media_number=media_number,
+            deployment_number=deployment_number,
+            site_number=site_number,
+            device_number=device_number,
+            targeted_species=targeted_species,
+            annotation_percentage=annotation_percentage,
         )
         result.append(stats.dict())
     return result

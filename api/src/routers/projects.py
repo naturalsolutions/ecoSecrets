@@ -9,6 +9,7 @@ from src.dependencies import get_token_header
 from src.models import models
 from src.models.project import (
     ProjectBase,
+    ProjectSheet,
     ProjectWithDeployment,
     ProjectWithDeploymentAndFiles,
     ReadProject,
@@ -29,7 +30,7 @@ def read_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
     return projects
 
 
-@router.get("/{project_id}", response_model=ReadProject)
+@router.get("/{project_id}", response_model=ProjectWithDeployment)
 def read_project(project_id: int, db: Session = Depends(get_db)):
     db_project = project.get_project(db, project_id=project_id)
     if db_project is None:
@@ -76,3 +77,8 @@ def read_projects_with_deployments(
 @router.get("/stats_projects/", response_model=List[StatsProject])
 def get_stats_projects(db: Session = Depends(get_db)):
     return project.get_projects_stats(db)
+
+
+@router.get("/project_informations/{project_id}", response_model=ProjectSheet)
+def get_informations_project(project_id: int, db: Session = Depends(get_db)):
+    return project.get_informations(db=db, id=project_id)

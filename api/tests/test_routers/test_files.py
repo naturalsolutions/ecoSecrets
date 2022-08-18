@@ -13,7 +13,7 @@ def test_upload_files(
     deployment,
     pillow_image,
 ):
-    url = app.url_path_for("upload_files")
+    url = app.url_path_for("upload_files", deployment_id=deployment.id)
 
     response = client.post(
         url, files={"list_files": (FILENAME, pillow_image, "image/jpeg")}
@@ -72,7 +72,7 @@ def test_display_file(client, db, file_object):
 
 
 def test_upload_file(client, deployment, pillow_image, db):
-    url = app.url_path_for("upload_file")
+    url = app.url_path_for("upload_file", deployment_id=deployment.id)
 
     response = client.post(url, files={"file": (FILENAME, pillow_image, "image/jpeg")})
 

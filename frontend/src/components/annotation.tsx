@@ -4,8 +4,7 @@ import { useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import SaveIcon from '@mui/icons-material/Save';
-import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
+import AddIcon from '@mui/icons-material/Add';
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { v4 as uuidv4 } from 'uuid';
 import "../css/annotation.css";
@@ -349,14 +348,14 @@ const Annotation = () => {
             // style={{position: 'fixed'}}
           >
             <Stack direction="row" justifyContent="flex-start" spacing={2}>
-              <Button onClick={() => handleAddObservation()}>
-                <AddCircleOutlineTwoToneIcon/> Nouvelle observation
+              <Button  startIcon={<AddIcon/>} onClick={() => handleAddObservation()} variant="contained" style={{backgroundColor: "#BCAAA4"}}>
+                 Nouvelle observation
               </Button>
             </Stack>
             
             <Stack justifyContent="flex-end">
-              <Button variant="contained" onClick={() => saveandnext()}>
-                <SaveIcon/> Save and Next
+              <Button variant="contained" onClick={() => saveandnext()} style={{backgroundColor: "#2FA37C"}}>
+                Enregistrer et continuer
               </Button>
             </Stack>
           </Stack>

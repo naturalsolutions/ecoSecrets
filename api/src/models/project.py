@@ -3,8 +3,13 @@ from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
-from src.models.deployment import Deployments, DeploymentWithFile
+from src.models.deployment import (
+    DeploymentForProjectSheet,
+    Deployments,
+    DeploymentWithFile,
+)
 from src.models.file import Files
+from src.schemas.schemas import DataProject
 
 if TYPE_CHECKING:  # pragma: no cover
 
@@ -18,6 +23,7 @@ class ProjectBase(SQLModel):
     creation_date: date
     start_date: Optional[date]
     end_date: Optional[date]
+    protocole: Optional[str]
     status: Optional[str]
     targeted_species: Optional[str]
     owner_id: Optional[int] = Field(foreign_key="users.id")
@@ -39,3 +45,8 @@ class ProjectWithDeployment(ReadProject):
 
 class ProjectWithDeploymentAndFiles(ReadProject):
     deployments: Optional[List[DeploymentWithFile]]
+
+
+class ProjectSheet(ReadProject):
+    deployments: List[DeploymentForProjectSheet]
+    stats: DataProject
