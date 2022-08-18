@@ -37,7 +37,8 @@
   }
 }
 
-button.MuiButton-root {
+button.MuiButton-root,
+a.MuiButton-root {
   border-radius: 25px;
 }
 
