@@ -104,6 +104,7 @@ def upload_file(
     new_file: tempfile.SpooledTemporaryFile,
     filename: str,
     ext: str,
+    deployment_id: int,
 ):
 
     try:
@@ -113,21 +114,13 @@ def upload_file(
         raise HTTPException(
             status_code=404, detail="Impossible to save the file in minio"
         )
-    metadata = {
-        "id": str(uuid4()),
-        "hash": hash,
-        "name": filename,
-        "extension": ext,
-        "bucket": "jean-paul-bucket",
-        "date": "2022-01-22",
-    }
     metadata = CreateFiles(
         hash=hash,
         name=filename,
         extension=ext,
         bucket="jean-paul-bucket",
         date=datetime.fromisoformat("2022-01-22"),
-        deployment_id=1,
+        deployment_id=deployment_id,
     )
     try:
         return create_file(db=db, file=metadata)

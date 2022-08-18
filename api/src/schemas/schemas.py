@@ -1,6 +1,9 @@
+from datetime import date
 from email.policy import default
+
 from pydantic import BaseModel
 from sqlmodel import Field
+
 
 class Annotation(BaseModel):
     specie: str
@@ -18,14 +21,19 @@ class Stats(BaseModel):
     device: int
     annotations: int
 
-class StatsProject(BaseModel):
+
+class DataProject(BaseModel):
+    media_number: int
+    annotation_percentage: float
+
+
+class StatsProject(DataProject):
     id: str
     name: str
     status: str = Field(default=None)
-    media_number: int
+    start_date: date = Field(default=None)
+    end_date: date = Field(default=None)
     deployment_number: int
     site_number: int
     device_number: int
     targeted_species: str = Field(default=None)
-    annotation_percentage: float
-

@@ -6,6 +6,7 @@ import { ProjectsService } from "../client/services/ProjectsService";
 import { Stats } from "../client/models/Stats";
 import { HomeService } from "../client/services/HomeService";
 import { StatsProject } from "../client/models/StatsProject";
+import { ProjectSheet } from "../client/models/ProjectSheet";
 
 export interface MainContextProps {
   name?: string;
@@ -25,7 +26,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [files, setFiles] = useState<any[]>([]);
   const [globalStats, setGlobalStats] = useState<Stats>();
   const [projectsStats, setProjectsStats] = useState<StatsProject[]>();
-
+  const [projectSheetData, setProjectSheetData] = useState<ProjectSheet>();
+  
+  
   const updateProjects = () => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
       .then((projects) => {
@@ -61,6 +64,17 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     ProjectsService.getStatsProjectsProjectsStatsProjectsGet()
       .then((projectsStats) => {
         setProjectsStats(projectsStats);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const updateProjectSheetData = () => {
+    currentProject && ProjectsService.getInformationsProjectProjectsProjectInformationsProjectIdGet(currentProject)
+      .then((projectSheetData) => {
+        console.log(projectSheetData)
+        setProjectSheetData(projectSheetData);
       })
       .catch((err) => {
         console.log(err);
@@ -103,6 +117,13 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     })();
   }, [currentDeployment]);
 
+  useEffect(() => {
+    (async () => {
+      console.log(currentProject)
+      updateProjectSheetData();
+    })();
+  }, [currentProject]);
+
   return (
     <MainContext.Provider
       value={{
@@ -117,6 +138,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         updateListFile,
         globalStats,
         projectsStats,
+        projectSheetData,
+        setProjectSheetData,
+        updateProjects,
+        updateGlobalStats,
       }}
     >
       {children}

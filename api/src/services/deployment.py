@@ -1,6 +1,7 @@
-from sqlmodel import Session
+from sqlmodel import Session, SQLModel
 
 from src.models.deployment import DeploymentBase, Deployments
+from src.services.utils import get_object_id, get_objects
 
 
 def get_deployments(db: Session, skip: int = 0, limit: int = 100):
@@ -59,4 +60,4 @@ def delete_deployment(db: Session, id: int):
 
 
 def get_project_deployments(db: Session, id: int):
-    return db.query(Deployments).filter(Deployments.project_id == id)
+    return db.query(Deployments).filter(Deployments.project_id == id).all()

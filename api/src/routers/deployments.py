@@ -55,7 +55,7 @@ def delete_deployment(deployment_id: int, db: Session = Depends(get_db)):
     return deployment.delete_deployment(db=db, id=deployment_id)
 
 
-@router.get("/{project_id}", response_model=List[Deployments])
+@router.get("/project/{project_id}", response_model=List[Deployments])
 def read_project_deployments(project_id: int, db: Session = Depends(get_db)):
     return deployment.get_project_deployments(db=db, id=project_id)
 

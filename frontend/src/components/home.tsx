@@ -7,7 +7,7 @@ const Home = () => {
     return (
         <Stack 
             direction="column"
-            spacing={5}
+            spacing={7}
         >
             <StatsHome/>
             <ProjectList />

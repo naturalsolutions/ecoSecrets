@@ -2,7 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ReadProject = {
+import type { DataProject } from './DataProject';
+import type { DeploymentForProjectSheet } from './DeploymentForProjectSheet';
+
+export type ProjectSheet = {
     name: string;
     description: string;
     creation_date: string;
@@ -14,5 +17,7 @@ export type ReadProject = {
     owner_id?: number;
     contact_id?: number;
     id: number;
+    deployments: Array<DeploymentForProjectSheet>;
+    stats: DataProject;
 };
 
