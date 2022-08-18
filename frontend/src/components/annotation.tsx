@@ -1,15 +1,22 @@
-import { Box, Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, Stack, styled, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, FormControlLabel, Grid, IconButton, MenuItem, Paper, Stack, styled, Switch, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import PhotoIcon from '@mui/icons-material/Photo';
 import AddIcon from '@mui/icons-material/Add';
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { v4 as uuidv4 } from 'uuid';
 import "../css/annotation.css";
 import React from "react";
 import { FilesService } from "../client";
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import FastForwardIcon from '@mui/icons-material/FastForward';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FastRewindIcon from '@mui/icons-material/FastRewind';
+import GridViewIcon from '@mui/icons-material/GridView';
+
+
 
 const LayoutImageContainer = styled("div")({
   flexGrow: 1,
@@ -47,6 +54,33 @@ type AnnotationType = {
   comment: string;
 }
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  valueTab: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, valueTab, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={valueTab !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {valueTab === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+
 const Annotation = () => {
   const {
     projects,
@@ -58,6 +92,7 @@ const Annotation = () => {
   } = useMainContext();
   let params = useParams();
 
+  const [value, setValue] = React.useState(0);
   const image = (): any | null => {
     return files.find((f) => f.id === currentImage);
   };
@@ -168,7 +203,13 @@ const Annotation = () => {
     setObservations(tmp_obs);
   }
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  
   return (
+    
     <LayoutImageContainer>
       <LayoutImageImage>{
         image() ? (
@@ -186,24 +227,48 @@ const Annotation = () => {
               }}
             />
             <div className="groupNumber">
-              <IconButton  
-                onClick={() => previous()} 
-                style={{
-                  color: "black"
-                }}
+              <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-around"
+                  alignItems="center"
+                  spacing={5}
               >
-                <ArrowBackIosIcon/>
-              </IconButton>
-              <span className="numero">{imageIndex()}</span>
-              <span className="numero">{files.length}</span>
-              <IconButton  
-                onClick={() => next()}
-                style={{
-                  color: "black"
-                }}
-              >
-                <ArrowForwardIosIcon/>
-              </IconButton>
+                <Grid item>
+                  <IconButton>
+                    <PhotoIcon/>
+                  </IconButton>
+                  <Switch />
+                  <IconButton>
+                    <GridViewIcon fontSize='large'/>
+                  </IconButton>
+                </Grid>
+                
+                <Grid item>
+                  <IconButton>
+                    <FastRewindIcon fontSize='large'/>
+                  </IconButton>
+                  <IconButton  onClick={() => previous()} >
+                    <SkipPreviousIcon fontSize='large'/>
+                  </IconButton>
+                  <IconButton>
+                    <Typography variant="h6" style={{backgroundColor: "#f5f5f5"}}>{imageIndex() + ' | ' + files.length}</Typography>
+                  </IconButton>
+                  <IconButton  onClick={() => next()}>
+                    < SkipNextIcon fontSize='large'/>
+                  </IconButton>
+                  <IconButton >
+                    <FastForwardIcon fontSize='large'/>
+                  </IconButton>
+                </Grid >
+
+                <Grid item>
+                  <IconButton >
+                    <FullscreenIcon fontSize='large'/>
+                  </IconButton>
+                </Grid>
+                
+                </Grid>
             </div>
           </Box>
         ) : (
@@ -212,135 +277,153 @@ const Annotation = () => {
           </>
         )}
       </LayoutImageImage>
+      
       <LayoutImageForm>
+      <Paper elevation={1}>
         <Stack spacing={2}>
           <Typography variant="h3">Annotation</Typography>
-          <FormControlLabel control={
-            <Checkbox 
-              checked={checked}
-              onChange={handleCheckChange}
-            />} 
-            label="Média vide" 
-          />
-          {
-            observations.map((observation) => (
-              <form key={observation.id}>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="flex-start"
-                  spacing={2}
-                >
-                  <Typography variant="h6">{`Observation ${observation.id}`}</Typography>
-                  <IconButton onClick = {() => handleDeleteObservation(observation.id)} >
-                    <ClearTwoToneIcon/>
-                  </IconButton>
-                </Stack>
+          <Tabs value={value} aria-label="basic tabs example" variant='fullWidth'>
+            <Tab label="Observation(s)" />
+            <Tab label="Métadonnées" />
+          </Tabs>
+              <TabPanel valueTab={value} index={0}>
 
-                <Grid container spacing={1}>
-                  <Grid item lg={6}>
-                    <TextField
-                      name="species"
-                      label="Espèce"
-                      size="small"
-                      fullWidth
-                      value={observation.specie}
-                      onChange={(e) => handleFormChange(observation.id, "specie", e)}
-                    />
-                  </Grid>
-                  <Grid item lg={6}>
-                    <TextField
-                      name="number"
-                      label="Nombre d'individus"
-                      size="small"
-                      inputProps={{ type: 'number' }}
-                      value={observation.number}
-                      onChange={(e) => handleFormChange(observation.id, "number", e)}
-                    />
-                  </Grid>
-                  <Grid item lg={6}>
-                    <TextField
-                      id="sex"
-                      select
-                      label="Sexe"
-                      value={observation.sex}
-                      onChange={(e) => handleFormChange(observation.id, "sex", e)}
-                      size="small"
-                      fullWidth
-                    >
-                      {sexList.map((item) => (
-                        <MenuItem key={item} value={item}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item lg={6}>
-                    <TextField
-                      id="behaviour"
-                      select
-                      label="Comportement"
-                      size="small"
-                      value={observation.behaviour}
-                      onChange = {(e) => handleFormChange(observation.id, "behaviour",e)}
-                      fullWidth
-                    >
-                      {behaviourList.map((item) => (
-                        <MenuItem key={item} value={item}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item lg={6}>
-                    <TextField
-                      id="lifeStage"
-                      select
-                      label="Stade de vie"
-                      size="small"
-                      value={observation.life_stage}
-                      onChange={(e) => handleFormChange(observation.id, "life_stage", e)}
-                      fullWidth
-                    >
-                      {lifeStageList.map((item) => (
-                        <MenuItem key={item} value={item}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item lg={6}>
-                    <TextField
-                      id="biologicalState"
-                      select
-                      label="Etat biologique"
-                      size="small"
-                      value={observation.biological_state}
-                      onChange={(e) => handleFormChange(observation.id, "biological_state", e)}
-                      fullWidth
-                    >
-                      {biologicalStateList.map((item) => (
-                        <MenuItem key={item} value={item}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item lg={12}>
-                    <TextField
-                      id="comment"
-                      name="comment"
-                      label="Commentaire"
-                      size="small"
-                      value={observation.comment}
-                      onChange={(e) => handleFormChange(observation.id, "comment", e)}
-                      fullWidth
+           
+            <FormControlLabel control={
+              <Switch defaultChecked onChange={handleCheckChange}/>
+            } 
+              label="Média vide" 
+            />
+            <Divider/>
+
+              {observations.map((observation) => (
+
+                <form key={observation.id}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                    spacing={2}
+                  >
+                    <Typography variant="h6">{`Observation ${observation.id}`}</Typography>
+                    <IconButton onClick = {() => handleDeleteObservation(observation.id)} >
+                      <ClearTwoToneIcon/>
+                    </IconButton>
+                  </Stack>
+
+                  <Grid container spacing={1}>
+                    <Grid item lg={6}>
+                      <TextField
+                        name="species"
+                        label="Espèce"
+                        size="small"
+                        variant='filled'
+                        fullWidth
+                        value={observation.specie}
+                        onChange={(e) => handleFormChange(observation.id, "specie", e)}
                       />
-                  </Grid>
-                  </Grid>
-                </form>
-            ))
-          }
+                    </Grid>
+                    <Grid item lg={6}>
+                      <TextField
+                        name="number"
+                        label="Nombre d'individus"
+                        size="small"
+                        variant='filled'
+                        inputProps={{ type: 'number' }}
+                        value={observation.number}
+                        onChange={(e) => handleFormChange(observation.id, "number", e)}
+                      />
+                    </Grid>
+                    <Grid item lg={6}>
+                      <TextField
+                        id="sex"
+                        select
+                        label="Sexe"
+                        variant='filled'
+                        value={observation.sex}
+                        onChange={(e) => handleFormChange(observation.id, "sex", e)}
+                        size="small"
+                        fullWidth
+                      >
+                        {sexList.map((item) => (
+                          <MenuItem key={item} value={item}>
+                            {item}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item lg={6}>
+                      <TextField
+                        id="behaviour"
+                        select
+                        label="Comportement"
+                        size="small"
+                        variant='filled'
+                        value={observation.behaviour}
+                        onChange = {(e) => handleFormChange(observation.id, "behaviour",e)}
+                        fullWidth
+                      >
+                        {behaviourList.map((item) => (
+                          <MenuItem key={item} value={item}>
+                            {item}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item lg={6}>
+                      <TextField
+                        id="lifeStage"
+                        select
+                        label="Stade de vie"
+                        size="small"
+                        variant='filled'
+                        value={observation.life_stage}
+                        onChange={(e) => handleFormChange(observation.id, "life_stage", e)}
+                        fullWidth
+                      >
+                        {lifeStageList.map((item) => (
+                          <MenuItem key={item} value={item}>
+                            {item}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item lg={6}>
+                      <TextField
+                        id="biologicalState"
+                        select
+                        label="Etat biologique"
+                        size="small"
+                        variant='filled'
+                        value={observation.biological_state}
+                        onChange={(e) => handleFormChange(observation.id, "biological_state", e)}
+                        fullWidth
+                      >
+                        {biologicalStateList.map((item) => (
+                          <MenuItem key={item} value={item}>
+                            {item}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item lg={12}>
+                      <TextField
+                        id="comment"
+                        name="comment"
+                        label="Commentaire"
+                        size="small"
+                        variant='filled'
+                        value={observation.comment}
+                        onChange={(e) => handleFormChange(observation.id, "comment", e)}
+                        fullWidth
+                        />
+                    </Grid>
+                    </Grid>
+                  </form>
+                  )) } 
+             </TabPanel>
+             <Divider/>
+          
           <Stack 
             direction="row" 
             justifyContent="space-between" 
@@ -360,8 +443,9 @@ const Annotation = () => {
             </Stack>
           </Stack>
         </Stack>
-            
+        </Paper>
       </LayoutImageForm>
+    
     </LayoutImageContainer>
   );
 };

@@ -4,9 +4,10 @@ import "../css/first.css";
 
 import ImageMasonry from "./masonry";
 import Dropzone from "react-dropzone";
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const ImageList: FC<{}> = () => {
   const [files, setFiles] = useState<any[]>([]);
@@ -84,7 +85,15 @@ const ImageList: FC<{}> = () => {
               <section id="dropzone">
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
-                  {dropZoneDisplayText()}
+                  <Grid container direction="column" alignItems='center'>
+                    <Grid item>
+                      <CameraAltIcon fontSize="large"/>
+                    </Grid>
+                    <Grid item>
+                      { dropZoneDisplayText()}
+                    </Grid>
+                  </Grid>
+                  
                 </div>
               </section>
             )}
