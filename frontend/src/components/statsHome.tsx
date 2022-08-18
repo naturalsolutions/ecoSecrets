@@ -1,10 +1,22 @@
 import { Button, Grid,  Typography } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
+import CollectionsIcon from '@mui/icons-material/Collections';
+import NotesIcon from '@mui/icons-material/Notes';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+
+
 
 
 const StatsHome = () => {
     const {globalStats} = useMainContext();
-    const buttonLabels = {"medias": "Nombre de médias", "annotations": "Nombre d'annotations", "device":"Nombre de dispositifs", "sites": "Nombre de sites"};
+    const graphicStats = {
+        "medias": {'buttonLabel':"Nombre de médias", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
+        "annotations": {'buttonLabel': "Nombre d'annotations", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
+        "device":{'buttonLabel':"Nombre de dispositifs", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
+        "sites": {'buttonLabel':"Nombre de sites", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
+    };
+    
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -25,20 +37,28 @@ const StatsHome = () => {
                         <Grid 
                             container 
                             direction ='column' 
-                            justifyContent='center' 
+                            justifyContent='space-evenly' 
                             alignItems='center'
+                            
                         >
+                            <Grid container direction ='row' justifyContent='center' 
+                            alignItems='baseline' spacing={2}>
+
                             <Grid item >
-                                <Typography gutterBottom variant = "h2" sx={{display: {color: "#BCAAA4"}}}>
+                                {graphicStats[key].icon}
+                            </Grid>
+                            <Grid item >
+                                <Typography variant = "h2" sx={{display: {color: "#BCAAA4"}}}>
                                     {JSON.stringify(value)}
-                                </Typography>   
+                                </Typography>
+                            </Grid>
                             </Grid>
                             <Grid item >
                                 <Button 
                                     variant="outlined"
                                     style={{color: "#2FA37C", borderColor:"#2FA37C" }}
                                 >
-                                    {buttonLabels[key]}
+                                    {graphicStats[key].buttonLabel}
                                 </Button>
                             </Grid>
                         </Grid>

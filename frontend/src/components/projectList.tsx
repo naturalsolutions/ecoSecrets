@@ -1,4 +1,4 @@
-import { Card, CardMedia, CardContent, CardHeader, Grid, Typography, Avatar, Stack, Button, TextField, MenuItem, Divider, Dialog,  DialogActions, DialogContent, DialogTitle, IconButton, Collapse, Alert, AlertTitle } from "@mui/material";
+import { Card, CardMedia, CardContent, CardHeader, Grid, Typography, Avatar, Stack, Button, TextField, MenuItem, Divider, Dialog,  DialogActions, DialogContent, DialogTitle, IconButton, Collapse, Alert, AlertTitle, Box, ListItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -19,6 +19,10 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useState } from "react";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { ProjectBase, ProjectsService } from "../client";
+import SearchIcon from '@mui/icons-material/Search';
+import CollectionsIcon from '@mui/icons-material/Collections';
+import AddIcon from '@mui/icons-material/Add';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const testStatus = (status) => {
   if (status === 'Terminé') {
@@ -106,25 +110,83 @@ const ProjectList = () => {
 
   return (
     <Grid container >
-      <Stack
-        direction='row'
-        alignItems='center'
-        justifyContent='space-between'
-        spacing={5}
+       <Box
+        component="form"
+        
+        sx={{
+          width:2000,
+          '& .MuiTextField-root': { m: 1},
+        }}
+        noValidate
+        autoComplete="off"
       >
-        <Typography variant="h4" gutterBottom component="div">
-          Mes projets
-        </Typography>
-        <Button 
-          variant="contained" 
-          startIcon={<AddCircleIcon />} 
-          style={{backgroundColor: "#BCAAA4"}}
-          onClick={handleClickOpen}
-        >
-          Nouveau projet
-        </Button>
-      </Stack>
-      
+        <div>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent='space-between'
+            spacing={5}
+          >
+            <Typography variant="h4" gutterBottom component="div">
+              Mes projets
+            </Typography>
+            <Button 
+              variant="contained" 
+              startIcon={<AddCircleIcon />} 
+              style={{backgroundColor: "#BCAAA4"}}
+              onClick={handleClickOpen}
+            >
+              Nouveau projet
+            </Button>
+          </Stack>
+        </div>
+   
+        <div className="filter">
+          <TextField
+            fullWidth
+            select
+            id="outlined-required"
+            label="Projet"
+            defaultValue="Rechercher"
+            variant="outlined" 
+            type="search"
+          />
+        
+        <TextField
+            select
+            fullWidth
+            id="outlined-required"
+            label="Espèce cible"
+            defaultValue="Rechercher"
+            variant="outlined" 
+            type="search"
+          />
+          <TextField
+            select
+            fullWidth
+            id="outlined-required"
+            label="Année de début"
+            defaultValue="Rechercher"
+            variant="outlined" 
+            type="search"
+          />
+          <TextField
+            select
+            fullWidth
+            id="outlined-required"
+            label="Statut"
+            defaultValue="Rechercher"
+            variant="outlined" 
+            type="search"
+          />
+          <IconButton
+          >
+                <SearchIcon/>
+          </IconButton>
+        </div>
+      </Box>
+
+
     <Grid 
       container 
       direction="row"
@@ -133,25 +195,18 @@ const ProjectList = () => {
       {projectsStats && projectsStats.map((s) => (
         <Grid 
           item 
-          xs={12} 
-          sm={6} 
-          md={3} 
-          lg={3} 
+          xs={12} sm={6} md={3} lg={3} 
           key={projectsStats.indexOf(s)}
         >
-
           <Card>
             <CardHeader
-            
               avatar = {testStatus(s.status)}
-              
-                title={
-                  <Link to={`/projectsheet/${s.id}`} style={{ textDecoration: 'none', color: 'black', fontSize: '23px' }}>
-                    {s.name}
-                  </Link>
-                }
-            
-              subheader={(s.media_number === 0 ? "Pas de médias" : s.media_number + ' médias')}
+              title={
+                <Link to={`/projectsheet/${s.id}`} style={{ textDecoration: 'none', color: 'black', fontSize: '23px' }}>
+                  {s.name}
+                </Link>
+              }
+              subheader={( (s.start_date === null || s.end_date === null )? "Pas de période renseignée" : s.start_date + ' / ' + s.end_date )}
             />
             <CardMedia
               component="img"
@@ -159,29 +214,60 @@ const ProjectList = () => {
               image="https://cdn.pixabay.com/photo/2022/06/25/23/41/ladybug-7284337_960_720.jpg"
             />
             <CardContent>
-              <Typography variant="body1" gutterBottom>
-                <NaturePeopleIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                {(s.deployment_number === 0 ? "Aucun déploiement" : 'Déploiements : ' + s.deployment_number )}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <LocationOnIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                {(s.site_number === 0 ? "Aucun site" : 'Sites : ' + s.site_number )}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <PhotoCameraIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                {(s.device_number === 0 ? "Aucun dispositif" : (s.device_number === 1 ? 'Dispositif : ' + s.device_number : 'Dispositifs : '+ s.device_number ))}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <EmojiNatureIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                {(s.targeted_species === '' ? "Etude de communauté" : 'Espèce cible : '+ s.targeted_species )}
-              </Typography>
-              <Typography variant="body1" gutterBottom >
-                < NotesIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                {("Annotation : " + s.annotation_percentage + "%")}
-              </Typography>
+
+            <ListItem secondaryAction={
+                    <IconButton edge="end" aria-label="add">
+                      <AddIcon/>
+                    </IconButton>
+                  }>
+                <Typography variant="body1" gutterBottom>
+                  <CollectionsIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                  {(s.media_number === 0 ? "Pas de médias" : 'Médias : ' + s.media_number )}
+                </Typography>
+              </ListItem>
+
+              <ListItem>
+                <Typography variant="body1" gutterBottom>
+                  <NaturePeopleIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                  {(s.deployment_number === 0 ? "Aucun déploiement" : 'Déploiements : ' + s.deployment_number )}
+                </Typography>
+              </ListItem>
+              
+              <ListItem>
+                <Typography variant="body1" gutterBottom>
+                  <LocationOnIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                  {(s.site_number === 0 ? "Aucun site" : 'Sites : ' + s.site_number )}
+                </Typography>
+              </ListItem>
+              
+              <ListItem>
+                <Typography variant="body1" gutterBottom>
+                  <PhotoCameraIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                  {(s.device_number === 0 ? "Aucun dispositif" : (s.device_number === 1 ? 'Dispositif : ' + s.device_number : 'Dispositifs : '+ s.device_number ))}
+                </Typography>
+              </ListItem>
+              
+              <ListItem>
+                <Typography variant="body1" gutterBottom>
+                  <EmojiNatureIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                  {(s.targeted_species === '' ? "Etude de communauté" : 'Espèce cible : '+ s.targeted_species )}
+                </Typography>
+              </ListItem>
+              
+              <ListItem secondaryAction={
+                    <IconButton edge="end" aria-label="add">
+                      <ArrowForwardIcon/>
+                    </IconButton>
+                  }>
+                <Typography variant="body1" gutterBottom >
+                  < NotesIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
+                  {("Annotation : " + s.annotation_percentage + "%")}
+                </Typography>
+              </ListItem>
+              
             
             </CardContent>
-            <Stack direction='row' justifyContent='center'>
+            {/* <Stack direction='row' justifyContent='center'>
 
               <Button 
                 variant="outlined" 
@@ -193,7 +279,7 @@ const ProjectList = () => {
                 <CloudDownloadIcon style={{verticalAlign:"baseline", minWidth: '40px'}}/>
                 <Typography variant="overline">Import médias</Typography>
               </Button>
-            </Stack>
+            </Stack> */}
           </Card>
         </Grid>
       ))}

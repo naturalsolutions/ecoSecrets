@@ -1,3 +1,4 @@
+from datetime import date
 from email.policy import default
 
 from pydantic import BaseModel
@@ -30,6 +31,8 @@ class StatsProject(DataProject):
     id: str
     name: str
     status: str = Field(default=None)
+    start_date: date = Field(default=None)
+    end_date: date = Field(default=None)
     deployment_number: int
     site_number: int
     device_number: int

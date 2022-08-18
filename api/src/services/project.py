@@ -90,6 +90,8 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
     for project in projects_and_deployments_and_images:
         id = project.id
         name = project.name
+        start_date = project.start_date
+        end_date = project.end_date
         status = project.status
         targeted_species = project.targeted_species
         deployment_number = len(project.deployments)
@@ -112,6 +114,8 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         stats = StatsProject(
             id=id,
             name=name,
+            start_date=start_date,
+            end_date=end_date,
             status=status,
             media_number=media_number,
             deployment_number=deployment_number,

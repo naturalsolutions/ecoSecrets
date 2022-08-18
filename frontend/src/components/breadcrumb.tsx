@@ -28,6 +28,7 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 const StyledActiveBreadcrumb = styled(Chip)(({ theme }) => {
   return {
     backgroundColor: "#ffffff",
+    color: '#2fa37c',
     height: theme.spacing(3),
     variant: "outlined",
   };
