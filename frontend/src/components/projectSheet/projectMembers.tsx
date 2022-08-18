@@ -1,4 +1,4 @@
-import { Stack, Typography, Button } from "@mui/material";
+import { Stack, Typography, Button, Autocomplete } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const ProjectMembers = () => {
@@ -19,12 +19,27 @@ const ProjectMembers = () => {
                     Ajouter un groupe
                 </Button>
             </Stack>
-            <Typography variant="h6" color="#000000" component="div">
+            {/* <Autocomplete
+                multiple
+                id="tags-outlined"
+                options='hihi'
+                getOptionLabel={(option) => option.title}
+                // defaultValue={[top100Films[13]]}
+                filterSelectedOptions
+                renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="filterSelectedOptions"
+                    placeholder="Favorites"
+                />
+                )}
+            /> */}
+            {/* <Typography variant="h6" color="#000000" component="div">
                 Group1
             </Typography>
             <Typography variant="h6" color="#000000" component="div">
                 Group2
-            </Typography>
+            </Typography> */}
         </Stack>
     );
 };

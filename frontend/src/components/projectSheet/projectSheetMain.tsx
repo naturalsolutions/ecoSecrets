@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Stack, Typography, Button, Dialog, DialogTitle, Divider, DialogContent, DialogActions} from "@mui/material";
+import { Stack, Typography, Button, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle} from "@mui/material";
 import ProjectDeployments from './projectDeployments';
 import ProjectForm from './projectForm';
 import ProjectMembers from './projectMembers';
@@ -32,20 +32,16 @@ const ProjectSheet = () => {
         projectSheetData ?
         <Stack 
             direction="column"
-            spacing={3}
+            spacing={5}
         >
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static" color='transparent'>
                     <Toolbar variant="dense">
-                    <Grid
-                        container
-                    >
+                    <Grid container>
                         <Typography variant="h6" component="div" sx={{ mr: 1 }}>
                             {projectSheetData.name}
                         </Typography>
-                        
                     </Grid>
-                    
                         <IconButton aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
                             <AddCircleIcon />
                         </IconButton>
@@ -55,16 +51,33 @@ const ProjectSheet = () => {
                         <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
                             <CloudUploadIcon />
                         </IconButton>
- 
                     </Toolbar>
                 </AppBar>
             </Box>
 
             <ProjectInformations/>
-            
             <ProjectMembers/>
-            <ProjectDeployments/>
-
+            <Stack spacing={3}>
+                <Stack
+                        direction='row'
+                        justifyContent='space-between'
+                        spacing={5}
+                    >
+                        <Typography variant="h4" color="#000000" component="div">
+                            Déploiements ({projectSheetData.deployments.length})
+                        </Typography>
+                        <Button 
+                            variant="contained" 
+                            startIcon={<AddCircleIcon />} 
+                            style={{backgroundColor: "#BCAAA4"}}
+                            component={Link}
+                            to={`/deployment/new`}
+                        >
+                            Ajouter un déploiement
+                        </Button>
+                    </Stack>
+                    <ProjectDeployments/>
+            </Stack>
             <Stack 
                 spacing={2}
                 justifyContent="center"
@@ -82,12 +95,17 @@ const ProjectSheet = () => {
                 </Grid>
                 
             </Stack>
-
-            < ProjectForm/>
-
-            <div></div>
-                
-        </Stack> : <div>test</div>
+            <Stack>
+                <Typography variant="h4" color="#000000" component="div">
+                    Fiche projet
+                </Typography>
+                < ProjectForm/>
+            </Stack>
+        </Stack> : 
+            <Alert severity="error" >
+                <AlertTitle>Erreur</AlertTitle>
+                    Ce projet n'existe pas !
+            </Alert>
     );
 };
 export default ProjectSheet;
