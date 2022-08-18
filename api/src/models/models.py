@@ -14,15 +14,6 @@ class Users(SQLModel, table=True):
     role_id: Optional[int] = Field(foreign_key="roles.id")
 
 
-# class Item(SQLModel, table=True):
-#     # __tablename__ = "items"
-
-#     id : int  = Field(primary_key=True, index=True)
-#     title : str = Field( index=True)
-#     description : str = Field( index=True)
-#     owner_id : int = Field(foreign_key = "users.id")
-
-
 class Sequences(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
     deployment_id: int = Field(foreign_key="deployments.id")

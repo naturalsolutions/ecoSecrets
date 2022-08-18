@@ -1,7 +1,8 @@
+import json
+
 from fastapi import status
 
 from src.main import app
-from src.services import dependencies
 from src.services.files import get_file, get_files, upload_file
 
 FILENAME = "test.jpg"
@@ -70,7 +71,7 @@ def test_display_file(client, db, file_object):
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_upload_file(client, pillow_image, db):
+def test_upload_file(client, deployment, pillow_image, db):
     url = app.url_path_for("upload_file")
 
     response = client.post(url, files={"file": (FILENAME, pillow_image, "image/jpeg")})
@@ -78,6 +79,9 @@ def test_upload_file(client, pillow_image, db):
     assert response.status_code == status.HTTP_200_OK
 
     content = response.json()
-    list_files = get_files(db=db)
+    # f.json() dumps json in a string format but we want it in a
+    # dict format so json.loads. f.dict() returns a dict but keeps
+    # some values as objects such as datetime or uuid...
+    list_files = [json.loads(f.json()) for f in get_files(db=db)]
 
     assert content in list_files
