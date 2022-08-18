@@ -42,7 +42,7 @@ const DevicesTable = () => {
                             <StyledTableCell align="center">{row.img}</StyledTableCell>
                         </StyledTableRow>
                     )) :  <StyledTableRow key='empty'>
-                            <StyledTableCell align="center">Ce projet n'a pas de déploiements</StyledTableCell>
+                            <StyledTableCell align="center">Pas des dispositifs enregistrés</StyledTableCell>
                             </StyledTableRow>}
                 </TableBody>
             </Table>
