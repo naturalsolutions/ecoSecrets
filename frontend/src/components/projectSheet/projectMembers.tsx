@@ -1,7 +1,16 @@
-import { Stack, Typography, Button, Autocomplete } from "@mui/material";
+import { Stack, Typography, Button, Autocomplete, TextField } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const ProjectMembers = () => {
+    const users = [
+        {'id': 1, "name": "Jean Michel"},
+        {'id': 2, "name": "Aurélie Jambon"},
+        {'id': 3, "name": "Adrien Pajot"},
+        {'id': 4, "name": "Ophélie Da Silva"},
+        {'id': 5, "name": "Julien Graziani"},
+        {'id': 6, "name": "Naomie Fischer"},
+    ]
+
     return (
         <Stack 
             spacing={2}
@@ -19,27 +28,38 @@ const ProjectMembers = () => {
                     Ajouter un groupe
                 </Button>
             </Stack>
-            {/* <Autocomplete
+            <Autocomplete
                 multiple
                 id="tags-outlined"
-                options='hihi'
-                getOptionLabel={(option) => option.title}
+                options={users}
+                getOptionLabel={(option) => option.name}
                 // defaultValue={[top100Films[13]]}
                 filterSelectedOptions
                 renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="filterSelectedOptions"
-                    placeholder="Favorites"
+                    label="Administrateurs"
+                    placeholder="Ajouter un membre"
                 />
+                
                 )}
-            /> */}
-            {/* <Typography variant="h6" color="#000000" component="div">
-                Group1
-            </Typography>
-            <Typography variant="h6" color="#000000" component="div">
-                Group2
-            </Typography> */}
+            />
+            <Autocomplete
+                multiple
+                id="tags-outlined"
+                options={users}
+                getOptionLabel={(option) => option.name}
+                // defaultValue={[top100Films[13]]}
+                filterSelectedOptions
+                renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Annotateurs"
+                    placeholder="Ajouter un membre"
+                />
+                
+                )}
+            />
         </Stack>
     );
 };
