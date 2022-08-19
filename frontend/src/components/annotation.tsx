@@ -282,7 +282,7 @@ const Annotation = () => {
       </LayoutImageImage>
       
       <LayoutImageForm className="annotations">
-      <Paper elevation={1}>
+      <Paper elevation={1} className='paperAnnotations'>
         <Stack spacing={2} className='stackAnnotations'>
           <Typography variant="h3">Annotation</Typography>
           <Tabs value={value} aria-label="basic tabs example" variant='fullWidth'>
@@ -434,13 +434,13 @@ const Annotation = () => {
             // style={{position: 'fixed'}}
           >
             <Stack direction="row" justifyContent="flex-start" spacing={2}>
-              <Button  startIcon={<AddIcon/>} onClick={() => handleAddObservation()} variant="contained" style={{backgroundColor: "#BCAAA4"}}>
+              <Button  startIcon={<AddIcon/>} onClick={() => handleAddObservation()} variant="contained"color='secondary'>
                  Nouvelle observation
               </Button>
             </Stack>
             
             <Stack justifyContent="flex-end">
-              <Button variant="contained" onClick={() => saveandnext()} style={{backgroundColor: "#2FA37C"}}>
+              <Button variant="contained" onClick={() => saveandnext()} >
                 Enregistrer et continuer
               </Button>
             </Stack>

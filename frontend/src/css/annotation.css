@@ -34,7 +34,7 @@
   overflow: hidden !important;
 }
 
-.MuiPaper-root,
+.paperAnnotations,
 .stackAnnotations {
   height: 100%;
 }
@@ -42,4 +42,8 @@
 div[id^="simple-tabpanel"] {
   flex: 2;
   overflow: auto;
+}
+
+.stackAnnotations div[class^="MuiStack"] {
+  padding: 10px;
 }

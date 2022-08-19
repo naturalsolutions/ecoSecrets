@@ -21,7 +21,7 @@ export const MainLayout = ({
   }}>
   <Box sx={{ flexGrow: 1 }}>
     {Header}
-    <Grid container sx={{ py: 2, height: "90vh" }} spacing={2}>
+    <Grid container sx={{ height: "90vh" }} spacing={2}>
       <Grid item sx={{ height: "100%" }} xs={12} md={1} lg={1}>{Side}</Grid>
       <Grid item sx={{ height: "100%" }} xs={12} md={11} lg={11}>
         {Navigation}
