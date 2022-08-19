@@ -24,7 +24,7 @@ const ProjectMembers = () => {
                 <Typography variant="h4" color="#000000" component="div">
                     Membres
                 </Typography>
-                <Button variant="contained" startIcon={<AddCircleIcon />} style={{backgroundColor: "#BCAAA4"}}>
+                <Button variant="contained" startIcon={<AddCircleIcon />} color='secondary'>
                     Ajouter un groupe
                 </Button>
             </Stack>

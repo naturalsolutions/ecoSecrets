@@ -106,8 +106,8 @@ const ProjectDeployments = () => {
                     </DialogContent>
                     <Divider />
                     <DialogActions>
-                      <Button style={{color: "#2FA37C"}}>Oui</Button>
-                      <Button onClick={handleClose} style={{color: "#BCAAA4"}}>Non</Button>
+                      <Button >Oui</Button>
+                      <Button onClick={handleClose} color='secondary'>Non</Button>
                     </DialogActions>
                 </Dialog>
         </Stack> : 

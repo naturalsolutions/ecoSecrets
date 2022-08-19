@@ -133,7 +133,7 @@ const ProjectList = () => {
             <Button 
               variant="contained" 
               startIcon={<AddCircleIcon />} 
-              style={{backgroundColor: "#BCAAA4"}}
+              color='secondary'
               onClick={handleClickOpen}
             >
               Nouveau projet

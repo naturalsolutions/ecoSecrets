@@ -49,7 +49,7 @@ const StatsHome = () => {
                                 {graphicStats[key].icon}
                             </Grid>
                             <Grid item >
-                                <Typography variant = "h2" sx={{display: {color: "#BCAAA4"}}}>
+                                <Typography color= 'secondary' variant = "h2" >
                                     {JSON.stringify(value)}
                                 </Typography>
                             </Grid>
@@ -57,7 +57,6 @@ const StatsHome = () => {
                             <Grid item >
                                 <Button 
                                     variant="outlined"
-                                    style={{color: "#2FA37C", borderColor:"#2FA37C" }}
                                     component={Link}
                                     to={graphicStats[key].url}
                                 >

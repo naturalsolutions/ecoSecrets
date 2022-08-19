@@ -69,7 +69,7 @@ const ProjectSheet = () => {
                         <Button 
                             variant="contained" 
                             startIcon={<AddCircleIcon />} 
-                            style={{backgroundColor: "#BCAAA4"}}
+                            color='secondary'
                             component={Link}
                             to={`/deployment/new`}
                         >

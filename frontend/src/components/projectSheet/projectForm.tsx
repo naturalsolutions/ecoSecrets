@@ -222,10 +222,10 @@ const ProjectForm = () => {
                     spacing={3}
                     justifyContent='flex-end'
                 >
-                    <Button disabled={modified} onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
+                    <Button disabled={modified} onClick={handleChange}  variant="contained" color='primary'>
                         Modifier
                     </Button>
-                    <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
+                    <Button disabled={!modified} onClick={dialog} variant="contained" color='secondary'>
                         Enregistrer
                     </Button>
 
@@ -243,8 +243,8 @@ const ProjectForm = () => {
                         </DialogContent>
                         <Divider />
                         <DialogActions>
-                        <Button onClick={save} style={{color: "#2FA37C"}}>Oui</Button>
-                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>Non</Button>
+                        <Button onClick={save} >Oui</Button>
+                        <Button onClick={handleClose} color='secondary'>Non</Button>
                         </DialogActions>
                     </Dialog>
                 </Stack>

@@ -1,4 +1,4 @@
-import { Stack, Typography, Button } from "@mui/material";
+import { Stack, Typography, Button, CircularProgress } from "@mui/material";
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import RotateRightIcon from '@mui/icons-material/RotateRight';
 import { useMainContext } from "../../contexts/mainContext";
@@ -14,11 +14,11 @@ const ProjectInformations = () => {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <Typography gutterBottom variant="h3" component="div" sx={{display: {color: "#BCAAA4"}}}>
+                    <Typography color='secondary' gutterBottom variant="h3" component="div" >
                         <PhotoLibraryIcon sx={{display: {color: "#BCAAA4"}}} style={{verticalAlign:"middle", minWidth: '40px'}}/>
                         {projectSheetData.stats.media_number}
                     </Typography>
-                    <Button variant="outlined" style={{color: "#2FA37C", borderColor:"#2FA37C"}}>
+                    <Button variant="outlined" >
                         Voir les médias
                     </Button>
                 </Stack>
@@ -26,12 +26,12 @@ const ProjectInformations = () => {
                 <Stack
                     alignItems="center"
                     justifyContent="center"
+                    spacing={3}
                 >
-                    <Typography gutterBottom variant="h3" component="div" sx={{display: {color: "#BCAAA4"}}}>
-                        <RotateRightIcon sx={{display: {color: "#BCAAA4"}}} style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                        {projectSheetData.stats.annotation_percentage}
-                    </Typography>
-                    <Button variant="outlined" style={{color: "#2FA37C", borderColor:"#2FA37C" }}>
+                   
+                        <CircularProgress color='secondary' variant="determinate" value={projectSheetData.stats.annotation_percentage} />
+                      
+                    <Button variant="outlined" >
                         Continuer l'annotation
                     </Button>
                 </Stack>
