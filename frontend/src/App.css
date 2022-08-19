@@ -65,7 +65,10 @@ a.MuiButton-root {
   color: #2fa37c;
 }
 
-/*datePicker*/
+/* datePicker
 .MuiTextField-root {
+  display: flex !important;
+} */
+.datePicker .MuiTextField-root {
   display: flex !important;
 }

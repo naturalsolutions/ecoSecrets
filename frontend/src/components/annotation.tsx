@@ -210,10 +210,11 @@ const Annotation = () => {
   
   return (
     
-    <LayoutImageContainer>
+    <LayoutImageContainer className="page">
       <LayoutImageImage>{
         image() ? (
-          <Box sx={{ height: 300}}>
+          <Grid container className="pageContainer">
+          <Box sx={{ height: 300}} className="boxImage">
             <img
               src={`${image().url}`}
               alt={image().name}
@@ -222,55 +223,57 @@ const Annotation = () => {
                 borderBottomLeftRadius: 4,
                 borderBottomRightRadius: 4,
                 display: "block",
-                height: "200%",
+                height: "fit-content",
                 maxWidth: "100%"
               }}
             />
-            <div className="groupNumber">
-              <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-around"
-                  alignItems="center"
-                  spacing={5}
-              >
-                <Grid item>
-                  <IconButton>
-                    <PhotoIcon/>
-                  </IconButton>
-                  <Switch />
-                  <IconButton>
-                    <GridViewIcon fontSize='large'/>
-                  </IconButton>
-                </Grid>
-                
-                <Grid item>
-                  <IconButton>
-                    <FastRewindIcon fontSize='large'/>
-                  </IconButton>
-                  <IconButton  onClick={() => previous()} >
-                    <SkipPreviousIcon fontSize='large'/>
-                  </IconButton>
-                  <IconButton>
-                    <Typography variant="h6" style={{backgroundColor: "#f5f5f5"}}>{imageIndex() + ' | ' + files.length}</Typography>
-                  </IconButton>
-                  <IconButton  onClick={() => next()}>
-                    < SkipNextIcon fontSize='large'/>
-                  </IconButton>
-                  <IconButton >
-                    <FastForwardIcon fontSize='large'/>
-                  </IconButton>
-                </Grid >
-
-                <Grid item>
-                  <IconButton >
-                    <FullscreenIcon fontSize='large'/>
-                  </IconButton>
-                </Grid>
-                
-                </Grid>
-            </div>
           </Box>
+            <div className="groupNumber">
+          <Grid
+              container
+              direction="row"
+              justifyContent="space-around"
+              alignItems="center"
+              spacing={5}
+          > 
+            <Grid item>
+              <IconButton>
+                <PhotoIcon/>
+              </IconButton>
+              <Switch />
+              <IconButton>
+                <GridViewIcon fontSize='large'/>
+              </IconButton>
+            </Grid>
+            
+            <Grid item>
+              <IconButton>
+                <FastRewindIcon fontSize='large'/>
+              </IconButton>
+              <IconButton  onClick={() => previous()} >
+                <SkipPreviousIcon fontSize='large'/>
+              </IconButton>
+              <IconButton>
+                <Typography variant="h6" style={{backgroundColor: "#f5f5f5"}}>{imageIndex() + ' | ' + files.length}</Typography>
+              </IconButton>
+              <IconButton  onClick={() => next()}>
+                < SkipNextIcon fontSize='large'/>
+              </IconButton>
+              <IconButton >
+                <FastForwardIcon fontSize='large'/>
+              </IconButton>
+             </Grid >
+
+            <Grid item>
+              <IconButton >
+                <FullscreenIcon fontSize='large'/>
+              </IconButton>
+            </Grid>
+            
+            </Grid>
+        </div>
+        </Grid>
+          
         ) : (
           <>
             <h2>image inconnue</h2>
@@ -278,9 +281,9 @@ const Annotation = () => {
         )}
       </LayoutImageImage>
       
-      <LayoutImageForm>
+      <LayoutImageForm className="annotations">
       <Paper elevation={1}>
-        <Stack spacing={2}>
+        <Stack spacing={2} className='stackAnnotations'>
           <Typography variant="h3">Annotation</Typography>
           <Tabs value={value} aria-label="basic tabs example" variant='fullWidth'>
             <Tab label="Observation(s)" />

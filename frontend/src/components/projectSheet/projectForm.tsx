@@ -152,8 +152,8 @@ const ProjectForm = () => {
                                 </TextField>
                             </Grid>
                                 
-                            <Grid item lg={6}>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <Grid item lg={6} className='datePicker'>
+                                <LocalizationProvider dateAdapter={AdapterDateFns} >
                                     <DatePicker
                                         readOnly= {!modified}
                                         inputFormat="dd/MM/yyyy"
@@ -167,7 +167,7 @@ const ProjectForm = () => {
                                     />
                                 </LocalizationProvider>
                             </Grid>
-                            <Grid item lg={6}>
+                            <Grid item lg={6} className='datePicker'>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <DatePicker
                                             readOnly= {!modified}
