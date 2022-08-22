@@ -9,6 +9,7 @@ const ProjectMembers = () => {
         {'id': 4, "name": "Ophélie Da Silva"},
         {'id': 5, "name": "Julien Graziani"},
         {'id': 6, "name": "Naomie Fischer"},
+        {'id': 6, "name": "Maxime Vergez"},
     ]
 
     return (
