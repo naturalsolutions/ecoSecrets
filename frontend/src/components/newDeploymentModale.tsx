@@ -7,23 +7,23 @@ import { DeploymentBase, DeploymentsService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
 
 const NewDeploymentModale = () => {
-    const {currentProject} = useMainContext();
+    // const {currentProject} = useMainContext();
     
     const [openNewDeployment, setOpenNewDeployment] = useState(false);
-    const [newDeploymentData, setNewDeploymentData] = useState(
-        {
-            name: undefined,
-            start_date: undefined,
-            end_date: undefined,
-            site_id: undefined,
-            device_id: undefined,
-            bait: undefined,
-            feature: undefined,
-            description: undefined,
-            project_id: currentProject,
-            template_sequence_id: undefined
-        }
-    );
+    // const [newDeploymentData, setNewDeploymentData] = useState(
+    //     {
+    //         name: undefined,
+    //         start_date: undefined,
+    //         end_date: undefined,
+    //         site_id: undefined,
+    //         device_id: undefined,
+    //         bait: undefined,
+    //         feature: undefined,
+    //         description: undefined,
+    //         project_id: currentProject,
+    //         template_sequence_id: undefined
+    //     }
+    // );
 
     const handleOpenNewDeployment = () => {
         console.log('click create new deployment');

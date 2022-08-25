@@ -37,7 +37,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const ProjectDeployments = () => {
   const [openDeleteDeployment, setOpenDeleteDeployment] = useState(false);
-  const {projectSheetData} = useMainContext();
+  const {projectSheetData, currentDeployment, setCurrentDeployment} = useMainContext();
 
   const handleClickOpenDeleteDeployment = () => {
     console.log('click');
