@@ -1,16 +1,16 @@
 import { styled } from '@mui/material/styles';
-import { Link } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useMainContext } from '../../contexts/mainContext';
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useState } from 'react';
+import NewDeploymentModale from '../newDeploymentModale';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     // [`&.${tableCellClasses.head}`]: {
@@ -36,16 +36,16 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 
 const ProjectDeployments = () => {
-  const [open, setOpen] = useState(false);
+  const [openDeleteDeployment, setOpenDeleteDeployment] = useState(false);
   const {projectSheetData} = useMainContext();
 
-  const handleClickOpen = () => {
+  const handleClickOpenDeleteDeployment = () => {
     console.log('click');
-    setOpen(true);
+    setOpenDeleteDeployment(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseDeleteDeployment = () => {
+    setOpenDeleteDeployment(false);
   };
 
     return (
@@ -61,16 +61,8 @@ const ProjectDeployments = () => {
                     <Typography variant="h4" color="#000000" component="div">
                         Déploiements ({projectSheetData.deployments.length})
                     </Typography>
-                    <Button 
-                        variant="contained" 
-                        startIcon={<AddCircleIcon />} 
-                        style={{backgroundColor: "#BCAAA4"}}
-                        component={Link}
-                        to={`/deployment/new`}
-                        
-                    >
-                        Ajouter un déploiement
-                    </Button>
+
+                    <NewDeploymentModale/>
                 </Stack>
                 
                 <TableContainer component={Paper}>
@@ -90,14 +82,21 @@ const ProjectDeployments = () => {
                           {projectSheetData.deployments.length !== 0 ?
                         projectSheetData.deployments.map((row) => (
                             <StyledTableRow key={row.name}>
-                            <StyledTableCell align="center">{row.name}</StyledTableCell>
+                            <StyledTableCell align="center">{
+                              <Link 
+                                href={`/project/${projectSheetData.id}/deployment/${row.id}`}
+                              >
+                                {row.name}
+                              </Link>
+                            }</StyledTableCell>
+
                             <StyledTableCell align="center">{row.start_date}</StyledTableCell>
                             <StyledTableCell align="center">{row.end_date}</StyledTableCell>
                             <StyledTableCell align="center">{row.site_name}</StyledTableCell>
                             <StyledTableCell align="center">{row.device_name}</StyledTableCell>
                             <StyledTableCell align="center">Lien vers page import</StyledTableCell>
                             <StyledTableCell align="center">
-                              <IconButton onClick={handleClickOpen}>
+                              <IconButton onClick={handleClickOpenDeleteDeployment}>
                                 <ClearTwoToneIcon/>
                               </IconButton>
                             </StyledTableCell>
@@ -109,7 +108,8 @@ const ProjectDeployments = () => {
                     </Table>
                 </TableContainer>
 
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog open={openDeleteDeployment} onClose={handleCloseDeleteDeployment}
+                >
                   <Stack
                     direction="row"
                     justifyContent="space-between"
@@ -121,7 +121,7 @@ const ProjectDeployments = () => {
                         Supprimer le déploiement
                       </Typography>
                     </DialogTitle>
-                      <IconButton onClick = {handleClose} >
+                      <IconButton onClick = {handleCloseDeleteDeployment} >
                         <ClearTwoToneIcon/>
                       </IconButton>
                     </Stack>
@@ -134,10 +134,9 @@ const ProjectDeployments = () => {
                     <Divider />
                     <DialogActions>
                       <Button style={{color: "#2FA37C"}}>Oui</Button>
-                      <Button onClick={handleClose} style={{color: "#BCAAA4"}}>Non</Button>
+                      <Button onClick={handleCloseDeleteDeployment} style={{color: "#BCAAA4"}}>Non</Button>
                     </DialogActions>
                 </Dialog>
-
         </Stack>
     );
 };
