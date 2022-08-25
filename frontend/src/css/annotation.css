@@ -1,10 +1,49 @@
 .numero {
-    border: 1px solid;
-    padding: 8px;
+  border: 1px solid;
+  padding: 8px;
 }
 
 .groupNumber {
-    display: flex;
-    margin-top: 20px;
-    justify-content: center;
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* Partie guche / image */
+.page {
+  height: 100%;
+  overflow: hidden;
+}
+
+.page .pageContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page .boxImage {
+  flex: 2;
+  vertical-align: center;
+  display: flex;
+  align-items: center;
+  background: #f5f5f4;
+}
+
+/* Prtie droite / panel annotations */
+.annotations {
+  overflow: hidden !important;
+}
+
+.paperAnnotations,
+.stackAnnotations {
+  height: 100%;
+}
+
+div[id^="simple-tabpanel"] {
+  flex: 2;
+  overflow: auto;
+}
+
+.stackAnnotations div[class^="MuiStack"] {
+  padding: 10px;
 }

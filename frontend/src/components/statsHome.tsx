@@ -1,9 +1,10 @@
-import { Button, Grid,  Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
 import CollectionsIcon from '@mui/icons-material/Collections';
 import NotesIcon from '@mui/icons-material/Notes';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Link } from "react-router-dom";
 
 
 
@@ -11,10 +12,10 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 const StatsHome = () => {
     const {globalStats} = useMainContext();
     const graphicStats = {
-        "medias": {'buttonLabel':"Nombre de médias", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
-        "annotations": {'buttonLabel': "Nombre d'annotations", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
-        "device":{'buttonLabel':"Nombre de dispositifs", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
-        "sites": {'buttonLabel':"Nombre de sites", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
+        "medias": {'buttonLabel':"Nombre de médias", "url":"/gallery/", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
+        "annotations": {'buttonLabel': "Nombre d'annotations", "url":"", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
+        "device":{'buttonLabel':"Nombre de dispositifs", "url":"/devices/", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
+        "sites": {'buttonLabel':"Nombre de sites", "url":"/sites/", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
     };
     
     return (
@@ -48,7 +49,7 @@ const StatsHome = () => {
                                 {graphicStats[key].icon}
                             </Grid>
                             <Grid item >
-                                <Typography variant = "h2" sx={{display: {color: "#BCAAA4"}}}>
+                                <Typography color= 'secondary' variant = "h2" >
                                     {JSON.stringify(value)}
                                 </Typography>
                             </Grid>
@@ -56,7 +57,8 @@ const StatsHome = () => {
                             <Grid item >
                                 <Button 
                                     variant="outlined"
-                                    style={{color: "#2FA37C", borderColor:"#2FA37C" }}
+                                    component={Link}
+                                    to={graphicStats[key].url}
                                 >
                                     {graphicStats[key].buttonLabel}
                                 </Button>
