@@ -50,7 +50,7 @@ const NavigationPath: FC<{}> = () => {
         />,
         <StyledBreadcrumb
           component={Link}
-          href={`/project/${project().id}`}
+          href={`/projectsheet/${project().id}`}
           underline="hover"
           key="project"
           label={project().name}
@@ -76,7 +76,7 @@ const NavigationPath: FC<{}> = () => {
         />,
         <StyledBreadcrumb
           component={Link}
-          href={`/project/${project().id}`}
+          href={`/projectsheet/${project().id}`}
           underline="hover"
           key="project"
           label={project().name}
