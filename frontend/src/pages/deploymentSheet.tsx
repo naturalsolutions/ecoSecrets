@@ -1,20 +1,21 @@
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
-import NewDeploymentForm from "../components/newDeploymentForm";
 import NavigationPath from "../components/breadcrumb";
+import DeploymentDetails from "../components/deploymentDetails";
 
-function NewDeployment() {
+
+function DeploymentSheet() {
   return (
     <div className="Main">
       <MainLayout
         Header={<HeadBar />}
         Side={<Drawer />}
         Navigation={<NavigationPath />}
-        Main={<NewDeploymentForm />}
+        Main={<DeploymentDetails />}
       />
     </div>
   );
 }
 
-export default NewDeployment;
+export default DeploymentSheet;

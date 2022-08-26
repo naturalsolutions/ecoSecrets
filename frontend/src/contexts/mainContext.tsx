@@ -7,6 +7,7 @@ import { Stats } from "../client/models/Stats";
 import { HomeService } from "../client/services/HomeService";
 import { StatsProject } from "../client/models/StatsProject";
 import { ProjectSheet } from "../client/models/ProjectSheet";
+import { DeploymentsService } from "../client";
 
 export interface MainContextProps {
   name?: string;
@@ -22,6 +23,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [currentDeployment, setCurrentDeployment] = useState<number | null>(
     null
   );
+  const [deploymentData, setDeploymentData] = useState<Deployments>();
+  const [tmpDeploymentData, setTmpDeploymentData] = useState<Deployments>();
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
   const [globalStats, setGlobalStats] = useState<Stats>();
@@ -73,7 +76,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const updateProjectSheetData = () => {
     currentProject && ProjectsService.getInformationsProjectProjectsProjectInformationsProjectIdGet(currentProject)
       .then((projectSheetData) => {
-        console.log(projectSheetData)
+        // console.log(projectSheetData)
         setProjectSheetData(projectSheetData);
       })
       .catch((err) => {
@@ -90,7 +93,29 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       .find((p) => p.id === currentProject)
       ?.deployments?.find((d) => d.id === currentDeployment);
   };
+
+  const updateDeploymentData = () => {
+    currentDeployment && 
+    DeploymentsService.readDeploymentDeploymentsDeploymentIdGet(currentDeployment)
+      .then((deploymentData) => {
+        setDeploymentData(deploymentData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   
+  const initializeTmpDeploymentData = () => {
+    currentProject && 
+    setTmpDeploymentData({
+      name: "",
+      bait: "",
+      feature: "",
+      description: "",
+      project_id: currentProject
+    })
+  }
+
   useEffect(() => {
     (async () => {
       updateProjects();
@@ -114,6 +139,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   useEffect(() => {
     (async () => {
       updateListFile();
+      updateDeploymentData();
     })();
   }, [currentDeployment]);
 
@@ -121,6 +147,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     (async () => {
       console.log(currentProject)
       updateProjectSheetData();
+      initializeTmpDeploymentData();
     })();
   }, [currentProject]);
 
@@ -142,6 +169,12 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         setProjectSheetData,
         updateProjects,
         updateGlobalStats,
+        deploymentData,
+        setDeploymentData,
+        updateDeploymentData,
+        tmpDeploymentData, 
+        setTmpDeploymentData,
+        initializeTmpDeploymentData
       }}
     >
       {children}

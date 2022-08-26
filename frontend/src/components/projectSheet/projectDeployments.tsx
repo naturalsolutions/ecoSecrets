@@ -5,10 +5,12 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Alert, AlertTitle, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { Alert, AlertTitle, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useMainContext } from '../../contexts/mainContext';
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useState } from 'react';
+import NewDeploymentModale from '../newDeploymentModale';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.body}`]: {
@@ -30,16 +32,16 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 
 const ProjectDeployments = () => {
-  const [open, setOpen] = useState(false);
-  const {projectSheetData} = useMainContext();
+  const [openDeleteDeployment, setOpenDeleteDeployment] = useState(false);
+  const {projectSheetData, currentDeployment, setCurrentDeployment} = useMainContext();
 
-  const handleClickOpen = () => {
+  const handleClickOpenDeleteDeployment = () => {
     console.log('click');
-    setOpen(true);
+    setOpenDeleteDeployment(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseDeleteDeployment = () => {
+    setOpenDeleteDeployment(false);
   };
 
     return (
@@ -48,6 +50,7 @@ const ProjectDeployments = () => {
                 spacing={2}
                 justifyContent="center"
             > 
+
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                         <TableHead style={{backgroundColor: "#CCDFD9"}}>
@@ -64,7 +67,13 @@ const ProjectDeployments = () => {
                         <TableBody>
                             {projectSheetData.deployments.map((row) => (
                               <StyledTableRow key={row.name}>
-                              <StyledTableCell align="center">{row.name}</StyledTableCell>
+                              <StyledTableCell align="center">{
+                              <Link 
+                                href={`/project/${projectSheetData.id}/deployment/${row.id}`}
+                              >
+                                {row.name}
+                              </Link>
+                            }</StyledTableCell>
                               <StyledTableCell align="center">{row.start_date}</StyledTableCell>
                               <StyledTableCell align="center">{row.end_date}</StyledTableCell>
                               <StyledTableCell align="center">{row.site_name}</StyledTableCell>
@@ -82,7 +91,8 @@ const ProjectDeployments = () => {
                     </Table>
                 </TableContainer>
 
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog open={openDeleteDeployment} onClose={handleCloseDeleteDeployment}
+                >
                   <Stack
                     direction="row"
                     justifyContent="space-between"
@@ -94,7 +104,7 @@ const ProjectDeployments = () => {
                         Supprimer le déploiement
                       </Typography>
                     </DialogTitle>
-                      <IconButton onClick = {handleClose} >
+                      <IconButton onClick = {handleCloseDeleteDeployment} >
                         <ClearTwoToneIcon/>
                       </IconButton>
                     </Stack>
