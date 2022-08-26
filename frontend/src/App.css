@@ -37,7 +37,8 @@
   }
 }
 
-button.MuiButton-root {
+button.MuiButton-root,
+a.MuiButton-root {
   border-radius: 25px;
 }
 
@@ -62,4 +63,12 @@ button.MuiButton-root {
 .MuiCard-root .MuiIconButton-root {
   background-color: rgba(47, 163, 124, 0.08);
   color: #2fa37c;
+}
+
+/* datePicker
+.MuiTextField-root {
+  display: flex !important;
+} */
+.datePicker .MuiTextField-root {
+  display: flex !important;
 }

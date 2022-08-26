@@ -7,6 +7,7 @@ import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTit
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
 import { ProjectSheet, ProjectsService } from '../../client';
+import Dropzone from "react-dropzone";
 
 
 
@@ -24,6 +25,7 @@ const ProjectForm = () => {
     const [success, setSuccess] = React.useState(false);
     const [modified, setModified] = React.useState(false);
     const [displayValue, setDisplayValue] = React.useState('none');
+
 
 
     const handleFormChange = (params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
@@ -61,16 +63,13 @@ const ProjectForm = () => {
         setSuccess(true);
     };
 
+    
+
     return(
             <Stack 
                 spacing={2}
                 justifyContent="center"
             >
-            {/* <Box sx={{ width: '100%' }}> */}
-                <Typography variant="h4" color="#000000" component="div">
-                    Fiche projet
-                </Typography>
-            
                 <Collapse in={success}>
                     <Alert 
                         severity="success"  
@@ -91,11 +90,11 @@ const ProjectForm = () => {
                         Modifications enregistrées !  Rafraichissez la page !
                     </Alert>
                 </Collapse>
-            {/* </Box> */}
+
                 <form key={projectSheetData.id}>
                     <Stack
                         direction='row'
-                        spacing={40}
+                        spacing={15}
                     >
                         <Grid container lg={6} spacing={3}>
                         <Grid item lg={12}>
@@ -153,8 +152,8 @@ const ProjectForm = () => {
                                 </TextField>
                             </Grid>
                                 
-                            <Grid item lg={6}>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <Grid item lg={6} className='datePicker'>
+                                <LocalizationProvider dateAdapter={AdapterDateFns} >
                                     <DatePicker
                                         readOnly= {!modified}
                                         inputFormat="dd/MM/yyyy"
@@ -168,7 +167,7 @@ const ProjectForm = () => {
                                     />
                                 </LocalizationProvider>
                             </Grid>
-                            <Grid item lg={6}>
+                            <Grid item lg={6} className='datePicker'>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <DatePicker
                                             readOnly= {!modified}
@@ -188,6 +187,7 @@ const ProjectForm = () => {
                                     id="description"
                                     name="description"
                                     label="Description"
+                                    variant="filled"
                                     value ={projectData.description}
                                     onChange={(e) => handleFormChange("description", e)}
                                     
@@ -201,9 +201,19 @@ const ProjectForm = () => {
                         </Grid>
                         <Grid container justifyContent='center' alignItems='center' lg={6} spacing={1} style={{backgroundColor: "#D9D9D9"}}>
                             {/* Image du projet ou dropzone */}
-                            <Typography variant="subtitle1">
-                                Prochainement : Affichage et sélection d'une image du projet
-                            </Typography>
+                            <Grid item>
+                            {/* <Dropzone>
+                                {({ getRootProps, getInputProps }) => (
+                                <section id="dropzone">
+                                    <div {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    {dropZoneDisplayText()}
+                                    </div>
+                                </section>
+                                )}
+                            </Dropzone> */}
+                            </Grid>
+                            
                         </Grid>
                     </Stack>
                 </form>
@@ -212,10 +222,10 @@ const ProjectForm = () => {
                     spacing={3}
                     justifyContent='flex-end'
                 >
-                    <Button disabled={modified} onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
+                    <Button disabled={modified} onClick={handleChange}  variant="contained" color='primary'>
                         Modifier
                     </Button>
-                    <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
+                    <Button disabled={!modified} onClick={dialog} variant="contained" color='secondary'>
                         Enregistrer
                     </Button>
 
@@ -233,8 +243,8 @@ const ProjectForm = () => {
                         </DialogContent>
                         <Divider />
                         <DialogActions>
-                        <Button onClick={save} style={{color: "#2FA37C"}}>Oui</Button>
-                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>Non</Button>
+                        <Button onClick={save} >Oui</Button>
+                        <Button onClick={handleClose} color='secondary'>Non</Button>
                         </DialogActions>
                     </Dialog>
                 </Stack>

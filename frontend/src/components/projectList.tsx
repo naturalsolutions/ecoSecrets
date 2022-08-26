@@ -133,7 +133,7 @@ const ProjectList = () => {
             <Button 
               variant="contained" 
               startIcon={<AddCircleIcon />} 
-              style={{backgroundColor: "#BCAAA4"}}
+              color='secondary'
               onClick={handleClickOpen}
             >
               Nouveau projet
@@ -222,7 +222,7 @@ const ProjectList = () => {
                   }>
                 <Typography variant="body1" gutterBottom>
                   <CollectionsIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                  {(s.media_number === 0 ? "Pas de médias" : 'Médias : ' + s.media_number )}
+                  {(s.media_number === 0 ? "Aucun médias" : 'Médias : ' + s.media_number )}
                 </Typography>
               </ListItem>
 
@@ -250,7 +250,7 @@ const ProjectList = () => {
               <ListItem>
                 <Typography variant="body1" gutterBottom>
                   <EmojiNatureIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>
-                  {(s.targeted_species === '' ? "Etude de communauté" : 'Espèce cible : '+ s.targeted_species )}
+                  {(s.targeted_species === null ? "Etude de communauté" : 'Espèce cible : '+ s.targeted_species )}
                 </Typography>
               </ListItem>
               

@@ -13,7 +13,7 @@ const HeadBar = () => {
   return (
     <AppBar
       position="static"
-      sx={{ paddingTop: 2, paddingBottom: 1, background: "#2FA37C" }}
+      sx={{ paddingTop: 2, paddingBottom: 1 }}
     >
       <Toolbar variant="dense">
         <Grid

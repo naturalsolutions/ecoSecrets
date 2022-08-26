@@ -2,8 +2,7 @@ import { Box, Button, Divider, FormControlLabel, Grid, IconButton, MenuItem, Pap
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import PhotoIcon from '@mui/icons-material/Photo';
 import AddIcon from '@mui/icons-material/Add';
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { v4 as uuidv4 } from 'uuid';
@@ -84,6 +83,7 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
+
 
 const Annotation = () => {
   const {
@@ -208,11 +208,18 @@ const Annotation = () => {
     setObservations(tmp_obs);
   }
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  
   return (
-    <LayoutImageContainer>
+    
+    <LayoutImageContainer className="page">
       <LayoutImageImage>{
         image() ? (
-          <Box sx={{ height: 300}}>
+          <Grid container className="pageContainer">
+          <Box sx={{ height: 300}} className="boxImage">
             <img
               src={`${image().url}`}
               alt={image().name}
@@ -221,39 +228,67 @@ const Annotation = () => {
                 borderBottomLeftRadius: 4,
                 borderBottomRightRadius: 4,
                 display: "block",
-                height: "200%",
+                height: "fit-content",
                 maxWidth: "100%"
               }}
             />
-            <div className="groupNumber">
-              <IconButton  
-                onClick={() => previous()} 
-                style={{
-                  color: "black"
-                }}
-              >
-                <ArrowBackIosIcon/>
-              </IconButton>
-              <span className="numero">{imageIndex()}</span>
-              <span className="numero">{files.length}</span>
-              <IconButton  
-                onClick={() => next()}
-                style={{
-                  color: "black"
-                }}
-              >
-                <ArrowForwardIosIcon/>
-              </IconButton>
-            </div>
           </Box>
+            <div className="groupNumber">
+          <Grid
+              container
+              direction="row"
+              justifyContent="space-around"
+              alignItems="center"
+              spacing={5}
+          > 
+            <Grid item>
+              <IconButton>
+                <PhotoIcon/>
+              </IconButton>
+              <Switch />
+              <IconButton>
+                <GridViewIcon fontSize='large'/>
+              </IconButton>
+            </Grid>
+            
+            <Grid item>
+              <IconButton>
+                <FastRewindIcon fontSize='large'/>
+              </IconButton>
+              <IconButton  onClick={() => previous()} >
+                <SkipPreviousIcon fontSize='large'/>
+              </IconButton>
+              <IconButton>
+                <Typography variant="h6" style={{backgroundColor: "#f5f5f5"}}>{imageIndex() + ' | ' + files.length}</Typography>
+              </IconButton>
+              <IconButton  onClick={() => next()}>
+                < SkipNextIcon fontSize='large'/>
+              </IconButton>
+              <IconButton >
+                <FastForwardIcon fontSize='large'/>
+              </IconButton>
+             </Grid >
+
+            <Grid item>
+              <IconButton >
+                <FullscreenIcon fontSize='large'/>
+              </IconButton>
+            </Grid>
+            
+            </Grid>
+        </div>
+        </Grid>
+          
         ) : (
           <>
             <h2>image inconnue</h2>
           </>
         )}
       </LayoutImageImage>
-      <LayoutImageForm>
-        <Stack spacing={2}>
+      
+      <LayoutImageForm className="annotations">
+      <Paper elevation={1} className='paperAnnotations'>
+        <Stack spacing={2} className='stackAnnotations'>
           <Typography variant="h3">Annotation</Typography>
           <Tabs 
             value={tabValue} 
@@ -408,6 +443,7 @@ const Annotation = () => {
           <TabPanel valueTab={tabValue} index={1}>
             Formulaire de métadonnées à venir
           </TabPanel>
+
              <Divider/>
           
           <Stack 
@@ -417,20 +453,21 @@ const Annotation = () => {
             // style={{position: 'fixed'}}
           >
             <Stack direction="row" justifyContent="flex-start" spacing={2}>
-              <Button  startIcon={<AddIcon/>} onClick={() => handleAddObservation()} variant="contained" style={{backgroundColor: "#BCAAA4"}}>
+              <Button  startIcon={<AddIcon/>} onClick={() => handleAddObservation()} variant="contained"color='secondary'>
                  Nouvelle observation
               </Button>
             </Stack>
             
             <Stack justifyContent="flex-end">
-              <Button variant="contained" onClick={() => saveandnext()} style={{backgroundColor: "#2FA37C"}}>
+              <Button variant="contained" onClick={() => saveandnext()} >
                 Enregistrer et continuer
               </Button>
             </Stack>
           </Stack>
         </Stack>
-            
+        </Paper>
       </LayoutImageForm>
+    
     </LayoutImageContainer>
   );
 };
