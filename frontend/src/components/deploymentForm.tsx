@@ -9,7 +9,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import { Deployments, DeploymentsService } from "../client";
 import Dropzone from "react-dropzone";
 
 const deployment_img = undefined;
@@ -23,49 +22,54 @@ const DeploymentForm = (
     {isNewDeployment=false}
 ) => {
 
-    const {currentProject, setCurrentProject, setCurrentDeployment, deploymentData} = useMainContext();
+    const {currentProject, setCurrentProject, tmpDeploymentData, setTmpDeploymentData, currentDeployment, setCurrentDeployment, deploymentData} = useMainContext();
+
     let params = useParams();
     useEffect(() => {
         (async () => {
-        setCurrentProject(Number(params.projectId));
-        setCurrentDeployment(Number(params.deploymentId));
+            setCurrentProject(Number(params.projectId));
+            setCurrentDeployment(Number(params.deploymentId));
         })();
     }, []);
-  
-    const [currentDeploymentData, setCurrentDeploymentData] = useState<Deployments>(deploymentData);
-    
-    // useEffect(() => {
-    //     (async () => {
-    //         if (deploymentData) {
-    //             setCurrentDeploymentData(deploymentData)
-    //         }
-    //         else {
-    //             setCurrentDeploymentData({
-    //                 name: "",
-    //                 start_date: undefined,
-    //                 end_date: undefined,
-    //                 site_id: undefined,
-    //                 device_id: undefined,
-    //                 bait: "",
-    //                 feature: "",
-    //                 description: "",
-    //                 project_id: currentProject,
-    //                 template_sequence_id: undefined
-    //         })};
-    //     })();
-    // });
+
+    useEffect(() => {
+        (async () => {
+            console.log("deploymentData");
+            console.log(deploymentData);
+            // if(deploymentData) {
+            //     console.log('ici');
+            //     setTmpDeploymentData(deploymentData);
+            // }
+            // else {
+            //     console.log('la');
+            //     setTmpDeploymentData({...tmpDeploymentData, project_id: currentProject});
+            // };
+            console.log("tmpDeploymentData");
+            console.log(tmpDeploymentData);
+        })();
+    }, []);
+
+    const handleFormChange = (
+        params:string,  
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        let updated_deployment_data = {...tmpDeploymentData};
+        updated_deployment_data[params] = e.target.value;
+        setTmpDeploymentData(updated_deployment_data);
+        console.log(tmpDeploymentData);
+    };
 
     const [isEditable, setIsEditable] = useState(false);
     const handleEdit = () => {
         if(isEditable) {
             setIsEditable(false); 
-            setCurrentDeployment(deploymentData);
+            tmpDeploymentData(deploymentData);
         } 
         else setIsEditable(true);
     };
     const handleSave = () => {
         console.log("save click");
-        console.log(currentDeploymentData);
+        console.log(tmpDeploymentData);
         // DeploymentsService.
         // createDeploymentDeploymentsPost(currentDeploymentData);
         isEditable ? setIsEditable(false) : setIsEditable(true);
@@ -108,21 +112,10 @@ const DeploymentForm = (
         new Date(),
     );
     
-    const handleStartDateChange = (newValue: Date | null) => {
-        setStartDateValue(newValue);
-    };
-    const handleEndDateChange = (newValue: Date | null) => {
-        setEndDateValue(newValue);
-    };
-
-    const handleFormChange = (
-        params:string,  
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        let tmp_deployment_data = {...currentDeploymentData};
-        tmp_deployment_data[params] = e.target.value;
-        setCurrentDeploymentData(tmp_deployment_data);
-        console.log(currentDeploymentData);
+    const handleDateChange = (params:string, newValue: Date | null) => {
+        let updated_deployment_data = {...tmpDeploymentData};
+        newValue !== null && (updated_deployment_data[params] = newValue.toISOString().slice(0, 10));
+        setTmpDeploymentData(updated_deployment_data);
     };
 
     return(
@@ -191,9 +184,10 @@ const DeploymentForm = (
                                     id="name"
                                     name="name"
                                     label="Nom du déploiement"
-                                    value={currentDeploymentData?.name}
+                                    value={tmpDeploymentData?.name}
                                     onChange={(e) => handleFormChange("name", e)}
                                     size="small"
+                                    variant="filled"
                                     fullWidth 
                                 />
                             </Grid>
@@ -204,10 +198,10 @@ const DeploymentForm = (
                                 id="site_id"
                                 name="site_id"
                                 label="Site d'étude"
-                                value={currentDeploymentData?.site_id}
+                                value={tmpDeploymentData?.site_id}
                                 onChange={(e) => handleFormChange("site_id", e)}
                                 select 
-                                variant="outlined" 
+                                variant="filled"
                                 // type="search"
                                 size="small"
                                 fullWidth
@@ -225,10 +219,10 @@ const DeploymentForm = (
                                 id="device_id" 
                                 name="device_id" 
                                 label="Dispositif"
-                                value={currentDeploymentData?.device_id}
+                                value={tmpDeploymentData?.device_id}
                                 onChange={(e) => handleFormChange("device_id", e)}
                                 select 
-                                variant="outlined" 
+                                variant="filled"
                                 type="search"
                                 size="small"
                                 fullWidth
@@ -267,9 +261,9 @@ const DeploymentForm = (
                                 <DesktopDatePicker
                                     label="Date de début"
                                     inputFormat="dd/MM/yyyy"
-                                    value={currentDeploymentData?.start_date}
-                                    onChange={handleStartDateChange}
-                                    renderInput={(params) => <TextField size="small" {...params} />}
+                                    value={tmpDeploymentData?.start_date}
+                                    onChange={(date) => handleDateChange("start_date", date)}
+                                    renderInput={(params) => <TextField size="small" variant="filled" {...params} />}
                                     disabled={!isNewDeployment && !isEditable}
                                 />
                             </LocalizationProvider>
@@ -280,9 +274,9 @@ const DeploymentForm = (
                                 <DesktopDatePicker
                                     label="Date de fin"
                                     inputFormat="dd/MM/yyyy"
-                                    value={currentDeploymentData?.end_date}
-                                    onChange={handleEndDateChange}
-                                    renderInput={(params) => <TextField size="small" {...params} />}
+                                    value={tmpDeploymentData?.end_date}
+                                    onChange={(date) => handleDateChange("end_date", date)}
+                                    renderInput={(params) => <TextField size="small" variant="filled" {...params} />}
                                     disabled={!isNewDeployment && !isEditable}
                                 />
                             </LocalizationProvider>
@@ -290,9 +284,13 @@ const DeploymentForm = (
 
                         <Grid item  xs={12} sm={12} md={6} lg={6}>
                             <TextField 
+                                id="support"
+                                name="support"
                                 label="Support d'accroche"
                                 select
                                 // value={currentDeploymentData?.support}
+                                // onChange={(e) => handleFormChange("support", e)}
+                                variant="filled"
                                 size="small"
                                 fullWidth
                                 disabled={!isNewDeployment && !isEditable}
@@ -307,9 +305,13 @@ const DeploymentForm = (
 
                         <Grid item  xs={12} sm={12} md={6} lg={6}>
                             <TextField 
+                                id="feature"
+                                name="feature"
                                 label="Caractéristique"
                                 select
-                                value={currentDeploymentData?.feature}
+                                value={tmpDeploymentData?.feature}
+                                onChange={(e) => handleFormChange("feature", e)}
+                                variant="filled"
                                 size="small"
                                 fullWidth
                                 disabled={!isNewDeployment && !isEditable}
@@ -333,6 +335,7 @@ const DeploymentForm = (
                                     min: 0,
                                     type: 'number',
                                     "aria-label": "Hauteur du dispositif",
+                                    variant: "filled"
                                 }}
                                 size="small"
                                 fullWidth
@@ -342,10 +345,14 @@ const DeploymentForm = (
 
                         <Grid item  xs={12} sm={12} md={6} lg={6}>
                             <TextField 
+                                id="bait"
+                                name="bait"
                                 label="Appât"
                                 select
-                                value={currentDeploymentData?.bait}
+                                value={tmpDeploymentData?.bait}
+                                onChange={(e) => handleFormChange("bait", e)}
                                 size="small"
+                                variant="filled"
                                 fullWidth
                                 disabled={!isNewDeployment && !isEditable}
                             >
@@ -396,6 +403,7 @@ const DeploymentForm = (
                                             'aria-labelledby': 'input-slider',
                                         }}
                                         size="small"
+                                        variant="filled"
                                         fullWidth
                                         disabled={(!isNewDeployment && !isEditable) || !automatic}
                                     />
@@ -414,6 +422,7 @@ const DeploymentForm = (
                                             'aria-labelledby': 'input-slider',
                                         }}
                                         size="small"
+                                        variant="filled"
                                         fullWidth
                                         disabled={(!isNewDeployment && !isEditable) || !automatic}
                                     />
@@ -451,6 +460,7 @@ const DeploymentForm = (
                                             'aria-labelledby': 'input-slider',
                                         }}
                                         size="small"
+                                        variant="filled"
                                         fullWidth
                                         disabled={(!isNewDeployment && !isEditable) || !trigger}
                                     />
@@ -460,6 +470,7 @@ const DeploymentForm = (
                                         label="Mode"
                                         // select
                                         size="small"
+                                        variant="filled"
                                         fullWidth
                                         disabled={(!isNewDeployment && !isEditable) || !trigger}
                                     />
@@ -477,6 +488,7 @@ const DeploymentForm = (
                                             'aria-labelledby': 'input-slider',
                                         }}
                                         size="small"
+                                        variant="filled"
                                         fullWidth
                                         disabled={(!isNewDeployment && !isEditable) || !trigger}
                                     />
@@ -488,7 +500,12 @@ const DeploymentForm = (
 
                 <Paper elevation={0}>
                     <TextField 
+                        id="description"
+                        name="description"
                         label="Description"
+                        value={tmpDeploymentData?.description}
+                        onChange={(e) => handleFormChange("description", e)}
+                        variant="filled"
                         multiline
                         rows={3}
                         fullWidth

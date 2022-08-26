@@ -57,7 +57,7 @@ const NavigationPath: FC<{}> = () => {
         />,
         <StyledBreadcrumb
           component={Link}
-          href={`/deployment/${deployment().id}`}
+          href={`/project/${project().id}/deployment/${deployment().id}`}
           underline="hover"
           key="deployment"
           label={deployment().name}

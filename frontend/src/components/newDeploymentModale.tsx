@@ -7,23 +7,9 @@ import { DeploymentBase, DeploymentsService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
 
 const NewDeploymentModale = () => {
-    // const {currentProject} = useMainContext();
+    const {tmpDeploymentData, initializeTmpDeploymentData, setTmpDeploymentData} = useMainContext();
     
     const [openNewDeployment, setOpenNewDeployment] = useState(false);
-    // const [newDeploymentData, setNewDeploymentData] = useState(
-    //     {
-    //         name: undefined,
-    //         start_date: undefined,
-    //         end_date: undefined,
-    //         site_id: undefined,
-    //         device_id: undefined,
-    //         bait: undefined,
-    //         feature: undefined,
-    //         description: undefined,
-    //         project_id: currentProject,
-    //         template_sequence_id: undefined
-    //     }
-    // );
 
     const handleOpenNewDeployment = () => {
         console.log('click create new deployment');
@@ -35,9 +21,13 @@ const NewDeploymentModale = () => {
     };
     const saveNewDeployement = () => {
         console.log("click save new deployment");
+        console.log(tmpDeploymentData);
         setOpenNewDeployment(false);
         // DeploymentsService
-        // .createDeploymentDeploymentsPost(newDeploymentData);
+        // .createDeploymentDeploymentsPost(tmpDeploymentData);
+        initializeTmpDeploymentData();
+        console.log("tmpDeploymentData");
+        console.log(tmpDeploymentData);
     };
 
     return(
@@ -51,7 +41,7 @@ const NewDeploymentModale = () => {
                 Nouveau déploiement
             </Button>
 
-            <Dialog open={openNewDeployment} onClose= {handleCloseNewDeployment}>
+            <Dialog open={openNewDeployment} onClose={handleCloseNewDeployment}>
                 <DialogTitle 
                     variant="h6" 
                     id="scroll-dialog-title"

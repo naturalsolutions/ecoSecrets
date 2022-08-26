@@ -24,6 +24,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     null
   );
   const [deploymentData, setDeploymentData] = useState<Deployments>();
+  const [tmpDeploymentData, setTmpDeploymentData] = useState<Deployments>();
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
   const [globalStats, setGlobalStats] = useState<Stats>();
@@ -75,7 +76,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const updateProjectSheetData = () => {
     currentProject && ProjectsService.getInformationsProjectProjectsProjectInformationsProjectIdGet(currentProject)
       .then((projectSheetData) => {
-        console.log(projectSheetData)
+        // console.log(projectSheetData)
         setProjectSheetData(projectSheetData);
       })
       .catch((err) => {
@@ -104,6 +105,17 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
   
+  const initializeTmpDeploymentData = () => {
+    currentProject && 
+    setTmpDeploymentData({
+      name: "",
+      bait: "",
+      feature: "",
+      description: "",
+      project_id: currentProject
+    })
+  }
+
   useEffect(() => {
     (async () => {
       updateProjects();
@@ -135,6 +147,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     (async () => {
       console.log(currentProject)
       updateProjectSheetData();
+      initializeTmpDeploymentData();
     })();
   }, [currentProject]);
 
@@ -159,6 +172,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         deploymentData,
         setDeploymentData,
         updateDeploymentData,
+        tmpDeploymentData, 
+        setTmpDeploymentData,
+        initializeTmpDeploymentData
       }}
     >
       {children}

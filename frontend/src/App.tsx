@@ -23,7 +23,7 @@ function App() {
           ></Route>
           <Route path="/project/:projectId/deployment/:deploymentId" element={<DeploymentSheet />}></Route>
           <Route
-            path="deployment/:deploymentId/:imageId"
+            path="/project/:projectId/deployment/:deploymentId/:imageId"
             element={<Image />}
           ></Route>
           <Route path="*" element={<Main />}></Route>
