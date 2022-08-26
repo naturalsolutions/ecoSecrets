@@ -80,7 +80,7 @@ const ProjectDeployments = () => {
                               <StyledTableCell align="center">{row.device_name}</StyledTableCell>
                               <StyledTableCell align="center">Lien vers page import</StyledTableCell>
                               <StyledTableCell align="center">
-                                <IconButton onClick={handleClickOpen}>
+                                <IconButton onClick={handleClickOpenDeleteDeployment}>
                                   <ClearTwoToneIcon/>
                                 </IconButton>
                               </StyledTableCell>
@@ -117,7 +117,7 @@ const ProjectDeployments = () => {
                     <Divider />
                     <DialogActions>
                       <Button >Oui</Button>
-                      <Button onClick={handleClose} color='secondary'>Non</Button>
+                      <Button onClick={handleCloseDeleteDeployment} color='secondary'>Non</Button>
                     </DialogActions>
                 </Dialog>
         </Stack> : 

@@ -209,7 +209,7 @@ const Annotation = () => {
   }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
 
   
