@@ -31,9 +31,7 @@ def init_db():
         session.commit()
         user.create_user(
             db=session,
-            user=UserCreate(
-                name="jeanjacques", email="jj@gmail.com", password="password"
-            ),
+            user=UserCreate(name="jeanjacques", email="jj@gmail.com", password="password"),
         )
         project.create_project(
             db=session,
@@ -95,6 +93,8 @@ def init_db():
         )
 
         path = Path(__file__).parent.parent.parent
+        if not os.path.isdir(os.path.join(path, "img")):
+            os.mkdir(os.path.join(path, "img"))
         for fileName in os.listdir(os.path.join(path, "img")):
             fileNameSplit = fileName.split(".")
             print(os.path.join(path, "img", fileName))
