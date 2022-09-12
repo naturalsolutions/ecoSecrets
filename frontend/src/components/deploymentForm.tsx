@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import TurnedInNotTwoToneIcon from '@mui/icons-material/TurnedInNotTwoTone';import EditIcon from '@mui/icons-material/Edit';
+import TurnedInNotTwoToneIcon from '@mui/icons-material/TurnedInNotTwoTone'; import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -41,7 +41,7 @@ const DeploymentForm = (
         params:string,  
         e: ChangeEvent< HTMLInputElement| HTMLTextAreaElement >
     ) => {
-        let updated_deployment_data = {...tmpDeploymentData};
+        let updated_deployment_data = { ...tmpDeploymentData };
         updated_deployment_data[params] = e.target.value;
         setTmpDeploymentData(updated_deployment_data);
     };
@@ -90,27 +90,27 @@ const DeploymentForm = (
     const handleAutomaticChange = () => {
         setAutomatic(!automatic);
     };
-    
+
     const [autoNumber, setAutoNumber] = useState<null | Number>(null);
     const handleAutoNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAutoNumber(Number(event.target.value));
     };
-    
+
     const [autoFreq, setAutoFreq] = useState<null | Number>(null);
     const handleAutoFreqChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAutoFreq(Number(event.target.value));
     };
-    
+
     const [trigger, setTrigger] = useState(false);
     const handleTriggerChange = () => {
         setTrigger(!trigger);
     };
-    
+
     const [triggerNumber, setTriggerNumber] = useState<null | Number>(null);
     const handleTriggerNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTriggerNumber(Number(event.target.value));
     };
-    
+
     const [triggerFreq, setTriggerFreq] = useState<null | Number>(null);
     const handleTriggerFreqChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTriggerFreq(Number(event.target.value));
@@ -121,31 +121,31 @@ const DeploymentForm = (
             <Stack
                 direction="column"
                 spacing={5}
-            >   
+            >
                 {
                     !props.isNewDeployment &&
                     <Typography component={'span'} variant="h4">
                         {deploymentData?.name}
                     </Typography>
                 }
-                
+
                 <Stack
                     direction="row"
                     justifyContent="space-evenly"
                 >
-                {/* Si image du deploiement, la mettre sinon mettre zone drag&drop pour l'image */}
-                    <Grid 
+                    {/* Si image du deploiement, la mettre sinon mettre zone drag&drop pour l'image */}
+                    <Grid
                         item
                         lg={5}
                         height={200}
-                        style={{backgroundColor: "#afbdb6"}}
+                        style={{ backgroundColor: "#afbdb6" }}
                     >
                         {
                             deployment_img ?
-                            <img></img> : 
-                            <Dropzone 
-                                // onDrop={loadFile} 
-                                maxFiles={1}
+                                <img></img> :
+                                <Dropzone
+                                    // onDrop={loadFile} 
+                                    maxFiles={1}
                                 // style={{"height": "100%"}}
                             >
                                 {({ getRootProps, getInputProps }) => (
@@ -163,7 +163,7 @@ const DeploymentForm = (
                     <Grid 
                         item
                         lg={5}
-                        style={{backgroundColor: "#98d4b7"}}
+                        style={{ backgroundColor: "#98d4b7" }}
                         height={200}
                     >
                         Map
@@ -172,7 +172,7 @@ const DeploymentForm = (
 
                 <Paper elevation={0} sx={{ px: 2, py: 2 }}>
                     <DialogTitle variant="subtitle2">
-                        <TurnedInNotTwoToneIcon style={{verticalAlign:"middle"}}/>
+                        <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
                         Caractéristiques générales du déploiement
                     </DialogTitle>
 
@@ -241,11 +241,11 @@ const DeploymentForm = (
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid 
+                        <Grid
                             item
                             xs={12} sm={12} md={12} lg={12}
                         >
-                            <Grid 
+                            <Grid
                                 container
                                 direction="row"
                                 justifyContent="flex-end"
@@ -370,8 +370,8 @@ const DeploymentForm = (
                                 disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {baitList.map((baitOption) => (
-                                    <MenuItem 
-                                        key={baitOption} 
+                                    <MenuItem
+                                        key={baitOption}
                                         value={baitOption}>
                                         {baitOption}
                                     </MenuItem>
@@ -381,7 +381,7 @@ const DeploymentForm = (
 
                     </Grid>
                 </Paper>
-                
+
                 <Stack
                     direction={props.isNewDeployment?"column":"row"}
                     justifyContent="center"
@@ -390,7 +390,7 @@ const DeploymentForm = (
                     <Grid item xs={12} sm={12} md={props.isNewDeployment?12:6} lg={props.isNewDeployment?12:6}>
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
-                                <TurnedInNotTwoToneIcon style={{verticalAlign:"middle"}}/>
+                                <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
                                 Exemple de titre ?
                             </DialogTitle>
 
@@ -447,7 +447,7 @@ const DeploymentForm = (
                     <Grid item xs={12} sm={12} md={props.isNewDeployment?12:6} lg={props.isNewDeployment?12:6}>
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
-                                <TurnedInNotTwoToneIcon style={{verticalAlign:"middle"}}/>
+                                <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
                                 Paramétrage du dispositif
                             </DialogTitle>
 
@@ -510,7 +510,7 @@ const DeploymentForm = (
                 </Stack>
 
                 <Paper elevation={0}>
-                    <TextField 
+                    <TextField
                         id="description"
                         name="description"
                         label="Description"

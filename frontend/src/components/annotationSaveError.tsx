@@ -1,20 +1,20 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 
 const AnnotationSaveError = (props) => {
-    return(
+    return (
         <Dialog open={props.openSaveErrorDialog}>
             <DialogTitle>
                 Enregistrement des annotations impossible pour cette image
             </DialogTitle>
 
             <DialogContent>
-                <Typography>
+                <Typography component={"span"} >
                     Vous ne pouvez pas sauvegarder : toutes les observations doivent à minima renseigner une espèce et le nombre d'individus associé. S'il vous plaît, corriger les informations.
                 </Typography>
             </DialogContent>
 
             <DialogActions>
-                <Button 
+                <Button
                     onClick={props.handleCloseSaveErrorDialog}
                     color="secondary"
                 >

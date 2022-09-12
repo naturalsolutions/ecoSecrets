@@ -1,0 +1,16 @@
+.inf-btn-ctn {
+    display: flex !important;
+    align-items: center;
+    padding: 4px 14px;
+    gap: 8px;
+    border-radius: 16px;
+    height: 1.8rem
+}
+
+.warning {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #F44336;
+}
+
+.valid {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #4CAF50;
+}

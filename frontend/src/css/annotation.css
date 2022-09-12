@@ -47,3 +47,8 @@ div[id^="simple-tabpanel"] {
 .stackAnnotations div[class^="MuiStack"] {
   padding: 10px;
 }
+
+.info-annotation-ctn {
+  display: flex;
+  justify-content: space-around;
+}
