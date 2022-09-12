@@ -35,10 +35,10 @@ const StyledActiveBreadcrumb = styled(Chip)(({ theme }) => {
 }) as typeof Chip;
 
 const NavigationPath: FC<{}> = () => {
-  const { project, deployment, currentImage } = useMainContext();
+  const { project, deploymentData, currentImage } = useMainContext();
 
   const breadcrumbs = () => {
-    if (currentImage && project() && deployment()) {
+    if (currentImage && project() && deploymentData) {
       return [
         <StyledBreadcrumb
           component={Link}
@@ -57,14 +57,14 @@ const NavigationPath: FC<{}> = () => {
         />,
         <StyledBreadcrumb
           component={Link}
-          href={`/project/${project().id}/deployment/${deployment().id}`}
+          href={`/project/${project().id}/deployment/${deploymentData.id}`}
           underline="hover"
           key="deployment"
-          label={deployment().name}
+          label={deploymentData.name}
         />,
         <StyledActiveBreadcrumb key="image" label={currentImage} />,
       ];
-    } else if (deployment()) {
+    } else if (deploymentData) {
       return [
         <StyledBreadcrumb
           component={Link}
@@ -81,7 +81,7 @@ const NavigationPath: FC<{}> = () => {
           key="project"
           label={project().name}
         />,
-        <StyledActiveBreadcrumb key="deployment" label={deployment().name} />,
+        <StyledActiveBreadcrumb key="deployment" label={deploymentData.name} />,
       ];
     } else if (project()) {
       return [

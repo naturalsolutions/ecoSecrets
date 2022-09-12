@@ -24,7 +24,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     null
   );
   const [deploymentData, setDeploymentData] = useState<Deployments>();
-  const [tmpDeploymentData, setTmpDeploymentData] = useState<Deployments>();
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
   const [globalStats, setGlobalStats] = useState<Stats>();
@@ -88,12 +87,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     return projects.find((p) => p.id === currentProject);
   };
 
-  const deployment = (): Deployments | undefined => {
-    return projects
-      .find((p) => p.id === currentProject)
-      ?.deployments?.find((d) => d.id === currentDeployment);
-  };
-
   const updateDeploymentData = () => {
     currentDeployment && 
     DeploymentsService.readDeploymentDeploymentsDeploymentIdGet(currentDeployment)
@@ -104,17 +97,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         console.log(err);
       });
   };
-  
-  const initializeTmpDeploymentData = () => {
-    currentProject && 
-    setTmpDeploymentData({
-      name: "",
-      bait: "",
-      feature: "",
-      description: "",
-      project_id: currentProject
-    })
-  }
 
   useEffect(() => {
     (async () => {
@@ -145,9 +127,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      console.log(currentProject)
       updateProjectSheetData();
-      initializeTmpDeploymentData();
     })();
   }, [currentProject]);
 
@@ -157,7 +137,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         projects,
         project,
         setCurrentProject,
-        deployment,
         setCurrentDeployment,
         currentImage,
         setCurrentImage,
@@ -167,14 +146,12 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         projectsStats,
         projectSheetData,
         setProjectSheetData,
+        updateProjectSheetData,
         updateProjects,
         updateGlobalStats,
         deploymentData,
         setDeploymentData,
-        updateDeploymentData,
-        tmpDeploymentData, 
-        setTmpDeploymentData,
-        initializeTmpDeploymentData
+        updateDeploymentData
       }}
     >
       {children}

@@ -98,11 +98,11 @@ const ImageList: FC<{}> = () => {
               </section>
             )}
           </Dropzone>
-          <Button variant="outlined" onClick={clear}>
-            clear
+          <Button variant="contained" onClick={clear}>
+            Annuler
           </Button>
-          <Button variant="outlined" onClick={save}>
-            save
+          <Button variant="contained" onClick={save}>
+            Enregistrer
           </Button>
           <ImageMasonry></ImageMasonry>
         </>

@@ -3,31 +3,20 @@ import DeploymentForm from "./deploymentForm";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from "react";
-import { DeploymentBase, DeploymentsService } from "../client";
+import { DeploymentBase, Deployments, DeploymentsService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
 
-const NewDeploymentModale = () => {
-    const {tmpDeploymentData, initializeTmpDeploymentData, setTmpDeploymentData} = useMainContext();
-    
+const DeploymentCreationModale = () => {
+    const { currentProject } = useMainContext();
+
     const [openNewDeployment, setOpenNewDeployment] = useState(false);
 
     const handleOpenNewDeployment = () => {
-        console.log('click create new deployment');
         setOpenNewDeployment(true);
     };
+    
     const handleCloseNewDeployment = () => {
-        console.log('click cancel new deployment');
         setOpenNewDeployment(false);
-    };
-    const saveNewDeployement = () => {
-        console.log("click save new deployment");
-        console.log(tmpDeploymentData);
-        setOpenNewDeployment(false);
-        // DeploymentsService
-        // .createDeploymentDeploymentsPost(tmpDeploymentData);
-        initializeTmpDeploymentData();
-        console.log("tmpDeploymentData");
-        console.log(tmpDeploymentData);
     };
 
     return(
@@ -59,17 +48,10 @@ const NewDeploymentModale = () => {
                 </DialogTitle>
 
                 <DialogContent dividers={true} id="scroll-dialog-description">
-                    <DeploymentForm isNewDeployment={true}/>
+                    <DeploymentForm isNewDeployment={true} handleCloseNewDeployment={handleCloseNewDeployment} />
                 </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={saveNewDeployement} style={{color: "#2FA37C"}}>
-                        Enregistrer
-                    </Button>
-
-                </DialogActions>
             </Dialog>
         </>
     )
 };
-export default NewDeploymentModale;
+export default DeploymentCreationModale;
