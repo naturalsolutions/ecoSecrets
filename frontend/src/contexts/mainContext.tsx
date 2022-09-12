@@ -7,7 +7,7 @@ import { Stats } from "../client/models/Stats";
 import { HomeService } from "../client/services/HomeService";
 import { StatsProject } from "../client/models/StatsProject";
 import { ProjectSheet } from "../client/models/ProjectSheet";
-import { Devices, DevicesService } from "../client";
+import { DeploymentsService, Devices, DevicesService } from "../client";
 import { DeviceMenu } from "../client/models/DeviceMenu";
 
 export interface MainContextProps {

@@ -37,7 +37,7 @@ const StyledActiveBreadcrumb = styled(Chip)(({ theme }) => {
 }) as typeof Chip;
 
 const NavigationPath: FC<{}> = () => {
-  const { project, deployment, currentImage, device } = useMainContext();
+  const { project, deployment, deploymentData, currentImage, device } = useMainContext();
   const location = useLocation();
   console.log(location.pathname);
 
