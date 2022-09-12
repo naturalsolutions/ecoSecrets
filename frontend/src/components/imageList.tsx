@@ -48,11 +48,11 @@ const ImageList: FC<{}> = () => {
       //   digest.then((res) => {
       //     let result = new Uint8Array(res);
       //     var hash = Uint8ArrayToHexString(result);
-          FilesService.uploadFileFilesUploadDeploymentIdPost(currentDeployment, { file }).then((res) => {
-            updateListFile();
-          });
-    //     });
-    //   };
+      FilesService.uploadFileFilesUploadDeploymentIdPost(currentDeployment, { file }).then((res) => {
+        updateListFile();
+      });
+      //     });
+      //   };
     }
     clear();
   };
@@ -87,13 +87,13 @@ const ImageList: FC<{}> = () => {
                   <input {...getInputProps()} />
                   <Grid container direction="column" alignItems='center'>
                     <Grid item>
-                      <CameraAltIcon fontSize="large"/>
+                      <CameraAltIcon fontSize="large" />
                     </Grid>
                     <Grid item>
-                      { dropZoneDisplayText()}
+                      {dropZoneDisplayText()}
                     </Grid>
                   </Grid>
-                  
+
                 </div>
               </section>
             )}
@@ -108,7 +108,7 @@ const ImageList: FC<{}> = () => {
         </>
       ) : (
         <>
-          <h2>deploiement inconnu</h2>
+          <p>deploiement inconnu</p>
         </>
       )}
     </>
