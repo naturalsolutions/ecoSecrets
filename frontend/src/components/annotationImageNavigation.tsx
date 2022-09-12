@@ -16,7 +16,7 @@ const AnnotationImageNavigation = (
     const { files, currentImage } = useMainContext();
 
     const imageIndex = () => {
-        return (files && files.findIndex((f) => f.id === currentImage)+1);
+        return (files && files.findIndex((f) => f.id === currentImage) + 1);
     }
 
     return (
@@ -26,41 +26,41 @@ const AnnotationImageNavigation = (
             justifyContent="space-around"
             alignItems="center"
             spacing={5}
-        > 
+        >
             <Grid item>
                 <IconButton>
-                    <PhotoIcon/>
+                    <PhotoIcon />
                 </IconButton>
                 <Switch />
                 <IconButton>
-                    <GridViewIcon fontSize='large'/>
+                    <GridViewIcon fontSize='large' />
                 </IconButton>
             </Grid>
-            
+
             <Grid item>
                 <IconButton>
-                    <FastRewindIcon fontSize='large'/>
+                    <FastRewindIcon fontSize='large' />
                 </IconButton>
-                <IconButton  onClick={() => props.previous()} >
-                    <SkipPreviousIcon fontSize='large'/>
+                <IconButton onClick={() => props.previous()} >
+                    <SkipPreviousIcon fontSize='large' />
                 </IconButton>
                 <IconButton>
-                    <Typography variant="h6" style={{backgroundColor: "#f5f5f5"}}>{imageIndex() + ' | ' + files.length}</Typography>
+                    <Typography component={"span"} variant="h6" style={{ backgroundColor: "#f5f5f5" }}>{imageIndex() + ' | ' + files.length}</Typography>
                 </IconButton>
-                <IconButton  onClick={() => props.next()}>
-                    < SkipNextIcon fontSize='large'/>
+                <IconButton onClick={() => props.next()}>
+                    < SkipNextIcon fontSize='large' />
                 </IconButton>
                 <IconButton >
-                    <FastForwardIcon fontSize='large'/>
+                    <FastForwardIcon fontSize='large' />
                 </IconButton>
-             </Grid >
+            </Grid >
 
             <Grid item>
                 <IconButton >
-                    <FullscreenIcon fontSize='large'/>
+                    <FullscreenIcon fontSize='large' />
                 </IconButton>
             </Grid>
-            
+
         </Grid>
     );
 };

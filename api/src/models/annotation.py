@@ -10,6 +10,10 @@ if TYPE_CHECKING:  # pragma: no cover
 
 class Annotations(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
+    classe: str
+    family: str
+    genus: str
+    order: str
     specie_id: int
     behavior: str
     sex: str

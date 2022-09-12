@@ -10,7 +10,12 @@ import AnnotationButtons from "./annotationButtons";
 import AnnotationSaveError from "./annotationSaveError";
 import "../css/annotation.css";
 import TabPanel from "./tabPanel";
+import ButtonStatus from "./common/buttonStatus";
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 
+
+const fieldsMandatory = ["specie", "classe", "order", "genus", "family"]
 const LayoutImageContainer = styled("div")({
   flexGrow: 1,
   display: "grid",
@@ -46,11 +51,11 @@ const AnnotationMainComponent = () => {
   } = useMainContext();
 
   let params = useParams();
-
+  const [isAnnoted, setIsAnnoted] = useState<undefined | boolean>(undefined)
   const [observations, setObservations] = useState<Annotation[]>([]);
-  const tmpObservation = { id: uuidv4(), specie: "", life_stage: "", biological_state: "", comment: "", behaviour: "", sex: "",  number: 0};
+  const tmpObservation = { id: uuidv4(), classe: "", order: "", family: "", genus: "", specie: "", life_stage: "", biological_state: "", comment: "", behaviour: "", sex: "", number: 0 };
   const [isMinimalObservation, setIsMinimalObservation] = useState(observations.length == 0)
-  
+
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event: SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -91,14 +96,14 @@ const AnnotationMainComponent = () => {
   };
 
   const previous = () => {
-      files.forEach((f, i) => {
-          if (f.id === currentImage) {
-              let ind = i === 0 ? (i = files.length) : i;
-              setCurrentImage(files[ind - 1].id);
-              
-              updateUrl(files[ind - 1].id);
-          }
-      });
+    files.forEach((f, i) => {
+      if (f.id === currentImage) {
+        let ind = i === 0 ? (i = files.length) : i;
+        setCurrentImage(files[ind - 1].id);
+
+        updateUrl(files[ind - 1].id);
+      }
+    });
   };
 
   const next = () => {
@@ -134,7 +139,7 @@ const AnnotationMainComponent = () => {
     if (isMinimalObservation) {
       setObservations([...observations, tmpObservation]);
     };
-    if (checked) { 
+    if (checked) {
       setChecked(false);
     };
     setIsMinimalObservation(false);
@@ -143,13 +148,13 @@ const AnnotationMainComponent = () => {
   const handleDeleteObservation = (id: string) => {
     let i = observations && observations.findIndex((obs) => obs.id === id);
     let tmp_obs = [...observations]
-    i !== -1 && tmp_obs.splice(i,1);
+    i !== -1 && tmp_obs.splice(i, 1);
     i !== -1 && setObservations(tmp_obs);
-    i === observations.length-1 && setIsMinimalObservation(true);
+    i === observations.length - 1 && setIsMinimalObservation(true);
   };
 
-  const [checked, setChecked] = useState<boolean>(observations.length === 0);
-  
+  const [checked, setChecked] = useState<boolean>(observations.length !== 0);
+
   const handleCheckChange = () => {
     if (!checked) {
       setObservations([]);
@@ -161,67 +166,104 @@ const AnnotationMainComponent = () => {
     };
     setChecked(!checked);
   };
-  
-  const handleFormChange = (id: string, params:string,  e: ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
-      let tmp_obs = [...observations]
-      tmp_obs.forEach(ob => {
-          if(ob.id === id){
-              ob[params] = e.target.value;
-              if (params === 'specie') {
-                ob["number"] = 1;
-                setIsMinimalObservation(true);
-              }
-          }
-      })
-      setObservations(tmp_obs);
+
+  const handleFormChange = (id: string, params: string, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let tmp_obs = [...observations]
+    console.log("tmp_obs", tmp_obs)
+    tmp_obs.forEach(ob => {
+      console.log("id obs", ob.id)
+      console.log("params", params)
+      if (ob.id === id) {
+        ob[params] = e.target.value;
+        if (["specie", "classe", "order", "genus"].includes(params) && ob[params] != " ") {
+          ob["number"] = 1;
+          setIsMinimalObservation(true);
+        }
+      }
+    })
+    setObservations(tmp_obs);
   };
-  
-  return (  
+
+  useEffect(() => {
+    let fieldToCheck: string[] = [];
+    console.log("obs inside useEffect change", observations)
+    for (var i = 0; i < observations.length; i++) {
+      console.log(observations[i]);
+
+      for (const property in observations[i]) {
+        // console.log(`${property}: ${object[property]}`);
+        if (fieldsMandatory.includes(property)) {
+          console.log("observations[i][property]", observations[i][property])
+          fieldToCheck.push(observations[i][property])
+        }
+      }
+
+    }
+    console.log("fieldToCheck", fieldToCheck)
+    const result = fieldToCheck.some(element => {
+      if (element !== '') {
+        return true
+      } else {
+        return false
+      }
+    });
+
+    console.log("is Annoted", result)
+    setIsAnnoted(result)
+  }, [handleCheckChange])
+  return (
     <LayoutImageContainer className="page">
 
       <LayoutImageImage>
-        <AnnotationImageDisplay image={image()} next={next} previous={previous}/>
+        <AnnotationImageDisplay image={image()} next={next} previous={previous} />
       </LayoutImageImage>
-      
+
       <LayoutImageForm className="annotations">
         <Paper elevation={1} className='paperAnnotations'>
           <Stack spacing={2} className='stackAnnotations'>
-            <Typography variant="h3">Annotation</Typography>
-            <Tabs 
-              value={tabValue} 
-              aria-label="basic tabs example" 
+            <Typography component={"span"} variant="h3">Annotation</Typography>
+            <Tabs
+              value={tabValue}
+              aria-label="basic tabs example"
               variant='fullWidth'
-              onChange={handleTabChange} 
+              onChange={handleTabChange}
             >
               <Tab label="Observation(s)" />
               <Tab label="Métadonnées" />
             </Tabs>
-            
-            <TabPanel valueTab={tabValue} index={0}>
-              <FormControlLabel 
-                control={
-                  <Switch 
-                    checked={checked}
-                    onChange={handleCheckChange}/>
-                } 
-                label="Média vide" 
-              />
 
-              <Divider/>
+            <TabPanel valueTab={tabValue} index={0}>
+              <div className="info-annotation-ctn">
+                {isAnnoted ?
+                  <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={"Annoté et validé manuellement"} stylClassButton="valid" />
+                  :
+                  <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={"Au moins 1 observation non noté"} stylClassButton="warning" />
+                }
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={checked}
+                      onChange={handleCheckChange} />
+                  }
+                  label="Média vide"
+                />
+              </div>
+
+              <Divider />
 
               {observations.map((observation) => (
-                <AnnotationObservationForm observation={observation} handleFormChange={handleFormChange} handleCheckChange={handleCheckChange} handleDeleteObservation={handleDeleteObservation}/>
-              )) } 
+                <AnnotationObservationForm key={observation.id} observation={observation} handleFormChange={handleFormChange} handleCheckChange={handleCheckChange} handleDeleteObservation={handleDeleteObservation} />
+              ))}
             </TabPanel>
 
             <TabPanel valueTab={tabValue} index={1}>
               Formulaire de métadonnées à venir
             </TabPanel>
 
-            <Divider/>
-            
-            <AnnotationButtons 
-              saveandnext={saveandnext} 
+            <Divider />
+
+            <AnnotationButtons
+              saveandnext={saveandnext}
               handleAddObservation={handleAddObservation}
             />
 
@@ -229,7 +271,7 @@ const AnnotationMainComponent = () => {
         </Paper>
       </LayoutImageForm>
 
-      <AnnotationSaveError 
+      <AnnotationSaveError
         openSaveErrorDialog={openSaveErrorDialog} handleCloseSaveErrorDialog={handleCloseSaveErrorDialog}
       />
     </LayoutImageContainer>
