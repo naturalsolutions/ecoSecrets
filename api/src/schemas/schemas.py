@@ -6,6 +6,7 @@ from sqlmodel import Field
 
 
 class Annotation(BaseModel):
+    id: str
     specie: str
     life_stage: str
     biological_state: str
