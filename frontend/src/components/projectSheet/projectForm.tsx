@@ -96,7 +96,7 @@ const ProjectForm = () => {
                         direction='row'
                         spacing={15}
                     >
-                        <Grid container lg={6} spacing={3}>
+                        <Grid container spacing={3}>
                         <Grid item lg={12}>
                             <TextField 
                             id="name"

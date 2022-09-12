@@ -1,5 +1,5 @@
-import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, OutlinedInput, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Button, DialogTitle, Divider, FilledInput, FormControlLabel, Grid, InputAdornment, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent, Stack, Switch, TextField, Typography } from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -10,71 +10,82 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
 import Dropzone from "react-dropzone";
+import { Deployments, DeploymentsService } from "../client";
 
 const deployment_img = undefined;
 const siteList = [1, 2, 3] //TO DO: get all sites
 const deviceList = [1, 2, 3] //TO DO: get all available devices
 const supportList = ["Support type 1", "Support type 2"]
-const featureList = ["Caractéristique A", "Caractéristique B", "Caractéristique C"]
-const baitList = ["Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z"]
+const featureList = ["fruitin tree", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
+const baitList = ["aurélie", "Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z"]
 
 const DeploymentForm = (
-    {isNewDeployment=false}
+    props
 ) => {
 
-    const {currentProject, setCurrentProject, tmpDeploymentData, setTmpDeploymentData, currentDeployment, setCurrentDeployment, deploymentData} = useMainContext();
-
+    const {setCurrentProject, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData} = useMainContext();
     let params = useParams();
-    useEffect(() => {
-        (async () => {
-            setCurrentProject(Number(params.projectId));
-            setCurrentDeployment(Number(params.deploymentId));
-        })();
-    }, []);
+    const [tmpDeploymentData, setTmpDeploymentData] = useState<Deployments>({name:'', bait:'', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: ''});
 
     useEffect(() => {
-        (async () => {
-            console.log("deploymentData");
-            console.log(deploymentData);
-            // if(deploymentData) {
-            //     console.log('ici');
-            //     setTmpDeploymentData(deploymentData);
-            // }
-            // else {
-            //     console.log('la');
-            //     setTmpDeploymentData({...tmpDeploymentData, project_id: currentProject});
-            // };
-            console.log("tmpDeploymentData");
-            console.log(tmpDeploymentData);
-        })();
-    }, []);
+        setCurrentProject(Number(params.projectId));
+        setCurrentDeployment(Number(params.deploymentId));
+    });
+    
+    useEffect(() => {
+        !props.isNewDeployment &&
+            setTmpDeploymentData(deploymentData);
+    }, [deploymentData]);
 
     const handleFormChange = (
         params:string,  
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: ChangeEvent< HTMLInputElement| HTMLTextAreaElement >
     ) => {
         let updated_deployment_data = {...tmpDeploymentData};
         updated_deployment_data[params] = e.target.value;
         setTmpDeploymentData(updated_deployment_data);
-        console.log(tmpDeploymentData);
     };
 
     const [isEditable, setIsEditable] = useState(false);
+
     const handleEdit = () => {
         if(isEditable) {
             setIsEditable(false); 
-            tmpDeploymentData(deploymentData);
+            setTmpDeploymentData(deploymentData);
         } 
         else setIsEditable(true);
     };
     const handleSave = () => {
-        console.log("save click");
-        console.log(tmpDeploymentData);
-        // DeploymentsService.
-        // createDeploymentDeploymentsPost(currentDeploymentData);
-        isEditable ? setIsEditable(false) : setIsEditable(true);
+
+        if (props.isNewDeployment) {
+            // POST
+            DeploymentsService
+            .createDeploymentDeploymentsPost(tmpDeploymentData)
+            .then(() => {
+                updateProjectSheetData();
+                props.handleCloseNewDeployment();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+        else {
+            // PUT
+            DeploymentsService.
+            updateDeploymentDeploymentsDeploymentIdPut(deploymentData.id, tmpDeploymentData);
+            setDeploymentData(tmpDeploymentData);
+            setCurrentDeployment(Number(params.deploymentId));
+            isEditable ? setIsEditable(false) : setIsEditable(true);
+        }
     };
 
+    const handleDateChange =(params,  d) => {
+        let updated_deployment_data = {...tmpDeploymentData};
+        updated_deployment_data[params] = d;
+        setTmpDeploymentData(updated_deployment_data);
+    };
+
+    // To update when database will be fixed
     const [automatic, setAutomatic] = useState(false);
     const handleAutomaticChange = () => {
         setAutomatic(!automatic);
@@ -105,19 +116,6 @@ const DeploymentForm = (
         setTriggerFreq(Number(event.target.value));
     };
 
-    const [startDateValue, setStartDateValue] = useState<Date | null>(
-        new Date(),
-    );
-    const [endDateValue, setEndDateValue] = useState<Date | null>(
-        new Date(),
-    );
-    
-    const handleDateChange = (params:string, newValue: Date | null) => {
-        let updated_deployment_data = {...tmpDeploymentData};
-        newValue !== null && (updated_deployment_data[params] = newValue.toISOString().slice(0, 10));
-        setTmpDeploymentData(updated_deployment_data);
-    };
-
     return(
         <form>
             <Stack
@@ -125,8 +123,8 @@ const DeploymentForm = (
                 spacing={5}
             >   
                 {
-                    !isNewDeployment &&
-                    <Typography variant="h4">
+                    !props.isNewDeployment &&
+                    <Typography component={'span'} variant="h4">
                         {deploymentData?.name}
                     </Typography>
                 }
@@ -151,18 +149,19 @@ const DeploymentForm = (
                                 // style={{"height": "100%"}}
                             >
                                 {({ getRootProps, getInputProps }) => (
-                                <section id="dropzone">
-                                    <div {...getRootProps()}>
-                                    <input {...getInputProps()} />
-                                        Ajouter une photo du déploiement
-                                    </div>
-                                </section>
+                                    <section id="dropzone">
+                                        <div {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                            Ajouter une photo du déploiement
+                                        </div>
+                                    </section>
                                 )}
                             </Dropzone>
                         }
                     </Grid>
 
                     <Grid 
+                        item
                         lg={5}
                         style={{backgroundColor: "#98d4b7"}}
                         height={200}
@@ -178,37 +177,42 @@ const DeploymentForm = (
                     </DialogTitle>
 
                     <Grid container spacing={2}>
-                        {(isNewDeployment || isEditable) &&
-                            <Grid item  xs={12} sm={12} md={8} lg={8}>
+                        {(props.isNewDeployment || isEditable) &&
+                            <Grid item xs={12} sm={12} md={8} lg={8}>
                                 <TextField 
                                     id="name"
                                     name="name"
                                     label="Nom du déploiement"
-                                    value={tmpDeploymentData?.name}
+                                    required
+                                    defaultValue={deploymentData?.name}
                                     onChange={(e) => handleFormChange("name", e)}
                                     size="small"
                                     variant="filled"
-                                    fullWidth 
+                                    fullWidth
+                                    error={tmpDeploymentData?.name === ""}
+                                    helperText={tmpDeploymentData?.name === "" &&"Champs requis"}
                                 />
                             </Grid>
                         }
                         
-                        <Grid item  xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField 
                                 id="site_id"
                                 name="site_id"
                                 label="Site d'étude"
-                                value={tmpDeploymentData?.site_id}
+                                defaultValue=""
+                                select
+                                value={tmpDeploymentData?.site_id?.toString()}
                                 onChange={(e) => handleFormChange("site_id", e)}
-                                select 
-                                variant="filled"
-                                // type="search"
                                 size="small"
+                                variant="filled"
                                 fullWidth
-                                disabled={!isNewDeployment && !isEditable}
+                                disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {siteList.map((siteOption) => (
-                                    <MenuItem key={siteOption} value={siteOption}>
+                                    <MenuItem 
+                                        key={siteOption} 
+                                        value={siteOption}>
                                         {siteOption}
                                     </MenuItem>
                                 ))}
@@ -216,20 +220,22 @@ const DeploymentForm = (
                         </Grid>
                         <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField 
-                                id="device_id" 
-                                name="device_id" 
+                                id="device_id"
+                                name="device_id"
                                 label="Dispositif"
-                                value={tmpDeploymentData?.device_id}
+                                defaultValue=""
+                                select
+                                value={tmpDeploymentData?.device_id?.toString()}
                                 onChange={(e) => handleFormChange("device_id", e)}
-                                select 
-                                variant="filled"
-                                type="search"
                                 size="small"
+                                variant="filled"
                                 fullWidth
-                                disabled={!isNewDeployment && !isEditable}
+                                disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {deviceList.map((deviceOption) => (
-                                    <MenuItem key={deviceOption} value={deviceOption}>
+                                    <MenuItem 
+                                        key={deviceOption} 
+                                        value={deviceOption}>
                                         {deviceOption}
                                     </MenuItem>
                                 ))}
@@ -248,7 +254,7 @@ const DeploymentForm = (
                                 <Button 
                                     variant="contained" 
                                     startIcon={<AddCircleIcon />} 
-                                    style={{backgroundColor: "#BCAAA4"}}
+                                    color="secondary"
                                     size="small"
                                 >
                                     Ajouter un site
@@ -256,44 +262,45 @@ const DeploymentForm = (
                             </Grid>
                         </Grid>
 
-                        <Grid item  xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DesktopDatePicker
                                     label="Date de début"
                                     inputFormat="dd/MM/yyyy"
-                                    value={tmpDeploymentData?.start_date}
+                                    value={tmpDeploymentData?.start_date || null}
                                     onChange={(date) => handleDateChange("start_date", date)}
                                     renderInput={(params) => <TextField size="small" variant="filled" {...params} />}
-                                    disabled={!isNewDeployment && !isEditable}
+                                    disabled={!props.isNewDeployment && !isEditable}
                                 />
                             </LocalizationProvider>
                         </Grid>
 
-                        <Grid item  xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DesktopDatePicker
                                     label="Date de fin"
                                     inputFormat="dd/MM/yyyy"
-                                    value={tmpDeploymentData?.end_date}
+                                    value={tmpDeploymentData?.end_date || null}
                                     onChange={(date) => handleDateChange("end_date", date)}
                                     renderInput={(params) => <TextField size="small" variant="filled" {...params} />}
-                                    disabled={!isNewDeployment && !isEditable}
+                                    disabled={!props.isNewDeployment && !isEditable}
                                 />
                             </LocalizationProvider>
                         </Grid>
 
-                        <Grid item  xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField 
                                 id="support"
                                 name="support"
                                 label="Support d'accroche"
+                                defaultValue=""
                                 select
-                                // value={currentDeploymentData?.support}
+                                // value={tmpDeploymentData?.support}
                                 // onChange={(e) => handleFormChange("support", e)}
                                 variant="filled"
                                 size="small"
                                 fullWidth
-                                disabled={!isNewDeployment && !isEditable}
+                                disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {supportList.map((supportOption) => (
                                     <MenuItem key={supportOption} value={supportOption}>
@@ -303,18 +310,19 @@ const DeploymentForm = (
                             </TextField>
                         </Grid>
 
-                        <Grid item  xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField 
                                 id="feature"
                                 name="feature"
                                 label="Caractéristique"
+                                defaultValue=""
                                 select
                                 value={tmpDeploymentData?.feature}
                                 onChange={(e) => handleFormChange("feature", e)}
-                                variant="filled"
                                 size="small"
+                                variant="filled"
                                 fullWidth
-                                disabled={!isNewDeployment && !isEditable}
+                                disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {featureList.map((featureOption) => (
                                     <MenuItem key={featureOption} value={featureOption}>
@@ -325,36 +333,41 @@ const DeploymentForm = (
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <OutlinedInput
+                            <TextField
+                                id="height"
                                 label="Hauteur du dispositif"
+                                name="height"
                                 // value={currentDeploymentData?.height}
-                                // onChange={handleChange()}
-                                endAdornment={<InputAdornment position="end">cm</InputAdornment>}
-                                inputProps={{
-                                    step: 0.1,
-                                    min: 0,
-                                    type: 'number',
-                                    "aria-label": "Hauteur du dispositif",
-                                    variant: "filled"
+                                // onChange={handleChange}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">cm</InputAdornment>
+                                    )
                                 }}
+                                inputProps={{
+                                    type: "number",
+                                    step: "0.1",
+                                    min: "0"}}
                                 size="small"
+                                variant="filled"
                                 fullWidth
-                                disabled={!isNewDeployment && !isEditable}
+                                disabled={!props.isNewDeployment && !isEditable}
                             />
                         </Grid>
 
-                        <Grid item  xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField 
                                 id="bait"
                                 name="bait"
                                 label="Appât"
+                                defaultValue=""
                                 select
                                 value={tmpDeploymentData?.bait}
                                 onChange={(e) => handleFormChange("bait", e)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
-                                disabled={!isNewDeployment && !isEditable}
+                                disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {baitList.map((baitOption) => (
                                     <MenuItem 
@@ -370,11 +383,11 @@ const DeploymentForm = (
                 </Paper>
                 
                 <Stack
-                    direction={isNewDeployment?"column":"row"}
+                    direction={props.isNewDeployment?"column":"row"}
                     justifyContent="center"
                     spacing={2}
                 >
-                    <Grid item  xs={12} sm={12} md={isNewDeployment?12:6} lg={isNewDeployment?12:6}>
+                    <Grid item xs={12} sm={12} md={props.isNewDeployment?12:6} lg={props.isNewDeployment?12:6}>
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
                                 <TurnedInNotTwoToneIcon style={{verticalAlign:"middle"}}/>
@@ -382,16 +395,16 @@ const DeploymentForm = (
                             </DialogTitle>
 
                             <Grid container spacing={3}>
-                                <Grid item  xs={12} sm={12} md={12} lg={12}>
+                                <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <FormControlLabel 
                                         control={<Switch />} 
                                         onChange={handleAutomaticChange}
                                         label="Automatique" 
-                                        disabled={!isNewDeployment && !isEditable}
+                                        disabled={!props.isNewDeployment && !isEditable}
                                     />
                                 </Grid>
 
-                                <Grid item  xs={12} sm={12} md={12} lg={12}>
+                                <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
                                         label="Nombre d'image par séquence" 
                                         value={autoNumber}
@@ -405,11 +418,11 @@ const DeploymentForm = (
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!isNewDeployment && !isEditable) || !automatic}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !automatic}
                                     />
                                 </Grid>
 
-                                <Grid item  xs={12} sm={12} md={12} lg={12}>
+                                <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
                                         label="Fréquence" 
                                         value={autoFreq}
@@ -424,14 +437,14 @@ const DeploymentForm = (
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!isNewDeployment && !isEditable) || !automatic}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !automatic}
                                     />
                                 </Grid>
                             </Grid>
                         </Paper>
                     </Grid>
 
-                    <Grid item  xs={12} sm={12} md={isNewDeployment?12:6} lg={isNewDeployment?12:6}>
+                    <Grid item xs={12} sm={12} md={props.isNewDeployment?12:6} lg={props.isNewDeployment?12:6}>
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
                                 <TurnedInNotTwoToneIcon style={{verticalAlign:"middle"}}/>
@@ -440,15 +453,15 @@ const DeploymentForm = (
 
                             <Grid container spacing={3}>
                             
-                                <Grid item  xs={12} sm={12} md={12} lg={12}>
+                                <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <FormControlLabel 
                                         control={<Switch />} 
                                         onChange={handleTriggerChange}
                                         label="Déclenchement" 
-                                        disabled={!isNewDeployment && !isEditable}
+                                        disabled={!props.isNewDeployment && !isEditable}
                                     />
                                 </Grid>
-                                <Grid item  xs={12} sm={12} md={6} lg={6}>
+                                <Grid item xs={12} sm={12} md={6} lg={6}>
                                     <TextField 
                                         label="Nombre d'image par séquence"
                                         value={triggerNumber}
@@ -456,13 +469,12 @@ const DeploymentForm = (
                                         inputProps={{
                                             step: 1,
                                             min: 1,
-                                            type: 'number',
-                                            'aria-labelledby': 'input-slider',
+                                            type: 'number'
                                         }}
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!isNewDeployment && !isEditable) || !trigger}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={6} lg={6}>
@@ -472,10 +484,10 @@ const DeploymentForm = (
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!isNewDeployment && !isEditable) || !trigger}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger}
                                     />
                                 </Grid>
-                                <Grid item  xs={12} sm={12} md={6} lg={6}>
+                                <Grid item xs={12} sm={12} md={6} lg={6}>
                                     <TextField 
                                         label="Fréquence"
                                         value={triggerFreq}
@@ -484,13 +496,12 @@ const DeploymentForm = (
                                             step: 0.05,
                                             min: 0.05,
                                             max: 1,
-                                            type: 'number',
-                                            'aria-labelledby': 'input-slider',
+                                            type: 'number'
                                         }}
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!isNewDeployment && !isEditable) || !trigger}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger}
                                     />
                                 </Grid>
                             </Grid>
@@ -503,46 +514,59 @@ const DeploymentForm = (
                         id="description"
                         name="description"
                         label="Description"
+                        defaultValue=""
                         value={tmpDeploymentData?.description}
                         onChange={(e) => handleFormChange("description", e)}
                         variant="filled"
                         multiline
-                        rows={3}
+                        rows={4}
                         fullWidth
-                        disabled={!isNewDeployment && !isEditable}
+                        disabled={!props.isNewDeployment && !isEditable}
                     />
                 </Paper>
                 
-                {!isNewDeployment &&
-                    <Stack 
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        spacing={2}
-                    >
-                        <Button
-                            onClick={handleEdit}
-                            size="small" 
-                            variant="contained" 
-                            style={{backgroundColor: "#2FA37C"}}
+                {!props.isNewDeployment ? 
+                    (
+                        <Stack 
+                            direction="row"
+                            justifyContent="flex-end"
+                            alignItems="center"
+                            spacing={2}
                         >
-                            {
-                                isEditable ? 
-                                <><CancelIcon /> Annuler</> : 
-                                <><EditIcon /> Modifier</>
-                            }
-                        </Button>
-                        <Button 
-                            onClick={handleSave}
-                            disabled={!isEditable}
-                            size="small" 
-                            variant="contained" 
-                            style={{backgroundColor: "#BCAAA4"}}
-                        >
-                            <SaveIcon />
-                            Sauvegarder
-                        </Button>
-                    </Stack>
+                            <Button
+                                onClick={handleEdit}
+                                size="small" 
+                                variant="contained" 
+                                color="secondary"
+                            >
+                                {
+                                    isEditable ? 
+                                    <><CancelIcon /> Annuler</> : 
+                                    <><EditIcon /> Modifier</>
+                                }
+                            </Button>
+                            <Button 
+                                onClick={handleSave}
+                                disabled={!isEditable}
+                                size="small" 
+                                variant="contained" 
+                                color="primary"
+                            >
+                                <SaveIcon />
+                                Sauvegarder
+                            </Button>
+                        </Stack>
+                    ) : (
+                        <Stack justifyContent="flex-end" direction="row">
+                            <Button 
+                                onClick={handleSave} 
+                                color="primary"
+                                variant="contained"
+                            >
+                                Enregistrer
+                            </Button>
+                        </Stack>
+                    )
                 }
             </Stack>
         </form>

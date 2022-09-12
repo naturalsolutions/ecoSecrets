@@ -15,7 +15,7 @@ import { Link, useParams } from "react-router-dom";
 import {Grid, TextField} from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
 import { ProjectsService } from '../../client';
-import NewDeploymentModale from '../newDeploymentModale';
+import DeploymentCreationModale from '../deploymentCreationModale';
 
 
 const ProjectSheet = () => {
@@ -67,7 +67,7 @@ const ProjectSheet = () => {
                         <Typography variant="h4" color="#000000" component="div">
                             Déploiements ({projectSheetData.deployments.length})
                         </Typography>
-                        <NewDeploymentModale />
+                        <DeploymentCreationModale />
                     </Stack>
                     <ProjectDeployments/>
             </Stack>
