@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { DeviceBase } from '../models/DeviceBase';
+import type { DeviceMenu } from '../models/DeviceMenu';
 import type { Devices } from '../models/Devices';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -118,6 +119,31 @@ export class DevicesService {
             url: '/devices/{device_id}',
             path: {
                 'device_id': deviceId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Read Menu Devices
+     * @param skip
+     * @param limit
+     * @returns DeviceMenu Successful Response
+     * @throws ApiError
+     */
+    public static readMenuDevicesDevicesMenuGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<Array<DeviceMenu>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/devices/menu/',
+            query: {
+                'skip': skip,
+                'limit': limit,
             },
             errors: {
                 404: `Not found`,

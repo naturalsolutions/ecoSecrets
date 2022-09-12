@@ -8,6 +8,9 @@ import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";
 import DeploymentSheet from "./pages/deploymentSheet";
 import DeviceMenuPage from "./pages/deviceMenu";
+import DeviceSheet from "./components/deviceSheet/deviceSheetMain";
+import DeviceSheetPage from "./pages/deviceSheet";
+import ProjectSheetPage from "./pages/projectSheet";
 import {theme} from "./theme";
 import { ThemeProvider } from "@mui/material";
 
@@ -21,6 +24,7 @@ function App() {
             <Route path="/project/:projectId" element={<Project />}></Route>
             <Route path="/projectsheet/:projectId" element={<ProjectSheet />}></Route>
             <Route path="/devices/" element={<DeviceMenuPage />}></Route>
+            <Route path="/devices/:deviceId" element={<DeviceSheetPage />}></Route>
             <Route
               path="deployment/:deploymentId"
               element={<Deployment />}

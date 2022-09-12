@@ -1,8 +1,9 @@
 import { AppBar, Box, Grid, IconButton, Stack, Toolbar, Typography } from "@mui/material";
-import { useMainContext } from "../../contexts/mainContext";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Filters from './filters';
 import DevicesTable from "./devicesTable";
+import DeviceModal from "./deviceModal";
+import { useRef, useState } from "react";
 
 const DeviceMenu = () => {
 
@@ -11,6 +12,7 @@ const DeviceMenu = () => {
             direction="column"
             spacing={3}
         >
+            
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static" color='transparent'>
                     <Toolbar variant="dense">
@@ -22,10 +24,7 @@ const DeviceMenu = () => {
                         </Typography>
                         
                     </Grid>
-                    
-                        <IconButton aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
-                            <AddCircleIcon />
-                        </IconButton>
+                        <DeviceModal/>
  
                     </Toolbar>
                 </AppBar>
@@ -39,6 +38,7 @@ const DeviceMenu = () => {
                 <Typography variant="h4" color="#000000" component="div">
                    Stock
                 </Typography>
+                <DevicesTable/>
                 <Grid container justifyContent="center" alignItems='center'>
                     <Grid item justifyContent="center" height={400} width={1000} spacing={1} style={{backgroundColor: "#D9D9D9"}}>
                         {/* Image du projet ou dropzone */}
@@ -47,7 +47,7 @@ const DeviceMenu = () => {
                         </Typography>
                     </Grid>
                 </Grid>
-                <DevicesTable/>
+                
             </Stack>   
         </Stack>
     );

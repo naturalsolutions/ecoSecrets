@@ -74,6 +74,7 @@ def init_db():
                 description="gcvsusbck",
                 detection_area=1163,
                 status="blabla",
+                operating_life=2000,
             ),
         )
 

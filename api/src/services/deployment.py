@@ -61,3 +61,15 @@ def delete_deployment(db: Session, id: int):
 
 def get_project_deployments(db: Session, id: int):
     return db.query(Deployments).filter(Deployments.project_id == id).all()
+
+
+def get_device_deployments(
+    db: Session, device_id: int, skip: int = 0, limit: int = 100
+):
+    return (
+        db.query(Deployments)
+        .filter(Deployments.device_id == device_id)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
