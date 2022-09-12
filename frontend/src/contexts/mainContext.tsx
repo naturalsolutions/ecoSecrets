@@ -7,7 +7,8 @@ import { Stats } from "../client/models/Stats";
 import { HomeService } from "../client/services/HomeService";
 import { StatsProject } from "../client/models/StatsProject";
 import { ProjectSheet } from "../client/models/ProjectSheet";
-import { DeploymentsService } from "../client";
+import { Devices, DevicesService } from "../client";
+import { DeviceMenu } from "../client/models/DeviceMenu";
 
 export interface MainContextProps {
   name?: string;
@@ -29,6 +30,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [globalStats, setGlobalStats] = useState<Stats>();
   const [projectsStats, setProjectsStats] = useState<StatsProject[]>();
   const [projectSheetData, setProjectSheetData] = useState<ProjectSheet>();
+  const [devices, setDevices] = useState<Devices[]>([]);
+  const [deviceMenu, setDeviceMenu] = useState<DeviceMenu[]>([]);
+  const [currentDevice, setCurrentDevice] = useState<number | null>(null);
   
   
   const updateProjects = () => {
@@ -83,6 +87,25 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
+  const updateDevices = () => {
+    DevicesService.readDevicesDevicesGet()
+      .then((devices) => {
+        setDevices(devices);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const updateDeviceMenu = () => {
+    DevicesService.readMenuDevicesDevicesMenuGet()
+      .then((deviceMenu) => {
+        setDeviceMenu(deviceMenu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const project = (): ProjectWithDeployment | undefined => {
     return projects.find((p) => p.id === currentProject);
   };
@@ -98,11 +121,17 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
+  const device = (): DeviceMenu | undefined => {
+    return deviceMenu.find((d) => d.id === currentDevice);
+  };
+
   useEffect(() => {
     (async () => {
       updateProjects();
       updateGlobalStats();
       updateProjectsStats();
+      updateDevices();
+      updateDeviceMenu();
     })();
   }, []);
 
@@ -149,6 +178,12 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         updateProjectSheetData,
         updateProjects,
         updateGlobalStats,
+        devices, 
+        updateDevices,
+        deviceMenu,
+        updateDeviceMenu,
+        setCurrentDevice,
+        device,
         deploymentData,
         setDeploymentData,
         updateDeploymentData

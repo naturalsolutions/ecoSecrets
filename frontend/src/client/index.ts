@@ -17,6 +17,7 @@ export type { DeploymentForProjectSheet } from './models/DeploymentForProjectShe
 export type { Deployments } from './models/Deployments';
 export type { DeploymentWithFile } from './models/DeploymentWithFile';
 export type { DeviceBase } from './models/DeviceBase';
+export type { DeviceMenu } from './models/DeviceMenu';
 export type { Devices } from './models/Devices';
 export type { Files } from './models/Files';
 export type { HTTPValidationError } from './models/HTTPValidationError';
@@ -24,6 +25,7 @@ export type { ProjectBase } from './models/ProjectBase';
 export type { ProjectSheet } from './models/ProjectSheet';
 export type { ProjectWithDeployment } from './models/ProjectWithDeployment';
 export type { ProjectWithDeploymentAndFiles } from './models/ProjectWithDeploymentAndFiles';
+export type { ReadDeployment } from './models/ReadDeployment';
 export type { ReadProject } from './models/ReadProject';
 export type { SiteBase } from './models/SiteBase';
 export type { Sites } from './models/Sites';

@@ -1,13 +1,9 @@
-import { Box, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { Box, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
-const Filters = () => {
+const Filters = (props) => {
+    console.log(props);
 
-    const sites = {
-        'first' :{'id': 1, "name": "MonSite", "projet": "MonProjet", "img":'200'},
-        'second':{'id': 2, "name": "MonSite2", "projet": "", "img":'900'},
-        'third':{'id': 2, "name": "MonSite3", "projet": "MonProjet3", "img":'900'},
-    }
     return (
 
         <Box
@@ -25,7 +21,6 @@ const Filters = () => {
                     select
                     id="projects"
                     label="Projet"
-                    defaultValue="Rechercher"
                     variant="outlined" 
                     type="search"
                 />
@@ -35,7 +30,6 @@ const Filters = () => {
                     fullWidth
                     id="deploys"
                     label="Déploiement"
-                    defaultValue="Rechercher"
                     variant="outlined" 
                     type="search"
                 />
@@ -44,7 +38,6 @@ const Filters = () => {
                     fullWidth
                     id="sites"
                     label="Site"
-                    defaultValue="Rechercher"
                     variant="outlined" 
                     type="search"
                 />
@@ -53,7 +46,6 @@ const Filters = () => {
                     fullWidth
                     id="devices"
                     label="Dispositif"
-                    defaultValue="Rechercher"
                     variant="outlined" 
                     type="search"
                 />
@@ -62,7 +54,6 @@ const Filters = () => {
                     fullWidth
                     id="status"
                     label="Statut"
-                    defaultValue="Rechercher"
                     variant="outlined" 
                     type="search"
                 />

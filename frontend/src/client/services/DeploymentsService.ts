@@ -4,6 +4,7 @@
 import type { DeploymentBase } from '../models/DeploymentBase';
 import type { Deployments } from '../models/Deployments';
 import type { DeploymentWithFile } from '../models/DeploymentWithFile';
+import type { ReadDeployment } from '../models/ReadDeployment';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -163,6 +164,36 @@ export class DeploymentsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/files/',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Read Device Deployments
+     * @param deviceId
+     * @param skip
+     * @param limit
+     * @returns ReadDeployment Successful Response
+     * @throws ApiError
+     */
+    public static readDeviceDeploymentsDeploymentsDeviceDeviceIdGet(
+        deviceId: number,
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<Array<ReadDeployment>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/deployments/device/{device_id}',
+            path: {
+                'device_id': deviceId,
+            },
             query: {
                 'skip': skip,
                 'limit': limit,

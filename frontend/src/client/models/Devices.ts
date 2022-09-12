@@ -10,6 +10,7 @@ export type Devices = {
     description: string;
     detection_area: number;
     status: string;
+    operating_life: number;
     exif_id?: number;
     id: number;
 };

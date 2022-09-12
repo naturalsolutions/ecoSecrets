@@ -4,6 +4,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import Chip from "@mui/material/Chip";
 import { useMainContext } from "../contexts/mainContext";
 import { FC } from "react";
+import { useLocation } from "react-router-dom";
+
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -35,19 +37,25 @@ const StyledActiveBreadcrumb = styled(Chip)(({ theme }) => {
 }) as typeof Chip;
 
 const NavigationPath: FC<{}> = () => {
-  const { project, deploymentData, currentImage } = useMainContext();
+  const { project, deployment, currentImage, device } = useMainContext();
+  const location = useLocation();
+  console.log(location.pathname);
 
-  const breadcrumbs = () => {
-    if (currentImage && project() && deploymentData) {
-      return [
-        <StyledBreadcrumb
+  const accueil = () => {
+    return (<StyledBreadcrumb
           component={Link}
           href="/"
           key="accueil"
           underline="hover"
           label="Accueil"
           icon={<HomeIcon fontSize="small" />}
-        />,
+        />)
+  }
+
+  const breadcrumbs = () => {
+    if (currentImage && project() && deployment()) {
+      return [
+        accueil(),
         <StyledBreadcrumb
           component={Link}
           href={`/projectsheet/${project().id}`}
@@ -66,14 +74,7 @@ const NavigationPath: FC<{}> = () => {
       ];
     } else if (deploymentData) {
       return [
-        <StyledBreadcrumb
-          component={Link}
-          href="/"
-          key="accueil"
-          underline="hover"
-          label="Accueil"
-          icon={<HomeIcon fontSize="small" />}
-        />,
+        accueil(),
         <StyledBreadcrumb
           component={Link}
           href={`/projectsheet/${project().id}`}
@@ -85,19 +86,32 @@ const NavigationPath: FC<{}> = () => {
       ];
     } else if (project()) {
       return [
-        <StyledBreadcrumb
-          component={Link}
-          href="/"
-          key="accueil"
-          underline="hover"
-          label="Accueil"
-          icon={<HomeIcon fontSize="small" />}
-        />,
+        accueil(),
         <StyledActiveBreadcrumb key="project" label={project().name} />,
       ];
-    } else {
+    } 
+    else if (device()) {
       return [
+        accueil(),
         <StyledBreadcrumb
+          component={Link}
+          href={`/devices/`}
+          underline="hover"
+          key="devices"
+          label='Dispositifs'
+        />,
+        <StyledActiveBreadcrumb key="devices" label={device().name} />,
+      ];
+    } 
+    else if (location.pathname == '/devices/') {
+      return [
+        accueil(),
+        <StyledActiveBreadcrumb key="devices" label='Dispositifs' />,
+      ];
+    }
+    else {
+      return [
+        <StyledActiveBreadcrumb
           component={Link}
           href="/"
           key="accueil"

@@ -4,7 +4,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from src.connectors.database import get_db
-from src.models.deployment import DeploymentBase, Deployments, DeploymentWithFile
+from src.models.deployment import (
+    DeploymentBase,
+    Deployments,
+    DeploymentWithFile,
+    ReadDeployment,
+)
 from src.services import deployment
 
 router = APIRouter(
@@ -66,3 +71,12 @@ def read_deployments_with_files(
 ):
     deployments = deployment.get_deployments(db, skip=skip, limit=limit)
     return deployments
+
+
+@router.get("/device/{device_id}", response_model=List[ReadDeployment])
+def read_device_deployments(
+    device_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+):
+    return deployment.get_device_deployments(
+        db=db, device_id=device_id, skip=skip, limit=limit
+    )

@@ -1,4 +1,7 @@
-import { Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Alert, AlertTitle, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Link, Paper, Stack, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
+import { useMainContext } from "../../contexts/mainContext";
+import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
+import { useState } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.body}`]: {
@@ -18,35 +21,114 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const DevicesTable = () => {
 
-    const devices = [
-        {'id': 1, "name": "MonDispositif", "projet": "MonProjet", "img":'200'},
-        {'id': 2, "name": "MonDispositif2", "projet": "", "img":'900'},
-        {'id': 2, "name": "MonDispositif3", "projet": "MonProjet3", "img":'900'},
-    ]
+  const {deviceMenu} = useMainContext();
+  const [open, setOpen] = useState(false);
+  
+
+  const handleClickOpen = () => {
+    console.log('click');
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [page, setPage] = useState(0);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - deviceMenu.length) : 0;
+
         
     return (
+      deviceMenu.length !== 0 ?
+      <Stack 
+        spacing={2}
+        justifyContent="center"
+      > 
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 500 }} aria-label="customized table">
+            <Table sx={{ minWidth: 500 }} size="small" aria-label="customized table">
                 <TableHead style={{backgroundColor: "#CCDFD9"}}>
                 <TableRow>
                     <StyledTableCell align="center">Nom</StyledTableCell>
-                    <StyledTableCell align="center">Projet</StyledTableCell>
+                    <StyledTableCell align="center">Statut</StyledTableCell>
                     <StyledTableCell align="center">Nombre de médias</StyledTableCell>
+                    <StyledTableCell align="center">Supprimer</StyledTableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                    {devices.length !==0 ? devices.map((row) => (
+                    { deviceMenu.map((row) => (
                         <StyledTableRow key={row.name}>
-                            <StyledTableCell align="center">{row.name}</StyledTableCell>
-                            <StyledTableCell align="center">{row.projet}</StyledTableCell>
-                            <StyledTableCell align="center">{row.img}</StyledTableCell>
+                            <StyledTableCell align="center">
+                              <Link 
+                                href={`/devices/${row.id}`}
+                              >
+                                {row.name}
+                              </Link>
+                            </StyledTableCell>
+                            <StyledTableCell align="center">{row.status}</StyledTableCell>
+                            <StyledTableCell align="center">{row.nb_images}</StyledTableCell>
+                            <StyledTableCell align="center">
+                              <IconButton onClick={handleClickOpen}>
+                                  <ClearTwoToneIcon/>
+                                </IconButton>
+                              </StyledTableCell>
+
                         </StyledTableRow>
-                    )) :  <StyledTableRow key='empty'>
-                            <StyledTableCell align="center">Pas des dispositifs enregistrés</StyledTableCell>
-                            </StyledTableRow>}
+                    )) }
                 </TableBody>
             </Table>
         </TableContainer>
-     );
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={deviceMenu.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        <Dialog open={open} onClose={handleClose}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <DialogTitle>
+            <Typography variant="h6">
+              Supprimer le dispositif
+            </Typography>
+          </DialogTitle>
+            <IconButton onClick = {handleClose} >
+              <ClearTwoToneIcon/>
+            </IconButton>
+          </Stack>
+          <Divider />
+          <DialogContent>
+              <Typography>
+               Désolé, cette fonctionnalité n'est pas encore disponible !
+              </Typography>
+          </DialogContent>
+          <Divider />
+          <DialogActions>
+            <Button >Oui</Button>
+            <Button onClick={handleClose} color='secondary'>Non</Button>
+          </DialogActions>
+      </Dialog>
+    </Stack>
+     : <Alert severity="warning" >
+     <AlertTitle>Attention !</AlertTitle>
+     Vous n'avez pas de pièges photographiques enregistrés.
+ </Alert>
+);
     };
 export default DevicesTable;

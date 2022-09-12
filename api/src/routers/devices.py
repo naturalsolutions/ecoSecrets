@@ -7,7 +7,7 @@ from sqlmodel import Session
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.dependencies import get_token_header
-from src.models.device import DeviceBase, Devices
+from src.models.device import DeviceBase, DeviceMenu, Devices
 from src.services import device
 
 router = APIRouter(
@@ -50,3 +50,8 @@ def update_device(
 @router.delete("/{device_id}")
 def delete_device(device_id: int, db: Session = Depends(get_db)):
     return device.delete_device(db=db, id=device_id)
+
+
+@router.get("/menu/", response_model=List[DeviceMenu])
+def read_menu_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return device.get_menu_devices(db, skip=skip, limit=limit)
