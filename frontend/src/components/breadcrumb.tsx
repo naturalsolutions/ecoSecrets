@@ -37,7 +37,7 @@ const StyledActiveBreadcrumb = styled(Chip)(({ theme }) => {
 }) as typeof Chip;
 
 const NavigationPath: FC<{}> = () => {
-  const { project, deployment, deploymentData, currentImage, device } = useMainContext();
+  const { project, deploymentData, currentImage, device } = useMainContext();
   const location = useLocation();
   console.log(location.pathname);
 
@@ -53,7 +53,7 @@ const NavigationPath: FC<{}> = () => {
   }
 
   const breadcrumbs = () => {
-    if (currentImage && project() && deployment()) {
+    if (currentImage && project() && deploymentData) {
       return [
         accueil(),
         <StyledBreadcrumb
