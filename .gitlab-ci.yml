@@ -1,0 +1,110 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_api_development:
+  stage: build
+  script:
+    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - docker build --target development -t ${CI_REGISTRY_IMAGE}:api-dev ./api
+    - docker push ${CI_REGISTRY_IMAGE}:api-dev
+  only:
+    refs:
+      - dev
+    changes:
+      - api/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDSHELL
+
+build_api_production:
+  stage: build
+  script:
+    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - docker build --target production -t ${CI_REGISTRY_IMAGE}:api-latest ./api
+    - docker push ${CI_REGISTRY_IMAGE}:api-latest
+  only:
+    refs:
+      - dev
+    changes:
+      - api/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDSHELL
+
+build_frontend_development:
+  stage: build
+  script:
+    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - docker build -t ${CI_REGISTRY_IMAGE}:frontend-dev ./frontend
+    - docker push ${CI_REGISTRY_IMAGE}:frontend-dev
+  only:
+    refs:
+      - dev
+    changes:
+      - frontend/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDSHELL
+
+test_api:
+  stage: test
+  script:
+    - ./scripts/test-ci.sh
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: ./api/coverage.xml
+  only:
+    changes:
+      - api/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDSHELL
+
+deploy_api:
+  stage: deploy
+  image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
+  script:
+    - cd /home/ansible
+    - echo ${VAULT_PASSWORD_KEY} > password-file
+    - ./scripts/decrypt.sh
+    - ansible-playbook -i inventory/geonature/annotation.yml -l geonature_annotation playbooks/infra.yml -t deploy_one -e service=api
+    - ./scripts/encrypt.sh
+    - rm password-file
+  only:
+    refs:
+      - dev
+    changes:
+      - api/**/*
+      - .gitlab-ci.yml
+  variables:
+    ANSIBLE_HOST_KEY_CHECKING: "false"
+    ANSIBLE_INVENTORY_UNPARSED_FAILED: "true"
+  tags:
+    - NSCICDDOCKER
+
+deploy_frontend:
+  stage: deploy
+  image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
+  script:
+    - cd /home/ansible
+    - echo ${VAULT_PASSWORD_KEY} > password-file
+    - ./scripts/decrypt.sh
+    - ansible-playbook -i inventory/geonature/annotation.yml -l geonature_annotation playbooks/infra.yml -t deploy_one -e service=frontend
+    - ./scripts/encrypt.sh
+    - rm password-file
+  only:
+    refs:
+      - dev
+    changes:
+      - frontend/**/*
+      - .gitlab-ci.yml
+  variables:
+    ANSIBLE_HOST_KEY_CHECKING: "false"
+    ANSIBLE_INVENTORY_UNPARSED_FAILED: "true"
+  tags:
+    - NSCICDDOCKER

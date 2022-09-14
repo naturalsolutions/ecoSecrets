@@ -1,13 +1,18 @@
+from decouple import config
 from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-
 from src.connectors.database import init_db
 from src.connectors.s3 import init_bucket
 from src.dependencies import get_query_token, get_token_header
 from src.internal import admin
 from src.routers import deployments, devices, files, home, projects, sites, users
 
-app = FastAPI()  # dependencies=[Depends(get_query_token)]
+ROOT_PATH = config("API_ROOT_PATH")
+
+app = FastAPI(
+    root_path=ROOT_PATH,
+    swagger_ui_parameters={"persistAuthorization": True},
+)  # dependencies=[Depends(get_query_token)]
 
 app.include_router(users.router)
 app.include_router(files.router)

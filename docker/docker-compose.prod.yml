@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  traefik:
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.le.acme.email=geonature@natural-solutions.eu
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --accesslog
+      - --log
+    volumes:
+      - ./letsencrypt:/letsencrypt
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.force-secure.redirectscheme.scheme=https
+      - traefik.http.middlewares.force-secure.redirectscheme.permanent=true
+      - traefik.http.routers.http-catchall.rule=HostRegexp(`{any:.+}`)
+      - traefik.http.routers.http-catchall.entrypoints=web
+      - traefik.http.routers.http-catchall.middlewares=force-secure
+
+  frontend:
+    labels:
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls=true
+      - traefik.http.routers.frontend.tls.certresolver=le
+
+  api:
+    labels:
+      - traefik.http.routers.api.entrypoints=websecure
+      - traefik.http.routers.api.tls=true
+      - traefik.http.routers.api.tls.certresolver=le
+
+  keycloak:
+    labels:
+      - traefik.http.routers.keycloak.entrypoints=websecure
+      - traefik.http.routers.keycloak.tls=true
+      - traefik.http.routers.keycloak.tls.certresolver=le
+
+  # minio:
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.http.routers.minio.rule=Host(`${DOMAIN}`) && PathPrefix(`/${MINIO_BUCKET_NAME}`)
+  #     - traefik.http.routers.minio.entrypoints=websecure
+  #     - traefik.http.routers.minio.tls=true
+  #     - traefik.http.routers.minio.tls.certresolver=le
