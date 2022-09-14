@@ -1,0 +1,109 @@
+version: "3.9"
+
+x-restart-policy: &restart_policy
+  restart: unless-stopped
+
+x-project-defaults: &project_defaults
+  <<: *restart_policy
+  networks:
+    - annotation_nw
+  env_file: .env
+
+services:
+  traefik:
+    <<: *project_defaults
+    image: ${TRAEFIK_IMAGE}
+    depends_on:
+      frontend:
+        condition: service_healthy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  api:
+    <<: *project_defaults
+    image: ${API_IMAGE}
+    build:
+      context: ../api
+      dockerfile: Dockerfile
+      target: development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/openapi.json"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    depends_on:
+      db:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=${TRAEFIK_ROUTER_RULE_API}
+      - traefik.http.routers.api.entrypoints=web
+      - traefik.http.routers.api.middlewares=api-stripprefix
+      - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=${API_ROOT_PATH}
+
+  frontend:
+    <<: *project_defaults
+    image: ${FRONTEND_IMAGE}
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND}
+      - traefik.http.routers.frontend.entrypoints=web
+
+  db:
+    <<: *project_defaults
+    image: postgres:14-alpine
+    healthcheck:      
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -h 127.0.0.1"]     
+      interval: 10s      
+      timeout: 5s      
+      retries: 3      
+      start_period: 60s
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}      
+      POSTGRES_USER: ${DB_USER}
+
+  keycloak:
+    <<: *project_defaults
+    image: quay.io/keycloak/keycloak:18.0.2
+    command: start-dev
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK}
+      - traefik.http.routers.keycloak.entrypoints=web
+
+  minio:
+    <<: *project_defaults
+    image: minio/minio
+    volumes:
+      - minio_data:/data
+    healthcheck:      
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]      
+      interval: 30s      
+      timeout: 20s      
+      retries: 3
+    command: server --console-address :9001 /data
+
+volumes:
+  db_data:
+  minio_data:
+
+networks:
+  annotation_nw:
+    external: false

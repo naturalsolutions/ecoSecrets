@@ -11,8 +11,11 @@ import DeviceMenuPage from "./pages/deviceMenu";
 import DeviceSheet from "./components/deviceSheet/deviceSheetMain";
 import DeviceSheetPage from "./pages/deviceSheet";
 import ProjectSheetPage from "./pages/projectSheet";
-import {theme} from "./theme";
+import { theme } from "./theme";
 import { ThemeProvider } from "@mui/material";
+import { OpenAPI } from "./client";
+
+OpenAPI.BASE = process.env.REACT_APP_API_PATH || "http://localhost:3654";
 
 function App() {
   return (
@@ -22,14 +25,23 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/project/:projectId" element={<Project />}></Route>
-            <Route path="/projectsheet/:projectId" element={<ProjectSheet />}></Route>
+            <Route
+              path="/projectsheet/:projectId"
+              element={<ProjectSheet />}
+            ></Route>
             <Route path="/devices/" element={<DeviceMenuPage />}></Route>
-            <Route path="/devices/:deviceId" element={<DeviceSheetPage />}></Route>
+            <Route
+              path="/devices/:deviceId"
+              element={<DeviceSheetPage />}
+            ></Route>
             <Route
               path="deployment/:deploymentId"
               element={<Deployment />}
             ></Route>
-            <Route path="/project/:projectId/deployment/:deploymentId" element={<DeploymentSheet />}></Route>
+            <Route
+              path="/project/:projectId/deployment/:deploymentId"
+              element={<DeploymentSheet />}
+            ></Route>
             <Route
               path="/project/:projectId/deployment/:deploymentId/:imageId"
               element={<Image />}
