@@ -11,4 +11,4 @@ class SiteBase(SQLModel):
 
 
 class Sites(SiteBase, table=True):
-    id: int = Field(primary_key=True, index=True)
+    id: Optional[int] = Field(primary_key=True, index=True)
