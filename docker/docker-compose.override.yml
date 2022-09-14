@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  traefik:
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - ${TRAEFIK_PORT}:80
+      - ${TRAEFIK_DASHBOARD_PORT}:8080
+
+  api:
+    build:
+      context: ../api
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ../api:/home/app
+    ports:
+      - "3654:8000"
+
+  frontend:
+    volumes:
+      - ../frontend:/app
+    ports:
+      - "3000:3000"
+
+  db:
+    ports:
+      - "5433:5432"
+    
+  minio:
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  keycloak:
+    ports:
+      - "8888:8080"
