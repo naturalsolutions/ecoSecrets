@@ -29,9 +29,11 @@ def init_db():
         role = Roles(role="user", description="default_user")
         session.add(role)
         session.commit()
-        user.create_user(
+        owner = user.create_user(
             db=session,
-            user=UserCreate(name="jeanjacques", email="jj@gmail.com", password="password"),
+            user=UserCreate(
+                name="jeanjacques", email="jj@gmail.com", password="password"
+            ),
         )
         project.create_project(
             db=session,
@@ -43,11 +45,11 @@ def init_db():
                 creation_date=dt.fromisoformat("2022-04-12"),
                 start_date=dt.fromisoformat("2022-04-12"),
                 end_date=dt.fromisoformat("2022-04-12"),
-                owner_id=1,
-                contact_id=1,
+                owner_id=owner.id,
+                contact_id=owner.id,
             ),
         )
-        project.create_project(
+        project_example = project.create_project(
             db=session,
             project=ProjectBase(
                 name="Second project",
@@ -55,16 +57,16 @@ def init_db():
                 start_date=dt.fromisoformat("2022-04-12"),
                 end_date=dt.fromisoformat("2022-04-12"),
                 description="desc second project",
-                owner_id=1,
-                contact_id=1,
+                owner_id=owner.id,
+                contact_id=owner.id,
             ),
         )
 
-        site.create_site(
+        site_example = site.create_site(
             db=session,
             site=SiteBase(name="First site", habitat="toto", description="description"),
         )
-        device.create_device(
+        device_example = device.create_device(
             db=session,
             device=DeviceBase(
                 name="First device",
@@ -78,18 +80,18 @@ def init_db():
             ),
         )
 
-        deployment.create_deployment(
+        deployment_example = deployment.create_deployment(
             db=session,
             deployment=DeploymentBase(
                 name="First deploy",
-                site_id=1,
-                device_id=1,
+                site_id=site_example.id,
+                device_id=device_example.id,
                 start_date=dt.fromisoformat("2022-04-12"),
                 end_date=dt.fromisoformat("2022-04-12"),
                 description="desc first deploy",
                 bait="aurélie",
                 feature="fruitin tree",
-                project_id=1,
+                project_id=project_example.id,
             ),
         )
 
@@ -106,7 +108,7 @@ def init_db():
                     ext=fileNameSplit[1],
                     filename=fileName,
                     new_file=file,
-                    deployment_id=1,
+                    deployment_id=deployment_example.id,
                 )
 
 

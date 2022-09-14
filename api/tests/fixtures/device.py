@@ -23,6 +23,7 @@ def device(db):
         description=description,
         detection_area=detection_area,
         status=status,
+        operating_life=0.0,
     )
 
     return create_device(db=db, device=device)

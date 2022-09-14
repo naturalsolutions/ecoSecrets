@@ -13,7 +13,6 @@ def test_create_device(db):
     detection_area = 150.0
     status = "status"
     device = Devices(
-        id=1,
         name=name,
         model=model,
         purchase_date=purchase_date,
@@ -21,6 +20,7 @@ def test_create_device(db):
         description=description,
         detection_area=detection_area,
         status=status,
+        operating_life=0.0,
     )
 
     created_device = create_device(db=db, device=device)

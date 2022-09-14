@@ -29,6 +29,10 @@ def test_update_annotations(client, file_object, db):
     annotations = [
         {
             "id": "string",
+            "classe": "string",
+            "family": "string",
+            "genus": "string",
+            "order": "string",
             "specie": "string",
             "life_stage": "string",
             "biological_state": "string",

@@ -17,7 +17,7 @@ class DeviceBase(SQLModel):
 
 
 class Devices(DeviceBase, table=True):
-    id: int = Field(primary_key=True, index=True)
+    id: Optional[int] = Field(primary_key=True, index=True)
 
 
 class DeviceMenu(Devices):

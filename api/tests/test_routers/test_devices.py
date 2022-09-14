@@ -25,6 +25,7 @@ def test_create_device(client):
         "description": "gcvsusbck",
         "detection_area": 1163,
         "status": "blabla",
+        "operating_life": 0.0,
     }
 
     response = client.post(url, json=device)
@@ -43,6 +44,7 @@ def test_update_device(client, device):
         "description": "Updated device",
         "detection_area": 1163,
         "status": "updated",
+        "operating_life": 0.0,
     }
 
     response = client.put(
