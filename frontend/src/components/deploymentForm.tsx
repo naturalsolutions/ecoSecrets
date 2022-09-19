@@ -11,6 +11,7 @@ import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
 import Dropzone from "react-dropzone";
 import { Deployments, DeploymentsService } from "../client";
+import DropzoneComponent from "./dropzoneComponent";
 
 const deployment_img = undefined;
 const siteList = [1, 2, 3] //TO DO: get all sites
@@ -25,7 +26,7 @@ const DeploymentForm = (
 
     const {setCurrentProject, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData} = useMainContext();
     let params = useParams();
-    const [tmpDeploymentData, setTmpDeploymentData] = useState<Deployments>({name:'', bait:'', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: ''});
+    const [tmpDeploymentData, setTmpDeploymentData] = useState<Deployments>({name:'', bait:'', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date:''});
 
     useEffect(() => {
         setCurrentProject(Number(params.projectId));
@@ -136,20 +137,7 @@ const DeploymentForm = (
                         {
                             deployment_img ?
                                 <img></img> :
-                                <Dropzone
-                                    // onDrop={loadFile} 
-                                    maxFiles={1}
-                                // style={{"height": "100%"}}
-                            >
-                                {({ getRootProps, getInputProps }) => (
-                                    <section id="dropzone">
-                                        <div {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                            Ajouter une photo du déploiement
-                                        </div>
-                                    </section>
-                                )}
-                            </Dropzone>
+                                <DropzoneComponent sentence='Ajouter une photo du déploiement'/>
                         }
                     </Grid>
 
@@ -182,8 +170,8 @@ const DeploymentForm = (
                                     size="small"
                                     variant="filled"
                                     fullWidth
-                                    error={tmpDeploymentData?.name === ""}
-                                    helperText={tmpDeploymentData?.name === "" &&"Champs requis"}
+                                    // error={tmpDeploymentData?.name === ""}
+                                    // helperText={tmpDeploymentData?.name === "" &&"Champs requis"}
                                 />
                             </Grid>
                         }
@@ -192,7 +180,7 @@ const DeploymentForm = (
                             <TextField 
                                 id="site_id"
                                 name="site_id"
-                                label="Site d'étude"
+                                label="Site"
                                 defaultValue=""
                                 select
                                 value={tmpDeploymentData?.site_id?.toString()}
@@ -200,6 +188,7 @@ const DeploymentForm = (
                                 size="small"
                                 variant="filled"
                                 fullWidth
+                                required
                                 disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {siteList.map((siteOption) => (
@@ -223,6 +212,7 @@ const DeploymentForm = (
                                 size="small"
                                 variant="filled"
                                 fullWidth
+                                required
                                 disabled={!props.isNewDeployment && !isEditable}
                             >
                                 {deviceList.map((deviceOption) => (
@@ -262,7 +252,7 @@ const DeploymentForm = (
                                     inputFormat="dd/MM/yyyy"
                                     value={tmpDeploymentData?.start_date || null}
                                     onChange={(date) => handleDateChange("start_date", date)}
-                                    renderInput={(params) => <TextField size="small" variant="filled" {...params} />}
+                                    renderInput={(params) => <TextField size="small" variant="filled" required {...params} />}
                                     disabled={!props.isNewDeployment && !isEditable}
                                 />
                             </LocalizationProvider>

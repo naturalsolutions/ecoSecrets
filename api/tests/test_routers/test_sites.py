@@ -26,7 +26,13 @@ def test_read_site(client, site):
 
 def test_create_site(client):
     url = app.url_path_for("create_site")
-    site = {"name": "New site", "description": "description", "habitat": "habitat"}
+    site = {
+        "name": "New site",
+        "latitude": 20.59,
+        "longitude": 89.10,
+        "description": "description",
+        "habitat": "habitat",
+    }
 
     response = client.post(url, json=site)
 
@@ -36,7 +42,13 @@ def test_create_site(client):
 def test_update_site(client, site):
     url = app.url_path_for("update_site", site_id=site.id)
 
-    data = {"name": "Site updated", "description": "description", "habitat": "habitat"}
+    data = {
+        "name": "Site updated",
+        "latitude": 35.59,
+        "longitude": 70.10,
+        "description": "description",
+        "habitat": "habitat",
+    }
 
     response = client.put(
         url,

@@ -38,8 +38,8 @@ def init_db():
         project.create_project(
             db=session,
             project=ProjectBase(
-                name="First project",
-                description="desc firt project",
+                name="Projet 1",
+                description="Description premier projet",
                 targeted_species="Loup",
                 protocole="Protocole A",
                 creation_date=dt.fromisoformat("2022-04-12"),
@@ -52,11 +52,11 @@ def init_db():
         project_example = project.create_project(
             db=session,
             project=ProjectBase(
-                name="Second project",
+                name="Projet 2",
                 creation_date=dt.fromisoformat("2022-04-12"),
                 start_date=dt.fromisoformat("2022-04-12"),
                 end_date=dt.fromisoformat("2022-04-12"),
-                description="desc second project",
+                description="Description deuxième projet",
                 owner_id=owner.id,
                 contact_id=owner.id,
             ),
@@ -64,18 +64,24 @@ def init_db():
 
         site_example = site.create_site(
             db=session,
-            site=SiteBase(name="First site", habitat="toto", description="description"),
+            site=SiteBase(
+                name="Site 1",
+                latitude=40.23,
+                longitude=90.75,
+                habitat="toto",
+                description="Description",
+            ),
         )
         device_example = device.create_device(
             db=session,
             device=DeviceBase(
-                name="First device",
-                model="model",
+                name="Dispositif 1",
+                model="Modèle A",
                 purchase_date="2022-07-19",
                 price=120,
-                description="gcvsusbck",
+                description="Description",
                 detection_area=1163,
-                status="blabla",
+                status="En stock",
                 operating_life=2000,
             ),
         )
@@ -83,14 +89,14 @@ def init_db():
         deployment_example = deployment.create_deployment(
             db=session,
             deployment=DeploymentBase(
-                name="First deploy",
+                name="Déploiement 1",
                 site_id=site_example.id,
                 device_id=device_example.id,
                 start_date=dt.fromisoformat("2022-04-12"),
                 end_date=dt.fromisoformat("2022-04-12"),
-                description="desc first deploy",
-                bait="aurélie",
-                feature="fruitin tree",
+                description="Description premier déploiement",
+                bait="None",
+                feature="Arbre fruitier",
                 project_id=project_example.id,
             ),
         )

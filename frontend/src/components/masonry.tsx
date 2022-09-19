@@ -31,7 +31,6 @@ export default function ImageMasonry() {
       <Masonry columns={6} spacing={2}>
         {files?.map((item, index) => (
           <div key={index}>
-            {/* <Label>{item.name}</Label> */}
             <img
               src={`${item.url}`}
               alt={item.name}

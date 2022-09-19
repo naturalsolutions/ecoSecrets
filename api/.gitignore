@@ -4,6 +4,7 @@ venv/
 coverage.xml
 .pytest_cache
 htmlcov
+.vscode-server/
 
 # dossier d'image pour l'insertion en base de données
 img/

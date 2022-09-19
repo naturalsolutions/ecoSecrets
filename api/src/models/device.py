@@ -6,13 +6,13 @@ from sqlmodel import Field, SQLModel
 
 class DeviceBase(SQLModel):
     name: str
-    model: str
-    purchase_date: date
-    price: float
-    description: str
-    detection_area: float
-    status: str
-    operating_life: float
+    model: Optional[str]
+    purchase_date: Optional[date]
+    price: Optional[float]
+    description: Optional[str]
+    detection_area: Optional[float]
+    status: Optional[str]
+    operating_life: Optional[float]
     exif_id: Optional[int] = Field(foreign_key="exifkeymodel.id")
 
 

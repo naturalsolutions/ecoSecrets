@@ -2,24 +2,22 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Gri
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import { DeviceBase, DevicesService} from "../../client";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useMainContext } from "../../contexts/mainContext";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Navigate, NavigateProps, useNavigate } from "react-router-dom"
-
-
+import { useNavigate } from "react-router-dom"
 
 export default function DeviceModal () {
+  const {updateDeviceMenu, updateDevices} = useMainContext();
   const [open, setOpen] = useState(false);
-  const [device, setDevice] = useState<DeviceBase>({ name: '', model: '', purchase_date: '', price: 0, description: '', detection_area: 0, status: 'En stock', operating_life:0})
+  const [device, setDevice] = useState<DeviceBase>({ name: '', model: '', price: 0, description: '', detection_area: 0, status: 'En stock', operating_life:0})
   const models = ['Modèle A', 'Modèle B', 'Modèle C'];
   const handleClose = () => {
     setOpen(false);
   };
-  const {updateDeviceMenu, setCurrentDevice, updateDevices} = useMainContext();
-    
+  
   const onclick = () => {
     setOpen(true);
   }
@@ -32,15 +30,12 @@ export default function DeviceModal () {
   }
 
   const navigate = useNavigate();
-
   const save = () => {
     DevicesService.createDeviceDevicesPost(device).then((d) => {
       updateDeviceMenu();
       updateDevices();
-      // setCurrentDevice(d.id);
       setOpen(false);
       navigate(`/devices/${d.id}`)
-      
   })
   .catch((err) => {
       console.log(err);
@@ -104,7 +99,7 @@ export default function DeviceModal () {
                   <DatePicker
                     inputFormat="dd/MM/yyyy"
                     label="Date d'achat"
-                    value={new Date(device.purchase_date)}
+                    value={device?.purchase_date || null}
                     onChange={(purchaseDate) => {
                       purchaseDate && handleFormChange("purchase_date", new Date(purchaseDate));
                     }}
@@ -121,7 +116,6 @@ export default function DeviceModal () {
                   fullWidth 
                   variant="filled"
                   onChange={(e) => handleFormChange("operating_life", e)}
-                    
                 />
               </Grid>
               <Grid item lg={6}>
@@ -134,7 +128,6 @@ export default function DeviceModal () {
                   fullWidth 
                   variant="filled"
                   onChange={(e) => handleFormChange("price", e)}
-                    
                 />
               </Grid>
               <Grid item lg={12}>
@@ -146,7 +139,6 @@ export default function DeviceModal () {
                   fullWidth 
                   variant="filled"
                   onChange={(e) => handleFormChange("detection_area", e)}
-                    
                 />
               </Grid>
               <Grid item lg={12}>

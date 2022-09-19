@@ -2,12 +2,11 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { Stack, Typography, Button, Dialog, DialogTitle, Divider, DialogContent, DialogActions} from "@mui/material";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import {Grid, TextField} from "@mui/material";
+import { Stack, Typography} from "@mui/material";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import {Grid} from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
 import DeviceForm from './deviceForm';
 import DeviceModal from '../deviceMenu/deviceModal';
@@ -19,13 +18,9 @@ const DeviceSheet = () => {
     let params = useParams();
     useEffect(() => {
         (async () => {
-            console.log(params)
-        setCurrentDevice(Number(params.deviceId));
+            setCurrentDevice(Number(params.deviceId));
         })();
     }, []);
-
-    console.log('mondevice')
-    console.log(device())
 
     return (
         device() !== undefined ? (

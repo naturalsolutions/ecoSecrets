@@ -1,5 +1,4 @@
 import { Stack, Typography, Button, Autocomplete, TextField } from "@mui/material";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const ProjectMembers = () => {
     const users = [
@@ -17,24 +16,14 @@ const ProjectMembers = () => {
             spacing={2}
             justifyContent="center"
         >
-            <Stack
-                direction='row'
-                justifyContent='space-between'
-                spacing={5}
-            >
-                <Typography variant="h4" color="#000000" component="div">
-                    Membres
-                </Typography>
-                <Button variant="contained" startIcon={<AddCircleIcon />} color='secondary'>
-                    Ajouter un groupe
-                </Button>
-            </Stack>
+            <Typography variant="h4" color="#000000" component="div">
+                Membres
+            </Typography>
             <Autocomplete
                 multiple
                 id="tags-outlined"
                 options={users}
                 getOptionLabel={(option) => option.name}
-                // defaultValue={[top100Films[13]]}
                 filterSelectedOptions
                 renderInput={(params) => (
                 <TextField
@@ -42,7 +31,20 @@ const ProjectMembers = () => {
                     label="Administrateurs"
                     placeholder="Ajouter un membre"
                 />
-                
+                )}
+            />
+            <Autocomplete
+                multiple
+                id="tags-outlined"
+                options={users}
+                getOptionLabel={(option) => option.name}
+                filterSelectedOptions
+                renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Validateurs"
+                    placeholder="Ajouter un membre"
+                />
                 )}
             />
             <Autocomplete

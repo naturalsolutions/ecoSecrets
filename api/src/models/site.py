@@ -6,8 +6,10 @@ from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 class SiteBase(SQLModel):
     name: str
-    habitat: str
-    description: str
+    latitude: float
+    longitude: float
+    habitat: Optional[str]
+    description: Optional[str]
 
 
 class Sites(SiteBase, table=True):

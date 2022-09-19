@@ -4,8 +4,10 @@
 
 export type Sites = {
     name: string;
-    habitat: string;
-    description: string;
-    id: number;
+    latitude: number;
+    longitude: number;
+    habitat?: string;
+    description?: string;
+    id?: number;
 };
 
