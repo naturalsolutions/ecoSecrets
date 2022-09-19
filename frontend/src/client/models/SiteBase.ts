@@ -4,7 +4,9 @@
 
 export type SiteBase = {
     name: string;
-    habitat: string;
-    description: string;
+    latitude: number;
+    longitude: number;
+    habitat?: string;
+    description?: string;
 };
 

@@ -8,19 +8,16 @@ import { useMainContext } from '../../contexts/mainContext';
 import { Devices, DevicesService} from '../../client';
 import Dropzone from 'react-dropzone';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import DropzoneComponent from '../dropzoneComponent';
 
 
 const DeviceForm = () => {
-    const {device} = useMainContext();
+    const {device, updateDeviceMenu} = useMainContext();
     const [deviceData, setDeviceData] = React.useState<Devices>(device());
     const models = ['Modèle A', 'Modèle B', 'Modèle C'];
-    const p_date = new Date(deviceData.purchase_date);
-    const [purchaseDate, setPurchaseDate] = React.useState<Date | null>(p_date);
     const [open, setOpen] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [modified, setModified] = React.useState(false);
-    const [displayValue, setDisplayValue] = React.useState('none');
-
 
     const handleFormChange = (params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
         let tmp_device_data = {...deviceData};
@@ -28,7 +25,7 @@ const DeviceForm = () => {
         setDeviceData(tmp_device_data);
       };
 
-    const handleChangeDate =(params:string,  d: Date | null) => {
+    const handleChangeDate =(params:string,  d) => {
         let tmp_device_data = {...deviceData};
         d !== null && (tmp_device_data[params] = d.toISOString().slice(0, 10));
         setDeviceData(tmp_device_data);
@@ -40,7 +37,6 @@ const DeviceForm = () => {
 
     const handleChange = () => {
         setModified(!modified);
-        setDisplayValue('block');
     };
 
     const handleClose = () => {
@@ -48,13 +44,15 @@ const DeviceForm = () => {
     };
 
     const save = () => {
-        setModified(!modified);
-        setDisplayValue('none');
-        setOpen(false);
-        DevicesService.updateDeviceDevicesDeviceIdPut(deviceData.id, deviceData);
-        setSuccess(true);
+        deviceData.id && DevicesService.updateDeviceDevicesDeviceIdPut(deviceData?.id, deviceData).then(() => {
+            setModified(!modified);
+            setOpen(false);
+            updateDeviceMenu();
+            setSuccess(true);
+        }).catch((err) => {
+            console.log(err);
+        });
     };
-    console.log(deviceData)
 
     return(
         <Stack 
@@ -62,27 +60,7 @@ const DeviceForm = () => {
                 justifyContent="center"
             >
             <Grid item lg={6}>
-                <Dropzone 
-                    // onDrop={loadFile} 
-                    maxFiles={1}
-                    // style={{"height": "100%"}}
-                >
-                    {({ getRootProps, getInputProps }) => (
-                        <section id="dropzone">
-                            <div {...getRootProps()}>
-                            <input {...getInputProps()} />
-                                <Grid container direction="column" alignItems='center'>
-                                    <Grid item>
-                                        <CameraAltIcon fontSize="large"/>
-                                    </Grid>
-                                    <Grid item>
-                                        Ajouter une photo du dispositif
-                                    </Grid>
-                                </Grid>
-                            </div>
-                        </section>
-                    )}
-                </Dropzone>
+                <DropzoneComponent sentence='Ajouter une photo du dispositif'/>
             </Grid>
                 <Collapse in={success}>
                     <Alert 
@@ -101,7 +79,7 @@ const DeviceForm = () => {
                     }
                     >
                     <AlertTitle>Success</AlertTitle>
-                        Modifications enregistrées !  Rafraichissez la page !
+                        Modifications enregistrées !
                     </Alert>
                 </Collapse>
                 <form key={deviceData.id}>
@@ -110,19 +88,20 @@ const DeviceForm = () => {
                         spacing={40}
                     >
                         <Grid container spacing={3}>
-                            <Grid item lg={12}>
-                                <TextField 
-                                    required
-                                    id="name"
-                                    name="name"
-                                    label="Nom"
-                                    value ={deviceData.name}
-                                    onChange={(e) => handleFormChange("name", e)}
-                                    fullWidth 
-                                    variant="filled" 
-                                    sx={{ display: { xs: displayValue}}}
-                                />
-                            </Grid>
+                            { modified ?
+                                <Grid item lg={12}>
+                                    <TextField 
+                                        required
+                                        id="name"
+                                        name="name"
+                                        label="Nom"
+                                        value ={deviceData.name}
+                                        onChange={(e) => handleFormChange("name", e)}
+                                        fullWidth 
+                                        variant="filled" 
+                                    />
+                                </Grid> 
+                            : <></> }
                             <Grid item lg={2.4}>
                                 <TextField
                                     InputProps={{
@@ -147,10 +126,9 @@ const DeviceForm = () => {
                                     <DatePicker
                                         readOnly= {!modified}
                                         inputFormat="dd/MM/yyyy"
-                                        label="Date d'achat'"
-                                        value={purchaseDate}
+                                        label="Date d'achat"
+                                        value={deviceData?.purchase_date ||null}
                                         onChange={(purchaseDate) => {
-                                            setPurchaseDate(purchaseDate);
                                             handleChangeDate("purchase_date", purchaseDate);
                                         }}
                                         renderInput={(params) => <TextField {...params} variant="filled" />}
@@ -223,8 +201,8 @@ const DeviceForm = () => {
                     spacing={3}
                     justifyContent='flex-end'
                 >
-                    <Button disabled={modified} onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
-                        Modifier
+                    <Button  onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
+                    { modified ? <>Annuler</> : <>Modifier</>}
                     </Button>
                     <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
                         Enregistrer

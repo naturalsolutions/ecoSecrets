@@ -26,7 +26,6 @@ const DevicesTable = () => {
   
 
   const handleClickOpen = () => {
-    console.log('click');
     setOpen(true);
   };
 

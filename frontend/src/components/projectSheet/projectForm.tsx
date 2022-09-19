@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -7,26 +6,18 @@ import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTit
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
 import { ProjectSheet, ProjectsService } from '../../client';
-import Dropzone from "react-dropzone";
-
-
+import DropzoneComponent from '../dropzoneComponent';
 
 const ProjectForm = () => {
-    const {projectSheetData} = useMainContext();
-    
+    const {projectSheetData, updateProjectSheetData} = useMainContext();
     const [projectData, setProjectData] = React.useState<ProjectSheet>(projectSheetData);
-
     const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
     const species = ["Loup", "Coccinelle", "Ours", "Chamois", "Chevreuil", "Cerf", "Marmotte", "Renard", "Aigle"];
-
     const[startDate, setStartDate] = React.useState<Date | null>(projectSheetData.start_date);
     const[endDate, setEndDate] = React.useState<Date | null>(projectSheetData.end_date);
     const [open, setOpen] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [modified, setModified] = React.useState(false);
-    const [displayValue, setDisplayValue] = React.useState('none');
-
-
 
     const handleFormChange = (params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
         let tmp_project_data = {...projectData};
@@ -46,7 +37,6 @@ const ProjectForm = () => {
 
     const handleChange = () => {
         setModified(!modified);
-        setDisplayValue('block');
     };
 
     const handleClose = () => {
@@ -55,15 +45,16 @@ const ProjectForm = () => {
 
     const save = () => {
         setModified(!modified);
-        setDisplayValue('none');
         setOpen(false);
-        console.log(projectData);
-        ProjectsService.updateProjectProjectsProjectIdPut(projectSheetData.id, projectData);
-        console.log('save');
+        ProjectsService.updateProjectProjectsProjectIdPut(projectSheetData.id, projectData).then(() => {
+            updateProjectSheetData();
+
+        })
+        .catch((err) => {
+            console.log(err);
+        });
         setSuccess(true);
     };
-
-    
 
     return(
             <Stack 
@@ -84,10 +75,10 @@ const ProjectForm = () => {
                             >
                                 <CloseIcon fontSize="inherit" />
                             </IconButton>   
-                    }
+                        }
                     >
                     <AlertTitle>Success</AlertTitle>
-                        Modifications enregistrées !  Rafraichissez la page !
+                        Modifications enregistrées !
                     </Alert>
                 </Collapse>
 
@@ -97,6 +88,7 @@ const ProjectForm = () => {
                         spacing={15}
                     >
                         <Grid container spacing={3}>
+                        { modified ?
                         <Grid item lg={12}>
                             <TextField 
                             id="name"
@@ -104,11 +96,11 @@ const ProjectForm = () => {
                             label="Nom"
                             value ={projectData.name}
                             onChange={(e) => handleFormChange("name", e)}
-                            fullWidth 
+                            fullWidth
+                            required
                             variant="filled" 
-                            sx={{ display: { xs: displayValue}}}
                             />
-                        </Grid>
+                        </Grid>: <></>}
                         
                             <Grid item lg={6}>
                                 <TextField
@@ -199,21 +191,9 @@ const ProjectForm = () => {
                             </Grid>
                             
                         </Grid>
-                        <Grid container justifyContent='center' alignItems='center' lg={6} spacing={1} style={{backgroundColor: "#D9D9D9"}}>
+                        <Grid container justifyContent='center' alignItems='center' >
                             {/* Image du projet ou dropzone */}
-                            <Grid item>
-                            {/* <Dropzone>
-                                {({ getRootProps, getInputProps }) => (
-                                <section id="dropzone">
-                                    <div {...getRootProps()}>
-                                    <input {...getInputProps()} />
-                                    {dropZoneDisplayText()}
-                                    </div>
-                                </section>
-                                )}
-                            </Dropzone> */}
-                            </Grid>
-                            
+                            <DropzoneComponent sentence='Ajouter une photo de projet'/>
                         </Grid>
                     </Stack>
                 </form>
@@ -222,8 +202,8 @@ const ProjectForm = () => {
                     spacing={3}
                     justifyContent='flex-end'
                 >
-                    <Button disabled={modified} onClick={handleChange}  variant="contained" color='primary'>
-                        Modifier
+                    <Button  onClick={handleChange}  variant="contained" color='primary'>
+                        { modified ? <>Annuler</> : <>Modifier</>}
                     </Button>
                     <Button disabled={!modified} onClick={dialog} variant="contained" color='secondary'>
                         Enregistrer

@@ -3,9 +3,16 @@
 /* eslint-disable */
 
 export type DeviceMenu = {
-    id: number;
     name: string;
-    status: string;
+    model?: string;
+    purchase_date?: string;
+    price?: number;
+    description?: string;
+    detection_area?: number;
+    status?: string;
+    operating_life?: number;
+    exif_id?: number;
+    id?: number;
     nb_images: number;
     last_image_date?: string;
 };

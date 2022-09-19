@@ -4,13 +4,13 @@
 
 export type DeploymentBase = {
     name: string;
-    start_date?: string;
+    start_date: string;
     end_date?: string;
-    site_id?: number;
-    device_id?: number;
-    bait: string;
-    feature: string;
-    description: string;
+    site_id: number;
+    device_id: number;
+    bait?: string;
+    feature?: string;
+    description?: string;
     project_id: number;
     template_sequence_id?: number;
 };

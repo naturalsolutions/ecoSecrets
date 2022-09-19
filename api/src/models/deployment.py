@@ -13,16 +13,16 @@ if TYPE_CHECKING:  # pragma: no cover
 
 class DeploymentEssentials(SQLModel):
     name: str
-    start_date: Optional[datetime]
+    start_date: datetime
     end_date: Optional[datetime]
-    site_id: Optional[int] = Field(foreign_key="sites.id")
-    device_id: Optional[int] = Field(foreign_key="devices.id")
+    site_id: int = Field(foreign_key="sites.id")
+    device_id: int = Field(foreign_key="devices.id")
 
 
 class DeploymentBase(DeploymentEssentials):
-    bait: str
-    feature: str
-    description: str
+    bait: Optional[str]
+    feature: Optional[str]
+    description: Optional[str]
     project_id: int = Field(foreign_key="projects.id")
     template_sequence_id: Optional[int] = Field(foreign_key="templatesequence.id")
 

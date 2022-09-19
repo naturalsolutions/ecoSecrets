@@ -16,6 +16,7 @@ import {Grid, TextField} from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
 import { ProjectsService } from '../../client';
 import DeploymentCreationModale from '../deploymentCreationModale';
+import ProjectModal from '../projectModale';
 
 
 const ProjectSheet = () => {
@@ -24,8 +25,7 @@ const ProjectSheet = () => {
     let params = useParams();
     useEffect(() => {
         (async () => {
-            console.log(params)
-        setCurrentProject(Number(params.projectId));
+            setCurrentProject(Number(params.projectId));
         })();
     }, []);
 
@@ -43,15 +43,11 @@ const ProjectSheet = () => {
                             {projectSheetData.name}
                         </Typography>
                     </Grid>
-                        <IconButton aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
-                            <AddCircleIcon />
-                        </IconButton>
-                        <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
+                        <ProjectModal/>
+                        <IconButton color="primary" aria-label="menu" sx={{ mr: 2 }}>
                             <CloudDownloadIcon />
                         </IconButton>
-                        <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
-                            <CloudUploadIcon />
-                        </IconButton>
+                        
                     </Toolbar>
                 </AppBar>
             </Box>
@@ -97,7 +93,7 @@ const ProjectSheet = () => {
         </Stack> : 
             <Alert severity="error" >
                 <AlertTitle>Erreur</AlertTitle>
-                    Ce projet n'existe pas !
+                    <p>Ce projet n'existe pas !</p>
             </Alert>
     );
 };

@@ -4,7 +4,7 @@
 
 export type ProjectBase = {
     name: string;
-    description: string;
+    description?: string;
     creation_date: string;
     start_date?: string;
     end_date?: string;

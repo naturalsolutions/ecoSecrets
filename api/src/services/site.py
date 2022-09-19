@@ -16,7 +16,7 @@ def get_site_by_name(db: Session, name_site: str):
 
 
 def create_site(db: Session, site: SiteBase):
-    db_site = Sites(name=site.name, description=site.description, habitat=site.habitat)
+    db_site = Sites(**site.dict())
     db.add(db_site)
     db.commit()
     db.refresh(db_site)
@@ -28,6 +28,8 @@ def update_site(db: Session, site: SiteBase, id: int):
     db_site.name = site.name
     db_site.description = site.description
     db_site.habitat = site.habitat
+    db_site.latitude = site.latitude
+    db_site.longitude = site.longitude
     db.commit()
     db.refresh(db_site)
     return db_site
