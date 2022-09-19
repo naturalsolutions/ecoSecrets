@@ -2,7 +2,7 @@ import AnnotationMainComponent from "../components/annotationMainComponent";
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
-import NavigationPath from "../components/breadcrumb";
+import NavigationPath from "../components/navigationPath";
 
 function Image() {
   return (

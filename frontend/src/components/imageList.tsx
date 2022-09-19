@@ -1,17 +1,17 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 import "../css/first.css";
 
 import ImageMasonry from "./masonry";
 import Dropzone from "react-dropzone";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const ImageList: FC<{}> = () => {
   const [files, setFiles] = useState<any[]>([]);
-  const { projects, updateListFile, setCurrentDeployment, project, currentDeployment } =
+  const { projects, updateListFile, setCurrentDeployment, currentDeployment, deploymentData } =
     useMainContext();
   let params = useParams();
 
@@ -21,38 +21,13 @@ const ImageList: FC<{}> = () => {
     })();
   }, [projects]);
 
-  // const Uint8ArrayToHexString = (ui8array: Uint8Array) => {
-  //   var hexstring = "",
-  //     h;
-  //   for (var i = 0; i < ui8array.length; i++) {
-  //     h = ui8array[i].toString(16);
-  //     if (h.length === 1) {
-  //       h = "0" + h;
-  //     }
-  //     hexstring += h;
-  //   }
-  //   var p = Math.pow(2, Math.ceil(Math.log2(hexstring.length)));
-  //   hexstring = hexstring.padStart(p, "0");
-  //   return hexstring;
-  // };
-
   const save = () => {
     for (const file of files) {
-      // const reader = new FileReader();
-      // reader.readAsArrayBuffer(file);
-      // reader.onload = () => {
-      //   const digest = crypto.subtle.digest(
-      //     "SHA-256",
-      //     new Uint8Array(reader.result as ArrayBuffer)
-      //   );
-      //   digest.then((res) => {
-      //     let result = new Uint8Array(res);
-      //     var hash = Uint8ArrayToHexString(result);
-      FilesService.uploadFileFilesUploadDeploymentIdPost(currentDeployment, { file }).then((res) => {
+      FilesService
+      .uploadFileFilesUploadDeploymentIdPost(currentDeployment, { file })
+      .then((res) => {
         updateListFile();
       });
-      //     });
-      //   };
     }
     clear();
   };
@@ -78,8 +53,9 @@ const ImageList: FC<{}> = () => {
 
   return (
     <>
-      {project() ? (
-        <>
+      {deploymentData ? (
+        <Stack spacing={2}>
+          <Typography variant="subtitle2">Import de médias</Typography>
           <Dropzone onDrop={loadFile} multiple maxFiles={10}>
             {({ getRootProps, getInputProps }) => (
               <section id="dropzone">
@@ -98,18 +74,31 @@ const ImageList: FC<{}> = () => {
               </section>
             )}
           </Dropzone>
-          <Button variant="contained" onClick={clear}>
-            Annuler
-          </Button>
-          <Button variant="contained" onClick={save}>
-            Enregistrer
-          </Button>
-          <ImageMasonry></ImageMasonry>
-        </>
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+          >
+            <Button 
+              onClick={clear} 
+              color="primary"
+            >
+              Annuler
+            </Button>
+            <Button 
+              variant="contained" 
+              onClick={save} 
+              color="primary"
+            >
+              Enregistrer
+            </Button>
+          </Stack>
+          <ImageMasonry />
+        </Stack>
       ) : (
-        <>
+        <Stack>
           <p>deploiement inconnu</p>
-        </>
+        </Stack>
       )}
     </>
   );
