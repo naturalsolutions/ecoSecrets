@@ -1,4 +1,4 @@
-import { Button, DialogTitle, Divider, FilledInput, FormControlLabel, Grid, InputAdornment, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
@@ -122,13 +122,6 @@ const DeploymentForm = (
                 direction="column"
                 spacing={5}
             >
-                {
-                    !props.isNewDeployment &&
-                    <Typography component={'span'} variant="h4">
-                        {deploymentData?.name}
-                    </Typography>
-                }
-
                 <Stack
                     direction="row"
                     justifyContent="space-evenly"

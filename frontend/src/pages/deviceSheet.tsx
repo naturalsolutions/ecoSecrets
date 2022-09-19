@@ -1,7 +1,7 @@
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
-import NavigationPath from "../components/breadcrumb";
+import NavigationPath from "../components/navigationPath";
 import DeviceSheet from "../components/deviceSheet/deviceSheetMain";
 
 function DeviceSheetPage() {

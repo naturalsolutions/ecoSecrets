@@ -1,10 +1,10 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
 import { useMainContext } from "../contexts/mainContext";
 import { useNavigate } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -17,7 +17,7 @@ const Label = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ImageMasonry() {
-  const { files, currentDeployment } = useMainContext();
+  const { files } = useMainContext();
 
   let navigate = useNavigate();
 
@@ -27,10 +27,11 @@ export default function ImageMasonry() {
 
   return (
     <Box sx={{ width: "100%", minHeight: 829 }}>
+      <Typography variant="subtitle2">Galerie du déploiement</Typography>
       <Masonry columns={6} spacing={2}>
         {files?.map((item, index) => (
           <div key={index}>
-            <Label>{item.name}</Label>
+            {/* <Label>{item.name}</Label> */}
             <img
               src={`${item.url}`}
               alt={item.name}
