@@ -72,7 +72,7 @@ const BreadcrumbElement = (
                 key={option.id} 
                 selected={option.name === props.current_option}
                 component={Link}
-                href={`${props.parentlink}/${option.id}`}
+                href={props.linkSuffix ? (`${props.parentlink}/${option.id}/${props.linkSuffix}`): (`${props.parentlink}/${option.id}`)}
                 onClick={handleClose}
               >
                 {option.name}

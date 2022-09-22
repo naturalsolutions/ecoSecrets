@@ -47,14 +47,18 @@ function App() {
             ></Route>
             <Route
               path="/project/:projectId/deployment/:deploymentId/details"
-              element={<DeploymentSheet bool={0}/>}
+              element={<DeploymentSheet number={0}/>}
             ></Route>
             <Route
               path="/project/:projectId/deployment/:deploymentId/medias"
-              element={<DeploymentSheet bool={1}/>}
+              element={<DeploymentSheet number={1}/>}
             ></Route>
             <Route
               path="/project/:projectId/deployment/:deploymentId/medias/:imageId"
+              element={<Image />}
+            ></Route>
+            <Route
+              path="/project/:projectId/deployment/:deploymentId/details/:imageId"
               element={<Image />}
             ></Route>
             <Route path="*" element={<Main />}></Route>
