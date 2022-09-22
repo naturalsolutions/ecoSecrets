@@ -35,21 +35,26 @@ def init_db():
                 name="jeanjacques", email="jj@gmail.com", password="password"
             ),
         )
-        project.create_project(
+        project_example = project.create_project(
             db=session,
             project=ProjectBase(
                 name="Projet 1",
                 description="Description premier projet",
-                targeted_species="Loup",
                 protocole="Protocole A",
                 creation_date=dt.fromisoformat("2022-04-12"),
                 start_date=dt.fromisoformat("2022-04-12"),
-                end_date=dt.fromisoformat("2022-04-12"),
-                owner_id=owner.id,
+                end_date=dt.fromisoformat("2022-04-20"),
+                protocol="Protocole A",
+                acquisition_framework="Acq 1",
+                targeted_species="Loup",
+                referential="ref 1",
+                timezone="CET",
+                image="",
+                onwner_id=owner.id,
                 contact_id=owner.id,
             ),
         )
-        project_example = project.create_project(
+        project.create_project(
             db=session,
             project=ProjectBase(
                 name="Projet 2",
@@ -97,7 +102,7 @@ def init_db():
                 description="Description premier déploiement",
                 bait="None",
                 feature="Arbre fruitier",
-                project_id=project_example.id,
+                project_id=project_example.id
             ),
         )
 

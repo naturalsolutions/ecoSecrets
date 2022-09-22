@@ -6,13 +6,15 @@ import type { Deployments } from './Deployments';
 
 export type ProjectWithDeployment = {
     name: string;
-    description?: string;
     creation_date: string;
     start_date?: string;
     end_date?: string;
-    protocole?: string;
-    status?: string;
+    protocol?: string;
+    acquisition_framework?: string;
     targeted_species?: string;
+    referential?: string;
+    timezone?: string;
+    image?: string;
     owner_id?: number;
     contact_id?: number;
     id: number;

@@ -12,7 +12,7 @@ import { ProjectBase, ProjectsService } from "../client";
 export default function ProjectModal (props) {
     const { updateProjects} = useMainContext();
     const [open, setOpen] = useState(false);
-    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', description: '', creation_date: '', protocole: '', targeted_species: '', owner_id: 1, contact_id: 1});
+    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1});
     const[startDate, setStartDate] = useState<Date | null>(null);
     const[endDate, setEndDate] = useState<Date | null>(null);
     const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
@@ -37,7 +37,7 @@ export default function ProjectModal (props) {
     
     const handleClose = () => {
         setOpen(false);
-        setProjectData({ name: '', description: '', creation_date: '', protocole: '', targeted_species: '', owner_id: 1, contact_id: 1});
+        setProjectData({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1});
         setStartDate(null);
         setEndDate(null);
       };
@@ -109,11 +109,11 @@ export default function ProjectModal (props) {
                     <Grid item lg={6}>
                         <TextField
                         select 
-                        label="Protocole" 
+                        label="Cadre d'acquisition" 
                         variant="filled"
-                        value={projectData.protocole}
+                        value={projectData.acquisition_framework}
                         fullWidth
-                        onChange={(e) => handleFormChange("protocole", e)}
+                        onChange={(e) => handleFormChange("acquisition_framework", e)}
                         >
                         {protocoles.map((item) => (
                             <MenuItem key={item} value={item}>
@@ -171,11 +171,11 @@ export default function ProjectModal (props) {
                     </Grid>
                     <Grid item lg={12}>
                     <TextField 
-                        id="description"
-                        name="description"
-                        label="Description"
-                        value ={projectData.description}
-                        onChange={(e) => handleFormChange("description", e)}
+                        id="protocol"
+                        name="protocol"
+                        label="Protocole et méthodes"
+                        value ={projectData.protocol}
+                        onChange={(e) => handleFormChange("protocol", e)}
                         fullWidth 
                         variant="filled" 
                     />

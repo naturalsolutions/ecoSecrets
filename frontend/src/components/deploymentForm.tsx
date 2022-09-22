@@ -1,5 +1,5 @@
-import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -9,24 +9,29 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import Dropzone from "react-dropzone";
-import { Deployments, DeploymentsService } from "../client";
+import { Deployments, DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
 import DropzoneComponent from "./dropzoneComponent";
 
 const deployment_img = undefined;
-const siteList = [1, 2, 3] //TO DO: get all sites
-const deviceList = [1, 2, 3] //TO DO: get all available devices
-const supportList = ["Support type 1", "Support type 2"]
-const featureList = ["fruitin tree", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
-const baitList = ["aurélie", "Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z"]
 
 const DeploymentForm = (
     props
 ) => {
 
-    const {setCurrentProject, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData} = useMainContext();
+    const {setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates} = useMainContext();
     let params = useParams();
-    const [tmpDeploymentData, setTmpDeploymentData] = useState<Deployments>({name:'', bait:'', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date:''});
+    const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date:''});
+    
+    const supportList = ["Support type 1", "Support type 2"]
+    const featureList = ["Arbre fruitier", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
+    const baitList = ["Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z", "None"]
+
+    const [siteName, setSiteName] = useState<string>('');
+    const [deviceName, setDeviceName] = useState<string>('');
+    const [isEditable, setIsEditable] = useState(false);
+
+    const [automatic, setAutomatic] = useState({isAutomatic: false, imageNumber: undefined, frequency: undefined});
+    const [trigger, setTrigger] = useState({isTrigger: false, imageNumber: undefined, frequency: undefined});
 
     useEffect(() => {
         setCurrentProject(Number(params.projectId));
@@ -34,20 +39,86 @@ const DeploymentForm = (
     });
     
     useEffect(() => {
-        !props.isNewDeployment &&
+        if (!props.isNewDeployment) {
             setTmpDeploymentData(deploymentData);
+
+            if (deploymentData && deploymentData.template_sequences?.length > 0) {
+                let dataAutomatic = deploymentData.template_sequences.find((t) => t.mode == "automatic");
+                dataAutomatic && setAutomatic({isAutomatic: true, frequency: dataAutomatic.frequency, imageNumber: dataAutomatic.number_images});
+
+                let dataTrigger = deploymentData.template_sequences.find((t) => t.mode == "trigger")
+                dataTrigger && setTrigger({isTrigger: true, frequency: dataTrigger.frequency, imageNumber: dataTrigger.number_images});
+            };
+        };
+
     }, [deploymentData]);
+
+    useEffect(() => {
+        let tmpSite = sites.find((s) => s.id === tmpDeploymentData?.site_id)?.name;
+        setSiteName(tmpSite);
+    }, [tmpDeploymentData?.site_id]);
+
+    useEffect(() => {
+        let tmpDevice = devices.find((d) => d.id === tmpDeploymentData?.device_id)?.name;
+        setDeviceName(tmpDevice);
+    }, [tmpDeploymentData?.device_id]);
+
 
     const handleFormChange = (
         params:string,  
-        e: ChangeEvent< HTMLInputElement| HTMLTextAreaElement >
+        value: number|string
     ) => {
         let updated_deployment_data = { ...tmpDeploymentData };
-        updated_deployment_data[params] = e.target.value;
+        updated_deployment_data[params] = value;
         setTmpDeploymentData(updated_deployment_data);
     };
 
-    const [isEditable, setIsEditable] = useState(false);
+    const handleModeChange = async (
+        automatic, 
+        trigger
+    ) => {
+        
+        let newSequenceTemplate : any[] = []
+
+        let autoTemplate;
+        let triggerTemplate;
+
+        if(automatic.isAutomatic) {
+            autoTemplate = autoTemplates.find((t) => 
+            t.number_images == automatic.imageNumber && t.frequency == automatic.frequency);
+            
+            if (autoTemplate === undefined) {
+                newSequenceTemplate.push({
+                    mode: "automatic", 
+                    number_images: automatic.imageNumber,
+                    frequency: automatic.frequency
+                });
+            }
+            if (autoTemplate) {
+                newSequenceTemplate.push(autoTemplate);
+            }
+        };
+
+        if(trigger.isTrigger) {
+            triggerTemplate = triggerTemplates.find((t) => 
+            t.number_images == trigger.imageNumber && t.frequency == trigger.frequency);
+            
+            if (triggerTemplate === undefined) {
+                newSequenceTemplate.push({
+                    mode: "trigger", 
+                    number_images: trigger.imageNumber,
+                    frequency: trigger.frequency
+                });
+            }
+            if (triggerTemplate) {
+                newSequenceTemplate.push(triggerTemplate);
+            }
+        };
+
+        let updatedTmpDeploymentData = tmpDeploymentData;
+        updatedTmpDeploymentData["template_sequences"] = newSequenceTemplate;
+        setTmpDeploymentData(updatedTmpDeploymentData);
+    };
 
     const handleEdit = () => {
         if(isEditable) {
@@ -56,9 +127,12 @@ const DeploymentForm = (
         } 
         else setIsEditable(true);
     };
+
     const handleSave = () => {
+        handleModeChange(automatic, trigger);
 
         if (props.isNewDeployment) {
+            console.log(tmpDeploymentData);
             // POST
             DeploymentsService
             .createDeploymentDeploymentsPost(tmpDeploymentData)
@@ -72,8 +146,10 @@ const DeploymentForm = (
         }
         else {
             // PUT
+            console.log("PUT");
+            console.log(tmpDeploymentData);
             DeploymentsService.
-            updateDeploymentDeploymentsDeploymentIdPut(deploymentData.id, tmpDeploymentData);
+            updateDeploymentDeploymentsDeploymentIdPut(tmpDeploymentData);
             setDeploymentData(tmpDeploymentData);
             setCurrentDeployment(Number(params.deploymentId));
             isEditable ? setIsEditable(false) : setIsEditable(true);
@@ -85,36 +161,25 @@ const DeploymentForm = (
         updated_deployment_data[params] = d;
         setTmpDeploymentData(updated_deployment_data);
     };
-
-    // To update when database will be fixed
-    const [automatic, setAutomatic] = useState(false);
-    const handleAutomaticChange = () => {
-        setAutomatic(!automatic);
+    
+    const handleCheckChange = (mode: string) => {
+        if (mode === "automatic") {
+            setAutomatic({...automatic, isAutomatic: !automatic.isAutomatic});
+        };
+        if (mode === "trigger") {
+            setTrigger({...trigger, isTrigger: !trigger.isTrigger});
+        };
     };
 
-    const [autoNumber, setAutoNumber] = useState<null | Number>(null);
-    const handleAutoNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAutoNumber(Number(event.target.value));
-    };
-
-    const [autoFreq, setAutoFreq] = useState<null | Number>(null);
-    const handleAutoFreqChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAutoFreq(Number(event.target.value));
-    };
-
-    const [trigger, setTrigger] = useState(false);
-    const handleTriggerChange = () => {
-        setTrigger(!trigger);
-    };
-
-    const [triggerNumber, setTriggerNumber] = useState<null | Number>(null);
-    const handleTriggerNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTriggerNumber(Number(event.target.value));
-    };
-
-    const [triggerFreq, setTriggerFreq] = useState<null | Number>(null);
-    const handleTriggerFreqChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTriggerFreq(Number(event.target.value));
+    const handleValueMode = (mode: string, param: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (mode === "automatic") {
+            automatic[param] = event.target.value;
+            setAutomatic(automatic);
+        };
+        if (mode === "trigger") {
+            trigger[param] = event.target.value;
+            setTrigger(trigger);
+        };
     };
 
     return(
@@ -166,7 +231,7 @@ const DeploymentForm = (
                                     label="Nom du déploiement"
                                     required
                                     defaultValue={deploymentData?.name}
-                                    onChange={(e) => handleFormChange("name", e)}
+                                    onChange={(e) => handleFormChange("name", e.target.value)}
                                     size="small"
                                     variant="filled"
                                     fullWidth
@@ -181,21 +246,22 @@ const DeploymentForm = (
                                 id="site_id"
                                 name="site_id"
                                 label="Site"
-                                defaultValue=""
                                 select
-                                value={tmpDeploymentData?.site_id?.toString()}
-                                onChange={(e) => handleFormChange("site_id", e)}
+                                value={ siteName }
+                                onChange={
+                                    (e) => handleFormChange("site_id", sites.find((s) => s.name === e.target.value).id)
+                                }
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 required
                                 disabled={!props.isNewDeployment && !isEditable}
                             >
-                                {siteList.map((siteOption) => (
+                                {sites.map((site) => (
                                     <MenuItem 
-                                        key={siteOption} 
-                                        value={siteOption}>
-                                        {siteOption}
+                                        key={site.id} 
+                                        value={site.name}>
+                                        {site.name}
                                     </MenuItem>
                                 ))}
                             </TextField>
@@ -205,21 +271,22 @@ const DeploymentForm = (
                                 id="device_id"
                                 name="device_id"
                                 label="Dispositif"
-                                defaultValue=""
                                 select
-                                value={tmpDeploymentData?.device_id?.toString()}
-                                onChange={(e) => handleFormChange("device_id", e)}
+                                value={ deviceName }
+                                onChange={
+                                    (e) => handleFormChange("device_id", devices.find((d) => d.name === e.target.value).id)
+                                }
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 required
                                 disabled={!props.isNewDeployment && !isEditable}
                             >
-                                {deviceList.map((deviceOption) => (
+                                {devices.map((device) => (
                                     <MenuItem 
-                                        key={deviceOption} 
-                                        value={deviceOption}>
-                                        {deviceOption}
+                                        key={device.id} 
+                                        value={device.name}>
+                                        {device.name}
                                     </MenuItem>
                                 ))}
                             </TextField>
@@ -278,10 +345,10 @@ const DeploymentForm = (
                                 label="Support d'accroche"
                                 defaultValue=""
                                 select
-                                // value={tmpDeploymentData?.support}
-                                // onChange={(e) => handleFormChange("support", e)}
-                                variant="filled"
+                                value={tmpDeploymentData?.support}
+                                onChange={(e) => handleFormChange("support", e.target.value)}
                                 size="small"
+                                variant="filled"
                                 fullWidth
                                 disabled={!props.isNewDeployment && !isEditable}
                             >
@@ -301,7 +368,7 @@ const DeploymentForm = (
                                 defaultValue=""
                                 select
                                 value={tmpDeploymentData?.feature}
-                                onChange={(e) => handleFormChange("feature", e)}
+                                onChange={(e) => handleFormChange("feature", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
@@ -320,8 +387,8 @@ const DeploymentForm = (
                                 id="height"
                                 label="Hauteur du dispositif"
                                 name="height"
-                                // value={currentDeploymentData?.height}
-                                // onChange={handleChange}
+                                value={tmpDeploymentData?.height}
+                                onChange={(e) => handleFormChange("height", e.target.value)}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">cm</InputAdornment>
@@ -346,7 +413,7 @@ const DeploymentForm = (
                                 defaultValue=""
                                 select
                                 value={tmpDeploymentData?.bait}
-                                onChange={(e) => handleFormChange("bait", e)}
+                                onChange={(e) => handleFormChange("bait", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
@@ -374,14 +441,14 @@ const DeploymentForm = (
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
                                 <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                                Exemple de titre ?
+                                Paramétrage du mode automatique
                             </DialogTitle>
 
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <FormControlLabel 
-                                        control={<Switch />} 
-                                        onChange={handleAutomaticChange}
+                                        control={<Switch checked={automatic.isAutomatic} />} 
+                                        onChange={ () => handleCheckChange("automatic") }
                                         label="Automatique" 
                                         disabled={!props.isNewDeployment && !isEditable}
                                     />
@@ -390,8 +457,8 @@ const DeploymentForm = (
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
                                         label="Nombre d'image par séquence" 
-                                        value={autoNumber}
-                                        onChange={handleAutoNumberChange}
+                                        value={automatic?.imageNumber}
+                                        onChange={(e) => handleValueMode("automatic", "imageNumber", e)}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -401,15 +468,15 @@ const DeploymentForm = (
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!props.isNewDeployment && !isEditable) || !automatic}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !automatic.isAutomatic}
                                     />
                                 </Grid>
 
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
                                         label="Fréquence" 
-                                        value={autoFreq}
-                                        onChange={handleAutoFreqChange}
+                                        value={automatic?.frequency}
+                                        onChange={(e) => handleValueMode("automatic", "frequency", e)}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
@@ -420,7 +487,7 @@ const DeploymentForm = (
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!props.isNewDeployment && !isEditable) || !automatic}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !automatic.isAutomatic}
                                     />
                                 </Grid>
                             </Grid>
@@ -431,24 +498,24 @@ const DeploymentForm = (
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
                                 <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                                Paramétrage du dispositif
+                                Paramétrage du mode de déclenchement
                             </DialogTitle>
 
                             <Grid container spacing={3}>
                             
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <FormControlLabel 
-                                        control={<Switch />} 
-                                        onChange={handleTriggerChange}
+                                        control={<Switch  checked={trigger.isTrigger} />} 
+                                        onChange={() => handleCheckChange("trigger")}
                                         label="Déclenchement" 
                                         disabled={!props.isNewDeployment && !isEditable}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={12} md={6} lg={6}>
+                                <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
                                         label="Nombre d'image par séquence"
-                                        value={triggerNumber}
-                                        onChange={handleTriggerNumberChange}
+                                        value={trigger?.imageNumber}
+                                        onChange={(e) => handleValueMode("trigger", "imageNumber", e)}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -457,24 +524,14 @@ const DeploymentForm = (
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger.isTrigger}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={12} md={6} lg={6}>
-                                    <TextField
-                                        label="Mode"
-                                        // select
-                                        size="small"
-                                        variant="filled"
-                                        fullWidth
-                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={6} lg={6}>
+                                <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
                                         label="Fréquence"
-                                        value={triggerFreq}
-                                        onChange={handleTriggerFreqChange}
+                                        value={trigger?.frequency}
+                                        onChange={(e) => handleValueMode("trigger", "frequency", e)}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
@@ -484,7 +541,7 @@ const DeploymentForm = (
                                         size="small"
                                         variant="filled"
                                         fullWidth
-                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger}
+                                        disabled={(!props.isNewDeployment && !isEditable) || !trigger.isTrigger}
                                     />
                                 </Grid>
                             </Grid>
@@ -499,7 +556,7 @@ const DeploymentForm = (
                         label="Description"
                         defaultValue=""
                         value={tmpDeploymentData?.description}
-                        onChange={(e) => handleFormChange("description", e)}
+                        onChange={(e) => handleFormChange("description", e.target.value)}
                         variant="filled"
                         multiline
                         rows={4}

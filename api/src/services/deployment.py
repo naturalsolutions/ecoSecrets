@@ -1,7 +1,12 @@
-from sqlmodel import Session, SQLModel
+from fastapi.encoders import jsonable_encoder
+from sqlmodel import Session
 
-from src.models.deployment import DeploymentBase, Deployments
-from src.services.utils import get_object_id, get_objects
+from src.models.deployment import (
+    DeploymentBase,
+    Deployments,
+    DeploymentWithTemplateSequence,
+)
+from src.models.models import TemplateSequence
 
 
 def get_deployments(db: Session, skip: int = 0, limit: int = 100):
@@ -17,36 +22,31 @@ def get_deployment_by_name(db: Session, name_deployment: str):
 
 
 def create_deployment(db: Session, deployment: DeploymentBase):
-    db_deployment = Deployments(
-        name=deployment.name,
-        description=deployment.description,
-        start_date=deployment.start_date,
-        end_date=deployment.end_date,
-        bait=deployment.bait,
-        feature=deployment.feature,
-        project_id=deployment.project_id,
-        template_sequence_id=deployment.template_sequence_id,
-        site_id=deployment.site_id,
-        device_id=deployment.device_id,
-    )
+    db_deployment = Deployments(**deployment.dict())
     db.add(db_deployment)
     db.commit()
     db.refresh(db_deployment)
     return db_deployment
 
 
-def update_deployment(db: Session, deployment: DeploymentBase, id: int):
-    db_deployment = db.query(Deployments).filter(Deployments.id == id).first()
-    db_deployment.name = deployment.name
-    db_deployment.description = deployment.description
-    db_deployment.start_date = deployment.start_date
-    db_deployment.end_date = deployment.end_date
-    db_deployment.bait = deployment.bait
-    db_deployment.feature = deployment.feature
-    db_deployment.template_sequence_id = deployment.template_sequence_id
-    db_deployment.site_id = deployment.site_id
-    db_deployment.project_id = deployment.project_id
-    db_deployment.device_id = deployment.device_id
+def update_deployment(db: Session, deployment: DeploymentWithTemplateSequence):
+    db_deployment = db.query(Deployments).filter(Deployments.id == deployment.id).first()
+
+    obj_data = jsonable_encoder(db_deployment)
+    update_data = deployment.dict()
+    for field in update_data:
+        if field in obj_data:
+            setattr(db_deployment, field, update_data[field])
+        if field == "template_sequences" and update_data[field] is not None:
+            db_deployment.template_sequences = []
+
+            for template in update_data[field]:
+                if 'id' in template and template['id'] is not None:
+                    existing_template = db.query(TemplateSequence).filter(TemplateSequence.id == template['id']).one()
+                    db_deployment.template_sequences.append(existing_template)
+                if 'id' in template and template['id'] is None:
+                    db_deployment.template_sequences.append(TemplateSequence(**template))
+    
     db.commit()
     db.refresh(db_deployment)
     return db_deployment

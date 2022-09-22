@@ -7,7 +7,7 @@ import { Stats } from "../client/models/Stats";
 import { HomeService } from "../client/services/HomeService";
 import { StatsProject } from "../client/models/StatsProject";
 import { ProjectSheet } from "../client/models/ProjectSheet";
-import { DeploymentsService, Devices, DevicesService, Sites, SitesService } from "../client";
+import { DeploymentsService, DeploymentWithTemplateSequence, Devices, DevicesService, SequencesService, Sites, SitesService, TemplateSequence } from "../client";
 import { DeviceMenu } from "../client/models/DeviceMenu";
 
 export interface MainContextProps {
@@ -24,7 +24,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [currentDeployment, setCurrentDeployment] = useState<number | null>(
     null
   );
-  const [deploymentData, setDeploymentData] = useState<Deployments>();
+  const [deploymentData, setDeploymentData] = useState<DeploymentWithTemplateSequence>();
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
   const [globalStats, setGlobalStats] = useState<Stats>();
@@ -35,8 +35,31 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [currentSite, setCurrentSite] = useState<number | null>(null);
   const [deviceMenu, setDeviceMenu] = useState<DeviceMenu[]>([]);
   const [currentDevice, setCurrentDevice] = useState<number | null>(null);
-  
-  
+  const [autoTemplates, setAutoTemplates] = useState<TemplateSequence[]>();
+  const [triggerTemplates, setTriggerTemplates] = useState<TemplateSequence[]>();
+
+  const updateAutoTemplates = () => {
+    SequencesService
+      .readTemplateSequencesSequencesGet("automatic")
+      .then((templates) => {
+        setAutoTemplates(templates);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const updateTriggerTemplates = () => {
+    SequencesService
+      .readTemplateSequencesSequencesGet("trigger")
+      .then((templates) => {
+        setTriggerTemplates(templates);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const updateProjects = () => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
       .then((projects) => {
@@ -128,9 +151,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   const updateDeploymentData = () => {
     currentDeployment && 
-    DeploymentsService.readDeploymentDeploymentsDeploymentIdGet(currentDeployment)
-      .then((deploymentData) => {
-        setDeploymentData(deploymentData);
+    DeploymentsService.readDeploymentsWithTemplateSequenceDeploymentsTemplateSequenceGet()
+      .then((deploymentsData) => {
+        setDeploymentData(deploymentsData.find((d) => d.id == currentDeployment));
       })
       .catch((err) => {
         console.log(err);
@@ -149,6 +172,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateDevices();
       updateDeviceMenu();
       updateSites();
+      updateAutoTemplates();
+      updateTriggerTemplates();
     })();
   }, []);
 
@@ -203,9 +228,16 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         device,
         deploymentData,
         setDeploymentData,
-        updateDeploymentData, 
-        updateSites,
+        updateDeploymentData,
         sites,
+        setSites,
+        updateSites,
+        autoTemplates, 
+        setAutoTemplates,
+        updateAutoTemplates,
+        triggerTemplates, 
+        setTriggerTemplates,
+        updateTriggerTemplates,
         site,
         setCurrentSite
       }}

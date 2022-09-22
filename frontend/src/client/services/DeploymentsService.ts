@@ -4,6 +4,7 @@
 import type { DeploymentBase } from '../models/DeploymentBase';
 import type { Deployments } from '../models/Deployments';
 import type { DeploymentWithFile } from '../models/DeploymentWithFile';
+import type { DeploymentWithTemplateSequence } from '../models/DeploymentWithTemplateSequence';
 import type { ReadDeployment } from '../models/ReadDeployment';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -82,21 +83,16 @@ export class DeploymentsService {
 
     /**
      * Update Deployment
-     * @param deploymentId
      * @param requestBody
-     * @returns Deployments Successful Response
+     * @returns DeploymentWithTemplateSequence Successful Response
      * @throws ApiError
      */
     public static updateDeploymentDeploymentsDeploymentIdPut(
-        deploymentId: number,
-        requestBody: DeploymentBase,
-    ): CancelablePromise<Deployments> {
+        requestBody: DeploymentWithTemplateSequence,
+    ): CancelablePromise<DeploymentWithTemplateSequence> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/deployments/{deployment_id}',
-            path: {
-                'deployment_id': deploymentId,
-            },
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -164,6 +160,31 @@ export class DeploymentsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/files/',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Read Deployments With Template Sequence
+     * @param skip
+     * @param limit
+     * @returns DeploymentWithTemplateSequence Successful Response
+     * @throws ApiError
+     */
+    public static readDeploymentsWithTemplateSequenceDeploymentsTemplateSequenceGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<Array<DeploymentWithTemplateSequence>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/deployments/template_sequence/',
             query: {
                 'skip': skip,
                 'limit': limit,

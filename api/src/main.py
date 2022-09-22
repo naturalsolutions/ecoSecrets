@@ -1,11 +1,21 @@
 from decouple import config
 from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+
 from src.connectors.database import init_db
 from src.connectors.s3 import init_bucket
 from src.dependencies import get_query_token, get_token_header
 from src.internal import admin
-from src.routers import deployments, devices, files, home, projects, sites, users
+from src.routers import (
+    deployments,
+    devices,
+    files,
+    home,
+    projects,
+    sites,
+    templateSequences,
+    users,
+)
 
 ROOT_PATH = config("API_ROOT_PATH")
 
@@ -21,6 +31,7 @@ app.include_router(deployments.router)
 app.include_router(sites.router)
 app.include_router(devices.router)
 app.include_router(home.router)
+app.include_router(templateSequences.router)
 app.include_router(
     admin.router,
     prefix="/admin",

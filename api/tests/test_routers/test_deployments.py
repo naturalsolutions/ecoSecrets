@@ -60,6 +60,7 @@ def test_update_deployment(client, site, device, project, deployment):
         "feature": "feature",
         "description": "desc",
         "project_id": project.id,
+        "id": deployment.id
     }
 
     response = client.put(
