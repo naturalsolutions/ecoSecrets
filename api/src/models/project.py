@@ -34,7 +34,9 @@ class ProjectBase(SQLModel):
 
 class Projects(ProjectBase, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
-    deployments: Optional[List["Deployments"]] = Relationship(back_populates="project")
+    deployments: Optional[List["Deployments"]] = Relationship(
+        back_populates="project", sa_relationship_kwargs={"lazy": "raise"}
+    )
 
 
 class ReadProject(ProjectBase):

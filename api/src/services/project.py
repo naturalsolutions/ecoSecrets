@@ -1,6 +1,8 @@
 # Service projet
 from datetime import datetime
+from typing import List
 
+from sqlalchemy.orm import joinedload
 from sqlmodel import Session, select
 
 from src.models.deployment import DeploymentForProjectSheet
@@ -8,13 +10,14 @@ from src.models.device import Devices
 from src.models.file import Files
 from src.models.project import ProjectBase, Projects, ProjectWithDeployment
 from src.models.site import Sites
-from src.schemas.schemas import StatsProject
+from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
     return (
         db.query(Projects)
+        .options(joinedload("deployments").options(joinedload("files")))
         .order_by(Projects.creation_date.desc())
         .offset(skip)
         .limit(limit)
@@ -64,37 +67,50 @@ def delete_project(db: Session, id: int):
     return db_project
 
 
+def number_treated_media(files: List[Files]):
+    nb = 0
+    for f in files:
+        if f.treated == True:
+            nb += 1
+    return nb
+
+
+def annotation_percentage_project(nb_media: int, nb_treated_media: int):
+    if nb_treated_media != 0:
+        return round((nb_treated_media / nb_media) * 100, 2)
+    else:
+        return 0
+
+
 def get_informations(db: Session, id: int):
-    project = get_project(db, id)
-    deploy = deployment.get_project_deployments(db=db, id=id)
-    deploys = []
+    project = (
+        db.query(Projects)
+        .filter(Projects.id == id)
+        .options(joinedload("deployments").options(joinedload("files")))
+        .first()
+    )
     media_number = 0
-    if len(deploy) > 0:
-        for d in deploy:
-            site = db.query(Sites.name).filter(Sites.id == d.site_id).first()
-            device = db.query(Devices.name).filter(Devices.id == d.device_id).first()
-            media = db.query(Files).filter(Files.deployment_id == d.id).count()
-            data_deployment = DeploymentForProjectSheet(
-                id=d.id,
-                site_name=site.name,
-                device_name=device.name,
-                name=d.name,
-                start_date=d.start_date,
-                end_date=d.end_date,
-                site_id=d.site_id,
-                device_id=d.device_id,
-            )
-            media_number += media
-            deploys.append(data_deployment)
-    project_data = ProjectWithDeployment(**project.dict())
-    project_data = project_data.dict()
+    nb_treated_media = 0
+    deploys = []
+    for d in project.deployments:
+        media_number += len(d.files)
+        deploys.append(d.dict())
+        nb_treated_media += number_treated_media(d.files)
+    project_data = project.dict()
     project_data["deployments"] = deploys
-    project_data["stats"] = {"media_number": media_number, "annotation_percentage": 50}
+
+    annotation_percentage = annotation_percentage_project(
+        media_number, nb_treated_media
+    )
+    project_data["stats"] = {
+        "media_number": media_number,
+        "annotation_percentage": annotation_percentage,
+    }
     return project_data
 
 
 def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
-    projects_and_deployments_and_images = get_projects(db)
+    projects_and_deployments_and_images = get_projects(db, skip, limit)
     current_date = datetime.now().date()
 
     result = []
@@ -110,7 +126,8 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         unique_device = []
         device_number = 0
         media_number = 0
-        status = ""
+        nb_treated_media = 0
+
         for deployment in project.deployments:
             if deployment.site_id not in unique_site:
                 unique_site.append(deployment.site_id)
@@ -119,8 +136,13 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
                 unique_device.append(deployment.device_id)
                 device_number += 1
             media_number += len(deployment.files)
+            nb_treated_media += number_treated_media(deployment.files)
         # TO ADD annotation%
-        annotation_percentage = 10.4
+        annotation_percentage = annotation_percentage_project(
+            media_number, nb_treated_media
+        )
+
+        status = ""
         if start_date is None or end_date is None:
             status = "Inconnu"
         elif current_date < start_date:
@@ -147,3 +169,24 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         )
         result.append(stats.dict())
     return result
+
+
+def first_untreated_file(db: Session, project_id: int):
+    deploys = deployment.get_project_deployments(db=db, id=project_id)
+    untreated = False
+    d = 0
+    while untreated == False and d < len(deploys):
+        f = 0
+        files = deploys[d].files
+        print(len(files))
+        while untreated == False and f < len(files):
+            file = files[f]
+            if file.treated == False:
+                first_file = str(file.id)
+                print(file.id)
+                deploy = deploys[d].id
+                print(deploy)
+                untreated = True
+            f += 1
+        d += 1
+    return FirstUntreated(file_id=first_file, deploy_id=deploy)

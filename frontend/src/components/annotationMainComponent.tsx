@@ -47,11 +47,13 @@ const AnnotationMainComponent = () => {
     setCurrentDeployment,
     currentImage, setCurrentImage,
     files,
-    updateListFile
+    updateListFile, 
+    setCurrentProject
   } = useMainContext();
 
   let params = useParams();
   const [isAnnoted, setIsAnnoted] = useState<undefined | boolean>(undefined)
+  const [treated, setTreated] = useState<undefined | boolean>(undefined)
   const [observations, setObservations] = useState<Annotation[]>([]);
   const tmpObservation = { id: uuidv4(), classe: "", order: "", family: "", genus: "", specie: "", life_stage: "", biological_state: "", comment: "", behaviour: "", sex: "", number: 0 };
   const [isMinimalObservation, setIsMinimalObservation] = useState(observations.length == 0)
@@ -74,12 +76,14 @@ const AnnotationMainComponent = () => {
     (async () => {
       setCurrentDeployment(Number(params.deploymentId));
       setCurrentImage(params.imageId);
+      setCurrentProject(Number(params.projectId));
     })();
   }, [projects]);
 
   useEffect(() => {
     (async () => {
       image() && setObservations(image().annotations);
+      image()&& setTreated(image().treated)
     })();
   }, [files, currentImage]);
 
@@ -91,7 +95,7 @@ const AnnotationMainComponent = () => {
 
   const updateUrl = (id) => {
     const url = new URL(window.location.toString());
-    url.pathname = `/project/${Number(params.projectId)}/deployment/${Number(params.deploymentId)}/${id}`;
+    url.pathname = `/project/${Number(params.projectId)}/deployment/${Number(params.deploymentId)}/medias/${id}`;
     window.history.pushState({}, "", url);
   };
 
@@ -115,12 +119,22 @@ const AnnotationMainComponent = () => {
       }
     });
   };
+  const lastOrFirstImage = (indice) => {
+    if (indice == 'first') {
+      setCurrentImage(files[0].id);
+      updateUrl(files[0].id);
+    }
+    if (indice == 'last') {
+      setCurrentImage(files[files.length-1].id);
+      updateUrl(files[files.length-1].id);
+    } 
+  };
 
   const save = () => {
     FilesService
       .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations)
       .then(res => 
-          updateListFile()
+        updateListFile()
       )
     // WARNING remplacer le updateListFile par une mise à jour local des fichiers
   };
@@ -215,7 +229,7 @@ const AnnotationMainComponent = () => {
     <LayoutImageContainer className="page">
 
       <LayoutImageImage>
-        <AnnotationImageDisplay image={image()} next={next} previous={previous} />
+        <AnnotationImageDisplay image={image()} next={next} previous={previous} lastOrFirstImage={lastOrFirstImage}/>
       </LayoutImageImage>
 
       <LayoutImageForm className="annotations">
@@ -234,10 +248,15 @@ const AnnotationMainComponent = () => {
 
             <TabPanel valueTab={tabValue} index={0}>
               <div className="info-annotation-ctn">
-                {isAnnoted ?
-                  <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={"Annoté et validé manuellement"} stylClassButton="valid" />
-                  :
-                  <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={"Au moins 1 observation non noté"} stylClassButton="warning" />
+                {treated ?
+                  <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={"Média traité manuellement"} stylClassButton="valid" />
+                  : (
+                    isAnnoted ?
+                    <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#FF9800' }} />} title={"Observation(s) pas enregistrée(s)"} stylClassButton="info" />
+                    :
+                    <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={"Média pas traité"} stylClassButton="warning" />
+                  )
+                  
                 }
                 <FormControlLabel
                   control={

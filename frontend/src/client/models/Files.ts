@@ -12,6 +12,7 @@ export type Files = {
     megadetector_id?: number;
     deepfaune_id?: number;
     deployment_id: number;
+    treated?: boolean;
     annotations?: Array<any>;
 };
 

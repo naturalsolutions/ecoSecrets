@@ -10,13 +10,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
-import { useState } from "react";
-import { ProjectBase } from "../client";
 import SearchIcon from '@mui/icons-material/Search';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import AddIcon from '@mui/icons-material/Add';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ProjectModal from "./projectModale";
+import GoAnnotation from "./goAnnotation";
 
 const testStatus = (status) => {
   if (status === 'Terminé') {
@@ -137,7 +135,7 @@ const ProjectList = () => {
       {projectsStats && projectsStats.map((s) => (
         <Grid 
           item 
-          xs={12} sm={6} md={3} lg={3} 
+          xs={12} sm={6} md={6} lg={3} 
           key={projectsStats.indexOf(s)}
         >
           <Card>
@@ -197,9 +195,7 @@ const ProjectList = () => {
               </ListItem>
               
               <ListItem secondaryAction={
-                    <IconButton edge="end" aria-label="add">
-                      <ArrowForwardIcon/>
-                    </IconButton>
+                    <GoAnnotation project_id={s.id} nb_media={s.media_number} annotation_percentage={s.annotation_percentage} page='home'/>
                   }>
                 <Typography variant="body1" gutterBottom >
                   < NotesIcon style={{verticalAlign:"middle", minWidth: '40px'}}/>

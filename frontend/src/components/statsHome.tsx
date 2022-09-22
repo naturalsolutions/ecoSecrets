@@ -10,7 +10,7 @@ const StatsHome = () => {
     const {globalStats} = useMainContext();
     const graphicStats = {
         "medias": {'buttonLabel':"Nombre de médias", "url":"/gallery/", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
-        "annotations": {'buttonLabel': "Nombre d'annotations", "url":"", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
+        "annotations": {'buttonLabel': "Nombre d'observations", "url":"", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
         "device":{'buttonLabel':"Nombre de dispositifs", "url":"/devices/", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
         "sites": {'buttonLabel':"Nombre de sites", "url":"/sites/", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
     };
@@ -29,7 +29,7 @@ const StatsHome = () => {
                 alignItems='center'
             >
                 {globalStats && Object.entries(globalStats).map(([key, value]) => 
-                    <Grid item xs={3} key={key}>
+                    <Grid item lg={3} xs={6} key={key}>
                         <Grid 
                             container 
                             direction ='column' 

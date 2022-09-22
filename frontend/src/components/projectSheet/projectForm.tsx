@@ -89,7 +89,7 @@ const ProjectForm = () => {
                     >
                         <Grid container spacing={3}>
                         { modified ?
-                        <Grid item lg={12}>
+                        <Grid item lg={12} xs={12}>
                             <TextField 
                             id="name"
                             name="name"
@@ -102,7 +102,7 @@ const ProjectForm = () => {
                             />
                         </Grid>: <></>}
                         
-                            <Grid item lg={6}>
+                            <Grid item lg={6} xs={12}>
                                 <TextField
                                     InputProps={{
                                         readOnly: !modified,
@@ -121,7 +121,7 @@ const ProjectForm = () => {
                                     ))}
                                 </TextField>
                             </Grid>
-                            <Grid item lg={6}>
+                            <Grid item lg={6} xs={12}>
                                 <TextField 
                                     InputProps={{
                                         readOnly: !modified,
@@ -144,7 +144,7 @@ const ProjectForm = () => {
                                 </TextField>
                             </Grid>
                                 
-                            <Grid item lg={6} className='datePicker'>
+                            <Grid item lg={6} xs={12} className='datePicker'>
                                 <LocalizationProvider dateAdapter={AdapterDateFns} >
                                     <DatePicker
                                         readOnly= {!modified}
@@ -159,7 +159,7 @@ const ProjectForm = () => {
                                     />
                                 </LocalizationProvider>
                             </Grid>
-                            <Grid item lg={6} className='datePicker'>
+                            <Grid item lg={6} xs={12} className='datePicker'>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <DatePicker
                                             readOnly= {!modified}
@@ -174,7 +174,7 @@ const ProjectForm = () => {
                                         />
                                     </LocalizationProvider>
                             </Grid>
-                            <Grid item lg={12}>
+                            <Grid item lg={12} xs={12}>
                                 <TextField 
                                     id="protocol"
                                     name="protocol"
