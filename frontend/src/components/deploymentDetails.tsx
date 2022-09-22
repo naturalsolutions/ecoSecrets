@@ -8,11 +8,9 @@ import ImageList from "./imageList";
 import TabPanel from "./tabPanel";
 import { useMainContext } from "../contexts/mainContext";
 
-const DeploymentDetails = () => {
-
+const DeploymentDetails = (props) => {
     const { deploymentData } = useMainContext();
-
-    const [tabValue, setTabValue] = useState(0);
+    const [tabValue, setTabValue] = useState(props.bool);
     const handleTabValueChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
       };

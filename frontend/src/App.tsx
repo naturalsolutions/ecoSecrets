@@ -14,6 +14,8 @@ import ProjectSheetPage from "./pages/projectSheet";
 import { theme } from "./theme";
 import { ThemeProvider } from "@mui/material";
 import { OpenAPI } from "./client";
+import SiteMenuPage from "./pages/siteMenu";
+import SiteSheetPage from "./pages/siteSheet";
 
 OpenAPI.BASE = process.env.REACT_APP_API_PATH || "http://localhost:3654";
 
@@ -29,18 +31,27 @@ function App() {
               path="/projectsheet/:projectId"
               element={<ProjectSheet />}
             ></Route>
+            <Route path="/sites/" element={<SiteMenuPage />}></Route>
             <Route path="/devices/" element={<DeviceMenuPage />}></Route>
             <Route
               path="/devices/:deviceId"
               element={<DeviceSheetPage />}
             ></Route>
             <Route
+              path="/sites/:siteId"
+              element={<SiteSheetPage />}
+            ></Route>
+            <Route
               path="deployment/:deploymentId"
               element={<Deployment />}
             ></Route>
             <Route
-              path="/project/:projectId/deployment/:deploymentId"
-              element={<DeploymentSheet />}
+              path="/project/:projectId/deployment/:deploymentId/details"
+              element={<DeploymentSheet bool={0}/>}
+            ></Route>
+            <Route
+              path="/project/:projectId/deployment/:deploymentId/medias"
+              element={<DeploymentSheet bool={1}/>}
             ></Route>
             <Route
               path="/project/:projectId/deployment/:deploymentId/:imageId"

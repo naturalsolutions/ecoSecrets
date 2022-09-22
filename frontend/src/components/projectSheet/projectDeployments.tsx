@@ -9,6 +9,7 @@ import { Alert, AlertTitle, Link, Paper, Stack } from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
 import { useState } from 'react';
 import ProjectDeploymentDeleteModale from './projectDeploymentsDeleteModale';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.body}`]: {
@@ -63,7 +64,7 @@ const ProjectDeployments = () => {
                         <StyledTableRow key={row.name}>
                         <StyledTableCell align="center">{
                         <Link 
-                          href={`/project/${projectSheetData.id}/deployment/${row.id}`}
+                          href={`/project/${projectSheetData.id}/deployment/${row.id}/details`}
                         >
                           {row.name}
                         </Link>
@@ -72,7 +73,9 @@ const ProjectDeployments = () => {
                         <StyledTableCell align="center">{row.end_date ? new Date(row.end_date).toLocaleDateString() : null}</StyledTableCell>
                         <StyledTableCell align="center">{row.site_name}</StyledTableCell>
                         <StyledTableCell align="center">{row.device_name}</StyledTableCell>
-                        <StyledTableCell align="center">Lien vers page import</StyledTableCell>
+                        <StyledTableCell align="center"><Link 
+                          href={`/project/${projectSheetData.id}/deployment/${row.id}/medias`}
+                        ><ControlPointIcon/></Link></StyledTableCell>
                         <StyledTableCell align="center">
                           <ProjectDeploymentDeleteModale deploymentId={row.id} />
                         </StyledTableCell>

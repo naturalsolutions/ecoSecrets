@@ -7,7 +7,7 @@ import { Stats } from "../client/models/Stats";
 import { HomeService } from "../client/services/HomeService";
 import { StatsProject } from "../client/models/StatsProject";
 import { ProjectSheet } from "../client/models/ProjectSheet";
-import { DeploymentsService, Devices, DevicesService } from "../client";
+import { DeploymentsService, Devices, DevicesService, Sites, SitesService } from "../client";
 import { DeviceMenu } from "../client/models/DeviceMenu";
 
 export interface MainContextProps {
@@ -31,6 +31,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [projectsStats, setProjectsStats] = useState<StatsProject[]>();
   const [projectSheetData, setProjectSheetData] = useState<ProjectSheet>();
   const [devices, setDevices] = useState<Devices[]>([]);
+  const [sites, setSites] = useState<Sites[]>([]);
+  const [currentSite, setCurrentSite] = useState<number | null>(null);
   const [deviceMenu, setDeviceMenu] = useState<DeviceMenu[]>([]);
   const [currentDevice, setCurrentDevice] = useState<number | null>(null);
   
@@ -39,6 +41,16 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
       .then((projects) => {
         setProjects(projects);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const updateSites = () => {
+    SitesService.readSitesSitesGet()
+      .then((sites) => {
+        setSites(sites);
       })
       .catch((err) => {
         console.log(err);
@@ -110,6 +122,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     return projects.find((p) => p.id === currentProject);
   };
 
+  const site = (): Sites | undefined => {
+    return sites.find((s) => s.id === currentSite);
+  };
+
   const updateDeploymentData = () => {
     currentDeployment && 
     DeploymentsService.readDeploymentDeploymentsDeploymentIdGet(currentDeployment)
@@ -132,6 +148,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateProjectsStats();
       updateDevices();
       updateDeviceMenu();
+      updateSites();
     })();
   }, []);
 
@@ -186,7 +203,11 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         device,
         deploymentData,
         setDeploymentData,
-        updateDeploymentData
+        updateDeploymentData, 
+        updateSites,
+        sites,
+        site,
+        setCurrentSite
       }}
     >
       {children}
