@@ -108,11 +108,11 @@ const ProjectForm = () => {
                                         readOnly: !modified,
                                       }}
                                     select 
-                                    label="Protocole" 
+                                    label="acquisition_framework" 
                                     variant="filled"
-                                    value={projectData['protocole']}
+                                    value={projectData['acquisition_framework']}
                                     fullWidth
-                                    onChange={(e) => handleFormChange("protocole", e)}
+                                    onChange={(e) => handleFormChange("acquisition_framework", e)}
                                 >
                                     {protocoles.map((item) => (
                                         <MenuItem key={item} value={item}>
@@ -176,12 +176,12 @@ const ProjectForm = () => {
                             </Grid>
                             <Grid item lg={12}>
                                 <TextField 
-                                    id="description"
-                                    name="description"
-                                    label="Description"
+                                    id="protocol"
+                                    name="protocol"
+                                    label="Protocole et méthodes"
                                     variant="filled"
-                                    value ={projectData.description}
-                                    onChange={(e) => handleFormChange("description", e)}
+                                    value ={projectData.protocol}
+                                    onChange={(e) => handleFormChange("protocol", e)}
                                     
                                     InputProps={{
                                         readOnly: !modified,

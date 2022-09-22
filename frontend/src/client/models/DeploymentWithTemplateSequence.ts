@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ReadDeployment = {
+import type { TemplateSequence } from './TemplateSequence';
+
+export type DeploymentWithTemplateSequence = {
     name: string;
     start_date: string;
     end_date?: string;
@@ -16,5 +18,6 @@ export type ReadDeployment = {
     image?: string;
     project_id: number;
     id: number;
+    template_sequences?: Array<TemplateSequence>;
 };
 

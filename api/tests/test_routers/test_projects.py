@@ -72,9 +72,16 @@ def test_update_project(client, project):
     data = {
         "name": "Project updated",
         "creation_date": "2022-07-28",
+        "start_date": "2022-12-31",
         "end_date": "2022-12-31",
-        "description": "complete description",
-        "status": "statut updated",
+        "protocol": "nouveau protocol",
+        "acquisition_framework": "acqu 2",
+        "targeted_species": "species 2",
+        "referential": "new ref",
+        "timezone": "BES",
+        "image": "new hash",
+        # "owner_id": 1,
+        # "contact_id": 1
     }
 
     response = client.put(

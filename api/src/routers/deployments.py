@@ -8,6 +8,7 @@ from src.models.deployment import (
     DeploymentBase,
     Deployments,
     DeploymentWithFile,
+    DeploymentWithTemplateSequence,
     ReadDeployment,
 )
 from src.services import deployment
@@ -44,14 +45,13 @@ def create_deployment(new_deployment: DeploymentBase, db: Session = Depends(get_
     return deployment.create_deployment(db=db, deployment=new_deployment)
 
 
-@router.put("/{deployment_id}", response_model=Deployments)
+@router.put("/{deployment_id}", response_model=DeploymentWithTemplateSequence)
 def update_deployment(
-    deployment_id: int,
-    data_deployment: DeploymentBase,
+    data_deployment: DeploymentWithTemplateSequence,
     db: Session = Depends(get_db),
 ):
     return deployment.update_deployment(
-        db=db, deployment=data_deployment, id=deployment_id
+        db=db, deployment=data_deployment
     )
 
 
@@ -67,6 +67,14 @@ def read_project_deployments(project_id: int, db: Session = Depends(get_db)):
 
 @router.get("/files/", response_model=List[DeploymentWithFile])
 def read_deployments_with_files(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+):
+    deployments = deployment.get_deployments(db, skip=skip, limit=limit)
+    return deployments
+
+
+@router.get("/template_sequence/", response_model=List[DeploymentWithTemplateSequence])
+def read_deployments_with_template_sequence(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     deployments = deployment.get_deployments(db, skip=skip, limit=limit)

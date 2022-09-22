@@ -1,4 +1,6 @@
 # Service projet
+from datetime import datetime
+
 from sqlmodel import Session, select
 
 from src.models.deployment import DeploymentForProjectSheet
@@ -11,7 +13,13 @@ from src.services import deployment
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(Projects).offset(skip).limit(limit).all()
+    return (
+        db.query(Projects)
+        .order_by(Projects.creation_date.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 
 def get_project(db: Session, project_id: int):
@@ -33,13 +41,15 @@ def create_project(db: Session, project: ProjectBase):
 def update_project(db: Session, project: ProjectBase, id: int):
     db_project = db.query(Projects).filter(Projects.id == id).first()
     db_project.name = project.name
-    db_project.description = project.description
     db_project.creation_date = project.creation_date
     db_project.start_date = project.start_date
     db_project.end_date = project.end_date
-    db_project.protocole = project.protocole
+    db_project.protocol = project.protocol
+    db_project.acquisition_framework = project.acquisition_framework
     db_project.targeted_species = project.targeted_species
-    db_project.status = project.status
+    db_project.referential = project.referential
+    db_project.timezone = project.timezone
+    db_project.image = project.image
     db_project.owner_id = project.owner_id
     db_project.contact_id = project.contact_id
     db.commit()
@@ -85,6 +95,7 @@ def get_informations(db: Session, id: int):
 
 def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
     projects_and_deployments_and_images = get_projects(db)
+    current_date = datetime.now().date()
 
     result = []
     for project in projects_and_deployments_and_images:
@@ -92,15 +103,14 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         name = project.name
         start_date = project.start_date
         end_date = project.end_date
-        status = project.status
         targeted_species = project.targeted_species
         deployment_number = len(project.deployments)
-
         unique_site = []
         site_number = 0
         unique_device = []
         device_number = 0
         media_number = 0
+        status = ""
         for deployment in project.deployments:
             if deployment.site_id not in unique_site:
                 unique_site.append(deployment.site_id)
@@ -111,6 +121,17 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
             media_number += len(deployment.files)
         # TO ADD annotation%
         annotation_percentage = 10.4
+        if start_date is None or end_date is None:
+            status = "Inconnu"
+        elif current_date < start_date:
+            status = "A venir"
+        elif current_date <= end_date:
+            status = "En cours"
+        elif annotation_percentage < 100:
+            status = "A annoter"
+        else:
+            status = "Terminé"
+
         stats = StatsProject(
             id=id,
             name=name,

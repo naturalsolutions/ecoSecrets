@@ -13,6 +13,7 @@ class DeviceBase(SQLModel):
     detection_area: Optional[float]
     status: Optional[str]
     operating_life: Optional[float]
+    image: Optional[str]
     exif_id: Optional[int] = Field(foreign_key="exifkeymodel.id")
 
 

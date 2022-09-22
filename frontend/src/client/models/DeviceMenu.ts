@@ -11,6 +11,7 @@ export type DeviceMenu = {
     detection_area?: number;
     status?: string;
     operating_life?: number;
+    image?: string;
     exif_id?: number;
     id?: number;
     nb_images: number;
