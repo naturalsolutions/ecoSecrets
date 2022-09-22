@@ -1,33 +1,24 @@
 import * as React from 'react';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
-import { Devices, DevicesService} from '../../client';
+import { DevicesService, Sites, SitesService} from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
 
 
-const DeviceForm = () => {
-    const {device, updateDeviceMenu} = useMainContext();
-    const [deviceData, setDeviceData] = React.useState<Devices>(device());
-    const models = ['Modèle A', 'Modèle B', 'Modèle C'];
+const SiteForm = () => {
+    const {site, updateSites} = useMainContext();
+    const [siteData, setSiteData] = React.useState<Sites>(site());
+    const habitats = ['Prairie', 'Forêt', 'Littoral'];
     const [open, setOpen] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [modified, setModified] = React.useState(false);
 
     const handleFormChange = (params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
-        let tmp_device_data = {...deviceData};
-        tmp_device_data[params] = e.target.value;
-        setDeviceData(tmp_device_data);
+        let tmp_site_data = {...siteData};
+        tmp_site_data[params] = e.target.value;
+        setSiteData(tmp_site_data);
       };
-
-    const handleChangeDate =(params:string,  d) => {
-        let tmp_device_data = {...deviceData};
-        d !== null && (tmp_device_data[params] = d.toISOString().slice(0, 10));
-        setDeviceData(tmp_device_data);
-    };
 
     const dialog = () => {
         setOpen(true);
@@ -42,10 +33,10 @@ const DeviceForm = () => {
     };
 
     const save = () => {
-        deviceData.id && DevicesService.updateDeviceDevicesDeviceIdPut(deviceData?.id, deviceData).then(() => {
+        siteData.id && SitesService.updateSiteSitesSiteIdPut(siteData?.id, siteData).then(() => {
             setModified(!modified);
             setOpen(false);
-            updateDeviceMenu();
+            updateSites();
             setSuccess(true);
         }).catch((err) => {
             console.log(err);
@@ -58,7 +49,7 @@ const DeviceForm = () => {
                 justifyContent="center"
             >
             <Grid item lg={6}>
-                <DropzoneComponent sentence='Ajouter une photo du dispositif'/>
+                <DropzoneComponent sentence='Ajouter une photo du site'/>
             </Grid>
                 <Collapse in={success}>
                     <Alert 
@@ -80,7 +71,7 @@ const DeviceForm = () => {
                         Modifications enregistrées !
                     </Alert>
                 </Collapse>
-                <form key={deviceData.id}>
+                <form key={siteData.id}>
                     <Stack
                         direction='row'
                         spacing={40}
@@ -93,7 +84,7 @@ const DeviceForm = () => {
                                         id="name"
                                         name="name"
                                         label="Nom"
-                                        value ={deviceData.name}
+                                        value ={siteData.name}
                                         onChange={(e) => handleFormChange("name", e)}
                                         fullWidth 
                                         variant="filled" 
@@ -104,93 +95,62 @@ const DeviceForm = () => {
                                 <TextField
                                     InputProps={{
                                         readOnly: !modified,
-                                      }}
-                                    select 
-                                    label="Modèle" 
+                                        type: 'number'
+                                      }} 
+                                    label="Longitude" 
                                     variant="filled"
-                                    value={deviceData.model}
+                                    value={siteData.longitude}
                                     fullWidth
-                                    onChange={(e) => handleFormChange("model", e)}
+                                    onChange={(e) => handleFormChange("longitude", e)}
+                                />
+                            </Grid>
+                            <Grid item lg={2.4}>
+                                <TextField 
+                                    InputProps={{
+                                        readOnly: !modified,
+                                    }}
+                                    label='Latitude'
+                                    name='latitude'
+                                    inputProps={{ type: 'number' }}
+                                    value={siteData.latitude}
+                                    fullWidth 
+                                    variant="filled"
+                                    onChange={(e) => handleFormChange("latitude", e)}
+                                />
+                            </Grid>
+                            <Grid item lg={2.4}>
+                                <TextField
+                                    InputProps={{
+                                        readOnly: !modified,
+                                      }}
+                                    label='Habitat'
+                                    name='habitat'
+                                    select
+                                    value={siteData.habitat}
+                                    fullWidth 
+                                    variant="filled"
+                                    onChange={(e) => handleFormChange("habitat", e)}
                                 >
-                                    {models.map((item) => (
+                                    {habitats.map((item) => (
                                         <MenuItem key={item} value={item}>
                                         {item}
                                         </MenuItem>
                                     ))}
                                 </TextField>
                             </Grid>
-                            <Grid item lg={2.4}>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        readOnly= {!modified}
-                                        inputFormat="dd/MM/yyyy"
-                                        label="Date d'achat"
-                                        value={deviceData?.purchase_date ||null}
-                                        onChange={(purchaseDate) => {
-                                            handleChangeDate("purchase_date", purchaseDate);
-                                        }}
-                                        renderInput={(params) => <TextField {...params} variant="filled" />}
-                                    />
-                                </LocalizationProvider>
-                            </Grid>
-                            <Grid item lg={2.4}>
-                                <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                      }}
-                                    label='Prix (€)'
-                                    name='price'
-                                    id="price"
-                                    inputProps={{ type: 'number' }}
-                                    value={deviceData.price}
-                                    fullWidth 
-                                    variant="filled"
-                                    onChange={(e) => handleFormChange("price", e)}
-                                />
-                            </Grid>
-                            <Grid item lg={2.4}>
-                                <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
-                                    label='Zone de détection (m)'
-                                    id="detection_area"
-                                    inputProps={{ type: 'number' }}
-                                    value={deviceData.detection_area}
-                                    fullWidth 
-                                    variant="filled"
-                                    onChange={(e) => handleFormChange("detection_area", e)}
-                                />
-                            </Grid>
-                            <Grid item lg={2.4}>
-                                <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
-                                    label='Autonomie (h)'
-                                    id="operating_life"
-                                    inputProps={{ type: 'number' }}
-                                    value={deviceData.operating_life}
-                                    fullWidth 
-                                    variant="filled"
-                                    onChange={(e) => handleFormChange("operating_life", e)}
-                                />
-                            </Grid>
                             <Grid item lg={12}>
-                                <TextField 
-                                    id="description"
-                                    name="description"
-                                    label="Description"
-                                    value ={deviceData.description}
-                                    onChange={(e) => handleFormChange("description", e)}
-                                    variant='filled'
+                                <TextField
                                     InputProps={{
                                         readOnly: !modified,
                                     }}
+                                    label='Description'
+                                    id="description"
+                                    value={siteData.description}
                                     fullWidth 
+                                    variant="filled"
+                                    onChange={(e) => handleFormChange("description", e)}
                                 />
                             </Grid>
-                            
                         </Grid>
                     </Stack>
                 </form>
@@ -205,7 +165,6 @@ const DeviceForm = () => {
                     <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
                         Enregistrer
                     </Button>
-
                     <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>
                         <Typography variant="h6">
@@ -228,4 +187,4 @@ const DeviceForm = () => {
             </Stack>
     )
 };
-export default DeviceForm;
+export default SiteForm;

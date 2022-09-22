@@ -1,35 +1,26 @@
-import { AppBar, Box, Grid, IconButton, Stack, Toolbar, Typography } from "@mui/material";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { AppBar, Box, Grid, Stack, Toolbar, Typography } from "@mui/material";
 import Filters from './filters';
 import DevicesTable from "./devicesTable";
 import DeviceModal from "./deviceModal";
-import { useRef, useState } from "react";
 
 const DeviceMenu = () => {
-
     return (
         <Stack 
             direction="column"
             spacing={3}
         >
-            
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static" color='transparent'>
                     <Toolbar variant="dense">
-                    <Grid
-                        container
-                    >
-                        <Typography variant="h6" component="div" sx={{ mr: 1 }}>
-                            Mes dispositifs
-                        </Typography>
-                        
-                    </Grid>
+                        <Grid container>
+                            <Typography variant="h6" component="div" sx={{ mr: 1 }}>
+                                Mes dispositifs
+                            </Typography>
+                        </Grid>
                         <DeviceModal/>
- 
                     </Toolbar>
                 </AppBar>
             </Box>
-
             <Stack 
                 spacing={2}
                 justifyContent="center"
@@ -47,7 +38,6 @@ const DeviceMenu = () => {
                         </Typography>
                     </Grid>
                 </Grid>
-                
             </Stack>   
         </Stack>
     );

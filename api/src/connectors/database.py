@@ -68,7 +68,7 @@ def init_db():
                 name="Site 1",
                 latitude=40.23,
                 longitude=90.75,
-                habitat="toto",
+                habitat="Prairie",
                 description="Description",
             ),
         )

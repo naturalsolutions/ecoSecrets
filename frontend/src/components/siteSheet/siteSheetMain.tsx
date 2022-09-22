@@ -8,23 +8,22 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {Grid} from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
-import DeviceForm from './deviceForm';
-import DeviceModal from '../deviceMenu/deviceModal';
-import DeviceData from './deviceData';
+import SiteForm from './siteForm';
+import SiteModale from '../siteMenu/siteModale';
 
 
-const DeviceSheet = () => {
-    const {device, setCurrentDevice} = useMainContext();
+const SiteSheet = () => {
+    const {site, setCurrentSite} = useMainContext();
     
     let params = useParams();
     useEffect(() => {
         (async () => {
-            setCurrentDevice(Number(params.deviceId));
+            setCurrentSite(Number(params.siteId));
         })();
     }, []);
 
     return (
-        device() !== undefined ? (
+        site() !== undefined ? (
         <Stack 
             direction="column"
             spacing={3}
@@ -36,40 +35,23 @@ const DeviceSheet = () => {
                         container
                     >
                         <Typography variant="h6" component="div" sx={{ mr: 1 }}>
-                            {device().name}
+                            {site().name}
                         </Typography>
                         
                     </Grid>
-                        <DeviceModal/>
+                        <SiteModale/>
                         <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
                             <CloudDownloadIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
             </Box>
-
-            <Stack 
-                spacing={2}
-                justifyContent="center"
-            >
-                <DeviceData/>
                 <Typography variant="h4" color="#000000" component="div">
-                    Fiche dispositif
+                    Fiche site
                 </Typography>
-            </Stack>
-
-            < DeviceForm/>
-            <Stack 
-                spacing={2}
-                justifyContent="center"
-            >
-                <Typography variant="h4" color="#000000" component="div">
-                    Historique des déploiements
-                </Typography>
-            </Stack>
+            < SiteForm/>
             <div></div>
-                
-        </Stack> ) : <div>Pas de fiche pour ce dispositif</div>
+        </Stack> ) : <div>Pas de fiche pour ce site</div>
     );
 };
-export default DeviceSheet;
+export default SiteSheet;

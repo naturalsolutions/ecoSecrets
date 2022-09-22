@@ -1,21 +1,19 @@
+import SiteMenu from "../components/siteMenu/siteMenuMain";
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
 import NavigationPath from "../components/navigationPath";
-import DeploymentDetails from "../components/deploymentDetails";
 
-
-function DeploymentSheet(props) {
+function SiteMenuPage() {
   return (
     <div className="Main">
       <MainLayout
         Header={<HeadBar />}
         Side={<Drawer />}
         Navigation={<NavigationPath />}
-        Main={<DeploymentDetails bool={props.bool}/>}
+        Main={<SiteMenu/>}
       />
     </div>
   );
 }
-
-export default DeploymentSheet;
+export default SiteMenuPage;

@@ -22,20 +22,16 @@ const ProjectInformations = () => {
                         Voir les médias
                     </Button>
                 </Stack>
-                
                 <Stack
                     alignItems="center"
                     justifyContent="center"
                     spacing={3}
                 >
-                   
-                        <CircularProgress color='secondary' variant="determinate" value={projectSheetData.stats.annotation_percentage} />
-                      
+                    <CircularProgress color='secondary' variant="determinate" value={projectSheetData.stats.annotation_percentage} />   
                     <Button variant="outlined" >
                         Continuer l'annotation
                     </Button>
                 </Stack>
-
             </Stack>
         )
 };

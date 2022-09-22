@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import BreadcrumbElement from './breadcrumbElement';
 
 const NavigationPath: FC<{}> = () => {
-  const { project, projects, deploymentData, currentImage, device, devices } = useMainContext();
+  const { project, projects, deploymentData, currentImage, device, devices, site, sites } = useMainContext();
   const location = useLocation();
 
   const homeBreadcrumb = (isActive: boolean = false) => {
@@ -70,6 +70,24 @@ const NavigationPath: FC<{}> = () => {
             isActive={isActive}
         />)
   }
+  const sitesBreadcrumb = (isActive: boolean = false) => {
+    return (
+        <BreadcrumbElement 
+            current_option="Sites"
+            link="/sites/"
+            isActive={isActive}
+        />)
+  }
+  const siteBreadcrumb = (isActive: boolean = false) => {
+    return (
+        <BreadcrumbElement 
+            current_option={site().name}
+            link={`/sites/${site().id}`}
+            parentlink={`/sites`}
+            options={sites}
+            isActive={isActive}
+        />)
+  }
 
   const breadcrumbs = () => {
     if (currentImage && project() && deploymentData) {
@@ -98,10 +116,23 @@ const NavigationPath: FC<{}> = () => {
         deviceBreadcrumb(true)
       ];
     } 
+    else if (site()) {
+      return [
+        homeBreadcrumb(),
+        sitesBreadcrumb(),
+        siteBreadcrumb(true)
+      ];
+    } 
     else if (location.pathname == '/devices/') {
       return [
         homeBreadcrumb(),
         devicesBreadcrumb(true)
+      ];
+    }
+    else if (location.pathname == '/sites/') {
+      return [
+        homeBreadcrumb(),
+        sitesBreadcrumb(true)
       ];
     }
     else {

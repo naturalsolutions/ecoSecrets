@@ -6,9 +6,6 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Link } from "react-router-dom";
 
-
-
-
 const StatsHome = () => {
     const {globalStats} = useMainContext();
     const graphicStats = {
@@ -17,7 +14,6 @@ const StatsHome = () => {
         "device":{'buttonLabel':"Nombre de dispositifs", "url":"/devices/", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
         "sites": {'buttonLabel':"Nombre de sites", "url":"/sites/", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
     };
-    
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -32,7 +28,6 @@ const StatsHome = () => {
                 justifyContent='center' 
                 alignItems='center'
             >
-
                 {globalStats && Object.entries(globalStats).map(([key, value]) => 
                     <Grid item xs={3} key={key}>
                         <Grid 
@@ -40,19 +35,17 @@ const StatsHome = () => {
                             direction ='column' 
                             justifyContent='space-evenly' 
                             alignItems='center'
-                            
                         >
                             <Grid container direction ='row' justifyContent='center' 
                             alignItems='baseline' spacing={2}>
-
-                            <Grid item >
-                                {graphicStats[key].icon}
-                            </Grid>
-                            <Grid item >
-                                <Typography color= 'secondary' variant = "h2" >
-                                    {JSON.stringify(value)}
-                                </Typography>
-                            </Grid>
+                                <Grid item >
+                                    {graphicStats[key].icon}
+                                </Grid>
+                                <Grid item >
+                                    <Typography color= 'secondary' variant = "h2" >
+                                        {JSON.stringify(value)}
+                                    </Typography>
+                                </Grid>
                             </Grid>
                             <Grid item >
                                 <Button 
