@@ -34,9 +34,10 @@ const NavigationPath: FC<{}> = () => {
     return (
         <BreadcrumbElement 
             current_option={deploymentData.name} 
-            link={`/project/${project().id}/deployment/${deploymentData.id}`}
+            link={`/project/${project().id}/deployment/${deploymentData.id}/details`}
             parentlink={`/project/${project().id}/deployment`}
             options={projects.find((p) => p.id === project().id).deployments}
+            linkSuffix={`details`}
             isActive={isActive}
         />)
   }
@@ -45,8 +46,8 @@ const NavigationPath: FC<{}> = () => {
     return (
         <BreadcrumbElement 
             current_option={currentImage} 
-            link={`/project/${project().id}/deployment/${deploymentData.id}/${currentImage}`}
-            parentlink={`/project/${project().id}/deployment/${deploymentData.id}`}
+            link={`/project/${project().id}/deployment/${deploymentData.id}/details/${currentImage}`}
+            parentlink={`/project/${project().id}/deployment/${deploymentData.id}/details`}
             isActive={isActive}
         />)
   }

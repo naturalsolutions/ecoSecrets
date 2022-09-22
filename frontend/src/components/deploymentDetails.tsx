@@ -10,7 +10,7 @@ import { useMainContext } from "../contexts/mainContext";
 
 const DeploymentDetails = (props) => {
     const { deploymentData } = useMainContext();
-    const [tabValue, setTabValue] = useState(props.bool);
+    const [tabValue, setTabValue] = useState(props.number);
     const handleTabValueChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
       };

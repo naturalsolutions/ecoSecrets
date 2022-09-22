@@ -12,7 +12,7 @@ function DeploymentSheet(props) {
         Header={<HeadBar />}
         Side={<Drawer />}
         Navigation={<NavigationPath />}
-        Main={<DeploymentDetails bool={props.bool}/>}
+        Main={<DeploymentDetails number={props.number}/>}
       />
     </div>
   );
