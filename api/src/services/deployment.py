@@ -1,4 +1,5 @@
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
 from src.models.deployment import (
@@ -11,6 +12,16 @@ from src.models.models import TemplateSequence
 
 def get_deployments(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Deployments).offset(skip).limit(limit).all()
+
+
+def get_deployments_files(db: Session, skip: int = 0, limit: int = 100):
+    return (
+        db.query(Deployments)
+        .options(joinedload("files"))
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 
 def get_deployment(db: Session, deployment_id: int):
@@ -30,7 +41,9 @@ def create_deployment(db: Session, deployment: DeploymentBase):
 
 
 def update_deployment(db: Session, deployment: DeploymentWithTemplateSequence):
-    db_deployment = db.query(Deployments).filter(Deployments.id == deployment.id).first()
+    db_deployment = (
+        db.query(Deployments).filter(Deployments.id == deployment.id).first()
+    )
 
     obj_data = jsonable_encoder(db_deployment)
     update_data = deployment.dict()
@@ -41,12 +54,18 @@ def update_deployment(db: Session, deployment: DeploymentWithTemplateSequence):
             db_deployment.template_sequences = []
 
             for template in update_data[field]:
-                if 'id' in template and template['id'] is not None:
-                    existing_template = db.query(TemplateSequence).filter(TemplateSequence.id == template['id']).one()
+                if "id" in template and template["id"] is not None:
+                    existing_template = (
+                        db.query(TemplateSequence)
+                        .filter(TemplateSequence.id == template["id"])
+                        .one()
+                    )
                     db_deployment.template_sequences.append(existing_template)
-                if 'id' in template and template['id'] is None:
-                    db_deployment.template_sequences.append(TemplateSequence(**template))
-    
+                if "id" in template and template["id"] is None:
+                    db_deployment.template_sequences.append(
+                        TemplateSequence(**template)
+                    )
+
     db.commit()
     db.refresh(db_deployment)
     return db_deployment
@@ -60,7 +79,13 @@ def delete_deployment(db: Session, id: int):
 
 
 def get_project_deployments(db: Session, id: int):
-    return db.query(Deployments).filter(Deployments.project_id == id).all()
+    return (
+        db.query(Deployments)
+        .filter(Deployments.project_id == id)
+        .options(joinedload("files"))
+        .order_by(Deployments.start_date)
+        .all()
+    )
 
 
 def get_device_deployments(

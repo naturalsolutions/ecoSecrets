@@ -1,7 +1,7 @@
 import { Stack, Typography, Button, CircularProgress } from "@mui/material";
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import RotateRightIcon from '@mui/icons-material/RotateRight';
 import { useMainContext } from "../../contexts/mainContext";
+import GoAnnotation from "../goAnnotation";
 
 const ProjectInformations = () => {
     const {projectSheetData} = useMainContext();
@@ -25,12 +25,12 @@ const ProjectInformations = () => {
                 <Stack
                     alignItems="center"
                     justifyContent="center"
-                    spacing={3}
                 >
-                    <CircularProgress color='secondary' variant="determinate" value={projectSheetData.stats.annotation_percentage} />   
-                    <Button variant="outlined" >
-                        Continuer l'annotation
-                    </Button>
+                    {/* <CircularProgress color='secondary' variant='determinate' value={projectSheetData.stats.annotation_percentage}/> */}
+                    <Typography color='secondary' gutterBottom variant="h3" component="div" >
+                        {projectSheetData.stats.annotation_percentage} %
+                    </Typography>
+                    <GoAnnotation project_id={projectSheetData.id} nb_media={projectSheetData.stats.media_number} annotation_percentage={projectSheetData.stats.annotation_percentage} page='project'/>
                 </Stack>
             </Stack>
         )

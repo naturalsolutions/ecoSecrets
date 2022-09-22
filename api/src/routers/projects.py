@@ -14,7 +14,7 @@ from src.models.project import (
     ProjectWithDeploymentAndFiles,
     ReadProject,
 )
-from src.schemas.schemas import StatsProject
+from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import project
 
 router = APIRouter(
@@ -30,7 +30,7 @@ def read_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
     return projects
 
 
-@router.get("/{project_id}", response_model=ProjectWithDeployment)
+@router.get("/{project_id}", response_model=ReadProject)
 def read_project(project_id: int, db: Session = Depends(get_db)):
     db_project = project.get_project(db, project_id=project_id)
     if db_project is None:
@@ -82,3 +82,8 @@ def get_stats_projects(db: Session = Depends(get_db)):
 @router.get("/project_informations/{project_id}", response_model=ProjectSheet)
 def get_informations_project(project_id: int, db: Session = Depends(get_db)):
     return project.get_informations(db=db, id=project_id)
+
+
+@router.get("/next_annotation/", response_model=FirstUntreated)
+def get_first_untreated_file(project_id: int, db: Session = Depends(get_db)):
+    return project.first_untreated_file(db=db, project_id=project_id)

@@ -42,3 +42,8 @@ class StatsProject(DataProject):
     site_number: int
     device_number: int
     targeted_species: str = Field(default=None)
+
+
+class FirstUntreated(BaseModel):
+    file_id: str
+    deploy_id: int

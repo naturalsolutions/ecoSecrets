@@ -69,7 +69,7 @@ def read_project_deployments(project_id: int, db: Session = Depends(get_db)):
 def read_deployments_with_files(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
-    deployments = deployment.get_deployments(db, skip=skip, limit=limit)
+    deployments = deployment.get_deployments_files(db, skip=skip, limit=limit)
     return deployments
 
 

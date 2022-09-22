@@ -73,7 +73,10 @@ def update_annotations(db: Session, file_id: int, data: List[Annotation]):
             status_code=404,
             detail="No file found",
         )
+    # update des annotations
     db_file.annotations = [d.dict() for d in data]
+    # update du statut de traitement du média
+    db_file.treated = True
     db.commit()
     db.refresh(db_file)
     return db_file

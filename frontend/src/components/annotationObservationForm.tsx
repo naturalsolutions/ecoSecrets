@@ -35,9 +35,8 @@ const AnnotationObservationForm = (
                         <ClearTwoToneIcon />
                     </IconButton>
                 </Stack>
-
                 <Grid container spacing={1}>
-                    <Grid item lg={6}>
+                    <Grid item lg={6} xs={12}>
                         <TextField
                             name="classe"
                             label="Classe"
@@ -57,7 +56,7 @@ const AnnotationObservationForm = (
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid item lg={6}>
+                    <Grid item lg={6} xs={12}>
                         <TextField
                             name="order"
                             label="Ordre"
@@ -77,7 +76,7 @@ const AnnotationObservationForm = (
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid item lg={6}>
+                    <Grid item lg={6} xs={12}>
                         <TextField
                             name="family"
                             label="Famille"
@@ -97,7 +96,7 @@ const AnnotationObservationForm = (
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid item lg={6}>
+                    <Grid item lg={6} xs={12}>
                         <TextField
                             name="genus"
                             label="Genre"
@@ -117,7 +116,7 @@ const AnnotationObservationForm = (
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid item lg={6}>
+                    <Grid item lg={6} xs={12}>
                         <TextField
                             name="species"
                             label="Espèce"
@@ -137,8 +136,7 @@ const AnnotationObservationForm = (
                             ))}
                         </TextField>
                     </Grid>
-
-                    <Grid item lg={6}>
+                    <Grid item lg={6} xs={12}>
                         <TextField
                             name="number"
                             label="Nombre d'individus"
@@ -155,7 +153,7 @@ const AnnotationObservationForm = (
                 </Grid>
                 <NestedList>
                     <Grid container spacing={1}>
-                        <Grid item lg={6}>
+                        <Grid item lg={6} xs={12}>
                             <TextField
                                 id="biologicalState"
                                 select
@@ -175,7 +173,7 @@ const AnnotationObservationForm = (
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid item lg={6}>
+                        <Grid item lg={6} xs={12}>
                             <TextField
                                 id="sex"
                                 select
@@ -196,7 +194,7 @@ const AnnotationObservationForm = (
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid item lg={6}>
+                        <Grid item lg={6} xs={12}>
                             <TextField
                                 id="behaviour"
                                 select
@@ -217,7 +215,7 @@ const AnnotationObservationForm = (
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid item lg={6}>
+                        <Grid item lg={6} xs={12}>
                             <TextField
                                 id="lifeStage"
                                 select
@@ -238,7 +236,7 @@ const AnnotationObservationForm = (
                             </TextField>
                         </Grid>
 
-                        <Grid item lg={12}>
+                        <Grid item lg={12} xs={12}>
                             <TextField
                                 id="comment"
                                 name="comment"
@@ -253,7 +251,6 @@ const AnnotationObservationForm = (
                     </Grid>
                 </NestedList>
             </form>
-
         </div>
     )
 };

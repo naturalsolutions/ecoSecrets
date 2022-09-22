@@ -27,6 +27,7 @@ const AnnotationImageDisplay = (
                         <AnnotationImageNavigation
                             previous={props.previous}
                             next={props.next}
+                            lastOrFirstImage={props.lastOrFirstImage}
                         />
                     </div>
                 </Grid>

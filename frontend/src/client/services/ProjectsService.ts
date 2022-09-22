@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FirstUntreated } from '../models/FirstUntreated';
 import type { ProjectBase } from '../models/ProjectBase';
 import type { ProjectSheet } from '../models/ProjectSheet';
 import type { ProjectWithDeployment } from '../models/ProjectWithDeployment';
@@ -63,12 +64,12 @@ export class ProjectsService {
     /**
      * Read Project
      * @param projectId
-     * @returns ProjectWithDeployment Successful Response
+     * @returns ReadProject Successful Response
      * @throws ApiError
      */
     public static readProjectProjectsProjectIdGet(
         projectId: number,
-    ): CancelablePromise<ProjectWithDeployment> {
+    ): CancelablePromise<ReadProject> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/{project_id}',
@@ -208,6 +209,28 @@ export class ProjectsService {
             method: 'GET',
             url: '/projects/project_informations/{project_id}',
             path: {
+                'project_id': projectId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Get First Untreated File
+     * @param projectId
+     * @returns FirstUntreated Successful Response
+     * @throws ApiError
+     */
+    public static getFirstUntreatedFileProjectsNextAnnotationGet(
+        projectId: number,
+    ): CancelablePromise<FirstUntreated> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/next_annotation/',
+            query: {
                 'project_id': projectId,
             },
             errors: {

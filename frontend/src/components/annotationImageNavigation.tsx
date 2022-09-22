@@ -38,7 +38,7 @@ const AnnotationImageNavigation = (
             </Grid>
 
             <Grid item>
-                <IconButton>
+                <IconButton onClick={() => props.lastOrFirstImage('first')}>
                     <FastRewindIcon fontSize='large' />
                 </IconButton>
                 <IconButton onClick={() => props.previous()} >
@@ -50,7 +50,7 @@ const AnnotationImageNavigation = (
                 <IconButton onClick={() => props.next()}>
                     < SkipNextIcon fontSize='large' />
                 </IconButton>
-                <IconButton >
+                <IconButton onClick={() => props.lastOrFirstImage('last')}>
                     <FastForwardIcon fontSize='large' />
                 </IconButton>
             </Grid >
