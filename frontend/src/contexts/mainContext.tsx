@@ -21,6 +21,7 @@ export const useMainContext = () => useContext(MainContext);
 const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [projects, setProjects] = useState<ProjectWithDeployment[]>([]);
   const [currentProject, setCurrentProject] = useState<number | null>(null);
+  const [deployments, setDeployments] = useState<Deployments[]>([]);
   const [currentDeployment, setCurrentDeployment] = useState<number | null>(
     null
   );
@@ -80,6 +81,16 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
+  const updateDeployments = () => {
+    DeploymentsService.readDeploymentsDeploymentsGet()
+    .then((deployments) => {
+      setDeployments(deployments);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+
   const updateListFile = () => {
     currentDeployment &&
       FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
@@ -114,7 +125,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const updateProjectSheetData = () => {
     currentProject && ProjectsService.getInformationsProjectProjectsProjectInformationsProjectIdGet(currentProject)
       .then((projectSheetData) => {
-        // console.log(projectSheetData)
         setProjectSheetData(projectSheetData);
       })
       .catch((err) => {
@@ -167,6 +177,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   useEffect(() => {
     (async () => {
       updateProjects();
+      updateDeployments();
       updateGlobalStats();
       updateProjectsStats();
       updateDevices();
@@ -215,6 +226,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         updateListFile,
         globalStats,
         projectsStats,
+        updateProjectsStats,
         projectSheetData,
         setProjectSheetData,
         updateProjectSheetData,
@@ -229,6 +241,9 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         deploymentData,
         setDeploymentData,
         updateDeploymentData,
+        deployments, 
+        setDeployments,
+        updateDeployments,
         sites,
         setSites,
         updateSites,

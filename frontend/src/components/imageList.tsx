@@ -24,7 +24,7 @@ const ImageList: FC<{}> = () => {
   const save = () => {
     for (const file of files) {
       FilesService
-      .uploadFileFilesUploadDeploymentIdPost(currentDeployment, { file })
+      .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
       .then((res) => {
         updateListFile();
       });

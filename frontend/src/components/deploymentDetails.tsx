@@ -7,14 +7,32 @@ import DeploymentForm from "./deploymentForm";
 import ImageList from "./imageList";
 import TabPanel from "./tabPanel";
 import { useMainContext } from "../contexts/mainContext";
+import ImportModale from "./importModale";
+import DeploymentCreationModale from "./deploymentCreationModale";
 
 const DeploymentDetails = (props) => {
     const { deploymentData } = useMainContext();
     const [tabValue, setTabValue] = useState(props.number);
     const handleTabValueChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
-      };
+    };
 
+    const [openNewDeployment, setOpenNewDeployment] = useState(false);
+    const handleOpenNewDeployment = () => {
+        setOpenNewDeployment(true);
+    };
+    const handleCloseNewDeployment = () => {
+        setOpenNewDeployment(false);
+    };
+
+    const [openImport, setOpenImport] = useState(false);
+    const openImportModale = () => {
+        setOpenImport(true);
+    };
+    const closeImportModale = () => {
+        setOpenImport(false);
+    };
+    
     return(
         <Box sx={{ width: '100%' }}>
             <Box sx={{ flexGrow: 1 }}>
@@ -28,12 +46,29 @@ const DeploymentDetails = (props) => {
                         </Typography>
                         
                     </Grid>
-                        <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
+                        <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}
+                        onClick={handleOpenNewDeployment}
+                        >
                             <AddCircleIcon />
                         </IconButton>
-                        <IconButton aria-label="menu" sx={{ mr: 2 }}>
+                        <DeploymentCreationModale 
+                            openNewDeployment={openNewDeployment}
+                            handleCloseNewDeployment={handleCloseNewDeployment}
+                        />
+
+                        <IconButton 
+                            onClick={openImportModale}
+                            aria-label="menu" 
+                            sx={{ mr: 2 }}
+                        >
                             <CloudDownloadIcon />
                         </IconButton>
+                        <ImportModale 
+                            open={openImport} 
+                            close={closeImportModale}
+                            projectIsSet={true}
+                            deploymentIsSet={true}
+                        />
                     </Toolbar>
                 </AppBar>
             </Box>
