@@ -10,7 +10,7 @@ import { useMainContext } from "../contexts/mainContext";
 import { ProjectBase, ProjectsService } from "../client";
 
 export default function ProjectModal (props) {
-    const { updateProjects} = useMainContext();
+    const { updateProjects, setCurrentProject, updateProjectSheetData} = useMainContext();
     const [open, setOpen] = useState(false);
     const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1});
     const[startDate, setStartDate] = useState<Date | null>(null);
@@ -49,7 +49,7 @@ export default function ProjectModal (props) {
         ProjectsService.createProjectProjectsPost(data).then((p) => {
             updateProjects();
             setOpen(false);
-            navigate(`/projectsheet/${p.id}`)
+            navigate(`/project/${p.id}`)
         }).catch((err) => {
             console.log(err);
         });
@@ -94,7 +94,7 @@ export default function ProjectModal (props) {
                 <Grid container spacing={3}>
                     <Grid item lg={12}>
                     </Grid>
-                    <Grid item lg={12}>
+                    <Grid item lg={12} xs={12}>
                     <TextField 
                         id="name"
                         name="name"
@@ -106,7 +106,7 @@ export default function ProjectModal (props) {
                         variant="filled" 
                     />
                     </Grid>
-                    <Grid item lg={6}>
+                    <Grid item lg={6} md={6} xs={12}>
                         <TextField
                         select 
                         label="Cadre d'acquisition" 
@@ -122,7 +122,7 @@ export default function ProjectModal (props) {
                         ))}
                         </TextField>
                     </Grid>
-                    <Grid item lg={6}>
+                    <Grid item lg={6} md={6} xs={12}>
                     <TextField 
                         label='Espèce cible'
                         id="targetedSpecies"
@@ -169,7 +169,7 @@ export default function ProjectModal (props) {
                         />
                     </LocalizationProvider>
                     </Grid>
-                    <Grid item lg={12}>
+                    <Grid item lg={12} xs={12}>
                     <TextField 
                         id="protocol"
                         name="protocol"

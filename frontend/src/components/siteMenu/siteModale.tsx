@@ -62,7 +62,7 @@ export default function SiteModale () {
           <Divider />
           <DialogContent>
             <Grid container spacing={3}>
-              <Grid item lg={12}>
+              <Grid item lg={12} md={12} xs={12}>
                 <TextField 
                   required
                   id="name"
@@ -74,8 +74,9 @@ export default function SiteModale () {
                   variant="filled" 
                 />
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} md={6}>
                 <TextField 
+                  required
                   label='Longitude'
                   id="longitude"
                   inputProps={{ type: 'number' }}
@@ -85,8 +86,9 @@ export default function SiteModale () {
                   onChange={(e) => handleFormChange("longitude", e)}
                 />
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} md={6}>
                 <TextField 
+                  required
                   label='Latitude'
                   name='latitude'
                   id="latitude"
@@ -97,7 +99,7 @@ export default function SiteModale () {
                   onChange={(e) => handleFormChange("latitude", e)}
                 />
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} md={6} xs={12}>
                   <TextField
                     select 
                     label="Habitat" 

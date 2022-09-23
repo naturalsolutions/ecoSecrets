@@ -33,6 +33,7 @@ const DeploymentForm = (
     const [automatic, setAutomatic] = useState({isAutomatic: false, imageNumber: undefined, frequency: undefined});
     const [trigger, setTrigger] = useState({isTrigger: false, imageNumber: undefined, frequency: undefined});
 
+
     useEffect(() => {
         setCurrentProject(Number(params.projectId));
         setCurrentDeployment(Number(params.deploymentId));

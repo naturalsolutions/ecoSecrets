@@ -26,9 +26,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Main />}></Route>
-            <Route path="/project/:projectId" element={<Project />}></Route>
+            {/* <Route path="/project/:projectId" element={<Project />}></Route> */}
             <Route
-              path="/projectsheet/:projectId"
+              path="/project/:projectId"
               element={<ProjectSheet />}
             ></Route>
             <Route path="/sites/" element={<SiteMenuPage />}></Route>

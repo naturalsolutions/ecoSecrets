@@ -23,8 +23,8 @@ const NavigationPath: FC<{}> = () => {
         <BreadcrumbElement 
             key="project"
             current_option={project().name}
-            link={`/projectsheet/${project().id}`}
-            parentlink="/projectsheet"
+            link={`/project/${project().id}`}
+            parentlink="/project"
             options={projects}
             isActive={isActive}
         />)

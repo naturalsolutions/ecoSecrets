@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { Stack, Typography} from "@mui/material";
+import { Alert, Stack, Typography} from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {Grid} from "@mui/material";
@@ -66,6 +66,7 @@ const DeviceSheet = () => {
                 <Typography variant="h4" color="#000000" component="div">
                     Historique des déploiements
                 </Typography>
+                <Alert severity="info">Fonctionnalité pas encore disponible.</Alert>
             </Stack>
             <div></div>
                 
