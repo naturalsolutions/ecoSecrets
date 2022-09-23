@@ -1,6 +1,5 @@
 import { Grid, Typography, Stack, TextField, IconButton, Box } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
-import { useEffect } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectCard from "./projectCard";
 import ProjectModal from "./projectModale";
@@ -8,11 +7,7 @@ import ProjectModal from "./projectModale";
 
 
 const ProjectList = () => {
-  const { projectsStats, updateProjectsStats } = useMainContext();
-
-  useEffect(() => {
-    updateProjectsStats();
-  });
+  const { projectsStats } = useMainContext();
 
   return (
     <Grid container >
