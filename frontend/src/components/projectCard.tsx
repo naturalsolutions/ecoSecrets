@@ -68,7 +68,7 @@ const ProjectCard = (props) => {
             <CardHeader
                 avatar = {testStatus(props.selectedProject.status)}
                 title={
-                    <Link to={`/projectsheet/${props.selectedProject.id}`} style={{ textDecoration: 'none', color: 'black', fontSize: '23px' }}>
+                    <Link to={`/project/${props.selectedProject.id}`} style={{ textDecoration: 'none', color: 'black', fontSize: '23px' }}>
                     {props.selectedProject.name}
                     </Link>
                 }

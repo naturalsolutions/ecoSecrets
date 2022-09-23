@@ -28,7 +28,13 @@ const GoAnnotation = (props) => {
             </Button>
         )
             
-        : <></>
+        : (props.page === 'home' ?<></> 
+            : <Button 
+                color='secondary'
+                variant="outlined" >
+                Annotation
+            </Button>
+        )
     )
 }
 export default GoAnnotation;

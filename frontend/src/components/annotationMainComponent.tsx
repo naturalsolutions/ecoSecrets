@@ -1,4 +1,4 @@
-import { Divider, FormControlLabel, Paper, Stack, styled, Switch, Tab, Tabs, Typography } from "@mui/material";
+import { Alert, Divider, FormControlLabel, Paper, Stack, styled, Switch, Tab, Tabs, Typography } from "@mui/material";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
@@ -276,7 +276,7 @@ const AnnotationMainComponent = () => {
             </TabPanel>
 
             <TabPanel valueTab={tabValue} index={1}>
-              Formulaire de métadonnées à venir
+              <Alert severity="info">Fonctionnalité pas encore disponible.</Alert>
             </TabPanel>
 
             <Divider />

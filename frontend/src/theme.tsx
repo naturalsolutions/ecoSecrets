@@ -14,6 +14,9 @@ const theme = createTheme({
       dark: '#A1887F',
       contrastText: '#fff',
     },
+    text: {
+      disabled: 'black'
+    },
   },
 });
 

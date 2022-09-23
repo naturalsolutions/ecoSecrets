@@ -104,11 +104,10 @@ const ProjectForm = () => {
                         
                             <Grid item lg={6} xs={12}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                      }}
+                                    disabled={!modified}
                                     select 
-                                    label="acquisition_framework" 
+                                    id="acquisition_framework"
+                                    label= "Cadre d'acquisition"
                                     variant="filled"
                                     value={projectData['acquisition_framework']}
                                     fullWidth
@@ -123,10 +122,7 @@ const ProjectForm = () => {
                             </Grid>
                             <Grid item lg={6} xs={12}>
                                 <TextField 
-                                    InputProps={{
-                                        readOnly: !modified,
-                                        
-                                      }}
+                                    disabled={!modified}
                                     label='Espèce cible'
                                     id="targetedSpecies"
                                     select
@@ -147,7 +143,7 @@ const ProjectForm = () => {
                             <Grid item lg={6} xs={12} className='datePicker'>
                                 <LocalizationProvider dateAdapter={AdapterDateFns} >
                                     <DatePicker
-                                        readOnly= {!modified}
+                                        disabled={!modified}
                                         inputFormat="dd/MM/yyyy"
                                         label="Date de début"
                                         value={startDate}
@@ -162,7 +158,7 @@ const ProjectForm = () => {
                             <Grid item lg={6} xs={12} className='datePicker'>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <DatePicker
-                                            readOnly= {!modified}
+                                            disabled={!modified}
                                             inputFormat="dd/MM/yyyy"
                                             label="Date de fin"
                                             value={endDate}
@@ -182,10 +178,7 @@ const ProjectForm = () => {
                                     variant="filled"
                                     value ={projectData.protocol}
                                     onChange={(e) => handleFormChange("protocol", e)}
-                                    
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
+                                    disabled={!modified}
                                     fullWidth 
                                 />
                             </Grid>

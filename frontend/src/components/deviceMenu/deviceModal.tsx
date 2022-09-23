@@ -66,7 +66,7 @@ export default function DeviceModal () {
           <Divider />
           <DialogContent>
             <Grid container spacing={3}>
-              <Grid item lg={12}>
+              <Grid item lg={12} md={12} xs={12}>
                 <TextField 
                   required
                   id="name"
@@ -78,7 +78,7 @@ export default function DeviceModal () {
                   variant="filled" 
                 />
               </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} xs={12}>
                   <TextField
                     select 
                     label="Modèle" 
@@ -94,7 +94,7 @@ export default function DeviceModal () {
                     ))}
                   </TextField>
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} md={6}  xs={6}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     inputFormat="dd/MM/yyyy"
@@ -107,7 +107,7 @@ export default function DeviceModal () {
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} md={6} xs={6}>
                 <TextField 
                   label='Autonomie (h)'
                   id="operating_life"
@@ -118,7 +118,7 @@ export default function DeviceModal () {
                   onChange={(e) => handleFormChange("operating_life", e)}
                 />
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} md={6} xs={6}>
                 <TextField 
                   label='Prix (€)'
                   name='price'
@@ -130,7 +130,7 @@ export default function DeviceModal () {
                   onChange={(e) => handleFormChange("price", e)}
                 />
               </Grid>
-              <Grid item lg={12}>
+              <Grid item lg={12} md={12} xs={6}>
                 <TextField 
                   label='Zone de détection (m)'
                   id="detection_area"
@@ -141,7 +141,7 @@ export default function DeviceModal () {
                   onChange={(e) => handleFormChange("detection_area", e)}
                 />
               </Grid>
-              <Grid item lg={12}>
+              <Grid item lg={12} md={12} xs={12}>
                 <TextField 
                   id="description"
                   name="description"

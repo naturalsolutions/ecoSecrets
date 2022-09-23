@@ -87,7 +87,7 @@ const DeviceForm = () => {
                     >
                         <Grid container spacing={3}>
                             { modified ?
-                                <Grid item lg={12}>
+                                <Grid item lg={12} md={12} xs={12}>
                                     <TextField 
                                         required
                                         id="name"
@@ -100,11 +100,9 @@ const DeviceForm = () => {
                                     />
                                 </Grid> 
                             : <></> }
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                      }}
+                                    disabled={!modified}
                                     select 
                                     label="Modèle" 
                                     variant="filled"
@@ -119,10 +117,10 @@ const DeviceForm = () => {
                                     ))}
                                 </TextField>
                             </Grid>
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
-                                        readOnly= {!modified}
+                                        disabled={!modified}
                                         inputFormat="dd/MM/yyyy"
                                         label="Date d'achat"
                                         value={deviceData?.purchase_date ||null}
@@ -133,11 +131,9 @@ const DeviceForm = () => {
                                     />
                                 </LocalizationProvider>
                             </Grid>
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                      }}
+                                    disabled={!modified}
                                     label='Prix (€)'
                                     name='price'
                                     id="price"
@@ -148,11 +144,9 @@ const DeviceForm = () => {
                                     onChange={(e) => handleFormChange("price", e)}
                                 />
                             </Grid>
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
+                                    disabled={!modified}
                                     label='Zone de détection (m)'
                                     id="detection_area"
                                     inputProps={{ type: 'number' }}
@@ -162,11 +156,9 @@ const DeviceForm = () => {
                                     onChange={(e) => handleFormChange("detection_area", e)}
                                 />
                             </Grid>
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
+                                    disabled={!modified}
                                     label='Autonomie (h)'
                                     id="operating_life"
                                     inputProps={{ type: 'number' }}
@@ -176,7 +168,7 @@ const DeviceForm = () => {
                                     onChange={(e) => handleFormChange("operating_life", e)}
                                 />
                             </Grid>
-                            <Grid item lg={12}>
+                            <Grid item lg={12} md={12} xs={12}>
                                 <TextField 
                                     id="description"
                                     name="description"
@@ -184,9 +176,7 @@ const DeviceForm = () => {
                                     value ={deviceData.description}
                                     onChange={(e) => handleFormChange("description", e)}
                                     variant='filled'
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
+                                    disabled={!modified}
                                     fullWidth 
                                 />
                             </Grid>

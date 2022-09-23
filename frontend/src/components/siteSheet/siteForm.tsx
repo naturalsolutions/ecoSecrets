@@ -78,7 +78,7 @@ const SiteForm = () => {
                     >
                         <Grid container spacing={3}>
                             { modified ?
-                                <Grid item lg={12}>
+                                <Grid item lg={12} md={12} xs={12}>
                                     <TextField 
                                         required
                                         id="name"
@@ -91,12 +91,9 @@ const SiteForm = () => {
                                     />
                                 </Grid> 
                             : <></> }
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                        type: 'number'
-                                      }} 
+                                    disabled={!modified}
                                     label="Longitude" 
                                     variant="filled"
                                     value={siteData.longitude}
@@ -104,11 +101,9 @@ const SiteForm = () => {
                                     onChange={(e) => handleFormChange("longitude", e)}
                                 />
                             </Grid>
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField 
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
+                                    disabled={!modified}
                                     label='Latitude'
                                     name='latitude'
                                     inputProps={{ type: 'number' }}
@@ -118,11 +113,9 @@ const SiteForm = () => {
                                     onChange={(e) => handleFormChange("latitude", e)}
                                 />
                             </Grid>
-                            <Grid item lg={2.4}>
+                            <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                      }}
+                                    disabled={!modified}
                                     label='Habitat'
                                     name='habitat'
                                     select
@@ -138,11 +131,9 @@ const SiteForm = () => {
                                     ))}
                                 </TextField>
                             </Grid>
-                            <Grid item lg={12}>
+                            <Grid item lg={12} md={12} xs={12}>
                                 <TextField
-                                    InputProps={{
-                                        readOnly: !modified,
-                                    }}
+                                    disabled={!modified}
                                     label='Description'
                                     id="description"
                                     value={siteData.description}
