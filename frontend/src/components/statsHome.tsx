@@ -5,14 +5,9 @@ import NotesIcon from '@mui/icons-material/Notes';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 const StatsHome = () => {
-    const {globalStats, updateGlobalStats} = useMainContext();
-
-    useEffect(() => {
-        updateGlobalStats();
-    });
+    const {globalStats} = useMainContext();
 
     const graphicStats = {
         "medias": {'buttonLabel':"Nombre de médias", "url":"/gallery/", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 

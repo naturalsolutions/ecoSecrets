@@ -9,7 +9,7 @@ import { FilesService } from "../client";
 const ImportModale = (
     props
 ) => {
-    const {updateListFile} = useMainContext();
+    const {updateListFile, updateProjectsStats, updateGlobalStats} = useMainContext();
     const [files, setFiles] = useState<any[]>([]);
     const [importParams, setImportParams] = useState({id_project: 0, id_deployment: 0, projectIsSet: false, deploymentIsSet: false});
 
@@ -19,6 +19,8 @@ const ImportModale = (
             .uploadFileFilesUploadDeploymentIdPost(importParams.id_deployment, { file })
             .then(() => {
                 updateListFile();
+                updateProjectsStats();
+                updateGlobalStats();
             });
         }
         setFiles([]);
