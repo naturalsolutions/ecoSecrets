@@ -10,6 +10,10 @@ import ProjectModal from "./projectModale";
 const ProjectList = () => {
   const { projectsStats, updateProjectsStats } = useMainContext();
 
+  useEffect(() => {
+    updateProjectsStats();
+  });
+
   return (
     <Grid container >
        <Box
