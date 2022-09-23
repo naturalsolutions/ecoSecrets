@@ -2,22 +2,40 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Stack, Typography, Alert, AlertTitle} from "@mui/material";
+import { Stack, Typography, Alert, AlertTitle, Button} from "@mui/material";
 import ProjectDeployments from './projectDeployments';
 import ProjectForm from './projectForm';
 import ProjectMembers from './projectMembers';
 import ProjectInformations from './projectInformations';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {Grid} from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
 import DeploymentCreationModale from '../deploymentCreationModale';
+import ImportModale from '../importModale';
 import ProjectModal from '../projectModale';
 
 const ProjectSheet = () => {
     const {projectSheetData, setCurrentProject} = useMainContext();
+
+    const [openNewDeployment, setOpenNewDeployment] = useState(false);
+    const handleOpenNewDeployment = () => {
+        setOpenNewDeployment(true);
+    };
+    const handleCloseNewDeployment = () => {
+        setOpenNewDeployment(false);
+    };
+
+    const [openImport, setOpenImport] = useState(false);
+    const openImportModale = () => {
+        setOpenImport(true);
+    };
+    const closeImportModale = () => {
+        setOpenImport(false);
+    };
     
     let params = useParams();
     useEffect(() => {
@@ -35,15 +53,22 @@ const ProjectSheet = () => {
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static" color='transparent'>
                     <Toolbar variant="dense">
-                    <Grid container>
-                        <Typography variant="h6" component="div" sx={{ mr: 1 }}>
-                            {projectSheetData.name}
-                        </Typography>
-                    </Grid>
+                        <Grid container>
+                            <Typography variant="h6" component="div" sx={{ mr: 1 }}>
+                                {projectSheetData.name}
+                            </Typography>
+                        </Grid>
                         <ProjectModal/>
-                        <IconButton color="primary" aria-label="menu" sx={{ mr: 2 }}>
+                        <IconButton color="primary" aria-label="menu" sx={{ mr: 2 }}
+                        onClick={openImportModale}
+                        >
                             <CloudDownloadIcon />
                         </IconButton>
+                        <ImportModale 
+                            open={openImport} 
+                            close={closeImportModale}
+                            projectIsSet={true}
+                        />
                         <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
                             <CloudUploadIcon />
                         </IconButton>
@@ -54,16 +79,27 @@ const ProjectSheet = () => {
             <ProjectMembers/>
             <Stack spacing={3}>
                 <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    spacing={5}
-                >
-                    <Typography variant="h4" color="#000000" component="div">
-                        Déploiements ({projectSheetData.deployments.length})
-                    </Typography>
-                    <DeploymentCreationModale />
-                </Stack>
-                <ProjectDeployments/>
+                        direction='row'
+                        justifyContent='space-between'
+                        spacing={5}
+                    >
+                        <Typography variant="h4" color="#000000" component="div">
+                            Déploiements ({projectSheetData.deployments.length})
+                        </Typography>
+                        <Button 
+                            variant="contained" 
+                            startIcon={<AddCircleIcon />} 
+                            style={{backgroundColor: "#BCAAA4"}}
+                            onClick={handleOpenNewDeployment}
+                        >
+                            Nouveau déploiement
+                        </Button>
+                        <DeploymentCreationModale 
+                            openNewDeployment={openNewDeployment}
+                            handleCloseNewDeployment={handleCloseNewDeployment}
+                        />
+                    </Stack>
+                    <ProjectDeployments/>
             </Stack>
             <Stack 
                 spacing={2}

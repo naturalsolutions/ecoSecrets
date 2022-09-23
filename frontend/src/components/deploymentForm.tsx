@@ -1,5 +1,5 @@
-import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField } from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -230,7 +230,7 @@ const DeploymentForm = (
                                     name="name"
                                     label="Nom du déploiement"
                                     required
-                                    defaultValue={deploymentData?.name}
+                                    defaultValue={tmpDeploymentData?.name}
                                     onChange={(e) => handleFormChange("name", e.target.value)}
                                     size="small"
                                     variant="filled"
