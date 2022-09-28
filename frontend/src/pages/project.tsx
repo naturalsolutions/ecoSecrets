@@ -4,7 +4,9 @@ import Drawer from "../components/drawer";
 import DeploymentList from "../components/deploymentList";
 import NavigationPath from "../components/navigationPath";
 
+
 function Project() {
+
   return (
     <div className="Main">
       <MainLayout

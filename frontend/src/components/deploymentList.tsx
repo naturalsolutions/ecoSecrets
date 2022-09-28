@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
 
 const DeploymentList = () => {
+
   const { project, setCurrentProject } = useMainContext();
   let params = useParams();
   useEffect(() => {

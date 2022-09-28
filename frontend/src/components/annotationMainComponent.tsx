@@ -47,7 +47,7 @@ const AnnotationMainComponent = () => {
     setCurrentDeployment,
     currentImage, setCurrentImage,
     files,
-    updateListFile, 
+    updateListFile,
     setCurrentProject
   } = useMainContext();
 
@@ -83,7 +83,7 @@ const AnnotationMainComponent = () => {
   useEffect(() => {
     (async () => {
       image() && setObservations(image().annotations);
-      image()&& setTreated(image().treated)
+      image() && setTreated(image().treated)
     })();
   }, [files, currentImage]);
 
@@ -125,15 +125,15 @@ const AnnotationMainComponent = () => {
       updateUrl(files[0].id);
     }
     if (indice == 'last') {
-      setCurrentImage(files[files.length-1].id);
-      updateUrl(files[files.length-1].id);
-    } 
+      setCurrentImage(files[files.length - 1].id);
+      updateUrl(files[files.length - 1].id);
+    }
   };
 
   const save = () => {
     FilesService
       .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations)
-      .then(res => 
+      .then(res =>
         updateListFile()
       )
     // WARNING remplacer le updateListFile par une mise à jour local des fichiers
@@ -229,8 +229,8 @@ const AnnotationMainComponent = () => {
     <LayoutImageContainer className="page">
 
       <LayoutImageImage>
-        <AnnotationImageDisplay image={image()} next={next} previous={previous} lastOrFirstImage={lastOrFirstImage}/>
-      </LayoutImageImage>
+        <AnnotationImageDisplay image={image()} next={next} previous={previous} lastOrFirstImage={lastOrFirstImage} isAnnoted={isAnnoted}/>
+      </LayoutImageImage >
 
       <LayoutImageForm className="annotations">
         <Paper elevation={1} className='paperAnnotations'>
@@ -252,11 +252,11 @@ const AnnotationMainComponent = () => {
                   <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={"Média traité manuellement"} stylClassButton="valid" />
                   : (
                     isAnnoted ?
-                    <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#FF9800' }} />} title={"Observation(s) pas enregistrée(s)"} stylClassButton="info" />
-                    :
-                    <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={"Média pas traité"} stylClassButton="warning" />
+                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#FF9800' }} />} title={"Observation(s) pas enregistrée(s)"} stylClassButton="info" />
+                      :
+                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={"Média pas traité"} stylClassButton="warning" />
                   )
-                  
+
                 }
                 <FormControlLabel
                   control={
@@ -266,18 +266,20 @@ const AnnotationMainComponent = () => {
                   }
                   label="Média vide"
                 />
-              </div>
+              </div >
 
               <Divider />
 
-              {observations.map((observation) => (
-                <AnnotationObservationForm key={observation.id} observation={observation} handleFormChange={handleFormChange} handleCheckChange={handleCheckChange} handleDeleteObservation={handleDeleteObservation} />
-              ))}
-            </TabPanel>
+              {
+                observations.map((observation) => (
+                  <AnnotationObservationForm key={observation.id} observation={observation} handleFormChange={handleFormChange} handleCheckChange={handleCheckChange} handleDeleteObservation={handleDeleteObservation} />
+                ))
+              }
+            </TabPanel >
 
             <TabPanel valueTab={tabValue} index={1}>
               <Alert severity="info">Fonctionnalité pas encore disponible.</Alert>
-            </TabPanel>
+            </TabPanel >
 
             <Divider />
 
@@ -286,14 +288,14 @@ const AnnotationMainComponent = () => {
               handleAddObservation={handleAddObservation}
             />
 
-          </Stack>
-        </Paper>
-      </LayoutImageForm>
+          </Stack >
+        </Paper >
+      </LayoutImageForm >
 
       <AnnotationSaveError
         openSaveErrorDialog={openSaveErrorDialog} handleCloseSaveErrorDialog={handleCloseSaveErrorDialog}
       />
-    </LayoutImageContainer>
+    </LayoutImageContainer >
   );
 };
 export default AnnotationMainComponent;
