@@ -4,7 +4,8 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { useMainContext } from "../../contexts/mainContext";
 import { useState } from "react";
-import { DeviceMenu, Devices } from "../../client";
+import { DeviceMenu } from "../../client";
+import ForestIcon from '@mui/icons-material/Forest';
 
 
 export default function DeviceData () {
@@ -20,7 +21,8 @@ export default function DeviceData () {
             justifyContent="center"
         >
             <Typography color='secondary' gutterBottom variant="h3" component="div" >
-                <CheckCircleIcon fontSize='large' sx={{display: {color: "secondary"}}} style={{verticalAlign:"middle"}}/>
+                {deviceData.status == 'Déployé' ? <ForestIcon fontSize='large' sx={{display: {color: "secondary"}}} style={{verticalAlign:"middle"}}/> 
+                : <CheckCircleIcon fontSize='large' sx={{display: {color: "secondary"}}} style={{verticalAlign:"middle"}}/>}
                 
             </Typography>
             <Button variant="outlined" color='secondary'>

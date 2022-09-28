@@ -43,9 +43,6 @@ const DevicesTable = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - deviceMenu.length) : 0;
-
         
     return (
       deviceMenu.length !== 0 ?
@@ -64,7 +61,7 @@ const DevicesTable = () => {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                    { deviceMenu.map((row) => (
+                    { deviceMenu.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                         <StyledTableRow key={row.name}>
                             <StyledTableCell align="center">
                               <Link 

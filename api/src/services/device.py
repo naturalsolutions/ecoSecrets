@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import desc
 from sqlmodel import Session
 
@@ -49,6 +51,7 @@ def delete_device(db: Session, id: int):
 
 
 def get_menu_devices(db: Session, skip: int = 0, limit: int = 100):
+    current_date = datetime.now()
     db_devices = db.query(Devices).order_by(Devices.id).offset(skip).limit(limit).all()
     devices = []
     for d in db_devices:
@@ -59,6 +62,8 @@ def get_menu_devices(db: Session, skip: int = 0, limit: int = 100):
         deployment_list = []
         for deploy in deployments:
             deployment_list.append(deploy.id)
+            if current_date <= deploy.end_date and current_date >= deploy.start_date:
+                device["status"] = "Déployé"
         nb_images = (
             db.query(Files).filter(Files.deployment_id.in_(deployment_list)).count()
         )

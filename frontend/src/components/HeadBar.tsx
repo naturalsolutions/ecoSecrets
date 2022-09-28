@@ -10,7 +10,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import ImportModale from "./importModale";
-import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const HeadBar = () => {
 
@@ -40,14 +40,16 @@ const HeadBar = () => {
           <IconButton color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <VideoCameraBackIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex", color: "white" } }}
-          >
-            FASTcam
-          </Typography>
+          <Link to={`/`} style= {{textDecoration: 'none'}}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ mr: 2, display: { xs: "none", md: "flex", color: "white" } }}
+            >
+              FASTcam
+            </Typography>
+          </Link>
           <Box></Box>
         </Grid>
 
