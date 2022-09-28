@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import AnnotationImageNavigation from "./annotationImageNavigation";
 
@@ -5,11 +6,26 @@ import AnnotationImageNavigation from "./annotationImageNavigation";
 const AnnotationImageDisplay = (
     props
 ) => {
+
+    const [isAnnotedColor, setIsAnnoted] = useState<string>("")
+
+    useEffect(() => {
+        (async () => {
+            console.log(props.image)
+            props.image?.treated? setIsAnnoted("green") : (props.isAnnoted ? setIsAnnoted("orange") : setIsAnnoted("red"))
+        })();
+    }, [props.image?.annotations, props.isAnnoted]);
+
     return (
         <>
             {props.image ? (
-                <Grid container className="pageContainer">
-                    <Box sx={{ height: 300 }} className="boxImage">
+                <Grid container className="pageContainer" >
+                    <Box sx={{ height: 300 }} className="boxImage" style={{
+                        border: "2px solid",
+                        borderRadius: "5px",
+                        borderColor: isAnnotedColor,
+                        marginTop: "2vh"
+                    }}>
                         <img
                             src={`${props.image.url}`}
                             alt={props.image.name}
@@ -19,7 +35,7 @@ const AnnotationImageDisplay = (
                                 borderBottomRightRadius: 4,
                                 display: "block",
                                 height: "fit-content",
-                                maxWidth: "100%"
+                                maxWidth: "100%",
                             }}
                         />
                     </Box>

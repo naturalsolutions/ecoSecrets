@@ -1,6 +1,7 @@
 from datetime import date, datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import validator
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 from src.models.deployment import (
@@ -23,13 +24,19 @@ class ProjectBase(SQLModel):
     start_date: Optional[date]
     end_date: Optional[date]
     protocol: Optional[str]
-    acquisition_framework: Optional[str] 
+    acquisition_framework: Optional[str]
     targeted_species: Optional[str]
     referential: Optional[str]
     timezone: Optional[str]
     image: Optional[str]
     owner_id: Optional[int] = Field(foreign_key="users.id")
     contact_id: Optional[int] = Field(foreign_key="users.id")
+
+    @validator("name")
+    def check_storage_type(cls, value):
+        if len(value) < 2:
+            raise ValueError("Name project must be greater than > 2 characters")
+        return value
 
 
 class Projects(ProjectBase, table=True):

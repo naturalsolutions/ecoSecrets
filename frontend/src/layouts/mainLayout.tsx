@@ -19,16 +19,16 @@ export const MainLayout = ({
     minWidth: "100%",
     height: "100vh",
   }}>
-  <Box sx={{ flexGrow: 1 }}>
-    {Header}
-    <Grid container sx={{ height: "90vh" }} spacing={2}>
-      <Grid item sx={{ height: "100%" }} xs={12} md={1} lg={1}>{Side}</Grid>
-      <Grid item sx={{ height: "100%" }} xs={12} md={11} lg={11}>
-        {Navigation}
-        {Main}
+    <Box sx={{ flexGrow: 1 }}>
+      {Header}
+      <Grid container sx={{ height: "90vh" }} spacing={2}>
+        <Grid item sx={{ height: "100%" }} xs={12} md={1} lg={1}>{Side}</Grid>
+        <Grid item sx={{ height: "100%" }} xs={12} md={11} lg={11}>
+          {Navigation}
+          {Main}
+        </Grid>
       </Grid>
-    </Grid>
-  </Box>
+    </Box>
   </Container>
 );
 

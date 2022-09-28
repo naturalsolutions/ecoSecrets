@@ -25,12 +25,17 @@ export default function ImageMasonry() {
     navigate(`${id}`);
   };
 
+
   return (
-    <Box sx={{ width: "100%", minHeight: 829 }}>
+    <Box sx={{ width: "100%", minHeight: 829, paddingTop: "2vh" }}>
       <Typography variant="subtitle2">Galerie du déploiement</Typography>
-      <Masonry columns={6} spacing={2}>
+      <Masonry columns={6} spacing={2} >
         {files?.map((item, index) => (
-          <div key={index}>
+          <div key={index} style={{
+            border: "2px solid",
+            borderRadius: "5px",
+            borderColor: item.treated ? "green" : "red"
+          }}>
             <img
               src={`${item.url}`}
               alt={item.name}
@@ -40,7 +45,7 @@ export default function ImageMasonry() {
                 borderBottomLeftRadius: 4,
                 borderBottomRightRadius: 4,
                 display: "block",
-                width: "100%",
+                width: "100%"
               }}
             />
           </div>
