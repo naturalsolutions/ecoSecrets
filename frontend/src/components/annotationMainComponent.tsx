@@ -183,12 +183,16 @@ const AnnotationMainComponent = () => {
 
   const handleFormChange = (id: string, params: string, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     let tmp_obs = [...observations]
-    console.log("tmp_obs", tmp_obs)
+    // console.log("tmp_obs", tmp_obs)
     tmp_obs.forEach(ob => {
-      console.log("id obs", ob.id)
-      console.log("params", params)
+      // console.log("id obs", ob.id)
+      // console.log("params", params)
+      console.log(ob);
       if (ob.id === id) {
         ob[params] = e.target.value;
+        if (params === 'specie'){
+          ob[params] = e.target.innerHTML;
+        }
         if (["specie", "classe", "order", "genus"].includes(params) && ob[params] != " ") {
           ob["number"] = 1;
           setIsMinimalObservation(true);
@@ -200,20 +204,20 @@ const AnnotationMainComponent = () => {
 
   useEffect(() => {
     let fieldToCheck: string[] = [];
-    console.log("obs inside useEffect change", observations)
+    // console.log("obs inside useEffect change", observations)
     for (var i = 0; i < observations.length; i++) {
-      console.log(observations[i]);
+      // console.log(observations[i]);
 
       for (const property in observations[i]) {
         // console.log(`${property}: ${object[property]}`);
         if (fieldsMandatory.includes(property)) {
-          console.log("observations[i][property]", observations[i][property])
+          // console.log("observations[i][property]", observations[i][property])
           fieldToCheck.push(observations[i][property])
         }
       }
 
     }
-    console.log("fieldToCheck", fieldToCheck)
+    // console.log("fieldToCheck", fieldToCheck)
     const result = fieldToCheck.some(element => {
       if (element !== '') {
         return true

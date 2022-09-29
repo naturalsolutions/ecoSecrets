@@ -1,7 +1,10 @@
-import { Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Autocomplete, createFilterOptions, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import NestedList from "./common/collapsableButton";
-
+import { useCallback, useEffect, useState } from "react";
+import { request as __request } from '../client/core/request';
+import axios from 'axios';
+import debounce from "lodash/debounce";
 
 // TODO: retrieve from database
 const sexList = ["", "Mâle", "Femelle", "Indéterminé"];
@@ -12,12 +15,58 @@ const orderList = ["", "Cetartiodactyla"]
 const familyList = ["", "Cervidae"]
 const genusList = ["", "Capreolus"]
 const classList = ["", "Mammalia"]
-const speciesList = ["", "Capreolus capreolus", "Cerf axis"]
+
+async function getData (search_name: string) {
+    const promise = axios.get(`https://geonature.demos.natural-solutions.eu/taxhub/api/taxref/allnamebylist?search_name=${search_name}`)
+    const speciesListe = (await promise).data
+    return speciesListe
+}
+
+async function getDataFromCdNom (cd_nom: number) {
+    const promise = axios.get(`https://geonature.demos.natural-solutions.eu/taxhub/api/taxref/?cd_nom=${cd_nom}&is_inbibtaxons=false&is_ref=false&limit=25&order=asc&orderby=nom_complet&page=1`)
+    const test = (await promise).data
+    const species = (await test).items
+}
+  interface SpeciesOptionType {
+        gid: number;
+        cd_nom: number;
+        search_name: string;
+        cd_ref: number;
+        nom_valide: string;
+        lb_nom: string;
+        nom_vern: string;
+        regne: string;
+        group2_inpn: string;
+      }
+
 
 const AnnotationObservationForm = (
     props
 ) => {
+    
+    const [especeOptions, setEspeceOptions] = useState<SpeciesOptionType[]>([]);
+    const [especeInputValue, setEspeceInputValue] = useState<string>('');
+
+    const getOptionsDelayed = useCallback(
+        debounce((especeInputValue, callback) => {
+            console.log('getting')
+            console.log(especeInputValue)
+            setEspeceOptions([]);
+            getData(especeInputValue).then(callback);
+        }, 200),
+        []
+    );
+    
+    useEffect(() => {
+        if (especeInputValue.length >= 3) {
+            getOptionsDelayed(especeInputValue, (filteredOptions) => {
+                setEspeceOptions(filteredOptions);
+            })
+    }
+    }, [especeInputValue, getOptionsDelayed]);
+
     return (
+        
         <div>
             <form key={props.observation.id}>
                 <Stack
@@ -117,24 +166,26 @@ const AnnotationObservationForm = (
                         </TextField>
                     </Grid>
                     <Grid item lg={6} xs={12}>
-                        <TextField
-                            name="species"
-                            label="Espèce"
-                            size="small"
-                            variant='filled'
-                            fullWidth
-                            select
+                        <Autocomplete
+                            id="espece"
+                            freeSolo
+                            disableClearable
+                            loading={true}
                             value={props.observation.specie == undefined ? " " : props.observation.specie}
-                            onChange={
-                                (e) => props.handleFormChange(props.observation.id, "specie", e)
-                            }
-                        >
-                            {speciesList.map((item) => (
-                                <MenuItem key={item} value={item}>
-                                    {item}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                            onChange={(event: any, newValue, params) => {
+                            props.handleFormChange(props.observation.id, "specie", event);
+                        }}
+                            onInputChange={(e, newInputValue) => {setEspeceInputValue(newInputValue)}}
+                            inputValue={especeInputValue}
+                            getOptionLabel={(opt) => (typeof(opt) === "string") ? opt : `${opt.cd_nom} - ${opt.nom_vern} - ${opt.nom_valide}`}
+                            options={especeOptions}
+                            noOptionsText="Pas d'options"
+                            renderInput={(params) => (
+                                <TextField {...params} label="Espèce" size="small" variant='filled'
+                                    InputProps={{...params.InputProps, type: 'search'}}
+                                />
+                            )}
+                        />
                     </Grid>
                     <Grid item lg={6} xs={12}>
                         <TextField
