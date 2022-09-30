@@ -43,7 +43,7 @@ def init_db():
                 protocole="Protocole A",
                 creation_date=dt.fromisoformat("2022-04-12"),
                 start_date=dt.fromisoformat("2022-04-12"),
-                end_date=dt.fromisoformat("2022-04-20"),
+                end_date=dt.fromisoformat("2023-04-12"),
                 protocol="Protocole A",
                 acquisition_framework="Acq 1",
                 targeted_species="Loup",
@@ -59,8 +59,8 @@ def init_db():
             project=ProjectBase(
                 name="Projet 2",
                 creation_date=dt.fromisoformat("2022-04-12"),
-                start_date=dt.fromisoformat("2022-04-12"),
-                end_date=dt.fromisoformat("2022-04-12"),
+                start_date=dt.fromisoformat("2022-09-12"),
+                end_date=dt.fromisoformat("2022-12-12"),
                 description="Description deuxième projet",
                 owner_id=owner.id,
                 contact_id=owner.id,
@@ -71,8 +71,8 @@ def init_db():
             db=session,
             site=SiteBase(
                 name="Site 1",
-                latitude=40.23,
-                longitude=90.75,
+                latitude=43.29,
+                longitude=5.37,
                 habitat="Prairie",
                 description="Description",
             ),
@@ -102,7 +102,7 @@ def init_db():
                 description="Description premier déploiement",
                 bait="None",
                 feature="Arbre fruitier",
-                project_id=project_example.id
+                project_id=project_example.id,
             ),
         )
 

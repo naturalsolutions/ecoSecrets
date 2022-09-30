@@ -39,3 +39,10 @@ services:
   keycloak:
     ports:
       - "8888:8080"
+
+  doc:
+    image: squidfunk/mkdocs-material:8.3.9
+    ports:
+      - "8133:8000"
+    volumes:
+      - ../docs:/docs
