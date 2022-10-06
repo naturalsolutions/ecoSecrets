@@ -14,7 +14,6 @@ build_api_development:
       - dev
     changes:
       - api/**/*
-      - .gitlab-ci.yml
   tags:
     - NSCICDSHELL
 
@@ -29,7 +28,6 @@ build_api_production:
       - dev
     changes:
       - api/**/*
-      - .gitlab-ci.yml
   tags:
     - NSCICDSHELL
 
@@ -44,7 +42,6 @@ build_frontend_development:
       - dev
     changes:
       - frontend/**/*
-      - .gitlab-ci.yml
   tags:
     - NSCICDSHELL
 
@@ -61,7 +58,6 @@ test_api:
   only:
     changes:
       - api/**/*
-      - .gitlab-ci.yml
   tags:
     - NSCICDSHELL
 
@@ -79,6 +75,8 @@ deploy_api:
       - api/**/*
       - .gitlab-ci.yml
   variables:
+    VAULT_ADDR: https://vault.natural-solutions.eu
+    INVENTORY_PATH: inventories/geonature/annotation
     ANSIBLE_HOST_KEY_CHECKING: "false"
     ANSIBLE_INVENTORY_UNPARSED_FAILED: "true"
   tags:
@@ -98,6 +96,8 @@ deploy_frontend:
       - frontend/**/*
       - .gitlab-ci.yml
   variables:
+    VAULT_ADDR: https://vault.natural-solutions.eu
+    INVENTORY_PATH: inventories/geonature/annotation
     ANSIBLE_HOST_KEY_CHECKING: "false"
     ANSIBLE_INVENTORY_UNPARSED_FAILED: "true"
   tags:
