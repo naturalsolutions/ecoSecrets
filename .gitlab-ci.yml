@@ -70,11 +70,8 @@ deploy_api:
   image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
   script:
     - cd /home/ansible
-    - echo ${VAULT_PASSWORD_KEY} > password-file
-    - ./scripts/decrypt.sh
-    - ansible-playbook -i inventory/geonature/annotation.yml -l geonature_annotation playbooks/infra.yml -t deploy_one -e service=api
-    - ./scripts/encrypt.sh
-    - rm password-file
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=api
   only:
     refs:
       - dev
@@ -92,11 +89,8 @@ deploy_frontend:
   image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
   script:
     - cd /home/ansible
-    - echo ${VAULT_PASSWORD_KEY} > password-file
-    - ./scripts/decrypt.sh
-    - ansible-playbook -i inventory/geonature/annotation.yml -l geonature_annotation playbooks/infra.yml -t deploy_one -e service=frontend
-    - ./scripts/encrypt.sh
-    - rm password-file
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=frontend
   only:
     refs:
       - dev
