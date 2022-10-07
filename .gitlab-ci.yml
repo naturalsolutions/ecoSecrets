@@ -63,11 +63,12 @@ test_api:
 
 deploy_api:
   stage: deploy
-  image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
+  image: 
+    name: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
   script:
     - cd /home/ansible
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
-    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=api
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t "create-key,deploy_one" -e service=api
   only:
     refs:
       - dev
@@ -88,7 +89,7 @@ deploy_frontend:
   script:
     - cd /home/ansible
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
-    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=frontend
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t "create-key,deploy_one" -e service=frontend
   only:
     refs:
       - dev
