@@ -15,7 +15,7 @@ build_api_development:
     changes:
       - api/**/*
   tags:
-    - NSCICDSHELL
+    - NSCICDDOCKER
 
 build_api_production:
   stage: build
@@ -29,7 +29,7 @@ build_api_production:
     changes:
       - api/**/*
   tags:
-    - NSCICDSHELL
+    - NSCICDDOCKER
 
 build_frontend_development:
   stage: build
@@ -43,7 +43,7 @@ build_frontend_development:
     changes:
       - frontend/**/*
   tags:
-    - NSCICDSHELL
+    - NSCICDDOCKER
 
 test_api:
   stage: test
