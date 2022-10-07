@@ -76,9 +76,6 @@ deploy_api:
       - api/**/*
       - .gitlab-ci.yml
   variables:
-    VAULT_ADDR: https://vault.natural-solutions.eu
-    INVENTORY_PATH: inventories/geonature/annotation
-    ANSIBLE_HOST_KEY_CHECKING: "false"
     ANSIBLE_INVENTORY_UNPARSED_FAILED: "true"
   tags:
     - NSCICDDOCKER
@@ -97,9 +94,6 @@ deploy_frontend:
       - frontend/**/*
       - .gitlab-ci.yml
   variables:
-    VAULT_ADDR: https://vault.natural-solutions.eu
-    INVENTORY_PATH: inventories/geonature/annotation
-    ANSIBLE_HOST_KEY_CHECKING: "false"
     ANSIBLE_INVENTORY_UNPARSED_FAILED: "true"
   tags:
     - NSCICDDOCKER
