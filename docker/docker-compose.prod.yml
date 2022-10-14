@@ -43,10 +43,10 @@ services:
       - traefik.http.routers.keycloak.tls=true
       - traefik.http.routers.keycloak.tls.certresolver=le
 
-  # minio:
-  #   labels:
-  #     - traefik.enable=true
-  #     - traefik.http.routers.minio.rule=Host(`${DOMAIN}`) && PathPrefix(`/${MINIO_BUCKET_NAME}`)
-  #     - traefik.http.routers.minio.entrypoints=websecure
-  #     - traefik.http.routers.minio.tls=true
-  #     - traefik.http.routers.minio.tls.certresolver=le
+  minio:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.minio.rule=Host(`${DOMAIN}`) && PathPrefix(`/${MINIO_BUCKET_NAME}`)
+      - traefik.http.routers.minio.entrypoints=websecure
+      - traefik.http.routers.minio.tls=true
+      - traefik.http.routers.minio.tls.certresolver=le

@@ -9,6 +9,7 @@ from decouple import config
 MINIO_ENTRYPOINT_URL = config("MINIO_ENTRYPOINT_URL")
 MINIO_ROOT_USER = config("MINIO_ROOT_USER")
 MINIO_ROOT_PASSWORD = config("MINIO_ROOT_PASSWORD")
+MINIO_BUCKET_NAME = config("MINIO_BUCKET_NAME")
 
 config_dict = {
     "endpoint_url": "http://minio:9000",
@@ -36,7 +37,7 @@ s3_client = boto3.client("s3", **config_dict_client)
 
 
 def get_bucket_name():
-    return "jean-paul-bucket"
+    return MINIO_BUCKET_NAME
 
 
 def init_bucket():
