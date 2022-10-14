@@ -4,11 +4,16 @@ from typing import Optional
 import boto3
 from botocore.client import Config
 from botocore.exceptions import ClientError
+from decouple import config
+
+MINIO_ENTRYPOINT_URL = config("MINIO_ENTRYPOINT_URL")
+MINIO_ROOT_USER = config("MINIO_ROOT_USER")
+MINIO_ROOT_PASSWORD = config("MINIO_ROOT_PASSWORD")
 
 config_dict = {
     "endpoint_url": "http://minio:9000",
-    "aws_access_key_id": "jeanpaul",
-    "aws_secret_access_key": "456azerty123",
+    "aws_access_key_id": MINIO_ROOT_USER,
+    "aws_secret_access_key": MINIO_ROOT_PASSWORD,
     "config": Config(
         signature_version="s3v4",
     ),
@@ -16,9 +21,9 @@ config_dict = {
 }
 
 config_dict_client = {
-    "endpoint_url": "http://localhost:9000",
-    "aws_access_key_id": "jeanpaul",
-    "aws_secret_access_key": "456azerty123",
+    "endpoint_url": MINIO_ENTRYPOINT_URL,
+    "aws_access_key_id": MINIO_ROOT_USER,
+    "aws_secret_access_key": MINIO_ROOT_PASSWORD,
     "config": Config(
         signature_version="s3v4",
         proxies={"http": "http://annotation_minio:9000"},
