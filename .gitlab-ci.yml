@@ -68,6 +68,7 @@ deploy_api:
   script:
     - cd /home/ansible
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
     - ansible-playbook -i inventory.py playbooks/infra.yml -t "create-key,deploy_one" -e service=api
   only:
     refs:
@@ -89,6 +90,7 @@ deploy_frontend:
   script:
     - cd /home/ansible
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
     - ansible-playbook -i inventory.py playbooks/infra.yml -t "create-key,deploy_one" -e service=frontend
   only:
     refs:
