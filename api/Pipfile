@@ -21,6 +21,7 @@ requests = "*"
 black = "*"
 isort = "*"
 pillow = "*"
+alembic = "*"
 
 [dev-packages]
 

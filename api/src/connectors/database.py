@@ -3,7 +3,6 @@ from datetime import datetime as dt
 from pathlib import Path
 
 from decouple import config
-from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import Session, SQLModel, create_engine
 
 from src.models.deployment import DeploymentBase, Deployments
@@ -17,14 +16,10 @@ from src.services import deployment, device, files, project, site, user
 DATABASE_URL = config("DB_URL")
 
 engine = create_engine(DATABASE_URL, echo=True)
-if database_exists(engine.url):
-    drop_database(engine.url)
-create_database(engine.url)
 
 
 def init_db():
-    SQLModel.metadata.drop_all(engine)
-    SQLModel.metadata.create_all(engine)
+    # TODO: make it conditionnal not to create at each startup
     with Session(engine) as session:
         role = Roles(role="user", description="default_user")
         session.add(role)

@@ -20,6 +20,7 @@ services:
       - ../api:/home/app
     ports:
       - "3654:8000"
+    command: "./entrypoint.sh uvicorn --host 0.0.0.0 --reload src.main:app"
 
   frontend:
     volumes:
@@ -30,7 +31,7 @@ services:
   db:
     ports:
       - "5433:5432"
-    
+
   minio:
     ports:
       - "9000:9000"
