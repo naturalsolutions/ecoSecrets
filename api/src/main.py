@@ -2,7 +2,6 @@ from decouple import config
 from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.connectors.database import init_db
 from src.connectors.s3 import init_bucket
 from src.dependencies import get_query_token, get_token_header
 from src.internal import admin
@@ -57,4 +56,3 @@ async def root():
 @app.on_event("startup")
 def on_startup():
     init_bucket()
-    init_db()

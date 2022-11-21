@@ -36,6 +36,7 @@ services:
       - traefik.http.routers.api.entrypoints=websecure
       - traefik.http.routers.api.tls=true
       - traefik.http.routers.api.tls.certresolver=le
+    command: "./entrypoint.sh uvicorn --host 0.0.0.0 src.main:app"
 
   keycloak:
     labels:
