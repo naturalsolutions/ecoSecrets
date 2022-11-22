@@ -4,12 +4,13 @@ from typing import Optional
 import boto3
 from botocore.client import Config
 from botocore.exceptions import ClientError
-from decouple import config
 
-MINIO_ENTRYPOINT_URL = config("MINIO_ENTRYPOINT_URL")
-MINIO_ROOT_USER = config("MINIO_ROOT_USER")
-MINIO_ROOT_PASSWORD = config("MINIO_ROOT_PASSWORD")
-MINIO_BUCKET_NAME = config("MINIO_BUCKET_NAME")
+from src.config import settings
+
+MINIO_ENTRYPOINT_URL = settings.MINIO_ENTRYPOINT_URL
+MINIO_ROOT_USER = settings.MINIO_ROOT_USER
+MINIO_ROOT_PASSWORD = settings.MINIO_ROOT_PASSWORD
+MINIO_BUCKET_NAME = settings.MINIO_BUCKET_NAME
 
 config_dict = {
     "endpoint_url": "http://minio:9000",

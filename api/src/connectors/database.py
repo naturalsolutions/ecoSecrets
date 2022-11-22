@@ -2,9 +2,9 @@ import os
 from datetime import datetime as dt
 from pathlib import Path
 
-from decouple import config
 from sqlmodel import Session, SQLModel, create_engine
 
+from src.config import settings
 from src.models.deployment import DeploymentBase, Deployments
 from src.models.device import DeviceBase, Devices
 from src.models.models import Roles
@@ -13,7 +13,7 @@ from src.models.site import SiteBase, Sites
 from src.schemas.user import UserCreate
 from src.services import deployment, device, files, project, site, user
 
-DATABASE_URL = config("DB_URL")
+DATABASE_URL = settings.DB_URL
 
 engine = create_engine(DATABASE_URL, echo=True)
 

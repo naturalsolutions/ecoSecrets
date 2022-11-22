@@ -1,8 +1,9 @@
-from decouple import config
 from sqlalchemy_utils import create_database, database_exists, drop_database
 from sqlmodel import SQLModel, create_engine
 
-DATABASE_URL = config("DB_URL")
+from src.config import settings
+
+DATABASE_URL = settings.DB_URL
 db_test_uri = f"{DATABASE_URL}_test"
 
 engine = create_engine(db_test_uri)
