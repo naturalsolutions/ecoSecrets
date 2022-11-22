@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "==0.86.0"
+fastapi = "*"
 uvicorn = "*"
 sqlalchemy = ">=1.4.17,<=1.4.35"
 python-multipart = "*"
@@ -14,16 +14,16 @@ unipath = "*"
 sqlmodel = "*"
 sqlalchemy-utils = "*"
 exif = "*"
-pytest = "*"
-pytest-cov = "*"
-requests = "*"
-black = "*"
-isort = "*"
 pillow = "*"
 alembic = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
 
 [dev-packages]
+httpx = ">=0.23.0"
+pytest = "*"
+isort = "*"
+black = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.8"
