@@ -1,5 +1,6 @@
 stages:
   - build
+  - pages
   - test
   - deploy
 
@@ -99,5 +100,26 @@ deploy_frontend:
   variables:
     INVENTORY_PATH: inventories/geonature/annotation
     GIT_STRATEGY: none
+  tags:
+    - NSCICDDOCKER
+
+pages:
+  stage: pages
+  image:
+    name: squidfunk/mkdocs-material:8.1.10
+    entrypoint:
+      - ""
+  only:
+    refs:
+      - dev
+    changes:
+      - docs/**/*
+      - .gitlab-ci.yml
+  script:
+    - cd docs
+    - mkdocs build --site-dir ../public
+  artifacts:
+    paths:
+      - public
   tags:
     - NSCICDDOCKER
