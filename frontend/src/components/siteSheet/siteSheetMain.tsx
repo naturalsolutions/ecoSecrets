@@ -6,13 +6,15 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Stack, Typography} from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {Grid} from "@mui/material";
+import {Grid, capitalize} from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
 import SiteForm from './siteForm';
 import SiteModale from '../siteMenu/siteModale';
+import { useTranslation } from 'react-i18next';
 
 
 const SiteSheet = () => {
+    const { t } = useTranslation()
     const {site, setCurrentSite} = useMainContext();
     
     let params = useParams();
@@ -47,11 +49,11 @@ const SiteSheet = () => {
                 </AppBar>
             </Box>
                 <Typography variant="h4" color="#000000" component="div">
-                    Fiche site
+                    {capitalize(t("sites.sheet"))}
                 </Typography>
             < SiteForm/>
             <div></div>
-        </Stack> ) : <div>Pas de fiche pour ce site</div>
+        </Stack> ) : <div>{capitalize(t("sites.no_sheet"))}</div>
     );
 };
 export default SiteSheet;

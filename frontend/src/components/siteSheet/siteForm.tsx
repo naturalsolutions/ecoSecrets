@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton } from "@mui/material";
+import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton, capitalize } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
 import { DevicesService, Sites, SitesService} from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
+import { useTranslation } from "react-i18next";
 
 
 const SiteForm = () => {
+    const { t } = useTranslation();
     const {site, updateSites} = useMainContext();
     const [siteData, setSiteData] = React.useState<Sites>(site());
     const habitats = ['Prairie', 'Forêt', 'Littoral'];
@@ -68,7 +70,7 @@ const SiteForm = () => {
                     }
                     >
                     <AlertTitle>Success</AlertTitle>
-                        Modifications enregistrées !
+                    {capitalize(t('main.modifications_saved'))}
                     </Alert>
                 </Collapse>
                 <form key={siteData.id}>
@@ -83,7 +85,7 @@ const SiteForm = () => {
                                         required
                                         id="name"
                                         name="name"
-                                        label="Nom"
+                                        label={capitalize(t('main.name'))}
                                         value ={siteData.name}
                                         onChange={(e) => handleFormChange("name", e)}
                                         fullWidth 
@@ -94,7 +96,7 @@ const SiteForm = () => {
                             <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
                                     disabled={!modified}
-                                    label="Longitude" 
+                                    label={capitalize(t('sites.longitude'))} 
                                     variant="filled"
                                     value={siteData.longitude}
                                     fullWidth
@@ -104,7 +106,7 @@ const SiteForm = () => {
                             <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField 
                                     disabled={!modified}
-                                    label='Latitude'
+                                    label={capitalize(t('sites.latitude'))}
                                     name='latitude'
                                     inputProps={{ type: 'number' }}
                                     value={siteData.latitude}
@@ -116,7 +118,7 @@ const SiteForm = () => {
                             <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
                                     disabled={!modified}
-                                    label='Habitat'
+                                    label={capitalize(t('sites.habitat'))}
                                     name='habitat'
                                     select
                                     value={siteData.habitat}
@@ -134,7 +136,7 @@ const SiteForm = () => {
                             <Grid item lg={12} md={12} xs={12}>
                                 <TextField
                                     disabled={!modified}
-                                    label='Description'
+                                    label={capitalize(t('main.description'))}
                                     id="description"
                                     value={siteData.description}
                                     fullWidth 
@@ -151,27 +153,27 @@ const SiteForm = () => {
                     justifyContent='flex-end'
                 >
                     <Button  onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
-                    { modified ? <>Annuler</> : <>Modifier</>}
+                    { modified ? <>{t('main.cancel')}</> : <>{t('main.modify')}</>}
                     </Button>
                     <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
-                        Enregistrer
+                        {t('main.save')}
                     </Button>
                     <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>
                         <Typography variant="h6">
-                            Modification du piège photographique
+                            {capitalize(t('sites.save_modifications_site'))}
                         </Typography>
                         </DialogTitle>
                         <Divider />
                         <DialogContent>
                             <Typography>
-                            Êtes-vous sûr de vouloir enregistrer vos mofidications ?
+                                {capitalize(t('main.ask_save'))}
                             </Typography>
                         </DialogContent>
                         <Divider />
                         <DialogActions>
-                        <Button onClick={save} style={{color: "#2FA37C"}}>Oui</Button>
-                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>Non</Button>
+                        <Button onClick={save} style={{color: "#2FA37C"}}>{t('main.yes')}</Button>
+                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>{t('main.no')}</Button>
                         </DialogActions>
                     </Dialog>
                 </Stack>

@@ -3,10 +3,14 @@ import { useMainContext } from "../contexts/mainContext";
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectCard from "./projectCard";
 import ProjectModal from "./projectModale";
-
+import { useTranslation } from "react-i18next";
+import { capitalize } from "@mui/material";
 
 
 const ProjectList = () => {
+
+  const { t } = useTranslation()
+
   const { projectsStats } = useMainContext();
 
   return (
@@ -28,7 +32,7 @@ const ProjectList = () => {
             spacing={5}
           >
             <Typography variant="h4" gutterBottom component="div">
-              Mes projets
+              { capitalize(t("main.my_projects")) }
             </Typography>
             <ProjectModal page='home'/>
           </Stack>
@@ -39,8 +43,8 @@ const ProjectList = () => {
             fullWidth
             select
             id="outlined-required"
-            label="Projet"
-            defaultValue="Rechercher"
+            label={capitalize(t("projects.project"))}
+            defaultValue={capitalize(t("main.search"))}
             variant="outlined" 
             type="search"
           />
@@ -49,8 +53,8 @@ const ProjectList = () => {
             select
             fullWidth
             id="outlined-required"
-            label="Espèce cible"
-            defaultValue="Rechercher"
+            label={capitalize(t("projects.target_specie"))}
+            defaultValue={capitalize(t("main.search"))}
             variant="outlined" 
             type="search"
           />
@@ -58,8 +62,8 @@ const ProjectList = () => {
             select
             fullWidth
             id="outlined-required"
-            label="Année de début"
-            defaultValue="Rechercher"
+            label={capitalize(t("projects.start_year"))}
+            defaultValue={capitalize(t("main.search"))}
             variant="outlined" 
             type="search"
           />
@@ -67,8 +71,8 @@ const ProjectList = () => {
             select
             fullWidth
             id="outlined-required"
-            label="Statut"
-            defaultValue="Rechercher"
+            label={capitalize(t("projects.status"))}
+            defaultValue={capitalize(t("main.search"))}
             variant="outlined" 
             type="search"
           />

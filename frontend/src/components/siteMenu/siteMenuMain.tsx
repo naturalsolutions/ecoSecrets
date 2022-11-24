@@ -1,8 +1,10 @@
-import { AppBar, Box, Grid, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, capitalize, Grid, Stack, Toolbar, Typography } from "@mui/material";
 import SiteModale from "./siteModale";
 import SitesTable from "./siteTable";
+import { useTranslation } from "react-i18next";
 
 const SiteMenu = () => {
+    const { t } = useTranslation();
     return (
         <Stack 
             direction="column"
@@ -16,7 +18,7 @@ const SiteMenu = () => {
                             container
                         >
                             <Typography variant="h6" component="div" sx={{ mr: 1 }}>
-                                Mes sites
+                                {capitalize(t('sites.title'))}
                             </Typography>
                             
                         </Grid>

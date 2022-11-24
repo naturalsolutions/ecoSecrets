@@ -1,15 +1,16 @@
 
 import { useState } from "react";
 import { useMainContext } from '../../contexts/mainContext';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { DeploymentsService } from "../../client";
+import { useTranslation } from "react-i18next";
 
 
 const ProjectDeploymentDeleteModale = (
     props
 ) => {
-    
+    const { t } = useTranslation()
     const {updateProjectSheetData} = useMainContext();
     
     const [openDeleteDeployment, setOpenDeleteDeployment] = useState(false);
@@ -52,7 +53,7 @@ const ProjectDeploymentDeleteModale = (
                 >
                 <DialogTitle>
                     <Typography variant="h6">
-                    Supprimer le déploiement
+                        {capitalize(t("deployments.delete"))}
                     </Typography>
                 </DialogTitle>
                     <IconButton onClick = {handleCloseDeleteDeployment} >
@@ -62,13 +63,13 @@ const ProjectDeploymentDeleteModale = (
                 <Divider />
                 <DialogContent>
                     <Typography>
-                        Êtes-vous sûr de vouloir supprimer ce déploiement ? Cela engendrera la suppression de l'ensemble des médias et des données associées à ce déploiement.
+                        {capitalize(t("deployments.ask_delete"))}
                     </Typography>
                 </DialogContent>
                 <Divider />
                 <DialogActions>
-                    <Button onClick={deleteDeployment}>Oui</Button>
-                    <Button onClick={handleCloseDeleteDeployment} color='secondary'>Non</Button>
+                    <Button onClick={deleteDeployment}>{capitalize(t("main.yes"))}</Button>
+                    <Button onClick={handleCloseDeleteDeployment} color='secondary'>{capitalize(t("main.no"))}</Button>
                 </DialogActions>
             </Dialog>        
         </>

@@ -9,8 +9,11 @@ import TabPanel from "./tabPanel";
 import { useMainContext } from "../contexts/mainContext";
 import ImportModale from "./importModale";
 import DeploymentCreationModale from "./deploymentCreationModale";
+import { useTranslation } from "react-i18next";
+import { capitalize } from "@mui/material";
 
 const DeploymentDetails = (props) => {
+    const { t } = useTranslation()
     const { deploymentData } = useMainContext();
     const [tabValue, setTabValue] = useState(props.number);
     const handleTabValueChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -79,8 +82,8 @@ const DeploymentDetails = (props) => {
                     aria-label="deployment tab"
                     variant='fullWidth'
                 >
-                <Tab label="Details" />
-                <Tab label="Médias" />
+                <Tab label= {capitalize(t('main.details'))} />
+                <Tab label={capitalize(t('main.medias'))} />
                 </Tabs>
             </Box>
             <TabPanel valueTab={tabValue} index={0}>

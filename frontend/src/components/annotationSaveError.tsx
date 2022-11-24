@@ -1,15 +1,17 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, capitalize } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const AnnotationSaveError = (props) => {
+    const { t } = useTranslation()
     return (
         <Dialog open={props.openSaveErrorDialog}>
             <DialogTitle>
-                Enregistrement des annotations impossible pour cette image
+                { capitalize(t("annotations.cannot_save")) }
             </DialogTitle>
 
             <DialogContent>
                 <Typography component={"span"} >
-                    Vous ne pouvez pas sauvegarder : toutes les observations doivent à minima renseigner une espèce et le nombre d'individus associé. S'il vous plaît, corriger les informations.
+                    { capitalize(t("annotations.cannot_save_species")) }
                 </Typography>
             </DialogContent>
 
@@ -18,7 +20,7 @@ const AnnotationSaveError = (props) => {
                     onClick={props.handleCloseSaveErrorDialog}
                     color="secondary"
                 >
-                    Je corrige mes données
+                    { capitalize(t("annotations.fix_my_data")) }
                 </Button>
             </DialogActions>
         </Dialog>

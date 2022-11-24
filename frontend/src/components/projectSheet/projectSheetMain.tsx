@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Stack, Typography, Alert, AlertTitle, Button} from "@mui/material";
+import { Stack, Typography, Alert, AlertTitle, Button, capitalize} from "@mui/material";
 import ProjectDeployments from './projectDeployments';
 import ProjectForm from './projectForm';
 import ProjectMembers from './projectMembers';
@@ -17,9 +17,11 @@ import { useMainContext } from '../../contexts/mainContext';
 import DeploymentCreationModale from '../deploymentCreationModale';
 import ImportModale from '../importModale';
 import ProjectModal from '../projectModale';
+import { useTranslation } from "react-i18next";
 
 const ProjectSheet = () => {
     const {projectSheetData, setCurrentProject} = useMainContext();
+    const {t} = useTranslation()
 
     const [openNewDeployment, setOpenNewDeployment] = useState(false);
     const handleOpenNewDeployment = () => {
@@ -84,7 +86,7 @@ const ProjectSheet = () => {
                         spacing={5}
                     >
                         <Typography variant="h4" color="#000000" component="div">
-                            Déploiements ({projectSheetData.deployments.length})
+                        {`${capitalize(t("deployments.deployments"))}`} ({projectSheetData.deployments.length})
                         </Typography>
                         <Button 
                             variant="contained" 
@@ -92,7 +94,7 @@ const ProjectSheet = () => {
                             style={{backgroundColor: "#BCAAA4"}}
                             onClick={handleOpenNewDeployment}
                         >
-                            Nouveau déploiement
+                            {capitalize(t("projects.new_deploy"))}
                         </Button>
                         <DeploymentCreationModale 
                             openNewDeployment={openNewDeployment}
@@ -106,7 +108,7 @@ const ProjectSheet = () => {
                 justifyContent="center"
             >
                 <Typography variant="h4" color="#000000" component="div">
-                    Zone d'étude
+                {capitalize(t("projects.studies_area"))}
                 </Typography>
                 <Grid container justifyContent="center" alignItems='center'>
                     <Grid item justifyContent="center" height={400} width={1000} spacing={1} style={{backgroundColor: "#D9D9D9"}}>
@@ -120,14 +122,14 @@ const ProjectSheet = () => {
             </Stack>
             <Stack>
                 <Typography variant="h4" color="#000000" component="div">
-                    Fiche projet
+                {capitalize(t("projects.sheet"))}
                 </Typography>
                 < ProjectForm/>
             </Stack>
         </Stack> : 
             <Alert severity="error" >
-                <AlertTitle>Erreur</AlertTitle>
-                    <p>Ce projet n'existe pas !</p>
+                <AlertTitle>{capitalize(t("projects.error"))}</AlertTitle>
+                    <p>{capitalize(t("projects.error_msg"))}</p>
             </Alert>
     );
 };

@@ -1,10 +1,12 @@
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, capitalize } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link, useNavigate } from "react-router-dom";
 import { ProjectsService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
+import { useTranslation } from "react-i18next";
 
 const GoAnnotation = (props) => {
+    const { t } = useTranslation()
     const { setCurrentProject} = useMainContext()
     const navigate = useNavigate();
     const goAnnotation = () => {
@@ -24,7 +26,7 @@ const GoAnnotation = (props) => {
             <Button 
                 variant="outlined"  
                 onClick={goAnnotation}>
-                Continuer l'annotation
+                {capitalize(t("annotations.continue"))}
             </Button>
         )
             
@@ -32,7 +34,7 @@ const GoAnnotation = (props) => {
             : <Button 
                 color='secondary'
                 variant="outlined" >
-                Annotation
+                {capitalize(t("annotations.annotation"))}
             </Button>
         )
     )

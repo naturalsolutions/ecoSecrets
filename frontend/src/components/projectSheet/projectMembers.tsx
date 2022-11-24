@@ -1,6 +1,8 @@
-import { Stack, Typography, Button, Autocomplete, TextField } from "@mui/material";
+import { Stack, Typography, Button, Autocomplete, TextField, capitalize } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const ProjectMembers = () => {
+    const { t } = useTranslation()
     const users = [
         {'id': 1, "name": "Jean Michel"},
         {'id': 2, "name": "Aurélie Jambon"},
@@ -17,7 +19,7 @@ const ProjectMembers = () => {
             justifyContent="center"
         >
             <Typography variant="h4" color="#000000" component="div">
-                Membres
+                {capitalize(t("projects.members"))}
             </Typography>
             <Autocomplete
                 multiple
@@ -28,8 +30,8 @@ const ProjectMembers = () => {
                 renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Administrateurs"
-                    placeholder="Ajouter un membre"
+                    label={capitalize(t("projects.administrators"))}
+                    placeholder={capitalize(t("projects.add_member"))}
                 />
                 )}
             />
@@ -42,8 +44,8 @@ const ProjectMembers = () => {
                 renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Validateurs"
-                    placeholder="Ajouter un membre"
+                    label={capitalize(t("projects.validators"))}
+                    placeholder={capitalize(t("projects.add_member"))}
                 />
                 )}
             />
@@ -57,8 +59,8 @@ const ProjectMembers = () => {
                 renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Annotateurs"
-                    placeholder="Ajouter un membre"
+                    label={capitalize(t("projects.annotators"))}
+                    placeholder={capitalize(t("projects.add_member"))}
                 />
                 
                 )}

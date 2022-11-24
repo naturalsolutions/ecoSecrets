@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { Grid, Typography, Stack, Button, TextField, MenuItem, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Collapse, Alert, AlertTitle, Box, ListItem, AlertColor } from "@mui/material";
+import { Grid, Typography, Stack, Button, TextField, MenuItem, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Collapse, Alert, AlertTitle, Box, ListItem, AlertColor, capitalize } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -10,8 +10,10 @@ import { useMainContext } from "../contexts/mainContext";
 import { ProjectBase, ProjectsService } from "../client";
 import { Snack } from "../client/models/Snack";
 import { useSnackContext } from "../contexts/snackContext";
+import { useTranslation } from "react-i18next";
 
 export default function ProjectModal(props) {
+    const { t } = useTranslation()
     const { updateProjects, setCurrentProject, updateProjectSheetData } = useMainContext();
     const [open, setOpen] = useState(false);
     const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1 });
@@ -75,7 +77,7 @@ export default function ProjectModal(props) {
                     color='secondary'
                     onClick={handleClickOpen}
                 >
-                    Nouveau projet
+                    {`${capitalize(t("main.new"))} ${t("projects.project")}`}
                 </Button>
                 :
                 <IconButton onClick={handleClickOpen} aria-label="menu" color='primary' sx={{ mr: 2 }}>
@@ -92,7 +94,7 @@ export default function ProjectModal(props) {
                 >
                     <DialogTitle>
                         <Typography variant="h6">
-                            Nouveau projet
+                            {`${capitalize(t("main.new"))} ${t("projects.project")}`}
                         </Typography>
                     </DialogTitle>
                     <IconButton onClick={handleClose} >
@@ -108,7 +110,7 @@ export default function ProjectModal(props) {
                             <TextField
                                 id="name"
                                 name="name"
-                                label="Nom"
+                                label={capitalize(t("main.name"))}
                                 value={projectData.name}
                                 onChange={(e) => handleFormChange("name", e)}
                                 fullWidth
@@ -119,7 +121,7 @@ export default function ProjectModal(props) {
                         <Grid item lg={6} md={6} xs={12}>
                             <TextField
                                 select
-                                label="Cadre d'acquisition"
+                                label={capitalize(t("projects.acquisition_framework"))}
                                 variant="filled"
                                 value={projectData.acquisition_framework}
                                 fullWidth
@@ -134,7 +136,7 @@ export default function ProjectModal(props) {
                         </Grid>
                         <Grid item lg={6} md={6} xs={12}>
                             <TextField
-                                label='Espèce cible'
+                                label={capitalize(t("projects.target_specie"))}
                                 id="targetedSpecies"
                                 select
                                 value={projectData.targeted_species}
@@ -155,7 +157,7 @@ export default function ProjectModal(props) {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     inputFormat="dd/MM/yyyy"
-                                    label="Date de début"
+                                    label={capitalize(t("projects.start_date"))}
                                     value={startDate}
                                     onChange={(startDate) => {
                                         setStartDate(startDate);
@@ -169,7 +171,7 @@ export default function ProjectModal(props) {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     inputFormat="dd/MM/yyyy"
-                                    label="Date de fin"
+                                    label={capitalize(t("projects.end_date"))}
                                     value={endDate}
                                     onChange={(endDate) => {
                                         setEndDate(endDate);
@@ -183,7 +185,7 @@ export default function ProjectModal(props) {
                             <TextField
                                 id="protocol"
                                 name="protocol"
-                                label="Protocole et méthodes"
+                                label={capitalize(t("projects.protocol_methods"))}
                                 value={projectData.protocol}
                                 onChange={(e) => handleFormChange("protocol", e)}
                                 fullWidth
@@ -194,7 +196,7 @@ export default function ProjectModal(props) {
                 </DialogContent>
                 <Divider />
                 <DialogActions>
-                    <Button onClick={save} style={{ color: "#2FA37C" }}>Enregistrer</Button>
+                    <Button onClick={save} style={{ color: "#2FA37C" }}>{ capitalize(t("main.save")) }</Button>
                 </DialogActions>
             </Dialog>
         </Grid>

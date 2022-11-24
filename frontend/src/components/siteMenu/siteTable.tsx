@@ -1,7 +1,8 @@
-import { Alert, AlertTitle, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Link, Paper, Stack, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
+import { Alert, AlertTitle, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Link, Paper, Stack, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, Typography, capitalize } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.body}`]: {
@@ -20,6 +21,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   }));
 
 const SitesTable = () => {
+  const { t } = useTranslation();
+
   const {sites} = useMainContext();
   const [open, setOpen] = useState(false);
 
@@ -41,10 +44,10 @@ const SitesTable = () => {
             <Table sx={{ minWidth: 500 }} size="small" aria-label="customized table">
                 <TableHead style={{backgroundColor: "#CCDFD9"}}>
                 <TableRow>
-                    <StyledTableCell align="center">Nom</StyledTableCell>
-                    <StyledTableCell align="center">Latitude</StyledTableCell>
-                    <StyledTableCell align="center">Longitude</StyledTableCell>
-                    <StyledTableCell align="center">Supprimer</StyledTableCell>
+                    <StyledTableCell align="center">{capitalize(t('main.name'))}</StyledTableCell>
+                    <StyledTableCell align="center">{capitalize(t('sites.latitude'))}</StyledTableCell>
+                    <StyledTableCell align="center">{capitalize(t('sites.longitude'))}</StyledTableCell>
+                    <StyledTableCell align="center">{capitalize(t('main.delete'))}</StyledTableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
@@ -79,7 +82,7 @@ const SitesTable = () => {
         >
           <DialogTitle>
             <Typography variant="h6">
-              Supprimer le site
+            {capitalize(t('sites.delete_site'))}
             </Typography>
           </DialogTitle>
             <IconButton onClick = {handleClose} >
@@ -89,19 +92,19 @@ const SitesTable = () => {
           <Divider />
           <DialogContent>
               <Typography>
-               Désolé, cette fonctionnalité n'est pas encore disponible !
+                {capitalize(t('main.unavailable'))}
               </Typography>
           </DialogContent>
           <Divider />
           <DialogActions>
-            <Button >Oui</Button>
-            <Button onClick={handleClose} color='secondary'>Non</Button>
+            <Button >{capitalize(t('main.yes'))}</Button>
+            <Button onClick={handleClose} color='secondary'>{capitalize(t('main.no'))}</Button>
           </DialogActions>
       </Dialog>
     </Stack>
      : <Alert severity="warning" >
-     <AlertTitle>Attention !</AlertTitle>
-     Vous n'avez pas de sites enregistrés.
+     <AlertTitle>{t('main.warning')}</AlertTitle>
+     {`${capitalize(t('main.zero'))} ${t('sites.site')}`}
  </Alert>
 );
     };

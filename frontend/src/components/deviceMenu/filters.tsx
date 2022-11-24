@@ -1,8 +1,9 @@
-import { Box, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Box, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import { useTranslation } from "react-i18next";
 
 const Filters = (props) => {
-    console.log(props);
+    const { t } = useTranslation();
 
     return (
 
@@ -20,7 +21,7 @@ const Filters = (props) => {
                     fullWidth
                     select
                     id="projects"
-                    label="Projet"
+                    label={capitalize(t("projects.project"))}
                     variant="outlined" 
                     type="search"
                 />
@@ -29,7 +30,7 @@ const Filters = (props) => {
                     select
                     fullWidth
                     id="deploys"
-                    label="Déploiement"
+                    label={capitalize(t("deployments.deployment"))}
                     variant="outlined" 
                     type="search"
                 />
@@ -37,15 +38,14 @@ const Filters = (props) => {
                     select
                     fullWidth
                     id="sites"
-                    label="Site"
+                    label={capitalize(t("sites.site"))}
                     variant="outlined" 
                     type="search"
                 />
                 <TextField
                     select
                     fullWidth
-                    id="devices"
-                    label="Dispositif"
+                    label={capitalize(t("devices.device"))}
                     variant="outlined" 
                     type="search"
                 />
@@ -53,7 +53,7 @@ const Filters = (props) => {
                     select
                     fullWidth
                     id="status"
-                    label="Statut"
+                    label={capitalize(t("devices.status"))}
                     variant="outlined" 
                     type="search"
                 />

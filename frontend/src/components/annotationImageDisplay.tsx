@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, capitalize } from "@mui/material";
 import AnnotationImageNavigation from "./annotationImageNavigation";
+import { useTranslation } from "react-i18next";
 
 
 const AnnotationImageDisplay = (
     props
 ) => {
-
+    const { t } = useTranslation()
     const [isAnnotedColor, setIsAnnoted] = useState<string>("")
 
     useEffect(() => {
@@ -48,7 +49,7 @@ const AnnotationImageDisplay = (
                     </div>
                 </Grid>
             ) : (
-                <p>Image inconnue</p>
+                <p>{capitalize(t("annotations.unknown_image"))}</p>
             )}
         </>
     );

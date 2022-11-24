@@ -4,12 +4,14 @@ import "../css/first.css";
 
 import ImageMasonry from "./masonry";
 import Dropzone from "react-dropzone";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Typography, capitalize } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { useTranslation } from "react-i18next";
 
 const ImageList: FC<{}> = () => {
+  const { t } = useTranslation()
   const [files, setFiles] = useState<any[]>([]);
   const { projects, updateListFile, setCurrentDeployment, currentDeployment, deploymentData } =
     useMainContext();
@@ -44,7 +46,7 @@ const ImageList: FC<{}> = () => {
   const dropZoneDisplayText = () => {
     if (files.length === 0) {
       return (
-        <p>Glissez/Déposez ou cliquez pour importer 10 fichiers maximum</p>
+        <p>{capitalize(t("deployments.drop_files"))}</p>
       );
     } else {
       return <p>{files.map((f) => f.name).join(", ")}</p>;
@@ -55,7 +57,7 @@ const ImageList: FC<{}> = () => {
     <>
       {deploymentData ? (
         <Stack spacing={2}>
-          <Typography variant="subtitle2">Import de médias</Typography>
+          <Typography variant="subtitle2">{capitalize(t("projects.import_media"))}</Typography>
           <Dropzone onDrop={loadFile} multiple maxFiles={10}>
             {({ getRootProps, getInputProps }) => (
               <section id="dropzone">
@@ -83,21 +85,21 @@ const ImageList: FC<{}> = () => {
               onClick={clear} 
               color="primary"
             >
-              Annuler
+              {capitalize(t("main.cancel"))}
             </Button>
             <Button 
               variant="contained" 
               onClick={save} 
               color="primary"
             >
-              Enregistrer
+              {capitalize(t("main.save"))}
             </Button>
           </Stack>
           <ImageMasonry />
         </Stack>
       ) : (
         <Stack>
-          <p>deploiement inconnu</p>
+          <p>{capitalize(t("deployments.unknown"))}</p>
         </Stack>
       )}
     </>

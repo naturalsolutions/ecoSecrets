@@ -2,13 +2,15 @@ import * as React from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton } from "@mui/material";
+import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton, capitalize } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
 import { ProjectSheet, ProjectsService } from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
+import { useTranslation } from 'react-i18next';
 
 const ProjectForm = () => {
+    const { t } = useTranslation()
     const { projectSheetData, updateProjectSheetData } = useMainContext();
     const [projectData, setProjectData] = React.useState<ProjectSheet>(projectSheetData);
     const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
@@ -78,7 +80,7 @@ const ProjectForm = () => {
                     }
                 >
                     <AlertTitle>Success</AlertTitle>
-                    Modifications enregistrées !
+                    {capitalize(t("main.modifications_saved"))}
                 </Alert>
             </Collapse>
 
@@ -93,7 +95,7 @@ const ProjectForm = () => {
                                 <TextField
                                     id="name"
                                     name="name"
-                                    label="Nom"
+                                    label={capitalize(t("main.name"))}
                                     value={projectData.name}
                                     onChange={(e) => handleFormChange("name", e)}
                                     fullWidth
@@ -107,7 +109,7 @@ const ProjectForm = () => {
                                 disabled={!modified}
                                 select
                                 id="acquisition_framework"
-                                label="Cadre d'acquisition"
+                                label={capitalize(t("projects.acquisition_framework"))}
                                 variant="filled"
                                 value={projectData['acquisition_framework']}
                                 fullWidth
@@ -123,7 +125,7 @@ const ProjectForm = () => {
                         <Grid item lg={6} xs={12}>
                             <TextField
                                 disabled={!modified}
-                                label='Espèce cible'
+                                label={capitalize(t("projects.target_specie"))}
                                 id="targetedSpecies"
                                 select
                                 value={projectData.targeted_species}
@@ -145,7 +147,7 @@ const ProjectForm = () => {
                                 <DatePicker
                                     disabled={!modified}
                                     inputFormat="dd/MM/yyyy"
-                                    label="Date de début"
+                                    label={capitalize(t("projects.start_date"))}
                                     value={startDate}
                                     onChange={(startDate) => {
                                         setStartDate(startDate);
@@ -160,7 +162,7 @@ const ProjectForm = () => {
                                 <DatePicker
                                     disabled={!modified}
                                     inputFormat="dd/MM/yyyy"
-                                    label="Date de fin"
+                                    label={capitalize(t("projects.end_date"))}
                                     value={endDate}
                                     onChange={(endDate) => {
                                         setEndDate(endDate);
@@ -174,7 +176,7 @@ const ProjectForm = () => {
                             <TextField
                                 id="protocol"
                                 name="protocol"
-                                label="Protocole et méthodes"
+                                label={capitalize(t("projects.protocol_methods"))}
                                 variant="filled"
                                 value={projectData.protocol}
                                 onChange={(e) => handleFormChange("protocol", e)}
@@ -186,7 +188,7 @@ const ProjectForm = () => {
                     </Grid>
                     <Grid container justifyContent='center' alignItems='center' >
                         {/* Image du projet ou dropzone */}
-                        <DropzoneComponent sentence='Ajouter une photo de projet' />
+                        <DropzoneComponent sentence={capitalize(t("projects.add_photo"))} />
                     </Grid>
                 </Stack>
             </form>
@@ -196,28 +198,28 @@ const ProjectForm = () => {
                 justifyContent='flex-end'
             >
                 <Button onClick={handleChange} variant="contained" color='primary'>
-                    {modified ? <>Annuler</> : <>Modifier</>}
+                    {modified ? <>{capitalize(t("main.cancel"))}</> : <>{capitalize(t("main.modify"))}</>}
                 </Button>
                 <Button disabled={!modified} onClick={dialog} variant="contained" color='secondary'>
-                    Enregistrer
+                    {capitalize(t("main.save"))}
                 </Button>
 
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>
                         <Typography variant="h6">
-                            Modification du projet
+                            {capitalize(t("projects.change_on_project"))}
                         </Typography>
                     </DialogTitle>
                     <Divider />
                     <DialogContent>
                         <Typography>
-                            Êtes-vous sûr de vouloir enregistrer vos mofification ?
+                            {capitalize(t("main.ask_save"))}
                         </Typography>
                     </DialogContent>
                     <Divider />
                     <DialogActions>
-                        <Button onClick={save} >Oui</Button>
-                        <Button onClick={handleClose} color='secondary'>Non</Button>
+                        <Button onClick={save} >{capitalize(t("main.yes"))}</Button>
+                        <Button onClick={handleClose} color='secondary'>{capitalize(t("main.no"))}</Button>
                     </DialogActions>
                 </Dialog>
             </Stack>

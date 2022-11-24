@@ -5,21 +5,25 @@ import NotesIcon from '@mui/icons-material/Notes';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { capitalize } from "@mui/material";
 
 const StatsHome = () => {
+    const { t } = useTranslation()
+
     const {globalStats} = useMainContext();
 
     const graphicStats = {
-        "medias": {'buttonLabel':"Nombre de médias", "url":"/gallery/", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
-        "annotations": {'buttonLabel': "Nombre d'observations", "url":"", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
-        "device":{'buttonLabel':"Nombre de dispositifs", "url":"/devices/", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
-        "sites": {'buttonLabel':"Nombre de sites", "url":"/sites/", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
+        "medias": {'buttonLabel':`${capitalize(t("main.number_of"))} ${t("projects.media")}`, "url":"/gallery/", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
+        "annotations": {'buttonLabel': `${capitalize(t("main.number"))} ${t("observations.observations")}`, "url":"", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
+        "device":{'buttonLabel':`${capitalize(t("main.number_of"))} ${t("devices.devices")}`, "url":"/devices/", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
+        "sites": {'buttonLabel':`${capitalize(t("main.number_of"))} ${t("sites.sites")}`, "url":"/sites/", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
     };
     return (
         <Grid container>
             <Grid item xs={12}>
                 <Typography variant="h4" gutterBottom >
-                    Mes statistiques
+                    {capitalize(t("main.stats"))}
                 </Typography>
             </Grid>
             

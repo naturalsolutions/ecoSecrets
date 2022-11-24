@@ -4,7 +4,8 @@ import Masonry from "@mui/lab/Masonry";
 import { styled } from "@mui/material/styles";
 import { useMainContext } from "../contexts/mainContext";
 import { useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
+import { capitalize, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const Label = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -20,6 +21,7 @@ export default function ImageMasonry() {
   const { files } = useMainContext();
 
   let navigate = useNavigate();
+  const { t } = useTranslation();
 
   const displayImg = (id: string) => {
     navigate(`${id}`);
@@ -28,7 +30,7 @@ export default function ImageMasonry() {
 
   return (
     <Box sx={{ width: "100%", minHeight: 829, paddingTop: "2vh" }}>
-      <Typography variant="subtitle2">Galerie du déploiement</Typography>
+      <Typography variant="subtitle2">{capitalize(t("deployments.deploy_gallery"))}</Typography>
       <Masonry columns={6} spacing={2} >
         {files?.map((item, index) => (
           <div key={index} style={{

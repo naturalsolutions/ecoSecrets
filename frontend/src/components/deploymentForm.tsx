@@ -11,6 +11,8 @@ import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
 import { Deployments, DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
 import DropzoneComponent from "./dropzoneComponent";
+import { useTranslation } from "react-i18next";
+import { capitalize } from "@mui/material";
 
 const deployment_img = undefined;
 
@@ -32,6 +34,8 @@ const DeploymentForm = (
 
     const [automatic, setAutomatic] = useState({isAutomatic: false, imageNumber: undefined, frequency: undefined});
     const [trigger, setTrigger] = useState({isTrigger: false, imageNumber: undefined, frequency: undefined});
+
+    const { t } = useTranslation();
 
 
     useEffect(() => {
@@ -203,7 +207,7 @@ const DeploymentForm = (
                         {
                             deployment_img ?
                                 <img></img> :
-                                <DropzoneComponent sentence='Ajouter une photo du déploiement'/>
+                                <DropzoneComponent sentence={capitalize(t("main.add_media"))}/>
                         }
                     </Grid>
 
@@ -220,7 +224,7 @@ const DeploymentForm = (
                 <Paper elevation={0} sx={{ px: 2, py: 2 }}>
                     <DialogTitle variant="subtitle2">
                         <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                        Caractéristiques générales du déploiement
+                        {capitalize(t("deployments.features"))}
                     </DialogTitle>
 
                     <Grid container spacing={2}>
@@ -229,7 +233,7 @@ const DeploymentForm = (
                                 <TextField 
                                     id="name"
                                     name="name"
-                                    label="Nom du déploiement"
+                                    label={capitalize(t("deployments.name"))}
                                     required
                                     defaultValue={tmpDeploymentData?.name}
                                     onChange={(e) => handleFormChange("name", e.target.value)}
@@ -246,7 +250,7 @@ const DeploymentForm = (
                             <TextField 
                                 id="site_id"
                                 name="site_id"
-                                label="Site"
+                                label={capitalize(t('sites.site'))}
                                 select
                                 value={ siteName }
                                 onChange={
@@ -271,7 +275,7 @@ const DeploymentForm = (
                             <TextField 
                                 id="device_id"
                                 name="device_id"
-                                label="Dispositif"
+                                label={capitalize(t('devices.device'))}
                                 select
                                 value={ deviceName }
                                 onChange={
@@ -308,7 +312,7 @@ const DeploymentForm = (
                                     color="secondary"
                                     size="small"
                                 >
-                                    Ajouter un site
+                                    {capitalize(t("sites.add_site"))}
                                 </Button>
                             </Grid>
                         </Grid>
@@ -316,7 +320,7 @@ const DeploymentForm = (
                         <Grid item xs={12} sm={12} md={6} lg={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DesktopDatePicker
-                                    label="Date de début"
+                                    label={capitalize(t("projects.start_date"))}
                                     inputFormat="dd/MM/yyyy"
                                     value={tmpDeploymentData?.start_date || null}
                                     onChange={(date) => handleDateChange("start_date", date)}
@@ -329,7 +333,7 @@ const DeploymentForm = (
                         <Grid item xs={12} sm={12} md={6} lg={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DesktopDatePicker
-                                    label="Date de fin"
+                                    label={capitalize(t("projects.end_date"))}
                                     inputFormat="dd/MM/yyyy"
                                     value={tmpDeploymentData?.end_date || null}
                                     onChange={(date) => handleDateChange("end_date", date)}
@@ -343,7 +347,7 @@ const DeploymentForm = (
                             <TextField 
                                 id="support"
                                 name="support"
-                                label="Support d'accroche"
+                                label={capitalize(t("deployments.hanging"))}
                                 defaultValue=""
                                 select
                                 value={tmpDeploymentData?.support}
@@ -365,7 +369,7 @@ const DeploymentForm = (
                             <TextField 
                                 id="feature"
                                 name="feature"
-                                label="Caractéristique"
+                                label={capitalize(t('deployments.features'))}
                                 defaultValue=""
                                 select
                                 value={tmpDeploymentData?.feature}
@@ -386,7 +390,7 @@ const DeploymentForm = (
                         <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField
                                 id="height"
-                                label="Hauteur du dispositif"
+                                label={capitalize(t("deployments.height"))}
                                 name="height"
                                 value={tmpDeploymentData?.height}
                                 onChange={(e) => handleFormChange("height", e.target.value)}
@@ -410,7 +414,7 @@ const DeploymentForm = (
                             <TextField 
                                 id="bait"
                                 name="bait"
-                                label="Appât"
+                                label={capitalize(t("deployments.bait"))}
                                 defaultValue=""
                                 select
                                 value={tmpDeploymentData?.bait}
@@ -442,7 +446,7 @@ const DeploymentForm = (
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
                                 <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                                Paramétrage du mode automatique
+                                {capitalize(t("deployments.auto_mode_settings"))}
                             </DialogTitle>
 
                             <Grid container spacing={3}>
@@ -457,7 +461,7 @@ const DeploymentForm = (
 
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
-                                        label="Nombre d'image par séquence" 
+                                        label={capitalize(t("deployments.img_nb"))}
                                         value={automatic?.imageNumber}
                                         onChange={(e) => handleValueMode("automatic", "imageNumber", e)}
                                         inputProps={{
@@ -475,7 +479,7 @@ const DeploymentForm = (
 
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
-                                        label="Fréquence" 
+                                        label={capitalize(t("deployments.frequency"))}
                                         value={automatic?.frequency}
                                         onChange={(e) => handleValueMode("automatic", "frequency", e)}
                                         inputProps={{
@@ -499,7 +503,7 @@ const DeploymentForm = (
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
                             <DialogTitle variant="subtitle2">
                                 <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                                Paramétrage du mode de déclenchement
+                                 {capitalize(t("deployments.trigger_mode_settings"))}
                             </DialogTitle>
 
                             <Grid container spacing={3}>
@@ -508,13 +512,13 @@ const DeploymentForm = (
                                     <FormControlLabel 
                                         control={<Switch  checked={trigger.isTrigger} />} 
                                         onChange={() => handleCheckChange("trigger")}
-                                        label="Déclenchement" 
+                                        label={capitalize(t("deployments.trigger"))} 
                                         disabled={!props.isNewDeployment && !isEditable}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
-                                        label="Nombre d'image par séquence"
+                                        label={capitalize(t("deployments.img_nb"))}
                                         value={trigger?.imageNumber}
                                         onChange={(e) => handleValueMode("trigger", "imageNumber", e)}
                                         inputProps={{
@@ -530,7 +534,7 @@ const DeploymentForm = (
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField 
-                                        label="Fréquence"
+                                        label={capitalize(t("deployments.frequency"))}
                                         value={trigger?.frequency}
                                         onChange={(e) => handleValueMode("trigger", "frequency", e)}
                                         inputProps={{
@@ -554,7 +558,7 @@ const DeploymentForm = (
                     <TextField
                         id="description"
                         name="description"
-                        label="Description"
+                        label={capitalize(t("main.description"))}
                         defaultValue=""
                         value={tmpDeploymentData?.description}
                         onChange={(e) => handleFormChange("description", e.target.value)}
@@ -582,8 +586,8 @@ const DeploymentForm = (
                             >
                                 {
                                     isEditable ? 
-                                    <><CancelIcon /> Annuler</> : 
-                                    <><EditIcon /> Modifier</>
+                                    <><CancelIcon />{capitalize(t("main.modify"))}</> : 
+                                    <><EditIcon />{capitalize(t("main.cancel"))}</>
                                 }
                             </Button>
                             <Button 
@@ -594,7 +598,7 @@ const DeploymentForm = (
                                 color="primary"
                             >
                                 <SaveIcon />
-                                Sauvegarder
+                                {capitalize(t("main.save"))}
                             </Button>
                         </Stack>
                     ) : (
@@ -604,7 +608,7 @@ const DeploymentForm = (
                                 color="primary"
                                 variant="contained"
                             >
-                                Enregistrer
+                                {capitalize(t("main.save"))}
                             </Button>
                         </Stack>
                     )
