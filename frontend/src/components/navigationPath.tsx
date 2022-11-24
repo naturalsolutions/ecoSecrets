@@ -1,17 +1,19 @@
-import { Breadcrumbs, Stack } from "@mui/material";
+import { Breadcrumbs, capitalize, Stack } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
 import BreadcrumbElement from './breadcrumbElement';
+import { useTranslation } from "react-i18next";
 
 const NavigationPath: FC<{}> = () => {
+  const { t } = useTranslation()
   const { project, projects, deploymentData, currentImage, device, devices, site, sites } = useMainContext();
   const location = useLocation();
 
   const homeBreadcrumb = (isActive: boolean = false) => {
     return (
         <BreadcrumbElement 
-            current_option="Accueil"
+            current_option={capitalize(t("main.home"))}
             link="/"
             icon={true}
             isActive={isActive}
@@ -55,7 +57,7 @@ const NavigationPath: FC<{}> = () => {
   const devicesBreadcrumb = (isActive: boolean = false) => {
     return (
         <BreadcrumbElement 
-            current_option="Dispositifs"
+            current_option={capitalize(t("devices.devices"))}
             link="/devices/"
             isActive={isActive}
         />)
@@ -74,7 +76,7 @@ const NavigationPath: FC<{}> = () => {
   const sitesBreadcrumb = (isActive: boolean = false) => {
     return (
         <BreadcrumbElement 
-            current_option="Sites"
+            current_option={capitalize(t("sites.sites"))}
             link="/sites/"
             isActive={isActive}
         />)

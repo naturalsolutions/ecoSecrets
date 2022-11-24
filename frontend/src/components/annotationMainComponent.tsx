@@ -1,4 +1,4 @@
-import { Alert, Divider, FormControlLabel, Paper, Stack, styled, Switch, Tab, Tabs, Typography } from "@mui/material";
+import { Alert, Divider, FormControlLabel, Paper, Stack, styled, Switch, Tab, Tabs, Typography, capitalize } from "@mui/material";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
@@ -13,6 +13,7 @@ import TabPanel from "./tabPanel";
 import ButtonStatus from "./common/buttonStatus";
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import { useTranslation } from "react-i18next";
 
 
 const fieldsMandatory = ["specie", "classe", "order", "genus", "family"]
@@ -42,6 +43,7 @@ const LayoutImageForm = styled("div")(({ theme }) => ({
 }));
 
 const AnnotationMainComponent = () => {
+  const { t } = useTranslation()
   const {
     projects,
     setCurrentDeployment,
@@ -239,26 +241,26 @@ const AnnotationMainComponent = () => {
       <LayoutImageForm className="annotations">
         <Paper elevation={1} className='paperAnnotations'>
           <Stack spacing={2} className='stackAnnotations'>
-            <Typography component={"span"} variant="h3">Annotation</Typography>
+            <Typography component={"span"} variant="h3">{capitalize(t("annotations.annotation"))}</Typography>
             <Tabs
               value={tabValue}
               aria-label="basic tabs example"
               variant='fullWidth'
               onChange={handleTabChange}
             >
-              <Tab label="Observation(s)" />
-              <Tab label="Métadonnées" />
+              <Tab label={capitalize(t("observations.observations_maybe_plural"))}/>
+              <Tab label={capitalize(t("annotations.metadata"))} />
             </Tabs>
 
             <TabPanel valueTab={tabValue} index={0}>
               <div className="info-annotation-ctn">
                 {treated ?
-                  <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={"Média traité manuellement"} stylClassButton="valid" />
+                  <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={capitalize(t("annotations.media_processed_manually"))} stylClassButton="valid" />
                   : (
                     isAnnoted ?
-                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#FF9800' }} />} title={"Observation(s) pas enregistrée(s)"} stylClassButton="info" />
+                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#FF9800' }} />} title={capitalize(t("observations.not_saved"))} stylClassButton="info" />
                       :
-                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={"Média pas traité"} stylClassButton="warning" />
+                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={capitalize(t("annotations.media_not_processed"))} stylClassButton="warning" />
                   )
 
                 }
@@ -268,7 +270,7 @@ const AnnotationMainComponent = () => {
                       checked={checked}
                       onChange={handleCheckChange} />
                   }
-                  label="Média vide"
+                  label={capitalize(t("annotations.empty_media"))}
                 />
               </div >
 
@@ -282,7 +284,7 @@ const AnnotationMainComponent = () => {
             </TabPanel >
 
             <TabPanel valueTab={tabValue} index={1}>
-              <Alert severity="info">Fonctionnalité pas encore disponible.</Alert>
+              <Alert severity="info">{capitalize(t("main.unavailable"))}.</Alert>
             </TabPanel >
 
             <Divider />

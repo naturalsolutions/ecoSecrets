@@ -1,12 +1,14 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Button, capitalize, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { SiteBase, SitesService} from "../../client";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useMainContext } from "../../contexts/mainContext";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next";
 
 export default function SiteModale () {
+  const { t } = useTranslation();
   const {updateSites} = useMainContext();
   const [open, setOpen] = useState(false);
   const [site, setSite] = useState<SiteBase>({ name: '', latitude: 0, longitude: 0});
@@ -52,7 +54,7 @@ export default function SiteModale () {
         >
           <DialogTitle>
             <Typography variant="h6">
-              Nouveau site
+              {capitalize(t('sites.new_site'))}
             </Typography>
             </DialogTitle>
             <IconButton onClick = {handleClose} >
@@ -67,7 +69,7 @@ export default function SiteModale () {
                   required
                   id="name"
                   name="name"
-                  label="Nom"
+                  label={capitalize(t('main.name'))}
                   value ={site.name}
                   onChange={(e) => handleFormChange("name", e)}
                   fullWidth 
@@ -77,7 +79,7 @@ export default function SiteModale () {
               <Grid item lg={6} md={6}>
                 <TextField 
                   required
-                  label='Longitude'
+                  label={capitalize(t('sites.longitude'))}
                   id="longitude"
                   inputProps={{ type: 'number' }}
                   value={site.longitude}
@@ -89,7 +91,7 @@ export default function SiteModale () {
               <Grid item lg={6} md={6}>
                 <TextField 
                   required
-                  label='Latitude'
+                  label={capitalize(t('sites.latitude'))}
                   name='latitude'
                   id="latitude"
                   inputProps={{ type: 'number' }}
@@ -102,7 +104,7 @@ export default function SiteModale () {
               <Grid item lg={6} md={6} xs={12}>
                   <TextField
                     select 
-                    label="Habitat" 
+                    label={capitalize(t('sites.habitat'))}
                     variant="filled"
                     value={site.habitat}
                     fullWidth
@@ -119,7 +121,7 @@ export default function SiteModale () {
           </DialogContent>
           <Divider />
           <DialogActions>
-            <Button onClick={save} style={{color: "#2FA37C"}}>Enregistrer</Button>
+            <Button onClick={save} style={{color: "#2FA37C"}}>{t('main.save')}</Button>
           </DialogActions>
         </Dialog>
       </Grid>

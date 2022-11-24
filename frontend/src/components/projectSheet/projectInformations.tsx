@@ -1,9 +1,11 @@
-import { Stack, Typography, Button, CircularProgress } from "@mui/material";
+import { Stack, Typography, Button, CircularProgress, capitalize } from "@mui/material";
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { useMainContext } from "../../contexts/mainContext";
 import GoAnnotation from "../goAnnotation";
+import { useTranslation } from "react-i18next";
 
 const ProjectInformations = () => {
+    const { t } = useTranslation()
     const {projectSheetData} = useMainContext();
     return (
             <Stack 
@@ -19,7 +21,7 @@ const ProjectInformations = () => {
                         {projectSheetData.stats.media_number}
                     </Typography>
                     <Button variant="outlined" >
-                        Voir les médias
+                        {capitalize(t("main.show_media"))}
                     </Button>
                 </Stack>
                 <Stack

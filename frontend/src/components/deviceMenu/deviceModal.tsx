@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -8,8 +8,10 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useMainContext } from "../../contexts/mainContext";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next";
 
 export default function DeviceModal () {
+  const { t } = useTranslation()
   const {updateDeviceMenu, updateDevices} = useMainContext();
   const [open, setOpen] = useState(false);
   const [device, setDevice] = useState<DeviceBase>({ name: '', model: '', price: 0, description: '', detection_area: 0, status: 'En stock', operating_life:0})
@@ -56,7 +58,7 @@ export default function DeviceModal () {
         >
           <DialogTitle>
             <Typography variant="h6">
-              Nouveau dispositif
+              {`${capitalize(t("main.new"))} ${t("devices.device")}`}
             </Typography>
             </DialogTitle>
             <IconButton onClick = {handleClose} >
@@ -71,7 +73,7 @@ export default function DeviceModal () {
                   required
                   id="name"
                   name="name"
-                  label="Nom"
+                  label={capitalize(t("main.name"))}
                   value ={device.name}
                   onChange={(e) => handleFormChange("name", e)}
                   fullWidth 
@@ -81,7 +83,7 @@ export default function DeviceModal () {
                 <Grid item lg={6} md={6} xs={12}>
                   <TextField
                     select 
-                    label="Modèle" 
+                    label={capitalize(t("devices.model"))}
                     variant="filled"
                     value={device.model}
                     fullWidth
@@ -98,7 +100,7 @@ export default function DeviceModal () {
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     inputFormat="dd/MM/yyyy"
-                    label="Date d'achat"
+                    label={capitalize(t("devices.purchase_date"))}
                     value={device?.purchase_date || null}
                     onChange={(purchaseDate) => {
                       purchaseDate && handleFormChange("purchase_date", new Date(purchaseDate));
@@ -109,7 +111,7 @@ export default function DeviceModal () {
               </Grid>
               <Grid item lg={6} md={6} xs={6}>
                 <TextField 
-                  label='Autonomie (h)'
+                  label={`${capitalize(t("devices.operating_life"))} (h)`}
                   id="operating_life"
                   inputProps={{ type: 'number' }}
                   value={device.operating_life}
@@ -120,7 +122,7 @@ export default function DeviceModal () {
               </Grid>
               <Grid item lg={6} md={6} xs={6}>
                 <TextField 
-                  label='Prix (€)'
+                  label={`${capitalize(t("devices.price"))} (€)`}
                   name='price'
                   id="price"
                   inputProps={{ type: 'number' }}
@@ -132,7 +134,7 @@ export default function DeviceModal () {
               </Grid>
               <Grid item lg={12} md={12} xs={6}>
                 <TextField 
-                  label='Zone de détection (m)'
+                  label={`${capitalize(t("devices.detection_area"))} (m)`}
                   id="detection_area"
                   inputProps={{ type: 'number' }}
                   value={device.detection_area}
@@ -145,7 +147,7 @@ export default function DeviceModal () {
                 <TextField 
                   id="description"
                   name="description"
-                  label="Description"
+                  label={capitalize(t("main.description"))}
                   value ={device.description}
                   onChange={(e) => handleFormChange("description", e)}
                   fullWidth 
@@ -156,7 +158,7 @@ export default function DeviceModal () {
           </DialogContent>
           <Divider />
           <DialogActions>
-            <Button onClick={save} style={{color: "#2FA37C"}}>Enregistrer</Button>
+            <Button onClick={save} style={{color: "#2FA37C"}}>{capitalize(t("main.description"))}</Button>
           </DialogActions>
         </Dialog>
       </Grid>

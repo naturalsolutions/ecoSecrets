@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import ImportForm from "./importForm";
 import { useMainContext } from "../contexts/mainContext";
 import { useEffect, useState } from "react";
 import { FilesService } from "../client";
+import { useTranslation } from "react-i18next";
 
 
 const ImportModale = (
@@ -12,6 +13,7 @@ const ImportModale = (
     const {updateListFile, updateProjectsStats, updateGlobalStats} = useMainContext();
     const [files, setFiles] = useState<any[]>([]);
     const [importParams, setImportParams] = useState({id_project: 0, id_deployment: 0, projectIsSet: false, deploymentIsSet: false});
+    const { t } = useTranslation();
 
     const saveImport = () => {
         for (const file of files) {
@@ -42,7 +44,7 @@ const ImportModale = (
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    Importer des médias
+                    {capitalize(t("projects.import_media"))}
                     <IconButton onClick = {() => closeModale()} >
                         <ClearTwoToneIcon/>
                     </IconButton>
@@ -66,7 +68,7 @@ const ImportModale = (
                 <Button
                     onClick={saveImport}
                 >
-                    Enregistrer
+                   {capitalize(t("main.save"))}
                 </Button>
             </DialogActions>
         </Dialog>

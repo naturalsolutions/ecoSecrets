@@ -1,8 +1,11 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
+import { capitalize } from "@mui/material";
 
 const DeploymentList = () => {
+  const { t } = useTranslation()
 
   const { project, setCurrentProject } = useMainContext();
   let params = useParams();
@@ -25,7 +28,7 @@ const DeploymentList = () => {
         </>
       ) : (
         <>
-          <h2>projet inconnu</h2>
+          <h2>{capitalize(t("projects.unknown"))}</h2>
         </>
       )}
     </>

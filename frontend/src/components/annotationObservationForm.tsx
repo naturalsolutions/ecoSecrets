@@ -1,10 +1,11 @@
-import { Autocomplete, createFilterOptions, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Autocomplete, createFilterOptions, Grid, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import NestedList from "./common/collapsableButton";
 import { useCallback, useEffect, useState } from "react";
 import { request as __request } from '../client/core/request';
 import axios from 'axios';
 import debounce from "lodash/debounce";
+import { useTranslation } from "react-i18next";
 
 // TODO: retrieve from database
 const sexList = ["", "Mâle", "Femelle", "Indéterminé"];
@@ -43,7 +44,7 @@ async function getDataFromCdNom (cd_nom: number) {
 const AnnotationObservationForm = (
     props
 ) => {
-    
+    const { t } = useTranslation()
     const [especeOptions, setEspeceOptions] = useState<SpeciesOptionType[]>([]);
     const [especeInputValue, setEspeceInputValue] = useState<string>('');
 
@@ -88,7 +89,7 @@ const AnnotationObservationForm = (
                     <Grid item lg={6} xs={12}>
                         <TextField
                             name="classe"
-                            label="Classe"
+                            label={capitalize(t("species.class"))}
                             size="small"
                             variant='filled'
                             fullWidth
@@ -108,7 +109,7 @@ const AnnotationObservationForm = (
                     <Grid item lg={6} xs={12}>
                         <TextField
                             name="order"
-                            label="Ordre"
+                            label={capitalize(t("species.order"))}
                             size="small"
                             variant='filled'
                             fullWidth
@@ -128,7 +129,7 @@ const AnnotationObservationForm = (
                     <Grid item lg={6} xs={12}>
                         <TextField
                             name="family"
-                            label="Famille"
+                            label={capitalize(t("species.family"))}
                             size="small"
                             variant='filled'
                             fullWidth
@@ -148,7 +149,7 @@ const AnnotationObservationForm = (
                     <Grid item lg={6} xs={12}>
                         <TextField
                             name="genus"
-                            label="Genre"
+                            label={capitalize(t("species.genus"))}
                             size="small"
                             variant='filled'
                             fullWidth
@@ -190,7 +191,7 @@ const AnnotationObservationForm = (
                     <Grid item lg={6} xs={12}>
                         <TextField
                             name="number"
-                            label="Nombre d'individus"
+                            label={capitalize(t("species.number"))}
                             size="small"
                             variant='filled'
                             inputProps={{ type: 'number' }}
@@ -208,7 +209,7 @@ const AnnotationObservationForm = (
                             <TextField
                                 id="biologicalState"
                                 select
-                                label="Etat biologique"
+                                label={capitalize(t("species.bio_state"))}
                                 size="small"
                                 variant='filled'
                                 value={props.observation.biological_state}
@@ -228,7 +229,7 @@ const AnnotationObservationForm = (
                             <TextField
                                 id="sex"
                                 select
-                                label="Sexe"
+                                label={capitalize(t("species.sex"))}
                                 variant='filled'
                                 value={props.observation.sex}
                                 onChange={(e) => props.handleFormChange(props.observation.id, "sex", e)}
@@ -249,7 +250,7 @@ const AnnotationObservationForm = (
                             <TextField
                                 id="behaviour"
                                 select
-                                label="Comportement"
+                                label={capitalize(t("species.behaviour"))}
                                 size="small"
                                 variant='filled'
                                 value={props.observation.behaviour}
@@ -270,7 +271,7 @@ const AnnotationObservationForm = (
                             <TextField
                                 id="lifeStage"
                                 select
-                                label="Stade de vie"
+                                label={capitalize(t("species.life_stage"))}
                                 size="small"
                                 variant='filled'
                                 value={props.observation.life_stage}
@@ -291,7 +292,7 @@ const AnnotationObservationForm = (
                             <TextField
                                 id="comment"
                                 name="comment"
-                                label="Commentaire"
+                                label={capitalize(t("main.comment"))}
                                 size="small"
                                 variant='filled'
                                 value={props.observation.comment}

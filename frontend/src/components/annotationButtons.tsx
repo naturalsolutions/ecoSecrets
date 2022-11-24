@@ -1,7 +1,9 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, capitalize } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import { useTranslation } from "react-i18next";
 
 const AnnotationButtons = (props) => {
+    const { t } = useTranslation()
     return (
         <Stack 
             direction="row" 
@@ -12,13 +14,13 @@ const AnnotationButtons = (props) => {
                 <Button 
                     startIcon={<AddIcon/>} 
                     onClick={() => props.handleAddObservation()} variant="contained"color='secondary'>
-                    Nouvelle observation
+                    {capitalize(t("observations.new"))}
                 </Button>
             </Stack>
             
             <Stack justifyContent="flex-end">
                 <Button variant="contained" onClick={() => props.saveandnext()} >
-                    Enregistrer et continuer
+                    {capitalize(t("main.save_and_continue"))}
                 </Button>
             </Stack>
         </Stack>

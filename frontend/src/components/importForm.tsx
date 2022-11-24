@@ -1,15 +1,16 @@
-import { Button, Chip, Grid, Input, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { Button, Chip, Grid, Input, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 import { DeploymentForProjectSheet, ProjectsService, ProjectWithDeployment } from "../client";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 const ImportForm = (
     props
 ) => {
- 
+    const { t } = useTranslation()
     const {projects, deployments} = useMainContext();
 
     const [projectList, setProjectList] = useState<ProjectWithDeployment[]>();
@@ -94,7 +95,7 @@ const ImportForm = (
                         <TextField 
                             id="id_project"
                             name="id_project"
-                            label="Projet"
+                            label={capitalize(t("projects.project"))}
                             defaultValue=""
                             select
                             value={selectedValues.id_project}
@@ -115,7 +116,7 @@ const ImportForm = (
                         </TextField>
                     ) : (
                         <Typography variant="overline">
-                            {`Projet : ${projectList?.find((p) => p.id === selectedValues.id_project)?.name}`}
+                            {`${capitalize(t("projects.project"))}: ${projectList?.find((p) => p.id === selectedValues.id_project)?.name}`}
                         </Typography>
                     )
                 }
@@ -125,7 +126,7 @@ const ImportForm = (
                         <TextField 
                             id="id_deployment"
                             name="id_deployment"
-                            label="Déploiement"
+                            label={capitalize(t("deployments.deployment"))}
                             defaultValue=""
                             select
                             value={selectedValues.id_deployment}
@@ -147,7 +148,7 @@ const ImportForm = (
                         </TextField>
                     ) : (
                         <Typography variant="overline">
-                            {`Déploiement : ${deploymentList?.find((d) => d.id === selectedValues.id_deployment)?.name}`}
+                            {`${capitalize(t("deployments.deployment"))}: ${deploymentList?.find((d) => d.id === selectedValues.id_deployment)?.name}`}
                         </Typography>
                     )
                 }
@@ -173,7 +174,7 @@ const ImportForm = (
                                 opacity: '0'
                             }}
                         />
-                        Choisir fichier(s)
+                        {capitalize(t("deployments.choose_files"))}
                     </Button>
                 </Stack>
 

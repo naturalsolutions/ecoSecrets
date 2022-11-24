@@ -14,6 +14,8 @@ import AddIcon from '@mui/icons-material/Add';
 import ImportModale from "./importModale";
 import { useState } from "react";
 import GoAnnotation from "./goAnnotation";
+import { useTranslation } from "react-i18next";
+import { capitalize } from "@mui/material";
 
 const testStatus = (status) => {
     if (status === 'Terminé') {
@@ -48,6 +50,7 @@ const testStatus = (status) => {
 )};
 
 const ProjectCard = (props) => {
+    const { t } = useTranslation()
     const [openImport, setOpenImport] = useState(false);
     const openImportModale = (id: number) => {
         setOpenImport(true);
@@ -74,7 +77,7 @@ const ProjectCard = (props) => {
                 }
                 subheader={( 
                     (props.selectedProject.start_date === null || props.selectedProject.end_date === null )
-                    ? "Pas de période renseignée" 
+                    ? `${t("main.zero")} ${t("projects.duration_provided")}`
                     : props.selectedProject.start_date + ' / ' + props.selectedProject.end_date 
                 )}
             />
@@ -103,8 +106,8 @@ const ProjectCard = (props) => {
                         />
                         {(
                             props.selectedProject.media_number === 0 
-                            ? "Aucun médias" 
-                            : 'Médias : ' + props.selectedProject.media_number 
+                            ? `${capitalize(t("main.zero"))} ${t("projects.media")}`
+                            : capitalize(t("projects.medias")) + ': ' + props.selectedProject.media_number 
                         )}
                     </Typography>
                 </ListItem>
@@ -116,8 +119,8 @@ const ProjectCard = (props) => {
                         />
                         {(
                             props.selectedProject.deployment_number === 0 
-                            ? "Aucun déploiement" 
-                            : 'Déploiements : ' + props.selectedProject.deployment_number 
+                            ? `${capitalize(t("main.zero"))} ${t("deployments.deployment")}`
+                            : capitalize(t("deployments.deployments")) + ': ' + props.selectedProject.deployment_number 
                         )}
                     </Typography>
                 </ListItem>
@@ -129,8 +132,8 @@ const ProjectCard = (props) => {
                         />
                         {(
                             props.selectedProject.site_number === 0 
-                            ? "Aucun site" 
-                            : 'Sites : ' + props.selectedProject.site_number 
+                            ? `${capitalize(t("main.zero"))} ${t("sites.site")}`
+                            : capitalize(t("sites.sites")) + ': ' + props.selectedProject.site_number 
                             )}
                     </Typography>
                 </ListItem>
@@ -142,11 +145,11 @@ const ProjectCard = (props) => {
                         />
                         {(
                             props.selectedProject.device_number === 0 
-                            ? "Aucun dispositif" 
+                            ? `${capitalize(t("main.zero"))} ${t("devices.device")}`
                             : (
                                 props.selectedProject.device_number === 1 
-                                ? 'Dispositif : ' + props.selectedProject.device_number 
-                                : 'Dispositifs : '+ props.selectedProject.device_number 
+                                ? capitalize(t("devices.device"))+ ': ' + props.selectedProject.device_number 
+                                : capitalize(t("devices.devices")) + ': '+ props.selectedProject.device_number 
                             )
                         )}
                     </Typography>
@@ -159,8 +162,8 @@ const ProjectCard = (props) => {
                         />
                         {(
                             props.selectedProject.targeted_species === null 
-                            ? "Etude de communauté" 
-                            : 'Espèce cible : '+ props.selectedProject.targeted_species 
+                            ? capitalize(t("projects.community_study"))
+                            : capitalize(t("projects.target_specie")) + ': '+ props.selectedProject.targeted_species 
                         )}
                     </Typography>
                 </ListItem>
@@ -177,7 +180,7 @@ const ProjectCard = (props) => {
                         < NotesIcon 
                             style={{verticalAlign:"middle", minWidth: '40px'}}
                         />
-                        {("Annotation : " + props.selectedProject.annotation_percentage + "%")}
+                        {`${capitalize(t(`deployments.annotation`))}: ${props.selectedProject.annotation_percentage} %`}
                     </Typography>
                 </ListItem>
             </CardContent>

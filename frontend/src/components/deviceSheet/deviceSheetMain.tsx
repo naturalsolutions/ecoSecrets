@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { Alert, Stack, Typography} from "@mui/material";
+import { Alert, Stack, Typography, capitalize} from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {Grid} from "@mui/material";
@@ -11,11 +11,12 @@ import { useMainContext } from '../../contexts/mainContext';
 import DeviceForm from './deviceForm';
 import DeviceModal from '../deviceMenu/deviceModal';
 import DeviceData from './deviceData';
-
+import { useTranslation } from "react-i18next";
 
 const DeviceSheet = () => {
     const {device, setCurrentDevice} = useMainContext();
-    
+    const { t } = useTranslation();
+
     let params = useParams();
     useEffect(() => {
         (async () => {
@@ -54,7 +55,7 @@ const DeviceSheet = () => {
             >
                 <DeviceData/>
                 <Typography variant="h4" color="#000000" component="div">
-                    Fiche dispositif
+                {capitalize(t("devices.sheet"))}
                 </Typography>
             </Stack>
 
@@ -64,13 +65,13 @@ const DeviceSheet = () => {
                 justifyContent="center"
             >
                 <Typography variant="h4" color="#000000" component="div">
-                    Historique des déploiements
+                    { capitalize(t("devices.history")) }
                 </Typography>
-                <Alert severity="info">Fonctionnalité pas encore disponible.</Alert>
+                <Alert severity="info">{capitalize(t("main.unavailable"))}</Alert>
             </Stack>
             <div></div>
                 
-        </Stack> ) : <div>Pas de fiche pour ce dispositif</div>
+        </Stack> ) : <div>{capitalize(t("devices.warning"))}</div>
     );
 };
 export default DeviceSheet;

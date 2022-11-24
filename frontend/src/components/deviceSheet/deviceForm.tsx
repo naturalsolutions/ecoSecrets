@@ -2,14 +2,15 @@ import * as React from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton } from "@mui/material";
+import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton, capitalize } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
 import { Devices, DevicesService} from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
-
+import { useTranslation } from 'react-i18next';
 
 const DeviceForm = () => {
+    const { t } = useTranslation()
     const {device, updateDeviceMenu} = useMainContext();
     const [deviceData, setDeviceData] = React.useState<Devices>(device());
     const models = ['Modèle A', 'Modèle B', 'Modèle C'];
@@ -58,7 +59,7 @@ const DeviceForm = () => {
                 justifyContent="center"
             >
             <Grid item lg={6}>
-                <DropzoneComponent sentence='Ajouter une photo du dispositif'/>
+                <DropzoneComponent sentence={capitalize(t("main.add_media"))}/>
             </Grid>
                 <Collapse in={success}>
                     <Alert 
@@ -77,7 +78,7 @@ const DeviceForm = () => {
                     }
                     >
                     <AlertTitle>Success</AlertTitle>
-                        Modifications enregistrées !
+                        {capitalize(t("main.modifications_saved"))}
                     </Alert>
                 </Collapse>
                 <form key={deviceData.id}>
@@ -92,7 +93,7 @@ const DeviceForm = () => {
                                         required
                                         id="name"
                                         name="name"
-                                        label="Nom"
+                                        label={capitalize(t("main.name"))}
                                         value ={deviceData.name}
                                         onChange={(e) => handleFormChange("name", e)}
                                         fullWidth 
@@ -104,7 +105,7 @@ const DeviceForm = () => {
                                 <TextField
                                     disabled={!modified}
                                     select 
-                                    label="Modèle" 
+                                    label={capitalize(t("devices.model"))}
                                     variant="filled"
                                     value={deviceData.model}
                                     fullWidth
@@ -122,7 +123,7 @@ const DeviceForm = () => {
                                     <DatePicker
                                         disabled={!modified}
                                         inputFormat="dd/MM/yyyy"
-                                        label="Date d'achat"
+                                        label={capitalize(t("devices.purchase_date"))}
                                         value={deviceData?.purchase_date ||null}
                                         onChange={(purchaseDate) => {
                                             handleChangeDate("purchase_date", purchaseDate);
@@ -134,7 +135,7 @@ const DeviceForm = () => {
                             <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
                                     disabled={!modified}
-                                    label='Prix (€)'
+                                    label={`${capitalize(t("devices.price"))} (€)`}
                                     name='price'
                                     id="price"
                                     inputProps={{ type: 'number' }}
@@ -147,7 +148,7 @@ const DeviceForm = () => {
                             <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
                                     disabled={!modified}
-                                    label='Zone de détection (m)'
+                                    label={`${capitalize(t("devices.detection_area"))} (m)`}
                                     id="detection_area"
                                     inputProps={{ type: 'number' }}
                                     value={deviceData.detection_area}
@@ -159,7 +160,7 @@ const DeviceForm = () => {
                             <Grid item lg={2.4} md={4} xs={6}>
                                 <TextField
                                     disabled={!modified}
-                                    label='Autonomie (h)'
+                                    label={`${capitalize(t("devices.operating_life"))} (h)`}
                                     id="operating_life"
                                     inputProps={{ type: 'number' }}
                                     value={deviceData.operating_life}
@@ -172,7 +173,7 @@ const DeviceForm = () => {
                                 <TextField 
                                     id="description"
                                     name="description"
-                                    label="Description"
+                                    label={capitalize(t("main.description"))}
                                     value ={deviceData.description}
                                     onChange={(e) => handleFormChange("description", e)}
                                     variant='filled'
@@ -190,28 +191,30 @@ const DeviceForm = () => {
                     justifyContent='flex-end'
                 >
                     <Button  onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
-                    { modified ? <>Annuler</> : <>Modifier</>}
+                    { modified ? <>{capitalize(t("main.cancel"))}</> : <>{capitalize(t("main.modify"))}</>}
                     </Button>
                     <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
-                        Enregistrer
+                        {capitalize(t("main.save"))}
                     </Button>
 
                     <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>
                         <Typography variant="h6">
-                            Modification du piège photographique
+                            {capitalize(t("devices.change"))}
                         </Typography>
                         </DialogTitle>
                         <Divider />
                         <DialogContent>
                             <Typography>
-                            Êtes-vous sûr de vouloir enregistrer vos mofidications ?
+                            {capitalize(t("main.ask_save"))}
                             </Typography>
                         </DialogContent>
                         <Divider />
                         <DialogActions>
-                        <Button onClick={save} style={{color: "#2FA37C"}}>Oui</Button>
-                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>Non</Button>
+                        <Button onClick={save} style={{color: "#2FA37C"}}>
+                            {capitalize(t("main.yes"))}</Button>
+                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>
+                            {capitalize(t("main.no"))}</Button>
                         </DialogActions>
                     </Dialog>
                 </Stack>
