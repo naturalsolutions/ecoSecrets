@@ -18,28 +18,28 @@ const BreadcrumbElement = (
     setAnchorEl(null);
   };
 
-  return(
+  return (
     <Stack
       direction="row"
       alignItems="center"
       spacing={0}
     >
       <Link
-          underline={ props.isActive ? "none" : "hover" }
-          color={ props.isActive ? "#00000" : "#2fa37c" }
-          href={props.isActive ? undefined : props.link}
-          variant="body2"
-        >
+        underline={props.isActive ? "none" : "hover"}
+        color={props.isActive ? "#00000" : "#2fa37c"}
+        href={props.isActive ? undefined : props.link}
+        variant="body2"
+      >
         <Stack
           direction="row"
           justifyContent="center"
         >
-          { props.icon && <HomeIcon fontSize="small"/> }
-          { props.current_option || "test" }
+          {props.icon && <HomeIcon fontSize="small" />}
+          {props.current_option || "test"}
         </Stack>
       </Link>
 
-      { props.options && 
+      {props.options &&
         <>
           <IconButton
             aria-label="more"
@@ -49,7 +49,7 @@ const BreadcrumbElement = (
             aria-haspopup="true"
             onClick={handleClick}
           >
-            <ExpandMoreIcon fontSize="small"/>
+            <ExpandMoreIcon fontSize="small" />
           </IconButton>
           <Menu
             id="long-menu"
@@ -66,13 +66,13 @@ const BreadcrumbElement = (
               }
             }}
           >
-            {props.options?.map((option) => (
+            {props.options?.map((option, k) => (
               <MenuItem
                 dense
-                key={option.id} 
+                key={k}
                 selected={option.name === props.current_option}
                 component={Link}
-                href={props.linkSuffix ? (`${props.parentlink}/${option.id}/${props.linkSuffix}`): (`${props.parentlink}/${option.id}`)}
+                href={props.linkSuffix ? (`${props.parentlink}/${option.id}/${props.linkSuffix}`) : (`${props.parentlink}/${option.id}`)}
                 onClick={handleClose}
               >
                 {option.name}

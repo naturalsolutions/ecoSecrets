@@ -59,7 +59,7 @@ const DeviceForm = () => {
                 justifyContent="center"
             >
             <Grid item lg={6}>
-                <DropzoneComponent sentence={capitalize(t("main.add_media"))}/>
+                <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}/>
             </Grid>
                 <Collapse in={success}>
                     <Alert 

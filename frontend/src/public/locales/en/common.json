@@ -6,6 +6,7 @@
     "continue": "continue annotation",
     "empty_media": "empty media",
     "fix_my_data": "fix data",
+    "further_information": "further information",
     "media_not_processed": "media not processed",
     "media_processed_manually": "media processed manually",
     "metadata": "metadata",
@@ -59,9 +60,10 @@
     "fr": "Français"
   },
   "main": {
-    "add_media": "add photo of the device",
+    "add_media": "add photo",
     "ask_save": "are you sure you want to save your changes?",
     "cancel": "cancel",
+    "close": "close",
     "comment": "comments",
     "delete": "delete",
     "description": "description",
@@ -77,13 +79,15 @@
     "no": "no",
     "number": "number of",
     "number_of": "number of",
+    "of": "of",
     "remove": "remove",
     "save": "save",
     "save_and_continue": "save and continue",
     "search": "search",
     "show_media": "show media files",
+    "sorry": "our apologies",
     "stats": "statistics",
-    "unavailable": "unavailable",
+    "unavailable": "sorry, this feature is not yet available!",
     "warning": "warning",
     "yes": "yes",
     "zero": "no"
@@ -97,7 +101,6 @@
   "projects": {
     "acquisition_framework": "acquisition framework",
     "add_member": "add member",
-    "add_photo": "add project photo",
     "administrators": "administrators",
     "alert": "warning!",
     "alert_msg": "no deployment found for this project",
@@ -127,11 +130,11 @@
     "validators": "validators"
   },
   "sites": {
-    "add_site": "add site",
     "delete_site": "delete site",
     "habitat": "habitat",
     "latitude": "latitude",
     "longitude": "longitude",
+    "new": "new site",
     "new_site": "new site",
     "no_sheet": "no sheet found for this project",
     "save_modifications_site": "confirm changes",
@@ -149,6 +152,7 @@
     "life_stage": "life stage",
     "number": "number of individuals",
     "order": "order",
-    "sex": "sex"
+    "sex": "sex",
+    "species": "species"
   }
 }

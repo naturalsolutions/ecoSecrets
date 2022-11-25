@@ -1,7 +1,8 @@
+import { Link } from "@mui/material";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/mainContext";
+import {useParams, Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 
 const DeploymentList = () => {
@@ -22,7 +23,7 @@ const DeploymentList = () => {
           <h2>{project().name}</h2>
           {project().deployments.map((d) => (
             <li key={d.name}>
-              <Link to={`/deployment/${d.id}`}>{d.name}</Link>
+              <Link component={RouterLink} to={`/deployment/${d.id}`}>{d.name}</Link>
             </li>
           ))}
         </>

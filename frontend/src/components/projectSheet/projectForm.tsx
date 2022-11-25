@@ -188,7 +188,7 @@ const ProjectForm = () => {
                     </Grid>
                     <Grid container justifyContent='center' alignItems='center' >
                         {/* Image du projet ou dropzone */}
-                        <DropzoneComponent sentence={capitalize(t("projects.add_photo"))} />
+                        <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("projects.project")}`} />
                     </Grid>
                 </Stack>
             </form>

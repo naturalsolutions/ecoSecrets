@@ -6,6 +6,7 @@
     "continue": "continuer l'annotation",
     "empty_media": "média vide",
     "fix_my_data": "je corrige mes données",
+    "further_information": "informations supplémentaires",
     "media_not_processed": "média non traité",
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
@@ -59,9 +60,10 @@
     "fr": "Français"
   },
   "main": {
-    "add_media": "ajouter une photo du dispositif",
+    "add_media": "ajouter une photo",
     "ask_save": "êtes-vous sûr de vouloir enregistrer vos modifications ?",
     "cancel": "annuler",
+    "close": "fermer",
     "comment": "commentaires",
     "delete": "supprimer",
     "description": "description",
@@ -77,11 +79,13 @@
     "no": "non",
     "number": "nombre d'",
     "number_of": "nombre de",
+    "of": "de",
     "remove": "supprimer",
     "save": "enregistrer",
     "save_and_continue": "enregistrer et continuer",
     "search": "rechercher",
     "show_media": "voir les média",
+    "sorry": "toutes nos excuses !",
     "stats": "mes statistiques",
     "unavailable": "désolé, cette fonctionnalité n'est pas encore disponible !",
     "warning": "attention",
@@ -97,7 +101,6 @@
   "projects": {
     "acquisition_framework": "cadre d'acquisition",
     "add_member": "ajouter un membre",
-    "add_photo": "ajouter une photo de projet",
     "administrators": "administrateurs",
     "alert": "attention !",
     "alert_msg": "vous n'avez pas de déploiements déclarés pour ce projet.",
@@ -127,11 +130,11 @@
     "validators": "validateurs"
   },
   "sites": {
-    "add_site": "Ajouter un site",
     "delete_site": "supprimer le site",
     "habitat": "habitat",
     "latitude": "latitude",
     "longitude": "longitude",
+    "new": "nouveau site",
     "new_site": "nouveau site",
     "no_sheet": "pas de fiche pour ce site",
     "save_modifications_site": "modification du site",
@@ -149,6 +152,7 @@
     "life_stage": "stade de vie",
     "number": "nombre d'individus",
     "order": "ordre",
-    "sex": "sexe"
+    "sex": "sexe",
+    "species": "espèce"
   }
 }

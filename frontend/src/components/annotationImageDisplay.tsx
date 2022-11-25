@@ -12,7 +12,6 @@ const AnnotationImageDisplay = (
 
     useEffect(() => {
         (async () => {
-            console.log(props.image)
             props.image?.treated? setIsAnnoted("green") : (props.isAnnoted ? setIsAnnoted("orange") : setIsAnnoted("red"))
         })();
     }, [props.image?.annotations, props.isAnnoted]);
