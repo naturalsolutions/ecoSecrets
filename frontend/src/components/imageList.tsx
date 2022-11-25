@@ -57,7 +57,7 @@ const ImageList: FC<{}> = () => {
     <>
       {deploymentData ? (
         <Stack spacing={2}>
-          <Typography variant="subtitle2">{capitalize(t("projects.import_media"))}</Typography>
+          <Typography variant="h6" sx={{ mb:2}}>{capitalize(t("projects.import_media"))}</Typography>
           <Dropzone onDrop={loadFile} multiple maxFiles={10}>
             {({ getRootProps, getInputProps }) => (
               <section id="dropzone">

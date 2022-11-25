@@ -1,4 +1,4 @@
-# Accueil de FASTcam
+# Accueil de GeoCam
 
 La page d'accueil présente des informations générales sur l'instance : le nombre de sites et de dispositifs, le nombre d'observations effectuées et le nombre de médias importés.
 <br><br>
@@ -8,4 +8,4 @@ La figure suivante présente l'ensemble des fonctionnalités accessible depuis l
 <br>
 ![homepage](../assets/homepage.png)
 
-<center>_Page d'accueil de FASTcam_</center>
+<center>_Page d'accueil de GeoCam_</center>

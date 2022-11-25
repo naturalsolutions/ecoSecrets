@@ -14,7 +14,8 @@
   "deployments": {
     "annotation": "annotation",
     "ask_delete": "êtes-vous sûr de vouloir supprimer ce déploiement ? Cela engendrera la suppression de l'ensemble des médias et des données associées à ce déploiement.",
-    "auto_mode_settings": "paramétrage du mode automatique",
+    "auto_mode_settings": "paramétrage du mode de déclenchement automatique",
+    "automatic_trigger": "déclenchement automatique",
     "bait": "appât",
     "choose_files": "choisir fichier(s)",
     "delete": "supprimer le déploiement",
@@ -22,14 +23,15 @@
     "deployment": "déploiement",
     "deployments": "déploiements",
     "drop_files": "glissez/déposez ou cliquez pour importer 10 fichiers maximum",
-    "features": "caractéristiques du déploiement",
+    "features": "caractéristique",
     "frequency": "fréquence",
     "hanging": "support d'accroche",
     "height": "hauteur du dispositif",
     "img_nb": "nombre d'images par séquence",
     "name": "nom du déploiement",
-    "trigger": "Déclenchement",
-    "trigger_mode_settings": "paramétrage du mode de déclenchement",
+    "subtitle": "caractéristiques générales du déploiement",
+    "trigger": "déclenchement par détection",
+    "trigger_mode_settings": "paramétrage du mode de déclenchement par détection",
     "unknown": "deploiment inconnu"
   },
   "devices": {
@@ -83,7 +85,6 @@
     "stats": "mes statistiques",
     "unavailable": "désolé, cette fonctionnalité n'est pas encore disponible !",
     "warning": "attention",
-    "well_saved": "modifications enregistrées !",
     "yes": "oui",
     "zero": "aucun"
   },
@@ -112,6 +113,7 @@
     "media": "média",
     "medias": "médias",
     "members": "membres",
+    "new_deploy": "nouveau déploiement",
     "project": "projet",
     "protocol_methods": "protocoles et méthodes",
     "sheet": "fiche projet",
@@ -122,8 +124,7 @@
     "studies_area": "zone d'étude",
     "target_specie": "espèce cible",
     "unknown": "projet inconnu",
-    "validators": "validateurs",
-    "new_deploy" : "nouveau déploiement"
+    "validators": "validateurs"
   },
   "sites": {
     "add_site": "Ajouter un site",

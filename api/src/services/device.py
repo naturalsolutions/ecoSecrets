@@ -62,8 +62,11 @@ def get_menu_devices(db: Session, skip: int = 0, limit: int = 100):
         deployment_list = []
         for deploy in deployments:
             deployment_list.append(deploy.id)
-            if current_date <= deploy.end_date and current_date >= deploy.start_date:
-                device["status"] = "Déployé"
+            if current_date >= deploy.start_date:
+                if (
+                    deploy.end_date is None or current_date <= deploy.end_date
+                ):  # provisoire
+                    device["status"] = "Déployé"
         nb_images = (
             db.query(Files).filter(Files.deployment_id.in_(deployment_list)).count()
         )
