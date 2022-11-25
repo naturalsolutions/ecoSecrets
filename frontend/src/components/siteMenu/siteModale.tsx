@@ -7,7 +7,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next";
 
-export default function SiteModale () {
+export default function SiteModale (props) {
   const { t } = useTranslation();
   const {updateSites} = useMainContext();
   const [open, setOpen] = useState(false);
@@ -42,9 +42,20 @@ export default function SiteModale () {
 
   return (
     <Grid>
-      <IconButton aria-label="menu" onClick={() => onclick()} sx={{ mr: 2, display: {color: "#2FA37C"} }}>
-        <AddCircleIcon />
-      </IconButton>
+      {props.page == 'deploymentPage' ?
+          <Button
+              variant="contained"
+              startIcon={<AddCircleIcon />}
+              color='secondary'
+              onClick={() => onclick()}
+          >
+             {capitalize(t("sites.new"))}
+          </Button>
+        :
+          <IconButton aria-label="menu" onClick={() => onclick()} sx={{ mr: 2, display: {color: "#2FA37C"} }}>
+            <AddCircleIcon />
+          </IconButton>
+      }
       <Dialog open={open} onClose={handleClose}>
         <Stack
           direction="row"

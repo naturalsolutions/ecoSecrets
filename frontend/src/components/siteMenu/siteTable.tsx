@@ -2,6 +2,7 @@ import { Alert, AlertTitle, Button, Dialog, DialogActions, DialogContent, Dialog
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -54,9 +55,7 @@ const SitesTable = () => {
                     { sites.map((row) => (
                         <StyledTableRow key={row.name}>
                             <StyledTableCell align="center">
-                              <Link 
-                                href={`/sites/${row.id}`}
-                              >
+                              <Link component={RouterLink} to ={`/sites/${row.id}`}>
                                 {row.name}
                               </Link>
                             </StyledTableCell>

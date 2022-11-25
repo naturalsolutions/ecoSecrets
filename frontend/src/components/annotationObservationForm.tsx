@@ -182,7 +182,7 @@ const AnnotationObservationForm = (
                             options={especeOptions}
                             noOptionsText="Pas d'options"
                             renderInput={(params) => (
-                                <TextField {...params} label="Espèce" size="small" variant='filled'
+                                <TextField {...params} label={capitalize(t("species.species"))} size="small" variant='filled'
                                     InputProps={{...params.InputProps, type: 'search'}}
                                 />
                             )}

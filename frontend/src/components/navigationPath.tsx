@@ -1,13 +1,13 @@
 import { Breadcrumbs, capitalize, Stack } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BreadcrumbElement from './breadcrumbElement';
 import { useTranslation } from "react-i18next";
 
 const NavigationPath: FC<{}> = () => {
+  const { project, projects, deploymentData, currentImage, device, devices, site, sites, setCurrentImage, setCurrentProject, setDeploymentData, setCurrentDevice, setCurrentSite } = useMainContext();
   const { t } = useTranslation()
-  const { project, projects, deploymentData, currentImage, device, devices, site, sites } = useMainContext();
   const location = useLocation();
 
   const homeBreadcrumb = (isActive: boolean = false) => {
@@ -22,36 +22,36 @@ const NavigationPath: FC<{}> = () => {
 
   const projectBreadcrumb = (isActive: boolean = false) => {
     return (
-        <BreadcrumbElement 
-            key="project"
-            current_option={project().name}
-            link={`/project/${project().id}`}
-            parentlink="/project"
-            options={projects}
-            isActive={isActive}
-        />)
+      <BreadcrumbElement
+        key="project"
+        current_option={project().name}
+        link={`/project/${project().id}`}
+        parentlink="/project"
+        options={projects}
+        isActive={isActive}
+      />)
   }
 
   const deploymentBreadcrumb = (isActive: boolean = false) => {
     return (
-        <BreadcrumbElement 
-            current_option={deploymentData.name} 
-            link={`/project/${project().id}/deployment/${deploymentData.id}/details`}
-            parentlink={`/project/${project().id}/deployment`}
-            options={projects.find((p) => p.id === project().id).deployments}
-            linkSuffix={`details`}
-            isActive={isActive}
-        />)
+      <BreadcrumbElement
+        current_option={deploymentData.name}
+        link={`/project/${project().id}/deployment/${deploymentData.id}/details`}
+        parentlink={`/project/${project().id}/deployment`}
+        options={projects.find((p) => p.id === project().id).deployments}
+        linkSuffix={`details`}
+        isActive={isActive}
+      />)
   }
 
   const imageBreadcrumb = (isActive: boolean = false) => {
     return (
-        <BreadcrumbElement 
-            current_option={currentImage} 
-            link={`/project/${project().id}/deployment/${deploymentData.id}/details/${currentImage}`}
-            parentlink={`/project/${project().id}/deployment/${deploymentData.id}/details`}
-            isActive={isActive}
-        />)
+      <BreadcrumbElement
+        current_option={currentImage}
+        link={`/project/${project().id}/deployment/${deploymentData.id}/details/${currentImage}`}
+        parentlink={`/project/${project().id}/deployment/${deploymentData.id}/details`}
+        isActive={isActive}
+      />)
   }
 
   const devicesBreadcrumb = (isActive: boolean = false) => {
@@ -65,13 +65,13 @@ const NavigationPath: FC<{}> = () => {
 
   const deviceBreadcrumb = (isActive: boolean = false) => {
     return (
-        <BreadcrumbElement 
-            current_option={device().name} 
-            link={`/devices/${device().id}`}
-            parentlink={`/devices`}
-            options={devices}
-            isActive={isActive}
-        />)
+      <BreadcrumbElement
+        current_option={device().name}
+        link={`/devices/${device().id}`}
+        parentlink={`/devices`}
+        options={devices}
+        isActive={isActive}
+      />)
   }
   const sitesBreadcrumb = (isActive: boolean = false) => {
     return (
@@ -83,14 +83,26 @@ const NavigationPath: FC<{}> = () => {
   }
   const siteBreadcrumb = (isActive: boolean = false) => {
     return (
-        <BreadcrumbElement 
-            current_option={site().name}
-            link={`/sites/${site().id}`}
-            parentlink={`/sites`}
-            options={sites}
-            isActive={isActive}
-        />)
+      <BreadcrumbElement
+        current_option={site().name}
+        link={`/sites/${site().id}`}
+        parentlink={`/sites`}
+        options={sites}
+        isActive={isActive}
+      />)
   }
+
+  // workeround for breadcrumbs issue
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setCurrentImage(null)
+      setCurrentProject(null)
+      setDeploymentData(null)
+      setCurrentDevice(null)
+      setCurrentSite(null)
+    }
+  }, [location])
 
   const breadcrumbs = () => {
     if (currentImage && project() && deploymentData) {
@@ -100,32 +112,34 @@ const NavigationPath: FC<{}> = () => {
         deploymentBreadcrumb(),
         imageBreadcrumb(true)
       ];
-    } else if (deploymentData) {
+    }
+    else if (deploymentData) {
       return [
         homeBreadcrumb(),
         projectBreadcrumb(),
         deploymentBreadcrumb(true)
       ];
-    } else if (project()) {
+    }
+    else if (project()) {
       return [
         homeBreadcrumb(),
         projectBreadcrumb(true),
       ];
-    } 
+    }
     else if (device()) {
       return [
         homeBreadcrumb(),
         devicesBreadcrumb(),
         deviceBreadcrumb(true)
       ];
-    } 
+    }
     else if (site()) {
       return [
         homeBreadcrumb(),
         sitesBreadcrumb(),
         siteBreadcrumb(true)
       ];
-    } 
+    }
     else if (location.pathname == '/devices/') {
       return [
         homeBreadcrumb(),
@@ -138,6 +152,11 @@ const NavigationPath: FC<{}> = () => {
         sitesBreadcrumb(true)
       ];
     }
+    else if (location.pathname == '/') {
+      return [
+        homeBreadcrumb(true)
+      ];
+    }
     else {
       return [
         homeBreadcrumb(true)
@@ -146,7 +165,7 @@ const NavigationPath: FC<{}> = () => {
   };
 
   return (
-    <div style={{height: '5vh'}}>
+    <div style={{ height: '5vh' }}>
       <Stack
         direction="row"
         alignItems="center"

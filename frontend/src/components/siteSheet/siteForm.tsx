@@ -51,7 +51,7 @@ const SiteForm = () => {
                 justifyContent="center"
             >
             <Grid item lg={6}>
-                <DropzoneComponent sentence='Ajouter une photo du site'/>
+                <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("sites.site")}`}/>
             </Grid>
                 <Collapse in={success}>
                     <Alert 

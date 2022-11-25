@@ -10,11 +10,15 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import ImportModale from "./importModale";
 import { Link } from "react-router-dom";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack, capitalize } from "@mui/material";
+import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import LanguageSelector from "./languageSelector";
+import { useTranslation } from "react-i18next";
 
 const HeadBar = () => {
-
+  const { t } = useTranslation();
   const [openImport, setOpenImport] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const openImportModale = () => {
     setOpenImport(true);
@@ -22,6 +26,14 @@ const HeadBar = () => {
 
   const closeImportModale = () => {
     setOpenImport(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -37,7 +49,7 @@ const HeadBar = () => {
           <IconButton color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <VideoCameraBackIcon />
           </IconButton>
-          <Link to={`/`} style={{ textDecoration: "none" }}>
+          <Link to={`/`} style={{ textDecoration: 'none' }}>
             <Typography
               variant="h6"
               noWrap
@@ -47,7 +59,7 @@ const HeadBar = () => {
                 display: { xs: "none", md: "flex", color: "white" },
               }}
             >
-              FASTcam
+              GeoCam
             </Typography>
           </Link>
           <Box></Box>
@@ -60,16 +72,44 @@ const HeadBar = () => {
           <CloudDownloadIcon />
         </IconButton>
 
-        <ImportModale open={openImport} close={closeImportModale} />
+        <ImportModale
+          open={openImport}
+          close={closeImportModale}
+        />
 
         <LanguageSelector />
 
-        <IconButton
-          aria-label="menu"
-          sx={{ mr: 2, display: { color: "white" } }}
-        >
-          <AccountCircleIcon />
+        <IconButton aria-label="menu" sx={{ mr: 2, display: { color: "white" } }}>
+          < AccountCircleIcon onClick={handleClickOpen}/>
+          <Dialog open={open} onClose={handleClose}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              spacing={2}
+            >
+              <DialogTitle>
+                <Typography variant="h6">
+                  {capitalize(t('main.sorry'))}
+                </Typography>
+              </DialogTitle>
+              <IconButton onClick={handleClose} >
+                <ClearTwoToneIcon />
+              </IconButton>
+            </Stack>
+            <Divider />
+            <DialogContent>
+              <Typography>
+                {capitalize(t('main.unavailable'))}
+              </Typography>
+            </DialogContent>
+            <Divider />
+            <DialogActions>
+              <Button onClick={handleClose} color='secondary'>{capitalize(t('main.close'))}</Button>
+            </DialogActions>
+          </Dialog>
         </IconButton>
+        
       </Toolbar>
     </AppBar>
   );

@@ -24,6 +24,8 @@ const ProjectSheet = () => {
     const {t} = useTranslation()
 
     const [openNewDeployment, setOpenNewDeployment] = useState(false);
+    const [load, setload] = useState(true);
+
     const handleOpenNewDeployment = () => {
         setOpenNewDeployment(true);
     };
@@ -40,14 +42,31 @@ const ProjectSheet = () => {
     };
     
     let params = useParams();
+
+
+    
     useEffect(() => {
         (async () => {
-            setCurrentProject(Number(params.projectId));
+            await setCurrentProject(Number(params.projectId));
         })();
     }, []);
 
+    // temporary fix project dosen't exist message
+    useEffect(() => {
+        projectSheetData !== undefined ? setload(false) : setload(true)
+    }, [projectSheetData]);
+
     return (
-        projectSheetData ?
+        load ?
+
+        <Stack 
+            direction="column"
+            spacing={5}
+        >
+        </Stack> :
+
+        projectSheetData && !load ?
+
         <Stack 
             direction="column"
             spacing={5}
@@ -78,7 +97,14 @@ const ProjectSheet = () => {
                 </AppBar>
             </Box>
             <ProjectInformations/>
-            <ProjectMembers/>
+
+            <Stack>
+                <Typography variant="h4" color="#000000" component="div">
+                    {capitalize(t("projects.sheet"))}
+                </Typography>
+                < ProjectForm/>
+            </Stack>
+
             <Stack spacing={3}>
                 <Stack
                         direction='row'
@@ -103,12 +129,13 @@ const ProjectSheet = () => {
                     </Stack>
                     <ProjectDeployments/>
             </Stack>
+            
             <Stack 
                 spacing={2}
                 justifyContent="center"
             >
                 <Typography variant="h4" color="#000000" component="div">
-                {capitalize(t("projects.studies_area"))}
+                    {capitalize(t("projects.studies_area"))}
                 </Typography>
                 <Grid container justifyContent="center" alignItems='center'>
                     <Grid item justifyContent="center" height={400} width={1000} spacing={1} style={{backgroundColor: "#D9D9D9"}}>
@@ -120,12 +147,9 @@ const ProjectSheet = () => {
                 </Grid>
                 
             </Stack>
-            <Stack>
-                <Typography variant="h4" color="#000000" component="div">
-                {capitalize(t("projects.sheet"))}
-                </Typography>
-                < ProjectForm/>
-            </Stack>
+
+            <ProjectMembers/>
+
         </Stack> : 
             <Alert severity="error" >
                 <AlertTitle>{capitalize(t("projects.error"))}</AlertTitle>
