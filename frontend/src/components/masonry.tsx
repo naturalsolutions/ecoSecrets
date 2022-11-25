@@ -30,7 +30,7 @@ export default function ImageMasonry() {
 
   return (
     <Box sx={{ width: "100%", minHeight: 829, paddingTop: "2vh" }}>
-      <Typography variant="subtitle2">{capitalize(t("deployments.deploy_gallery"))}</Typography>
+      <Typography variant="h6" sx={{ mb:2}}>{capitalize(t("deployments.deploy_gallery"))}</Typography>
       <Masonry columns={6} spacing={2} >
         {files?.map((item, index) => (
           <div key={index} style={{

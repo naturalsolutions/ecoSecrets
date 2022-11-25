@@ -1,4 +1,4 @@
-import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField } from "@mui/material";
+import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
@@ -202,7 +202,7 @@ const DeploymentForm = (
                         item
                         lg={5}
                         height={200}
-                        style={{ backgroundColor: "#afbdb6" }}
+                        container justifyContent='center' alignItems='center'
                     >
                         {
                             deployment_img ?
@@ -222,10 +222,9 @@ const DeploymentForm = (
                 </Stack>
 
                 <Paper elevation={0} sx={{ px: 2, py: 2 }}>
-                    <DialogTitle variant="subtitle2">
-                        <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                        {capitalize(t("deployments.features"))}
-                    </DialogTitle>
+                    <Typography variant="h6" sx={{ mb:2}}>
+                        {capitalize(t("deployments.subtitle"))}
+                    </Typography>
 
                     <Grid container spacing={2}>
                         {(props.isNewDeployment || isEditable) &&
@@ -444,17 +443,16 @@ const DeploymentForm = (
                 >
                     <Grid item xs={12} sm={12} md={props.isNewDeployment?12:6} lg={props.isNewDeployment?12:6}>
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
-                            <DialogTitle variant="subtitle2">
-                                <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                                {capitalize(t("deployments.auto_mode_settings"))}
-                            </DialogTitle>
+                            <Typography variant="body1">
+                                 {capitalize(t("deployments.auto_mode_settings"))}
+                            </Typography>
 
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <FormControlLabel 
                                         control={<Switch checked={automatic.isAutomatic} />} 
                                         onChange={ () => handleCheckChange("automatic") }
-                                        label="Automatique" 
+                                        label={capitalize(t("deployments.automatic_trigger"))} 
                                         disabled={!props.isNewDeployment && !isEditable}
                                     />
                                 </Grid>
@@ -501,10 +499,9 @@ const DeploymentForm = (
 
                     <Grid item xs={12} sm={12} md={props.isNewDeployment?12:6} lg={props.isNewDeployment?12:6}>
                         <Paper elevation={8} sx={{ px: 2, py: 2 }}>
-                            <DialogTitle variant="subtitle2">
-                                <TurnedInNotTwoToneIcon style={{ verticalAlign: "middle" }} />
-                                 {capitalize(t("deployments.trigger_mode_settings"))}
-                            </DialogTitle>
+                            <Typography variant="body1">
+                                {capitalize(t("deployments.trigger_mode_settings"))}
+                            </Typography>
 
                             <Grid container spacing={3}>
                             
@@ -586,8 +583,8 @@ const DeploymentForm = (
                             >
                                 {
                                     isEditable ? 
-                                    <><CancelIcon />{capitalize(t("main.modify"))}</> : 
-                                    <><EditIcon />{capitalize(t("main.cancel"))}</>
+                                    <><CancelIcon />{capitalize(t("main.cancel"))}</> : 
+                                    <><EditIcon />{capitalize(t("main.modify"))}</>
                                 }
                             </Button>
                             <Button 
