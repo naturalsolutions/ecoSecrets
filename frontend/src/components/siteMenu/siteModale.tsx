@@ -1,30 +1,30 @@
 import { Button, capitalize, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { SiteBase, SitesService} from "../../client";
+import { SiteBase, SitesService } from "../../client";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useMainContext } from "../../contexts/mainContext";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next";
 
-export default function SiteModale (props) {
+export default function SiteModale(props) {
   const { t } = useTranslation();
   const {updateSites} = useMainContext();
   const [open, setOpen] = useState(false);
-  const [site, setSite] = useState<SiteBase>({ name: '', latitude: 0, longitude: 0});
+  const [site, setSite] = useState<SiteBase>({ name: '', latitude: 0, longitude: 0 });
   const habitats = ['Prairie', 'Forêt', 'Littoral'];
   const handleClose = () => {
     setOpen(false);
   };
-  
+
   const onclick = () => {
     setOpen(true);
   }
 
-  const handleFormChange = (params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>| Date | null) => {
-    let tmp_site_data = {...site};
-    if(e)
-        tmp_site_data[params] = e instanceof Date ? e.toISOString().slice(0, 10) : e.target.value;
+  const handleFormChange = (params: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | Date | null) => {
+    let tmp_site_data = { ...site };
+    if (e)
+      tmp_site_data[params] = e instanceof Date ? e.toISOString().slice(0, 10) : e.target.value;
     setSite(tmp_site_data);
   }
 
@@ -34,10 +34,10 @@ export default function SiteModale (props) {
       updateSites();
       setOpen(false);
       navigate(`/sites/${s.id}`)
-  })
-  .catch((err) => {
-      console.log(err);
-  });
+    })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

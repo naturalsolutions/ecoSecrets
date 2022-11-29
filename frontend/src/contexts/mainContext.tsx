@@ -72,6 +72,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   };
 
   const updateSites = () => {
+
     SitesService.readSitesSitesGet()
       .then((sites) => {
         setSites(sites);
@@ -83,12 +84,12 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   const updateDeployments = () => {
     DeploymentsService.readDeploymentsDeploymentsGet()
-    .then((deployments) => {
-      setDeployments(deployments);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((deployments) => {
+        setDeployments(deployments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const updateListFile = () => {
@@ -160,14 +161,14 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   };
 
   const updateDeploymentData = () => {
-    currentDeployment && 
-    DeploymentsService.readDeploymentsWithTemplateSequenceDeploymentsTemplateSequenceGet()
-      .then((deploymentsData) => {
-        setDeploymentData(deploymentsData.find((d) => d.id == currentDeployment));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    currentDeployment &&
+      DeploymentsService.readDeploymentsWithTemplateSequenceDeploymentsTemplateSequenceGet()
+        .then((deploymentsData) => {
+          setDeploymentData(deploymentsData.find((d) => d.id == currentDeployment));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   const device = (): DeviceMenu | undefined => {
@@ -232,7 +233,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         updateProjectSheetData,
         updateProjects,
         updateGlobalStats,
-        devices, 
+        devices,
         updateDevices,
         deviceMenu,
         updateDeviceMenu,
@@ -241,16 +242,16 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         deploymentData,
         setDeploymentData,
         updateDeploymentData,
-        deployments, 
+        deployments,
         setDeployments,
         updateDeployments,
         sites,
         setSites,
         updateSites,
-        autoTemplates, 
+        autoTemplates,
         setAutoTemplates,
         updateAutoTemplates,
-        triggerTemplates, 
+        triggerTemplates,
         setTriggerTemplates,
         updateTriggerTemplates,
         site,

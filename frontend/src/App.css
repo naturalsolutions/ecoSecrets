@@ -72,3 +72,9 @@ a.MuiButton-root {
 .datePicker .MuiTextField-root {
   display: flex !important;
 }
+
+
+.leaflet-container{
+  width: 100%;
+  height: 100%;
+}

@@ -26,6 +26,7 @@ import {
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -101,7 +102,7 @@ const DevicesTable = () => {
               .map((row) => (
                 <StyledTableRow key={row.name}>
                   <StyledTableCell align="center">
-                    <Link href={`/devices/${row.id}`}>{row.name}</Link>
+                    <Link component={RouterLink} to={`/devices/${row.id}`}>{row.name}</Link>
                   </StyledTableCell>
                   <StyledTableCell align="center">{row.status}</StyledTableCell>
                   <StyledTableCell align="center">

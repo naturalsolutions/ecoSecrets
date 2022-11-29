@@ -50,7 +50,6 @@ const ProjectForm = () => {
         setOpen(false);
         ProjectsService.updateProjectProjectsProjectIdPut(projectSheetData.id, projectData).then(() => {
             updateProjectSheetData();
-
         })
             .catch((err) => {
                 console.log(err);

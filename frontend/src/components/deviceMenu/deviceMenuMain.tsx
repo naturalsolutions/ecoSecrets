@@ -30,26 +30,11 @@ const DeviceMenu = () => {
         </AppBar>
       </Box>
       <Stack spacing={2} justifyContent="center">
-        <Filters />
+        {/* <Filters /> */}
         <Typography variant="h4" color="#000000" component="div">
           { capitalize(t("devices.stock")) }
         </Typography>
         <DevicesTable />
-        <Grid container justifyContent="center" alignItems="center">
-          <Grid
-            item
-            justifyContent="center"
-            height={400}
-            width={1000}
-            spacing={1}
-            style={{ backgroundColor: "#D9D9D9" }}
-          >
-            {/* Image du projet ou dropzone */}
-            <Typography variant="subtitle1">
-              {`${capitalize(t("devices.map_missing"))}`}
-            </Typography>
-          </Grid>
-        </Grid>
       </Stack>
     </Stack>
   );

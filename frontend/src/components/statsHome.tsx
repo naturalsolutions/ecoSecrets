@@ -5,13 +5,13 @@ import NotesIcon from '@mui/icons-material/Notes';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 
 const StatsHome = () => {
-    const { t } = useTranslation()
-
-    const {globalStats} = useMainContext();
+    const {globalStats, sites, updateGlobalStats, devices} = useMainContext();
+    const { t } = useTranslation();
 
     const graphicStats = {
         "medias": {'buttonLabel':`${capitalize(t("main.number_of"))} ${t("projects.media")}`, "url":"/gallery/", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
@@ -19,6 +19,11 @@ const StatsHome = () => {
         "device":{'buttonLabel':`${capitalize(t("main.number_of"))} ${t("devices.devices")}`, "url":"/devices/", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
         "sites": {'buttonLabel':`${capitalize(t("main.number_of"))} ${t("sites.sites")}`, "url":"/sites/", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
     };
+
+    useEffect(() => {
+        updateGlobalStats()
+    }, [sites, devices])
+
     return (
         <Grid container>
             <Grid item xs={12}>

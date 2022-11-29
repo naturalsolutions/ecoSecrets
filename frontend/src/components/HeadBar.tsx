@@ -10,6 +10,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import ImportModale from "./importModale";
 import { Link } from "react-router-dom";
+import ModalError from "./modalError";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import LanguageSelector from "./languageSelector";
@@ -24,16 +25,15 @@ const HeadBar = () => {
     setOpenImport(true);
   };
 
+  const handleClickOpen = () => {
+    open ? setOpen(false) : setOpen(true)
+    setTimeout(() => {
+      setOpen(false)
+    }, 100)
+  };
+
   const closeImportModale = () => {
     setOpenImport(false);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   return (
@@ -46,7 +46,7 @@ const HeadBar = () => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <IconButton color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+          <IconButton color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={handleClickOpen}>
             <VideoCameraBackIcon />
           </IconButton>
           <Link to={`/`} style={{ textDecoration: 'none' }}>
@@ -79,36 +79,10 @@ const HeadBar = () => {
 
         <LanguageSelector />
 
-        <IconButton aria-label="menu" sx={{ mr: 2, display: { color: "white" } }}>
-          < AccountCircleIcon onClick={handleClickOpen}/>
-          <Dialog open={open} onClose={handleClose}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              spacing={2}
-            >
-              <DialogTitle>
-                <Typography variant="h6">
-                  {capitalize(t('main.sorry'))}
-                </Typography>
-              </DialogTitle>
-              <IconButton onClick={handleClose} >
-                <ClearTwoToneIcon />
-              </IconButton>
-            </Stack>
-            <Divider />
-            <DialogContent>
-              <Typography>
-                {capitalize(t('main.unavailable'))}
-              </Typography>
-            </DialogContent>
-            <Divider />
-            <DialogActions>
-              <Button onClick={handleClose} color='secondary'>{capitalize(t('main.close'))}</Button>
-            </DialogActions>
-          </Dialog>
+        <IconButton aria-label="menu" sx={{ mr: 2, display: { color: "white" } }} onClick={handleClickOpen}>
+          < AccountCircleIcon/>
         </IconButton>
+        <ModalError open={open} />
         
       </Toolbar>
     </AppBar>
