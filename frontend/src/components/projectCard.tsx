@@ -19,35 +19,40 @@ import { capitalize } from "@mui/material";
 
 const testStatus = (status) => {
     if (status === 'Terminé') {
-        return(
+        return (
             <Avatar sx={{ bgcolor: '#8BD3BB' }} aria-label="status">
-                <CheckIcon/>
+                <CheckIcon />
             </Avatar>
-    )};
-    if (status === 'A annoter'){
-      return(
-        <Avatar sx={{ bgcolor: '#FF9B9B' }} aria-label="status">
-            <HourglassBottomIcon/>
-        </Avatar>
-    )};
-    if (status === 'En cours'){
-      return(
-        <Avatar sx={{ bgcolor: '#FFB876' }} aria-label="status">
-            <HourglassBottomIcon/>
-        </Avatar>
-    )};
-    if(status === 'A venir'){
-      return(
-        <Avatar sx={{ bgcolor: '#FAEF8D' }} aria-label="status">
-            <AccessTimeIcon/>
-        </Avatar>
-    )};
-    
+        )
+    };
+    if (status === 'A annoter') {
+        return (
+            <Avatar sx={{ bgcolor: '#FF9B9B' }} aria-label="status">
+                <HourglassBottomIcon />
+            </Avatar>
+        )
+    };
+    if (status === 'En cours') {
+        return (
+            <Avatar sx={{ bgcolor: '#FFB876' }} aria-label="status">
+                <HourglassBottomIcon />
+            </Avatar>
+        )
+    };
+    if (status === 'A venir') {
+        return (
+            <Avatar sx={{ bgcolor: '#FAEF8D' }} aria-label="status">
+                <AccessTimeIcon />
+            </Avatar>
+        )
+    };
+
     return (
         <Avatar sx={{ bgcolor: '#ed213c' }} aria-label="status">
-            <WarningAmberRoundedIcon/>
+            <WarningAmberRoundedIcon />
         </Avatar>
-)};
+    )
+};
 
 const ProjectCard = (props) => {
     const { t } = useTranslation()
@@ -59,25 +64,25 @@ const ProjectCard = (props) => {
         setOpenImport(false);
     };
 
-    return(
+    return (
         <Card>
-            <ImportModale 
-                  open={openImport} 
-                  close={closeImportModale}
-                  projectIsSet={true}
-                  projectId={props.selectedProject.id}
+            <ImportModale
+                open={openImport}
+                close={closeImportModale}
+                projectIsSet={true}
+                projectId={props.selectedProject.id}
             />
 
             <CardHeader
-                avatar = {testStatus(props.selectedProject.status)}
+                avatar={testStatus(props.selectedProject.status)}
                 title={
                     <Link to={`/project/${props.selectedProject.id}`} style={{ textDecoration: 'none', color: 'black', fontSize: '23px' }}>
-                    {props.selectedProject.name}
+                        {props.selectedProject.name}
                     </Link>
                 }
                 subheader={( 
                     (props.selectedProject.start_date === null || props.selectedProject.end_date === null )
-                    ? `${t("main.zero")} ${t("projects.duration_provided")}`
+                    ? `${t("projects.duration_provided")}`
                     : props.selectedProject.start_date + ' / ' + props.selectedProject.end_date 
                 )}
             />
@@ -89,20 +94,20 @@ const ProjectCard = (props) => {
 
             <CardContent>
 
-                <ListItem 
+                <ListItem
                     secondaryAction={
-                        <IconButton 
-                        edge="end" 
-                        aria-label="add"
-                        onClick={() => openImportModale(props.selectedProject.id)}
+                        <IconButton
+                            edge="end"
+                            aria-label="add"
+                            onClick={() => openImportModale(props.selectedProject.id)}
                         >
-                        <AddIcon/>
+                            <AddIcon />
                         </IconButton>
                     }
                 >
                     <Typography variant="body1" gutterBottom>
-                        <CollectionsIcon 
-                            style={{verticalAlign:"middle", minWidth: '40px'}}
+                        <CollectionsIcon
+                            style={{ verticalAlign: "middle", minWidth: '40px' }}
                         />
                         {(
                             props.selectedProject.media_number === 0 
@@ -115,7 +120,7 @@ const ProjectCard = (props) => {
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
                         <NaturePeopleIcon
-                            style={{verticalAlign:"middle", minWidth: '40px'}}
+                            style={{ verticalAlign: "middle", minWidth: '40px' }}
                         />
                         {(
                             props.selectedProject.deployment_number === 0 
@@ -124,11 +129,11 @@ const ProjectCard = (props) => {
                         )}
                     </Typography>
                 </ListItem>
-                
+
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
-                        <LocationOnIcon 
-                            style={{verticalAlign:"middle", minWidth: '40px'}}
+                        <LocationOnIcon
+                            style={{ verticalAlign: "middle", minWidth: '40px' }}
                         />
                         {(
                             props.selectedProject.site_number === 0 
@@ -137,11 +142,11 @@ const ProjectCard = (props) => {
                             )}
                     </Typography>
                 </ListItem>
-                
+
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
-                        <PhotoCameraIcon 
-                            style={{verticalAlign:"middle", minWidth: '40px'}}
+                        <PhotoCameraIcon
+                            style={{ verticalAlign: "middle", minWidth: '40px' }}
                         />
                         {(
                             props.selectedProject.device_number === 0 
@@ -154,11 +159,11 @@ const ProjectCard = (props) => {
                         )}
                     </Typography>
                 </ListItem>
-                
+
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
-                        <EmojiNatureIcon 
-                            style={{verticalAlign:"middle", minWidth: '40px'}}
+                        <EmojiNatureIcon
+                            style={{ verticalAlign: "middle", minWidth: '40px' }}
                         />
                         {(
                             props.selectedProject.targeted_species === null 
@@ -167,24 +172,25 @@ const ProjectCard = (props) => {
                         )}
                     </Typography>
                 </ListItem>
-                
+
                 <ListItem secondaryAction={
-                        <GoAnnotation 
-                            project_id={props.selectedProject.id} 
-                            nb_media={props.selectedProject.media_number} 
-                            annotation_percentage={props.selectedProject.annotation_percentage} 
-                            page='home'
-                        />
-                    }>
+                    <GoAnnotation
+                        project_id={props.selectedProject.id}
+                        nb_media={props.selectedProject.media_number}
+                        annotation_percentage={props.selectedProject.annotation_percentage}
+                        page='home'
+                    />
+                }>
                     <Typography variant="body1" gutterBottom >
-                        < NotesIcon 
-                            style={{verticalAlign:"middle", minWidth: '40px'}}
+                        < NotesIcon
+                            style={{ verticalAlign: "middle", minWidth: '40px' }}
                         />
                         {`${capitalize(t(`deployments.annotation`))}: ${props.selectedProject.annotation_percentage} %`}
                     </Typography>
                 </ListItem>
             </CardContent>
         </Card>
-)};
+    )
+};
 
 export default ProjectCard;

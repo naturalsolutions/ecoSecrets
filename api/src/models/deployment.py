@@ -5,6 +5,7 @@ from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 from src.models.file import Files
 from src.models.models import DeploymentTemplateSequenceCorrespondance, TemplateSequence
+from src.models.site import SiteBase, Sites
 
 if TYPE_CHECKING:  # pragma: no cover
 
@@ -42,6 +43,10 @@ class Deployments(DeploymentBase, table=True):
         back_populates="deployments",
         link_model=DeploymentTemplateSequenceCorrespondance,
     )
+    # Sites: Optional[List["Sites"]] = Relationship(
+    #     back_populates="deployments",
+    #     link_model=SiteBase,
+    # )
     # site: "Sites" = Relationship(back_populates="deployments",  sa_relationship_kwargs={'lazy': 'raise'})
     # device: "Devices" = Relationship(back_populates="deployments",  sa_relationship_kwargs={'lazy': 'raise'})
     # mode:  Field(foreign_key = "users.id")

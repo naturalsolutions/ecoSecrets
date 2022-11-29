@@ -1,25 +1,23 @@
-import { Grid, Typography, Stack, TextField, IconButton, Box } from "@mui/material";
+import { Grid, Typography, Stack, TextField, IconButton, Box, MenuItem } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectCard from "./projectCard";
 import ProjectModal from "./projectModale";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 
-
 const ProjectList = () => {
-
-  const { t } = useTranslation()
-
   const { projectsStats } = useMainContext();
-
+  const { t } = useTranslation();
+ 
   return (
     <Grid container >
-       <Box
+      <Box
         component="form"
         sx={{
-          width:2000,
-          '& .MuiTextField-root': { m: 1},
+          width: 2000,
+          '& .MuiTextField-root': { m: 1 },
         }}
         noValidate
         autoComplete="off"
@@ -34,67 +32,23 @@ const ProjectList = () => {
             <Typography variant="h4" gutterBottom component="div">
               { capitalize(t("main.my_projects")) }
             </Typography>
-            <ProjectModal page='home'/>
+            <ProjectModal page='home' />
           </Stack>
-        </div>
-   
-        <div className="filter">
-          <TextField
-            fullWidth
-            select
-            id="outlined-required"
-            label={capitalize(t("projects.project"))}
-            defaultValue={capitalize(t("main.search"))}
-            variant="outlined" 
-            type="search"
-          />
-        
-        <TextField
-            select
-            fullWidth
-            id="outlined-required"
-            label={capitalize(t("projects.target_specie"))}
-            defaultValue={capitalize(t("main.search"))}
-            variant="outlined" 
-            type="search"
-          />
-          <TextField
-            select
-            fullWidth
-            id="outlined-required"
-            label={capitalize(t("projects.start_year"))}
-            defaultValue={capitalize(t("main.search"))}
-            variant="outlined" 
-            type="search"
-          />
-          <TextField
-            select
-            fullWidth
-            id="outlined-required"
-            label={capitalize(t("projects.status"))}
-            defaultValue={capitalize(t("main.search"))}
-            variant="outlined" 
-            type="search"
-          />
-          <IconButton
-          >
-                <SearchIcon/>
-          </IconButton>
         </div>
       </Box>
 
-      <Grid 
-        container 
+      <Grid
+        container
         direction="row"
         spacing={2}
       >
-        {projectsStats && projectsStats.map((s) => (
-          <Grid 
-            item 
-            xs={12} sm={6} md={6} lg={3} 
-            key={projectsStats.indexOf(s)}
+        {projectsStats && projectsStats.map((s, k) => (
+          <Grid
+            item
+            xs={12} sm={6} md={6} lg={3}
+            key={k}
           >
-            <ProjectCard selectedProject={s}/>
+            <ProjectCard selectedProject={s} />
           </Grid>
         ))}
       </Grid>

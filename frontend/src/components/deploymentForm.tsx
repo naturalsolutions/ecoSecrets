@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { Deployments, DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
 import DropzoneComponent from "./dropzoneComponent";
 import SiteModale from "./siteMenu/siteModale";
+import Map from "./Map";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 
@@ -24,7 +25,7 @@ const DeploymentForm = (
     const { setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates } = useMainContext();
     let params = useParams();
     const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
-
+    const { t } = useTranslation();
     const supportList = ["Support type 1", "Support type 2"]
     const featureList = ["Arbre fruitier", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
     const baitList = ["Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z", "None"]
@@ -41,9 +42,7 @@ const DeploymentForm = (
 
     const [automatic, setAutomatic] = useState({ isAutomatic: false, imageNumber: 0, frequency: 0 });
     const [trigger, setTrigger] = useState({ isTrigger: false, imageNumber: 0, frequency: 0 });
-
-    const { t } = useTranslation();
-
+    const [position, setPostition] = useState({ lat: 0, lng: 0, name: "" })
 
     useEffect(() => {
         setCurrentProject(Number(params.projectId));
@@ -63,12 +62,24 @@ const DeploymentForm = (
             };
         };
 
+        setCurrentProject(Number(params.projectId));
+        setCurrentDeployment(Number(params.deploymentId));
+
+    }, [deploymentData]);
+
+    useEffect(() => {
+        if (!props.isNewDeployment) {
+            (async () => {
+                let pos = sites.find(element => element.id == deploymentData?.site_id);
+                await setPostition({ lat: pos.latitude, lng: pos.longitude, name: pos.name })
+            })();
+        }
     }, [deploymentData]);
 
     useEffect(() => {
         let tmpSite = sites.find((s) => s.id === tmpDeploymentData?.site_id)?.name;
         setSiteName(tmpSite);
-    }, [tmpDeploymentData?.site_id]);
+    }, [tmpDeploymentData]);
 
     useEffect(() => {
         let tmpDevice = devices.find((d) => d.id === tmpDeploymentData?.device_id)?.name;
@@ -87,6 +98,8 @@ const DeploymentForm = (
         params: string,
         value: number | string
     ) => {
+        console.log(value);
+
         let updated_deployment_data = { ...tmpDeploymentData };
         updated_deployment_data[params] = value;
         setTmpDeploymentData(updated_deployment_data);
@@ -217,17 +230,9 @@ const DeploymentForm = (
                 direction="column"
                 spacing={5}
             >
-                <Stack
-                    direction="row"
-                    justifyContent="space-evenly"
-                >
+                <Grid container direction="row"  alignItems="center" spacing={2}>
                     {/* Si image du deploiement, la mettre sinon mettre zone drag&drop pour l'image */}
-                    <Grid
-                        item
-                        lg={5}
-                        height={200}
-                        container justifyContent='center' alignItems='center'
-                    >
+                    <Grid item lg={6}>
                         {
                             deployment_img ?
                                 <img></img> :
@@ -235,15 +240,16 @@ const DeploymentForm = (
                         }
                     </Grid>
 
-                    <Grid
-                        item
-                        lg={5}
-                        style={{ backgroundColor: "#98d4b7" }}
-                        height={200}
-                    >
-                        Map
-                    </Grid>
-                </Stack>
+                    {
+                        deploymentData && position.lng !== 0 ?
+                            <Grid item lg={6} container width={500} height={300}>
+                                <Map position={position} zoom={3} />
+                            </Grid>
+                            :
+                            <>
+                            </>
+                    }
+                </Grid>
 
                 <Paper elevation={0} sx={{ px: 2, py: 2 }}>
                     <Typography variant="h6" sx={{ mb:2}}>

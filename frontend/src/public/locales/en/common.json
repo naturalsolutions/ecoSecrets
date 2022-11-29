@@ -108,7 +108,7 @@
     "change_on_project": "confirm changes",
     "community_study": "community study",
     "device_name": "device name",
-    "duration_provided": "duration provided",
+    "duration_provided": "No duration provided",
     "end_date": "end date",
     "error": "error",
     "error_msg": "this project does not exist",

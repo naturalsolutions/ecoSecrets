@@ -13,6 +13,7 @@ const NavigationPath: FC<{}> = () => {
   const homeBreadcrumb = (isActive: boolean = false) => {
     return (
         <BreadcrumbElement 
+            key="home"
             current_option={capitalize(t("main.home"))}
             link="/"
             icon={true}
@@ -35,6 +36,7 @@ const NavigationPath: FC<{}> = () => {
   const deploymentBreadcrumb = (isActive: boolean = false) => {
     return (
       <BreadcrumbElement
+        key="deployment"
         current_option={deploymentData.name}
         link={`/project/${project().id}/deployment/${deploymentData.id}/details`}
         parentlink={`/project/${project().id}/deployment`}
@@ -47,6 +49,7 @@ const NavigationPath: FC<{}> = () => {
   const imageBreadcrumb = (isActive: boolean = false) => {
     return (
       <BreadcrumbElement
+        key="image"
         current_option={currentImage}
         link={`/project/${project().id}/deployment/${deploymentData.id}/details/${currentImage}`}
         parentlink={`/project/${project().id}/deployment/${deploymentData.id}/details`}
@@ -56,16 +59,18 @@ const NavigationPath: FC<{}> = () => {
 
   const devicesBreadcrumb = (isActive: boolean = false) => {
     return (
-        <BreadcrumbElement 
-            current_option={capitalize(t("devices.devices"))}
-            link="/devices/"
-            isActive={isActive}
-        />)
+      <BreadcrumbElement
+        key="devices"
+        current_option={capitalize(t("devices.devices"))}
+        link="/devices/"
+        isActive={isActive}
+      />)
   }
 
   const deviceBreadcrumb = (isActive: boolean = false) => {
     return (
       <BreadcrumbElement
+        key="device"
         current_option={device().name}
         link={`/devices/${device().id}`}
         parentlink={`/devices`}
@@ -75,15 +80,17 @@ const NavigationPath: FC<{}> = () => {
   }
   const sitesBreadcrumb = (isActive: boolean = false) => {
     return (
-        <BreadcrumbElement 
-            current_option={capitalize(t("sites.sites"))}
-            link="/sites/"
-            isActive={isActive}
-        />)
+      <BreadcrumbElement
+        key="sites"
+        current_option={capitalize(t("sites.sites"))}
+        link="/sites/"
+        isActive={isActive}
+      />)
   }
   const siteBreadcrumb = (isActive: boolean = false) => {
     return (
       <BreadcrumbElement
+        key="site"
         current_option={site().name}
         link={`/sites/${site().id}`}
         parentlink={`/sites`}
@@ -174,6 +181,7 @@ const NavigationPath: FC<{}> = () => {
       >
         <Breadcrumbs separator="›" aria-label="breadcrumb">
           {breadcrumbs()}
+
         </Breadcrumbs>
       </Stack>
     </div>

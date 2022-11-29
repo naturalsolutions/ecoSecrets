@@ -11,7 +11,7 @@ fi
 PROJECT_NAME="geonature-annotation"
 
 if [ "$ENV" == "production" ]; then
-    docker-compose --project-name=${PROJECT_NAME} -f ./docker/docker-compose.yml -f ./docker/docker-compose.prod.yml "$@"
+    docker compose --project-name=${PROJECT_NAME} -f ./docker/docker-compose.yml -f ./docker/docker-compose.prod.yml "$@"
 else
-    docker-compose --project-name=${PROJECT_NAME} --project-directory=./docker "$@"
+    docker compose --project-name=${PROJECT_NAME} --project-directory=./docker "$@"
 fi

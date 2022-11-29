@@ -108,7 +108,7 @@
     "change_on_project": "modification du projet",
     "community_study": "etude de communauté",
     "device_name": "nom du dispositif",
-    "duration_provided": "période renseignée",
+    "duration_provided": "Pas de période renseignée",
     "end_date": "date de fin",
     "error": "erreur",
     "error_msg": "ce projet n'existe pas !",

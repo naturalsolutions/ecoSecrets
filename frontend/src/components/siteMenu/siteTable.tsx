@@ -1,31 +1,34 @@
 import { Alert, AlertTitle, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Link, Paper, Stack, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, Typography, capitalize } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Map from "../Map";
+import { Grid } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-  
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
-  }));
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 const SitesTable = () => {
   const { t } = useTranslation();
 
   const {sites} = useMainContext();
   const [open, setOpen] = useState(false);
+  const [position, setPostition] = useState<any>([])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,13 +37,26 @@ const SitesTable = () => {
   const handleClose = () => {
     setOpen(false);
   };
-        
-    return (
-      sites.length !== 0 ?
-      <Stack 
+
+  useEffect(() => {
+    sites.map((data, k) => {
+      setPostition(position => [...position, { lat: data.latitude, lng: data.longitude, name: data.name }])
+    })
+  }, [sites])
+  
+  return (
+    sites.length !== 0 ?
+      <Stack
         spacing={2}
         justifyContent="center"
-      > 
+      >
+        <Grid container justifyContent="center" alignItems='center'>
+          <Grid container item justifyContent="center" height={400} width={1200} spacing={1} style={{ backgroundColor: "#D9D9D9" }}>
+            {
+              position.length !== 0 ? <Map position={position} zoom={2} /> : <></>
+            }
+          </Grid>
+        </Grid>
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 500 }} size="small" aria-label="customized table">
                 <TableHead style={{backgroundColor: "#CCDFD9"}}>
@@ -67,27 +83,27 @@ const SitesTable = () => {
                                 </IconButton>
                               </StyledTableCell>
 
-                        </StyledTableRow>
-                    )) }
-                </TableBody>
-            </Table>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
         </TableContainer>
         <Dialog open={open} onClose={handleClose}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={2}
-        >
-          <DialogTitle>
-            <Typography variant="h6">
-            {capitalize(t('sites.delete_site'))}
-            </Typography>
-          </DialogTitle>
-            <IconButton onClick = {handleClose} >
-              <ClearTwoToneIcon/>
-            </IconButton>
-          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={2}
+          >
+            <DialogTitle>
+              <Typography variant="h6">
+                {capitalize(t('sites.delete_site'))}
+              </Typography>
+            </DialogTitle>
+              <IconButton onClick = {handleClose} >
+                <ClearTwoToneIcon/>
+              </IconButton>
+            </Stack>
           <Divider />
           <DialogContent>
               <Typography>
@@ -100,11 +116,11 @@ const SitesTable = () => {
             <Button onClick={handleClose} color='secondary'>{capitalize(t('main.no'))}</Button>
           </DialogActions>
       </Dialog>
-    </Stack>
-     : <Alert severity="warning" >
-     <AlertTitle>{t('main.warning')}</AlertTitle>
-     {`${capitalize(t('main.zero'))} ${t('sites.site')}`}
- </Alert>
+    </Stack> : 
+      <Alert severity="warning" >
+        <AlertTitle>{t('main.warning')}</AlertTitle>
+        {`${capitalize(t('main.zero'))} ${t('sites.site')}`}
+      </Alert>
 );
     };
 export default SitesTable;
