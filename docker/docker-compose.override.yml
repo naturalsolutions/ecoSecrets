@@ -23,6 +23,10 @@ services:
     command: "./entrypoint.sh uvicorn --host 0.0.0.0 --reload src.main:app"
 
   frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      target: development
     volumes:
       - ../frontend:/app
     ports:
