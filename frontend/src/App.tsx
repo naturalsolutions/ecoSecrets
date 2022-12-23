@@ -23,7 +23,7 @@ import SnackContextProvider from "./contexts/snackContext";
 // import { Snack } from "./client/models/Snack";
 // import { useState } from "react";
 
-OpenAPI.BASE = process.env.REACT_APP_API_PATH || "http://localhost:3654";
+OpenAPI.BASE = process.env.REACT_APP_API_PATH || "/api/v1";
 
 function App() {
   return (
