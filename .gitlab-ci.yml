@@ -29,6 +29,7 @@ build_api_production:
       - dev
     changes:
       - api/**/*
+      - .gitlab-ci.yml
   tags:
     - NSCICDDOCKER
 
@@ -57,6 +58,7 @@ build_frontend_production:
       - dev
     changes:
       - frontend/**/*
+      - .gitlab-ci.yml
   tags:
     - NSCICDDOCKER
 
@@ -111,6 +113,23 @@ deploy_frontend:
     changes:
       - frontend/**/*
       - .gitlab-ci.yml
+  variables:
+    INVENTORY_PATH: inventories/geonature/annotation
+    GIT_STRATEGY: none
+  tags:
+    - NSCICDDOCKER
+
+deploy_all:
+  stage: deploy
+  image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
+  script:
+    - cd /home/ansible
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_all
+  only:
+    variables:
+      - $DEPLOY_ALL
   variables:
     INVENTORY_PATH: inventories/geonature/annotation
     GIT_STRATEGY: none
