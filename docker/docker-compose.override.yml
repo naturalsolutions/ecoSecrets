@@ -27,6 +27,11 @@ services:
       context: ../frontend
       dockerfile: Dockerfile
       target: development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
     volumes:
       - ../frontend:/app
     ports:
