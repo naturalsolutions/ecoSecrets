@@ -36,8 +36,22 @@ build_frontend_development:
   stage: build
   script:
     - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
-    - docker build -t ${CI_REGISTRY_IMAGE}:frontend-dev ./frontend
+    - docker build --target development -t ${CI_REGISTRY_IMAGE}:frontend-dev ./frontend
     - docker push ${CI_REGISTRY_IMAGE}:frontend-dev
+  only:
+    refs:
+      - dev
+    changes:
+      - frontend/**/*
+  tags:
+    - NSCICDDOCKER
+
+build_frontend_production:
+  stage: build
+  script:
+    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - docker build --target production -t ${CI_REGISTRY_IMAGE}:frontend-latest ./frontend
+    - docker push ${CI_REGISTRY_IMAGE}:frontend-latest
   only:
     refs:
       - dev
