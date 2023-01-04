@@ -17,6 +17,7 @@ from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files, ReadFiles
 from src.schemas.schemas import Annotation
 from src.services import dependencies, files
+from src.config import settings
 
 router = APIRouter(
     prefix="/files",
@@ -118,18 +119,11 @@ def upload_files(
                     status_code=404, detail="Impossible to save the file in minio"
                 )
 
-            # metadata = {
-            #     "hash": hash,
-            #     "name": file.filename,
-            #     "extension": ext,
-            #     "bucket": "jean-paul-bucket",
-            #     "date": "2022-01-22",
-            # }
             metadata = CreateFiles(
                 hash=hash,
                 name=file.filename,
                 extension=ext,
-                bucket="jean-paul-bucket",
+                bucket=settings.MINIO_BUCKET_NAME,
                 date=datetime.fromisoformat("2022-01-22"),
                 deployment_id=deployment_id,
             )

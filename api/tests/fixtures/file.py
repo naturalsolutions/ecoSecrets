@@ -9,6 +9,7 @@ from PIL import Image
 from src.models.file import CreateFiles
 from src.services.dependencies import generate_checksum
 from src.services.files import create_file
+from src.config import settings
 
 
 def gen_img():
@@ -49,7 +50,7 @@ def file_object(deployment, pillow_image, db):
         hash=hash,
         name=upload_file.filename,
         extension="jpg",
-        bucket="jean-paul-bucket",
+        bucket=settings.MINIO_BUCKET_NAME,
         date=datetime.fromisoformat("2022-01-22"),
         deployment_id=deployment.id,
     )
