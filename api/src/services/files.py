@@ -9,6 +9,7 @@ from fastapi import File, Form, HTTPException, UploadFile
 from sqlalchemy import JSON
 from sqlmodel import Session
 
+from src.config import settings
 from src.connectors import s3
 from src.models.file import CreateFiles, Files
 
@@ -121,7 +122,7 @@ def upload_file(
         hash=hash,
         name=filename,
         extension=ext,
-        bucket="jean-paul-bucket",
+        bucket=settings.MINIO_BUCKET_NAME,
         date=datetime.fromisoformat("2022-01-22"),
         deployment_id=deployment_id,
     )

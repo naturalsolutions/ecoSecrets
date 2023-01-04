@@ -27,7 +27,7 @@ def init_db():
         owner = user.create_user(
             db=session,
             user=UserCreate(
-                name="jeanjacques", email="jj@gmail.com", password="password"
+                name="user", email="user@user.com", password="password"
             ),
         )
         project_example = project.create_project(

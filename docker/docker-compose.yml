@@ -12,7 +12,7 @@ x-project-defaults: &project_defaults
 services:
   traefik:
     <<: *project_defaults
-    image: ${TRAEFIK_IMAGE}
+    image: ${TRAEFIK_IMAGE-traefik:v2.6}
     depends_on:
       frontend:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
 
   api:
     <<: *project_defaults
-    image: ${API_IMAGE}
+    image: ${API_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:api-dev}
     build:
       context: ../api
       dockerfile: Dockerfile
@@ -39,14 +39,14 @@ services:
         condition: service_healthy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.api.rule=${TRAEFIK_ROUTER_RULE_API}
+      - traefik.http.routers.api.rule=${TRAEFIK_ROUTER_RULE_API-PathPrefix(`/api/v1`)}
       - traefik.http.routers.api.entrypoints=web
       - traefik.http.routers.api.middlewares=api-stripprefix
-      - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=${API_ROOT_PATH}
+      - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=${API_ROOT_PATH-/api/v1}
 
   frontend:
     <<: *project_defaults
-    image: ${FRONTEND_IMAGE}
+    image: ${FRONTEND_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
     build:
       context: ../frontend
       dockerfile: Dockerfile
@@ -61,14 +61,14 @@ services:
       start_period: 10s
     labels:
       - traefik.enable=true
-      - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND}
+      - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND-PathPrefix(`/`)}
       - traefik.http.routers.frontend.entrypoints=web
 
   db:
     <<: *project_defaults
     image: postgres:14-alpine
     healthcheck:      
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -h 127.0.0.1"]     
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-annotation} -h 127.0.0.1"]     
       interval: 10s      
       timeout: 5s      
       retries: 3      
@@ -76,9 +76,9 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}      
-      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD-dbpassword}
+      POSTGRES_DB: ${DB_NAME-annotation}      
+      POSTGRES_USER: ${DB_USER-dbuser}
 
   keycloak:
     <<: *project_defaults
@@ -86,7 +86,7 @@ services:
     command: start-dev
     labels:
       - traefik.enable=true
-      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK}
+      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK-PathPrefix(`/auth`)}
       - traefik.http.routers.keycloak.entrypoints=web
 
   minio:
