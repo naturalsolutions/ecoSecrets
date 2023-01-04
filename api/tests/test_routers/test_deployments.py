@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import status
 
 from src.main import app
-from src.services.deployment import get_deployment, get_deployments
+from src.services.deployment import get_deployment
 
 
 def test_read_deployments(client, deployment):
@@ -60,7 +60,7 @@ def test_update_deployment(client, site, device, project, deployment):
         "feature": "feature",
         "description": "desc",
         "project_id": project.id,
-        "id": deployment.id
+        "id": deployment.id,
     }
 
     response = client.put(

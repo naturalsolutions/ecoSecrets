@@ -1,5 +1,4 @@
 from datetime import date
-from email.policy import default
 
 from pydantic import BaseModel
 from sqlmodel import Field

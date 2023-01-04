@@ -1,7 +1,7 @@
 from fastapi import status
 
 from src.main import app
-from src.services.device import get_device, get_devices
+from src.services.device import get_device
 
 
 def test_read_devices(client, device):

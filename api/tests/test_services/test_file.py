@@ -1,7 +1,5 @@
-from datetime import datetime
 from uuid import UUID
 
-from src.models.device import Devices
 from src.services.files import get_file, get_files
 
 

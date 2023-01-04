@@ -1,12 +1,7 @@
 from datetime import datetime
 
 from src.models.project import ProjectBase
-from src.services.project import (
-    create_project,
-    get_informations,
-    get_projects,
-    get_projects_stats,
-)
+from src.services.project import create_project, get_informations, get_projects, get_projects_stats
 
 
 def test_create_project(db):

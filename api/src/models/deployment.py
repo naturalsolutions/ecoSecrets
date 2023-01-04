@@ -1,17 +1,14 @@
-from datetime import date, datetime
+from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlmodel import JSON, Column, Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from src.models.file import Files
 from src.models.models import DeploymentTemplateSequenceCorrespondance, TemplateSequence
-from src.models.site import SiteBase, Sites
 
 if TYPE_CHECKING:  # pragma: no cover
 
-    from .device import Devices
     from .project import Projects
-    from .site import Sites
 
 
 class DeploymentEssentials(SQLModel):

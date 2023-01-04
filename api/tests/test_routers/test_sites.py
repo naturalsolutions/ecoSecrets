@@ -1,7 +1,7 @@
 from fastapi import status
 
 from src.main import app
-from src.services.site import get_site, get_sites
+from src.services.site import get_site
 
 
 def test_read_sites(client, site):

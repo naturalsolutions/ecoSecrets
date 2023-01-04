@@ -1,6 +1,7 @@
 from typing import Generator
 
 from sqlmodel import Session
+
 from tests.utils.test_db import engine
 
 

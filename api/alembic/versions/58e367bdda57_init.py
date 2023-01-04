@@ -5,10 +5,11 @@ Revises:
 Create Date: 2022-09-20 07:39:04.764590
 
 """
-from alembic import op
 import sqlalchemy as sa
 import sqlmodel
 from sqlalchemy.dialects import postgresql
+
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "58e367bdda57"
@@ -67,9 +68,7 @@ def upgrade() -> None:
         sa.Column("number_images", sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_templatesequence_id"), "templatesequence", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_templatesequence_id"), "templatesequence", ["id"], unique=False)
     op.create_table(
         "devices",
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
@@ -106,9 +105,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("email", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-        sa.Column(
-            "hashed_password", sqlmodel.sql.sqltypes.AutoString(), nullable=False
-        ),
+        sa.Column("hashed_password", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("is_active", sa.Boolean(), nullable=True),
         sa.Column("role_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
@@ -144,9 +141,7 @@ def upgrade() -> None:
         sa.Column("end_date", sa.Date(), nullable=True),
         sa.Column("protocole", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("status", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-        sa.Column(
-            "targeted_species", sqlmodel.sql.sqltypes.AutoString(), nullable=True
-        ),
+        sa.Column("targeted_species", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("owner_id", sa.Integer(), nullable=True),
         sa.Column("contact_id", sa.Integer(), nullable=True),
         sa.Column("id", sa.Integer(), nullable=False),
@@ -195,9 +190,7 @@ def upgrade() -> None:
     op.create_index(op.f("ix_deployments_id"), "deployments", ["id"], unique=False)
     op.create_table(
         "files",
-        sa.Column(
-            "annotations", postgresql.JSONB(astext_type=sa.Text()), nullable=True
-        ),
+        sa.Column("annotations", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
         sa.Column("hash", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("extension", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
@@ -250,9 +243,7 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_sequences_files_id"), "sequences_files", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_sequences_files_id"), "sequences_files", ["id"], unique=False)
     # ### end Alembic commands ###
 
 

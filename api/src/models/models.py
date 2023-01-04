@@ -1,5 +1,4 @@
 import uuid as uuid_pkg
-from datetime import date, datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
@@ -7,6 +6,7 @@ from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 if TYPE_CHECKING:  # pragma: no cover
 
     from .deployment import Deployments
+
 
 class Users(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
@@ -46,12 +46,15 @@ class DeploymentTemplateSequenceCorrespondance(SQLModel, table=True):
         default=None, foreign_key="templatesequence.id", primary_key=True
     )
 
+
 class TemplateSequence(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
     mode: str
     frequency: int = Field(default=0)
     number_images: int = Field(default=1)
-    deployments: Optional[List["Deployments"]] = Relationship(back_populates="template_sequences", link_model=DeploymentTemplateSequenceCorrespondance)
+    deployments: Optional[List["Deployments"]] = Relationship(
+        back_populates="template_sequences", link_model=DeploymentTemplateSequenceCorrespondance
+    )
 
 
 class ExifKeyModel(SQLModel, table=True):
