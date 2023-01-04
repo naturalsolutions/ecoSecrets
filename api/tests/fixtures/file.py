@@ -6,10 +6,10 @@ import pytest
 from fastapi import UploadFile
 from PIL import Image
 
+from src.config import settings
 from src.models.file import CreateFiles
 from src.services.dependencies import generate_checksum
 from src.services.files import create_file
-from src.config import settings
 
 
 def gen_img():

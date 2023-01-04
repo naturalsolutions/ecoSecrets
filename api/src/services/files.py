@@ -3,10 +3,8 @@ import tempfile
 import uuid as uuid_pkg
 from datetime import datetime
 from typing import List
-from uuid import uuid4
 
-from fastapi import File, Form, HTTPException, UploadFile
-from sqlalchemy import JSON
+from fastapi import HTTPException
 from sqlmodel import Session
 
 from src.config import settings
@@ -14,9 +12,7 @@ from src.connectors import s3
 from src.models.file import CreateFiles, Files
 
 # import schemas.schemas
-from src.schemas.file import File, FileInfo
 from src.schemas.schemas import Annotation
-from src.services import dependencies
 
 # async def stockage_image(file):
 #     try :
@@ -115,9 +111,7 @@ def upload_file(
         s3.upload_file_obj(new_file, f"{hash}.{ext}")
     except Exception as e:
         print(e)
-        raise HTTPException(
-            status_code=404, detail="Impossible to save the file in minio"
-        )
+        raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
     metadata = CreateFiles(
         hash=hash,
         name=filename,
@@ -129,6 +123,4 @@ def upload_file(
     try:
         return create_file(db=db, file=metadata)
     except Exception as e:
-        raise HTTPException(
-            status_code=404, detail="Impossible to save the file in bdd"
-        )
+        raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")

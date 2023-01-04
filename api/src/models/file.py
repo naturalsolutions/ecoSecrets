@@ -1,15 +1,14 @@
 import uuid as uuid_pkg
-from datetime import date, datetime
+from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from pydantic import AnyHttpUrl, root_validator
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlmodel import JSON, Column, Field, Relationship, SQLModel
+from sqlmodel import Column, Field, Relationship, SQLModel
 
 from src.connectors.s3 import get_url
 
 if TYPE_CHECKING:  # pragma: no cover
-    from .annotation import Annotations
     from .deployment import Deployments
 
 

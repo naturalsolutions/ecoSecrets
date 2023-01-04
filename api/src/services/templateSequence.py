@@ -1,11 +1,9 @@
-from sqlmodel import Session, SQLModel
+from sqlmodel import Session
 
 from src.models.models import TemplateSequence
 
 
-def get_template_sequence_by_mode(
-    db: Session, mode: str, skip: int = 0, limit: int = 100
-):
+def get_template_sequence_by_mode(db: Session, mode: str, skip: int = 0, limit: int = 100):
     return (
         db.query(TemplateSequence)
         .filter(TemplateSequence.mode == mode)

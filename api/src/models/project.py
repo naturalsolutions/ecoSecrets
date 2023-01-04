@@ -1,21 +1,15 @@
-from datetime import date, datetime
+from datetime import date
 from typing import TYPE_CHECKING, List, Optional
 
 from pydantic import validator
-from sqlmodel import JSON, Column, Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
-from src.models.deployment import (
-    DeploymentForProjectSheet,
-    Deployments,
-    DeploymentWithFile,
-)
-from src.models.file import Files
+from src.models.deployment import DeploymentForProjectSheet, Deployments, DeploymentWithFile
 from src.schemas.schemas import DataProject
 
 if TYPE_CHECKING:  # pragma: no cover
 
     from .deployment import Deployments
-    from .file import Files
 
 
 class ProjectBase(SQLModel):

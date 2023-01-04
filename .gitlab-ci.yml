@@ -1,8 +1,29 @@
 stages:
+  - format
   - build
   - pages
   - test
   - deploy
+
+isort:
+  stage: format
+  image:
+    name: registry.gitlab.com/natural-solutions/images:isort-latest
+    entrypoint: [""]
+  script:
+    - isort api/ --check-only
+  tags:
+    - NSCICDDOCKER
+
+black:
+  stage: format
+  image:
+    name: cytopia/black
+    entrypoint: ["/bin/ash", "-c"]
+  script:
+    - python3 -m black --check --diff api/
+  tags:
+    - NSCICDDOCKER
 
 build_api_development:
   stage: build

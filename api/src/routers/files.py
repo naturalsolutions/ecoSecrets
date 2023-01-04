@@ -4,20 +4,19 @@ import io
 import tempfile
 import uuid as uuid_pkg
 from datetime import datetime
-from distutils import extension
 from typing import List
 from zipfile import ZipFile
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
+from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import CreateFiles, Files, ReadFiles
+from src.models.file import CreateFiles, Files
 from src.schemas.schemas import Annotation
 from src.services import dependencies, files
-from src.config import settings
 
 router = APIRouter(
     prefix="/files",
@@ -84,9 +83,7 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
 
 
 @router.post("/upload/{deployment_id}")
-def upload_file(
-    deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)
-):
+def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     hash = dependencies.generate_checksum(file)
     ext = file.filename.split(".")[1]
     insert = files.upload_file(
@@ -115,9 +112,7 @@ def upload_files(
             try:
                 s3.upload_file_obj(file.file, f"{hash}.{ext}")
             except Exception as e:
-                raise HTTPException(
-                    status_code=404, detail="Impossible to save the file in minio"
-                )
+                raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
 
             metadata = CreateFiles(
                 hash=hash,
@@ -131,9 +126,7 @@ def upload_files(
                 files.create_file(db=db, file=metadata)
             except Exception as e:
                 print(e)
-                raise HTTPException(
-                    status_code=404, detail="Impossible to save the file in bdd"
-                )
+                raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
         return "Files créés !"
 
     else:
@@ -168,15 +161,11 @@ def upload_zip(
                 with tempfile.SpooledTemporaryFile() as tf:
                     tf.write(bytes)
                     tf.seek(0)
-                    insert = files.upload_file(
-                        db, hash, tf, info.filename, "JPG", deployment_id
-                    )
+                    insert = files.upload_file(db, hash, tf, info.filename, "JPG", deployment_id)
                     res.append(insert)
             return res
     else:
-        raise HTTPException(
-            status_code=500, detail="Vous ne pouvez déposer que des fichiers.zip"
-        )
+        raise HTTPException(status_code=500, detail="Vous ne pouvez déposer que des fichiers.zip")
 
 
 @router.get("/{deployment_id}")

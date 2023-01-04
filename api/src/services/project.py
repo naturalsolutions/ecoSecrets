@@ -3,13 +3,10 @@ from datetime import datetime
 from typing import List
 
 from sqlalchemy.orm import joinedload
-from sqlmodel import Session, select
+from sqlmodel import Session
 
-from src.models.deployment import DeploymentForProjectSheet
-from src.models.device import Devices
 from src.models.file import Files
-from src.models.project import ProjectBase, Projects, ProjectWithDeployment
-from src.models.site import Sites
+from src.models.project import ProjectBase, Projects
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
 
@@ -99,9 +96,7 @@ def get_informations(db: Session, id: int):
     project_data = project.dict()
     project_data["deployments"] = deploys
 
-    annotation_percentage = annotation_percentage_project(
-        media_number, nb_treated_media
-    )
+    annotation_percentage = annotation_percentage_project(media_number, nb_treated_media)
     project_data["stats"] = {
         "media_number": media_number,
         "annotation_percentage": annotation_percentage,
@@ -138,9 +133,7 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
             media_number += len(deployment.files)
             nb_treated_media += number_treated_media(deployment.files)
         # TO ADD annotation%
-        annotation_percentage = annotation_percentage_project(
-            media_number, nb_treated_media
-        )
+        annotation_percentage = annotation_percentage_project(media_number, nb_treated_media)
 
         status = ""
         if start_date is None or end_date is None:

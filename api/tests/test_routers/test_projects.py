@@ -37,7 +37,8 @@ def test_read_projects_with_deployments(client, deployment, db):
     first_deploy = [
         one_content["deployments"][0]
         for one_content in content
-        if len(one_content["deployments"]) > 0 and one_content["deployments"][0]["id"] == deployment.id
+        if len(one_content["deployments"]) > 0
+        and one_content["deployments"][0]["id"] == deployment.id
     ][0]
     assert set(deployment.dict().keys()) == set(first_deploy.keys())
 

@@ -1,12 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
-from src.connectors import s3
 from src.connectors.database import get_db
-from src.dependencies import get_token_header
 from src.models.device import DeviceBase, DeviceMenu, Devices
 from src.services import device
 
@@ -41,9 +38,7 @@ def create_device(new_device: DeviceBase, db: Session = Depends(get_db)):
 
 
 @router.put("/{device_id}", response_model=Devices)
-def update_device(
-    device_id: int, data_device: DeviceBase, db: Session = Depends(get_db)
-):
+def update_device(device_id: int, data_device: DeviceBase, db: Session = Depends(get_db)):
     return device.update_device(db=db, device=data_device, id=device_id)
 
 

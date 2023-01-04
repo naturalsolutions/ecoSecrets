@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import desc
 from sqlmodel import Session
 
-from src.models.device import DeviceBase, DeviceMenu, Devices
+from src.models.device import DeviceBase, Devices
 from src.models.file import Files
 from src.services import deployment
 
@@ -63,13 +63,9 @@ def get_menu_devices(db: Session, skip: int = 0, limit: int = 100):
         for deploy in deployments:
             deployment_list.append(deploy.id)
             if current_date >= deploy.start_date:
-                if (
-                    deploy.end_date is None or current_date <= deploy.end_date
-                ):  # provisoire
+                if deploy.end_date is None or current_date <= deploy.end_date:  # provisoire
                     device["status"] = "Déployé"
-        nb_images = (
-            db.query(Files).filter(Files.deployment_id.in_(deployment_list)).count()
-        )
+        nb_images = db.query(Files).filter(Files.deployment_id.in_(deployment_list)).count()
         if nb_images > 0:
             last_image = (
                 db.query(Files)

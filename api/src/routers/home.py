@@ -1,10 +1,6 @@
-from typing import List
-
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
-from src.connectors import s3
 from src.connectors.database import get_db
 from src.schemas.schemas import Stats
 from src.services.home import get_stats

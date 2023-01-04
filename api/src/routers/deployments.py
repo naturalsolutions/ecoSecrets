@@ -37,9 +37,7 @@ def read_deployment(deployment_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=Deployments)
 def create_deployment(new_deployment: DeploymentBase, db: Session = Depends(get_db)):
-    db_deployment = deployment.get_deployment_by_name(
-        db, name_deployment=new_deployment.name
-    )
+    db_deployment = deployment.get_deployment_by_name(db, name_deployment=new_deployment.name)
     if db_deployment:
         raise HTTPException(status_code=400, detail="Name already registered")
     return deployment.create_deployment(db=db, deployment=new_deployment)
@@ -50,9 +48,7 @@ def update_deployment(
     data_deployment: DeploymentWithTemplateSequence,
     db: Session = Depends(get_db),
 ):
-    return deployment.update_deployment(
-        db=db, deployment=data_deployment
-    )
+    return deployment.update_deployment(db=db, deployment=data_deployment)
 
 
 @router.delete("/{deployment_id}", response_model=Deployments)
@@ -66,9 +62,7 @@ def read_project_deployments(project_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/files/", response_model=List[DeploymentWithFile])
-def read_deployments_with_files(
-    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
-):
+def read_deployments_with_files(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     deployments = deployment.get_deployments_files(db, skip=skip, limit=limit)
     return deployments
 
@@ -85,6 +79,4 @@ def read_deployments_with_template_sequence(
 def read_device_deployments(
     device_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
-    return deployment.get_device_deployments(
-        db=db, device_id=device_id, skip=skip, limit=limit
-    )
+    return deployment.get_device_deployments(db=db, device_id=device_id, skip=skip, limit=limit)

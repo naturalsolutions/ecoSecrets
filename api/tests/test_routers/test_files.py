@@ -3,7 +3,7 @@ import json
 from fastapi import status
 
 from src.main import app
-from src.services.files import get_file, get_files, upload_file
+from src.services.files import get_file, get_files
 
 FILENAME = "test.jpg"
 
@@ -15,9 +15,7 @@ def test_upload_files(
 ):
     url = app.url_path_for("upload_files", deployment_id=deployment.id)
 
-    response = client.post(
-        url, files={"list_files": (FILENAME, pillow_image, "image/jpeg")}
-    )
+    response = client.post(url, files={"list_files": (FILENAME, pillow_image, "image/jpeg")})
 
     assert response.status_code == status.HTTP_200_OK
 

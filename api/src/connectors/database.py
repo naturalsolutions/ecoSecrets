@@ -2,14 +2,14 @@ import os
 from datetime import datetime as dt
 from pathlib import Path
 
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session, create_engine
 
 from src.config import settings
-from src.models.deployment import DeploymentBase, Deployments
-from src.models.device import DeviceBase, Devices
+from src.models.deployment import DeploymentBase
+from src.models.device import DeviceBase
 from src.models.models import Roles
 from src.models.project import ProjectBase
-from src.models.site import SiteBase, Sites
+from src.models.site import SiteBase
 from src.schemas.user import UserCreate
 from src.services import deployment, device, files, project, site, user
 
@@ -26,9 +26,7 @@ def init_db():
         session.commit()
         owner = user.create_user(
             db=session,
-            user=UserCreate(
-                name="user", email="user@user.com", password="password"
-            ),
+            user=UserCreate(name="user", email="user@user.com", password="password"),
         )
         project_example = project.create_project(
             db=session,

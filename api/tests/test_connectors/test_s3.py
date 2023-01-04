@@ -1,5 +1,6 @@
-from src.connectors.s3 import get_bucket_name
 from src.config import settings
+from src.connectors.s3 import get_bucket_name
+
 
 def test_get_bucket_name():
     # Arrange

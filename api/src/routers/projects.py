@@ -3,10 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
-from src.connectors import s3
 from src.connectors.database import get_db
-from src.dependencies import get_token_header
-from src.models import models
 from src.models.project import (
     ProjectBase,
     ProjectSheet,
@@ -47,9 +44,7 @@ def create_project(new_project: ProjectBase, db: Session = Depends(get_db)):
 
 
 @router.put("/{project_id}", response_model=ReadProject)
-def update_project(
-    project_id: int, data_project: ProjectBase, db: Session = Depends(get_db)
-):
+def update_project(project_id: int, data_project: ProjectBase, db: Session = Depends(get_db)):
     return project.update_project(db=db, project=data_project, id=project_id)
 
 
@@ -59,18 +54,12 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/deployments/", response_model=List[ProjectWithDeployment])
-def read_projects_with_deployments(
-    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
-):
+def read_projects_with_deployments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return project.get_projects(db, skip=skip, limit=limit)
 
 
-@router.get(
-    "/deployments_and_files/", response_model=List[ProjectWithDeploymentAndFiles]
-)
-def read_projects_with_deployments(
-    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
-):
+@router.get("/deployments_and_files/", response_model=List[ProjectWithDeploymentAndFiles])
+def read_projects_with_deployments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return project.get_projects(db, skip=skip, limit=limit)
 
 

@@ -1,4 +1,4 @@
-from pydantic import BaseSettings, AnyHttpUrl, PostgresDsn
+from pydantic import AnyHttpUrl, BaseSettings, PostgresDsn
 
 
 class Settings(BaseSettings):
@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     MINIO_BUCKET_NAME: str = "bucket"
 
     class Config:
-        env_file = '.env'
+        env_file = ".env"
         case_sensitive = True
 
 

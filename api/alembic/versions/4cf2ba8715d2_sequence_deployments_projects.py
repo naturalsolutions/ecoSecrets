@@ -5,10 +5,10 @@ Revises: 58e367bdda57
 Create Date: 2022-11-21 09:18:25.157319
 
 """
-from alembic import op
 import sqlalchemy as sa
 import sqlmodel
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "4cf2ba8715d2"
@@ -42,13 +42,9 @@ def upgrade() -> None:
         "deployments",
         sa.Column("image", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     )
-    op.drop_constraint(
-        "deployments_template_sequence_id_fkey", "deployments", type_="foreignkey"
-    )
+    op.drop_constraint("deployments_template_sequence_id_fkey", "deployments", type_="foreignkey")
     op.drop_column("deployments", "template_sequence_id")
-    op.add_column(
-        "devices", sa.Column("image", sqlmodel.sql.sqltypes.AutoString(), nullable=True)
-    )
+    op.add_column("devices", sa.Column("image", sqlmodel.sql.sqltypes.AutoString(), nullable=True))
     op.add_column("files", sa.Column("treated", sa.Boolean(), nullable=False))
     op.add_column(
         "projects",
@@ -56,9 +52,7 @@ def upgrade() -> None:
     )
     op.add_column(
         "projects",
-        sa.Column(
-            "acquisition_framework", sqlmodel.sql.sqltypes.AutoString(), nullable=True
-        ),
+        sa.Column("acquisition_framework", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     )
     op.add_column(
         "projects",
@@ -75,9 +69,7 @@ def upgrade() -> None:
     op.drop_column("projects", "status")
     op.drop_column("projects", "protocole")
     op.drop_column("projects", "description")
-    op.add_column(
-        "templatesequence", sa.Column("frequency", sa.Integer(), nullable=False)
-    )
+    op.add_column("templatesequence", sa.Column("frequency", sa.Integer(), nullable=False))
     op.drop_column("templatesequence", "frequence")
     # ### end Alembic commands ###
 
@@ -110,9 +102,7 @@ def downgrade() -> None:
     op.drop_column("devices", "image")
     op.add_column(
         "deployments",
-        sa.Column(
-            "template_sequence_id", sa.INTEGER(), autoincrement=False, nullable=True
-        ),
+        sa.Column("template_sequence_id", sa.INTEGER(), autoincrement=False, nullable=True),
     )
     op.create_foreign_key(
         "deployments_template_sequence_id_fkey",
