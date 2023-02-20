@@ -63,6 +63,10 @@ services:
       - traefik.enable=true
       - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND-PathPrefix(`/`)}
       - traefik.http.routers.frontend.entrypoints=web
+    environment:
+      - REACT_APP_KEYCLOAK_CLIENT_URL=${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
+      - REACT_APP_KEYCLOAK_CLIENT_REALM=${KEYCLOAK_REALM_ID:-geonature-annotation}
+      - REACT_APP_KEYCLOAK_CLIENT_CLIENT_ID=${KEYCLOAK_CLIENT_CLIENT_ID:-frontend}
 
   db:
     <<: *project_defaults
@@ -82,12 +86,14 @@ services:
 
   keycloak:
     <<: *project_defaults
-    image: quay.io/keycloak/keycloak:18.0.2
-    command: start-dev
+    image: ${KEYCLOAK_IMAGE}
+    command: start-dev --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true --import-realm
     labels:
       - traefik.enable=true
-      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK-PathPrefix(`/auth`)}
+      - traefik.http.routers.keycloak.rule=${KEYCLOAK_TRAEFIK_RULE-PathPrefix(`/auth`)}
       - traefik.http.routers.keycloak.entrypoints=web
+    volumes:
+      - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json
 
   minio:
     <<: *project_defaults
