@@ -1,0 +1,20 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test
+        run: bash scripts/test-ci.sh
+  lint-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Black code formatting check
+        uses: psf/black@stable
+        with:
+          options: "--check --verbose"
+          src: "./api"
