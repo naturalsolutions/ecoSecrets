@@ -18,3 +18,4 @@ jobs:
         with:
           options: "--check --verbose"
           src: "./api"
+          version: "22.12.0"
