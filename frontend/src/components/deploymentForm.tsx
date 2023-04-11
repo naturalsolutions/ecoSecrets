@@ -199,28 +199,24 @@ const DeploymentForm = (
 
     const handleValueMode = (param: string, value: string) => {
         if (param === "autoImgNb") {
-            console.log(value)
             setAutomaticImgNb(parseInt(value))
             automatic.imageNumber = parseInt(value);
             setAutomatic(automatic);
             return;
         }
         if (param === "triggerImgNb") {
-            console.log(value)
             setTriggerImgNb(parseInt(value))
             trigger.imageNumber = parseInt(value);
             setTrigger(trigger);
             return;
         }
         if (param === "autoFreq") {
-            console.log(value)
             setAutomaticFrequency(parseFloat(value))
             automatic.frequency = parseFloat(value);
             setAutomatic(automatic);
             return;
         }
         if (param === "triggerFreq") {
-            console.log(value)
             setTriggerFrequency(parseFloat(value))
             trigger.frequency = parseFloat(value);
             setTrigger(trigger);
