@@ -19,3 +19,9 @@ jobs:
           options: "--check --verbose"
           src: "./api"
           version: "22.12.0"
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - uses: isort/isort-action@master
+        with:
+          configuration: "api/ --check-only"
