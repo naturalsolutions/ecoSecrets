@@ -417,10 +417,10 @@ const DeploymentForm = (
                         <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField
                                 id="height"
-                                label={!isEditable && tmpDeploymentData?.height ? `${capitalize(t("deployments.height"))} : ${tmpDeploymentData?.height}` : `${capitalize(t("deployments.height"))}`}
+                                label={`${capitalize(t("deployments.height"))}`}
                                 name="height"
-                                value={isEditable ? tmpDeploymentData?.height : ""}
-                                onChange={(e) => handleFormChange("height", e.target.value)}
+                                value={Number(tmpDeploymentData?.height) || ""}
+                                onChange={(e) => handleFormChange("height", Number(e.target.value))}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">cm</InputAdornment>
