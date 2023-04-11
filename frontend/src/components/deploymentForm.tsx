@@ -1,15 +1,14 @@
-import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Button, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import TurnedInNotTwoToneIcon from '@mui/icons-material/TurnedInNotTwoTone'; import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import { Deployments, DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
+import { DeploymentsService, DeploymentWithTemplateSequence } from "../client";
 import DropzoneComponent from "./dropzoneComponent";
 import SiteModale from "./siteMenu/siteModale";
 import Map from "./Map";
@@ -22,7 +21,7 @@ const DeploymentForm = (
     props
 ) => {
 
-    const { setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates } = useMainContext();
+    const { setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates,  triggerTemplates } = useMainContext();
     let params = useParams();
     const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
     const { t } = useTranslation();
@@ -98,8 +97,6 @@ const DeploymentForm = (
         params: string,
         value: number | string
     ) => {
-        console.log(value);
-
         let updated_deployment_data = { ...tmpDeploymentData };
         updated_deployment_data[params] = value;
         setTmpDeploymentData(updated_deployment_data);
