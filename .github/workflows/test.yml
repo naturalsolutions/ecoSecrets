@@ -24,4 +24,5 @@ jobs:
           python-version: 3.8
       - uses: isort/isort-action@master
         with:
-          configuration: "api/ --check-only"
+          sortPaths: "api/"
+          configuration: "--check-only"
