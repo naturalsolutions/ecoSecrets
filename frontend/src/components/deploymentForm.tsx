@@ -197,28 +197,35 @@ const DeploymentForm = (
         };
     };
 
-    const handleValueModeAutomaticImgNb = (param: string, value: string) => {
-        setAutomaticImgNb(parseInt(value))
-        automatic.imageNumber = parseInt(value);
-        setAutomatic(automatic);
-    };
-
-    const handleValueModeAutomaticFrequency = (param: string, value: string) => {
-        setAutomaticFrequency(parseFloat(value))
-        automatic.frequency = parseFloat(value);
-        setAutomatic(automatic);
-    };
-
-    const handleValueModeTriggerImgNb = (param: string, value: string) => {
-        setTriggerImgNb(parseInt(value))
-        trigger.imageNumber = parseInt(value);
-        setTrigger(trigger);
-    };
-
-    const handleValueModeTriggerFrequency = (param: string, value: string) => {
-        setTriggerFrequency(parseFloat(value))
-        trigger.frequency = parseFloat(value);
-        setTrigger(trigger);
+    const handleValueMode = (param: string, value: string) => {
+        if (param === "autoImgNb") {
+            console.log(value)
+            setAutomaticImgNb(parseInt(value))
+            automatic.imageNumber = parseInt(value);
+            setAutomatic(automatic);
+            return;
+        }
+        if (param === "triggerImgNb") {
+            console.log(value)
+            setTriggerImgNb(parseInt(value))
+            trigger.imageNumber = parseInt(value);
+            setTrigger(trigger);
+            return;
+        }
+        if (param === "autoFreq") {
+            console.log(value)
+            setAutomaticFrequency(parseFloat(value))
+            automatic.frequency = parseFloat(value);
+            setAutomatic(automatic);
+            return;
+        }
+        if (param === "triggerFreq") {
+            console.log(value)
+            setTriggerFrequency(parseFloat(value))
+            trigger.frequency = parseFloat(value);
+            setTrigger(trigger);
+            return;
+        }
     };
 
     return (
@@ -487,7 +494,7 @@ const DeploymentForm = (
                                     <TextField
                                         label={!isEditable && automatic?.imageNumber ? `${capitalize(t("deployments.img_nb"))} : ${automatic?.imageNumber}` : `${capitalize(t("deployments.img_nb"))}`}
                                         value={isEditable ? AutomaticImgNb : ""}
-                                        onChange={(e) => handleValueModeAutomaticImgNb("imageNumber", e.target.value)}
+                                        onChange={(e) => handleValueMode("autoImgNb", e.target.value)}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -505,7 +512,7 @@ const DeploymentForm = (
                                     <TextField
                                         label={!isEditable && automatic?.frequency ? `${capitalize(t("deployments.frequency"))} : ${automatic?.frequency}` : `${capitalize(t("deployments.frequency"))}`}
                                         value={isEditable ? AutomaticFrequency : ""}
-                                        onChange={(e) => handleValueModeAutomaticFrequency("frequency", e.target.value)}
+                                        onChange={(e) => handleValueMode("autoFreq", e.target.value)}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
@@ -543,7 +550,7 @@ const DeploymentForm = (
                                     <TextField
                                         label={!isEditable && trigger?.imageNumber ? `${capitalize(t("deployments.img_nb"))} : ${trigger?.imageNumber}` : `${capitalize(t("deployments.img_nb"))}`}
                                         value={isEditable ? triggerImgNb : ""}
-                                        onChange={(e) => handleValueModeTriggerImgNb("imageNumber", e.target.value)}
+                                        onChange={(e) => handleValueMode("triggerImgNb", e.target.value)}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -559,7 +566,7 @@ const DeploymentForm = (
                                     <TextField
                                         label={!isEditable && trigger?.frequency ? `${capitalize(t("deployments.frequency"))} : ${trigger?.frequency}` : `${capitalize(t("deployments.frequency"))}`}
                                         value={isEditable ? triggerFrequency : ""}
-                                        onChange={(e) => handleValueModeTriggerFrequency("frequency", e.target.value)}
+                                        onChange={(e) => handleValueMode("triggerFreq", e.target.value)}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
