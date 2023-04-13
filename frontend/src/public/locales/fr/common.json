@@ -59,6 +59,9 @@
     "en": "English",
     "fr": "Français"
   },
+  "header": {
+    "user_doc": "Guide utilisateur"
+  },
   "main": {
     "add_media": "ajouter une photo",
     "ask_save": "êtes-vous sûr de vouloir enregistrer vos modifications ?",

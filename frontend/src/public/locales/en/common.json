@@ -59,6 +59,9 @@
     "en": "English",
     "fr": "Français"
   },
+  "header": {
+    "user_doc": "User documentation"
+  },
   "main": {
     "add_media": "add photo",
     "ask_save": "are you sure you want to save your changes?",

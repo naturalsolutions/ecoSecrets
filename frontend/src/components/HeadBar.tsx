@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,8 +10,7 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import ImportModale from "./importModale";
 import { Link } from "react-router-dom";
 import ModalError from "./modalError";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack, capitalize } from "@mui/material";
-import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
+import { Button, capitalize } from "@mui/material";
 import LanguageSelector from "./languageSelector";
 import { useTranslation } from "react-i18next";
 
@@ -62,27 +60,38 @@ const HeadBar = () => {
               GeoCam
             </Typography>
           </Link>
-          <Box></Box>
+          
         </Grid>
-
-        <IconButton
-          onClick={openImportModale}
-          sx={{ mr: 4, display: { color: "white" } }}
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
         >
-          <CloudDownloadIcon />
-        </IconButton>
 
-        <ImportModale
-          open={openImport}
-          close={closeImportModale}
-        />
+          <Button variant="contained" color="secondary" href="https://natural-solutions.gitlab.io/geonature/annotation/user/start/" target="_blank" sx={{ mr: 4}}>
+            {`${capitalize(t("header.user_doc"))}`}
+          </Button>
+          <IconButton
+            onClick={openImportModale}
+            sx={{ mr: 4, display: { color: "white" } }}
+          >
+            <CloudDownloadIcon />
+          </IconButton>
 
-        <LanguageSelector />
+          <ImportModale
+            open={openImport}
+            close={closeImportModale}
+          />
 
-        <IconButton aria-label="menu" sx={{ mr: 2, display: { color: "white" } }} onClick={handleClickOpen}>
-          < AccountCircleIcon/>
-        </IconButton>
-        <ModalError open={open} />
+          <LanguageSelector />
+
+          <IconButton aria-label="menu" sx={{ mr: 2, display: { color: "white" } }} onClick={handleClickOpen}>
+            < AccountCircleIcon/>
+          </IconButton>
+          <ModalError open={open} />
+        </Grid>
         
       </Toolbar>
     </AppBar>
