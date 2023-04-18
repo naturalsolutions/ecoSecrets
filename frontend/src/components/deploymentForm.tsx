@@ -3,18 +3,16 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import TurnedInNotTwoToneIcon from '@mui/icons-material/TurnedInNotTwoTone'; import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import { Deployments, DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
+import { DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
 import DropzoneComponent from "./dropzoneComponent";
 import SiteModale from "./siteMenu/siteModale";
 import Map from "./Map";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
+import ButtonModify from "./common/buttonModify";
+import ButtonValidate from "./common/buttonValidate";
 
 const deployment_img = undefined;
 
@@ -595,50 +593,30 @@ const DeploymentForm = (
                         disabled={!props.isNewDeployment && !isEditable}
                     />
                 </Paper>
-
-                {!props.isNewDeployment ?
-                    (
-                        <Stack
-                            direction="row"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                            spacing={2}
-                        >
-                            <Button
-                                onClick={handleEdit}
-                                size="small"
-                                variant="contained"
-                                color="secondary"
-                            >
-                                {
-                                    isEditable ? 
-                                    <><CancelIcon />{capitalize(t("main.cancel"))}</> : 
-                                    <><EditIcon />{capitalize(t("main.modify"))}</>
-                                }
-                            </Button>
-                            <Button
-                                onClick={handleSave}
-                                disabled={!isEditable}
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                            >
-                                <SaveIcon />
-                                {capitalize(t("main.save"))}
-                            </Button>
-                        </Stack>
-                    ) : (
-                        <Stack justifyContent="flex-end" direction="row">
-                            <Button
-                                onClick={handleSave}
-                                color="primary"
-                                variant="contained"
-                            >
-                                {capitalize(t("main.save"))}
-                            </Button>
-                        </Stack>
-                    )
-                }
+                
+                <Stack
+                    direction="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    { !props.isNewDeployment &&
+                        <ButtonModify
+                            content={ 
+                                isEditable ? 
+                                <>{capitalize(t("main.cancel"))}</> : 
+                                <>{capitalize(t("main.modify"))}</>
+                            }
+                            edit={ handleEdit }
+                            variant={ isEditable }
+                        />
+                    }
+                    <ButtonValidate 
+                        content={ capitalize(t("main.save")) }
+                        validate={ handleSave }
+                        disabled={ !isEditable }
+                    />
+                </Stack>
             </Stack>
         </form>
     )

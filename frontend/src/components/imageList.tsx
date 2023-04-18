@@ -4,11 +4,13 @@ import "../css/first.css";
 
 import ImageMasonry from "./masonry";
 import Dropzone from "react-dropzone";
-import { Button, Grid, Stack, Typography, capitalize } from "@mui/material";
+import { Grid, Stack, Typography, capitalize } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { useTranslation } from "react-i18next";
+import ButtonCancel from "./common/buttonCancel";
+import ButtonValidate from "./common/buttonValidate";
 
 const ImageList: FC<{}> = () => {
   const { t } = useTranslation()
@@ -80,20 +82,10 @@ const ImageList: FC<{}> = () => {
             direction="row"
             justifyContent="flex-end"
             alignItems="center"
+            spacing={2}
           >
-            <Button 
-              onClick={clear} 
-              color="primary"
-            >
-              {capitalize(t("main.cancel"))}
-            </Button>
-            <Button 
-              variant="contained" 
-              onClick={save} 
-              color="primary"
-            >
-              {capitalize(t("main.save"))}
-            </Button>
+            <ButtonCancel content={ capitalize(t("main.cancel")) } cancel={ clear }/>
+            <ButtonValidate content={ capitalize(t("main.save")) } validate={ save } />
           </Stack>
           <ImageMasonry />
         </Stack>

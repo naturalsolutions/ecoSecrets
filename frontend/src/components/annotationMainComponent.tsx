@@ -252,14 +252,23 @@ const AnnotationMainComponent = () => {
             <TabPanel valueTab={tabValue} index={0}>
               <div className="info-annotation-ctn">
                 {treated ?
-                  <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={capitalize(t("annotations.media_processed_manually"))} stylClassButton="valid" />
-                  : (
+                  <ButtonStatus 
+                    icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} 
+                    title={capitalize(t("annotations.media_processed_manually"))} 
+                    stylClassButton="valid" 
+                  /> : (
                     isAnnoted ?
-                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#FF9800' }} />} title={capitalize(t("observations.not_saved"))} stylClassButton="info" />
-                      :
-                      <ButtonStatus icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} title={capitalize(t("annotations.media_not_processed"))} stylClassButton="warning" />
+                    <ButtonStatus 
+                      icon={<HelpRoundedIcon sx={{ color: '#FF9800' }} />} 
+                      title={capitalize(t("observations.not_saved"))} 
+                      stylClassButton="info" 
+                    /> :
+                    <ButtonStatus 
+                      icon={<HelpRoundedIcon sx={{ color: '#F44336' }} />} 
+                      title={capitalize(t("annotations.media_not_processed"))} 
+                      stylClassButton="warning" 
+                    />
                   )
-
                 }
                 <FormControlLabel
                   control={

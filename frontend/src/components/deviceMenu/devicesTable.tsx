@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertTitle,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -28,6 +27,8 @@ import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ButtonValidate from "../common/buttonValidate";
+import ButtonCancel from "../common/buttonCancel";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -149,10 +150,8 @@ const DevicesTable = () => {
         </DialogContent>
         <Divider />
         <DialogActions>
-          <Button>{capitalize(t("main.yes"))}</Button>
-          <Button onClick={handleClose} color="secondary">
-            {capitalize(t("main.no"))}
-          </Button>
+          <ButtonCancel content={ t('main.no') } cancel={ handleClose } />
+          <ButtonValidate content={ t('main.yes') } validate={ () => { return } } />
         </DialogActions>
       </Dialog>
     </Stack>

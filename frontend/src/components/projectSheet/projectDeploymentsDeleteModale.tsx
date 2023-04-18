@@ -1,10 +1,12 @@
 
 import { useState } from "react";
 import { useMainContext } from '../../contexts/mainContext';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography, capitalize } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { DeploymentsService } from "../../client";
 import { useTranslation } from "react-i18next";
+import ButtonValidate from "../common/buttonValidate";
+import ButtonCancel from "../common/buttonCancel";
 
 
 const ProjectDeploymentDeleteModale = (
@@ -68,8 +70,8 @@ const ProjectDeploymentDeleteModale = (
                 </DialogContent>
                 <Divider />
                 <DialogActions>
-                    <Button onClick={deleteDeployment}>{capitalize(t("main.yes"))}</Button>
-                    <Button onClick={handleCloseDeleteDeployment} color='secondary'>{capitalize(t("main.no"))}</Button>
+                    <ButtonValidate content={ capitalize(t("main.yes")) } validate={ deleteDeployment } />
+                    <ButtonCancel content={ capitalize(t("main.no")) } cancel={ handleCloseDeleteDeployment } />
                 </DialogActions>
             </Dialog>        
         </>

@@ -6,6 +6,9 @@ import { DevicesService, Sites, SitesService} from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
 import { useTranslation } from "react-i18next";
 import Map from "../Map";
+import ButtonValidate from '../common/buttonValidate';
+import ButtonModify from '../common/buttonModify';
+import ButtonCancel from '../common/buttonCancel';
 
 
 const SiteForm = () => {
@@ -158,12 +161,16 @@ const SiteForm = () => {
                     spacing={3}
                     justifyContent='flex-end'
                 >
-                    <Button  onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
-                    { modified ? <>{t('main.cancel')}</> : <>{t('main.modify')}</>}
-                    </Button>
-                    <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
-                        {t('main.save')}
-                    </Button>
+                    <ButtonModify
+                        content={
+                            modified ? 
+                            <>{capitalize(t("main.cancel"))}</> : 
+                            <>{capitalize(t("main.modify"))}</>
+                        }
+                        edit={ handleChange }
+                        variant={ modified }
+                    />
+                    <ButtonValidate content={ capitalize(t("main.save")) } validate={ dialog } disabled={ !modified } />
                     <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>
                         <Typography variant="h6">
@@ -178,8 +185,8 @@ const SiteForm = () => {
                         </DialogContent>
                         <Divider />
                         <DialogActions>
-                        <Button onClick={save} style={{color: "#2FA37C"}}>{t('main.yes')}</Button>
-                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>{t('main.no')}</Button>
+                            <ButtonCancel content={ t('main.no') } cancel={ handleClose } />
+                            <ButtonValidate content={ t('main.yes') } validate={ save } />
                         </DialogActions>
                     </Dialog>
                 </Stack>

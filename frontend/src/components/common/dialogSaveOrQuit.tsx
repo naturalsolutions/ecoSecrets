@@ -1,12 +1,14 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useTranslation } from "react-i18next";
+import ButtonCancel from './buttonCancel';
+import ButtonValidate from './buttonValidate';
 
 export default function AlertDialog(props) {
+    const { t } = useTranslation();
 
     return (
         <div >
@@ -25,10 +27,8 @@ export default function AlertDialog(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.quit}>Non</Button>
-                    <Button onClick={props.save} autoFocus>
-                        Oui
-                    </Button>
+                    <ButtonCancel content={ t('main.no') } cancel={ props.quit } />
+                    <ButtonValidate content={ t('main.yes') } validate={ props.save } />
                 </DialogActions>
             </Dialog>
         </div>
