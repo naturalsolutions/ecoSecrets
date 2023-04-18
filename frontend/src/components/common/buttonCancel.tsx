@@ -6,7 +6,7 @@ export default function ButtonCancel({content, cancel, startIcon="", variant=fal
         <Button 
             startIcon={ startIcon==="add" && <AddIcon/> } 
             color="secondary"
-            variant={ variant ? "outlined" : "contained" }
+            variant={ variant ? "contained" : "outlined" }
             size="small"
             disabled={ disabled }
             onClick={ cancel }
