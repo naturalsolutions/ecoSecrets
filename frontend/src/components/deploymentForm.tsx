@@ -614,7 +614,7 @@ const DeploymentForm = (
                     <ButtonValidate 
                         content={ capitalize(t("main.save")) }
                         validate={ handleSave }
-                        disabled={ !isEditable }
+                        disabled={ !(props.isNewDeployment || isEditable) }
                     />
                 </Stack>
             </Stack>
