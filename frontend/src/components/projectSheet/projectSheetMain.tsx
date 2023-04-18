@@ -120,12 +120,13 @@ const ProjectSheet = () => {
                             <Typography variant="h4" color="#000000" component="div">
                                 {`${capitalize(t("deployments.deployments"))}`} ({projectSheetData.deployments.length})
                             </Typography>
-
-                            <ButtonValidate
-                                content={ capitalize(t("projects.new_deploy")) }
-                                validate={ handleOpenNewDeployment }
-                                startIcon="add"
-                            />
+                            <Grid>
+                                <ButtonValidate
+                                    content={ capitalize(t("projects.new_deploy")) }
+                                    validate={ handleOpenNewDeployment }
+                                    startIcon="add"
+                                />
+                            </Grid>
                             <DeploymentCreationModale 
                                 openNewDeployment={openNewDeployment}
                                 handleCloseNewDeployment={handleCloseNewDeployment}
