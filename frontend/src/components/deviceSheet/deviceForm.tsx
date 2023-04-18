@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton, capitalize } from "@mui/material";
+import { Grid, Stack, TextField, Typography, MenuItem, Dialog, DialogTitle, Divider, DialogContent, Alert, AlertTitle, Collapse, IconButton, capitalize } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
 import { Devices, DevicesService} from '../../client';
@@ -10,7 +10,7 @@ import DropzoneComponent from '../dropzoneComponent';
 import { useTranslation } from 'react-i18next';
 import ButtonModify from '../common/buttonModify';
 import ButtonValidate from '../common/buttonValidate';
-import ButtonCancel from '../common/buttonCancel';
+import DialogYesNo from '../common/dialogYesNo';
 
 const DeviceForm = () => {
     const { t } = useTranslation()
@@ -217,10 +217,7 @@ const DeviceForm = () => {
                             </Typography>
                         </DialogContent>
                         <Divider />
-                        <DialogActions>
-                            <ButtonCancel content={ capitalize(t("main.no")) } cancel={ handleClose } />
-                            <ButtonValidate content={ capitalize(t("main.yes")) } validate={ save } />
-                        </DialogActions>
+                        <DialogYesNo onYes={ save } onNo={ handleClose } />
                     </Dialog>
                 </Stack>
             </Stack>

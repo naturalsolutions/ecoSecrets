@@ -1,11 +1,14 @@
 import { Button } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
-export default function ButtonCancel({content, cancel}) {
+export default function ButtonCancel({content, cancel, startIcon="", variant=false, disabled=false}) {
     return (
         <Button 
-            variant="outlined"
+            startIcon={ startIcon==="add" && <AddIcon/> } 
             color="secondary"
+            variant={ variant ? "outlined" : "contained" }
             size="small"
+            disabled={ disabled }
             onClick={ cancel }
         >
             { content }

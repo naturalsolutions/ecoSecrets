@@ -9,8 +9,7 @@ import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { useTranslation } from "react-i18next";
-import ButtonCancel from "./common/buttonCancel";
-import ButtonValidate from "./common/buttonValidate";
+import ButtonsYesNo from "./common/buttonsYesNo";
 
 const ImageList: FC<{}> = () => {
   const { t } = useTranslation()
@@ -84,8 +83,7 @@ const ImageList: FC<{}> = () => {
             alignItems="center"
             spacing={2}
           >
-            <ButtonCancel content={ capitalize(t("main.cancel")) } cancel={ clear }/>
-            <ButtonValidate content={ capitalize(t("main.save")) } validate={ save } />
+            <ButtonsYesNo onYes={ save } onNo={ clear } />
           </Stack>
           <ImageMasonry />
         </Stack>

@@ -1,12 +1,11 @@
 
 import { useState } from "react";
 import { useMainContext } from '../../contexts/mainContext';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography, capitalize } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { DeploymentsService } from "../../client";
 import { useTranslation } from "react-i18next";
-import ButtonValidate from "../common/buttonValidate";
-import ButtonCancel from "../common/buttonCancel";
+import DialogYesNo from "../common/dialogYesNo";
 
 
 const ProjectDeploymentDeleteModale = (
@@ -69,10 +68,7 @@ const ProjectDeploymentDeleteModale = (
                     </Typography>
                 </DialogContent>
                 <Divider />
-                <DialogActions>
-                    <ButtonValidate content={ capitalize(t("main.yes")) } validate={ deleteDeployment } />
-                    <ButtonCancel content={ capitalize(t("main.no")) } cancel={ handleCloseDeleteDeployment } />
-                </DialogActions>
+                <DialogYesNo onYes={ deleteDeployment } onNo={ handleCloseDeleteDeployment } />
             </Dialog>        
         </>
     )

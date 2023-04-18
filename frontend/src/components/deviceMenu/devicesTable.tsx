@@ -27,8 +27,7 @@ import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import ButtonValidate from "../common/buttonValidate";
-import ButtonCancel from "../common/buttonCancel";
+import DialogYesNo from "../common/dialogYesNo";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -149,10 +148,7 @@ const DevicesTable = () => {
           <Typography>{capitalize(t("main.unavailable"))}</Typography>
         </DialogContent>
         <Divider />
-        <DialogActions>
-          <ButtonCancel content={ t('main.no') } cancel={ handleClose } />
-          <ButtonValidate content={ t('main.yes') } validate={ () => { return } } />
-        </DialogActions>
+        <DialogYesNo onYes={ () => { return } } onNo={ handleClose } />
       </Dialog>
     </Stack>
   ) : (
