@@ -36,7 +36,9 @@ def read_deployment(deployment_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=Deployments)
-def create_deployment(new_deployment: NewDeploymentWithTemplateSequence, db: Session = Depends(get_db)):
+def create_deployment(
+    new_deployment: NewDeploymentWithTemplateSequence, db: Session = Depends(get_db)
+):
     db_deployment = deployment.get_deployment_by_name(db, name_deployment=new_deployment.name)
     if db_deployment:
         raise HTTPException(status_code=400, detail="Name already registered")

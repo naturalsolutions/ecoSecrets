@@ -34,15 +34,13 @@ def create_deployment(db: Session, deployment: NewDeploymentWithTemplateSequence
     for template in create_data[field]:
         if "id" in template and template["id"] is not None:
             existing_template = (
-                db.query(TemplateSequence)
-                .filter(TemplateSequence.id == template["id"])
-                .one()
+                db.query(TemplateSequence).filter(TemplateSequence.id == template["id"]).one()
             )
             tmp_deployment[field].append(existing_template)
         if "id" in template and template["id"] is None:
             tmp_deployment[field].append(TemplateSequence(**template))
 
-    db_deployment = Deployments(**tmp_deployment) 
+    db_deployment = Deployments(**tmp_deployment)
     db.add(db_deployment)
     db.commit()
     db.refresh(db_deployment)
