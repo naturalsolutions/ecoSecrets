@@ -5,10 +5,10 @@ from sqlmodel import Session
 
 from src.connectors.database import get_db
 from src.models.deployment import (
-    DeploymentBase,
     Deployments,
     DeploymentWithFile,
     DeploymentWithTemplateSequence,
+    NewDeploymentWithTemplateSequence,
     ReadDeployment,
 )
 from src.services import deployment
@@ -36,7 +36,7 @@ def read_deployment(deployment_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=Deployments)
-def create_deployment(new_deployment: DeploymentBase, db: Session = Depends(get_db)):
+def create_deployment(new_deployment: NewDeploymentWithTemplateSequence, db: Session = Depends(get_db)):
     db_deployment = deployment.get_deployment_by_name(db, name_deployment=new_deployment.name)
     if db_deployment:
         raise HTTPException(status_code=400, detail="Name already registered")
