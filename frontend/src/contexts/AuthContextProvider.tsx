@@ -1,6 +1,7 @@
 import { KeycloakInitOptions } from "keycloak-js";
 import { createContext, useEffect, useState } from "react";
 import keycloak from "../keycloak";
+import { OpenAPI } from "../client";
 
 /**
  * KeycloakInitOptions configures the Keycloak client.
@@ -124,6 +125,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
 
     // Only load the profile if a user is authenticated
     if (isAuthenticated) {
+      OpenAPI.TOKEN = keycloak.token
       loadProfile();
     }
   }, [isAuthenticated]);
