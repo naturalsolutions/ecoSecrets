@@ -16,7 +16,7 @@ export default function ProjectModal(props) {
     const { t } = useTranslation()
     const { updateProjects, setCurrentProject, updateProjectSheetData } = useMainContext();
     const [open, setOpen] = useState(false);
-    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1 });
+    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: ''});
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
@@ -46,7 +46,7 @@ export default function ProjectModal(props) {
 
     const handleClose = () => {
         setOpen(false);
-        setProjectData({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1 });
+        setProjectData({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: ''});
         setStartDate(null);
         setEndDate(null);
     };
