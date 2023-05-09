@@ -39,6 +39,7 @@ def test_create_deployment(client, site, device, project):
         "feature": "feature",
         "description": "desc",
         "project_id": project.id,
+        "template_sequences": [],
     }
 
     response = client.post(url, json=deployment)

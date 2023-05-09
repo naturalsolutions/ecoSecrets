@@ -2,14 +2,14 @@ from datetime import datetime
 
 import pytest
 
-from src.models.deployment import DeploymentBase, Deployments
+from src.models.deployment import Deployments, NewDeploymentWithTemplateSequence
 from src.services.deployment import create_deployment
 
 
 @pytest.fixture()
 def deployment(db, device, project, site) -> Deployments:
     date = datetime.now()
-    data = DeploymentBase(
+    data = NewDeploymentWithTemplateSequence(
         name="1er deployment",
         start_date=date.isoformat(),
         end_date=date.isoformat(),
@@ -19,7 +19,7 @@ def deployment(db, device, project, site) -> Deployments:
         feature="feature",
         description="desc",
         project_id=project.id,
-        # template_sequence_id= Optional[int]
+        template_sequences=[]
     )
 
     return create_deployment(db=db, deployment=data)
