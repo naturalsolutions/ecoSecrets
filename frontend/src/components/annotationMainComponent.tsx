@@ -252,7 +252,7 @@ const AnnotationMainComponent = () => {
             </Tabs>
 
             <TabPanel valueTab={tabValue} index={0}>
-              <div className="info-annotation-ctn">
+              <span className="info-annotation-ctn">
                 {treated ?
                   <ButtonStatus icon={<CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} />} title={capitalize(t("annotations.media_processed_manually"))} stylClassButton="valid" />
                   : (
@@ -271,9 +271,7 @@ const AnnotationMainComponent = () => {
                   }
                   label={capitalize(t("annotations.empty_media"))}
                 />
-              </div >
-
-              <Divider />
+              </span>
 
               {
                 observations.map((observation) => (
