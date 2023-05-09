@@ -120,7 +120,9 @@ const AnnotationMainComponent = () => {
         updateUrl(files[ind + 1].id);
       }
     });
+    setIsMinimalObservation(true);
   };
+
   const lastOrFirstImage = (indice) => {
     if (indice == 'first') {
       setCurrentImage(files[0].id);
