@@ -1,0 +1,31 @@
+name: Format
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: "${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: isort/isort-action@v1.1.0
+        with:
+          configuration: api/ --check-only
+  black:
+    runs-on: ubuntu-latest
+    container:
+      image: cytopia/black
+      options: "--entrypoint /bin/ash"
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - run: python3 -m black --check --diff api/
