@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["dev"]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build_api_development:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build --target development -t ${IMAGE_NAME}:api-dev ./api
