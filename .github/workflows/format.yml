@@ -2,7 +2,6 @@ name: Format
 
 on:
   push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -19,13 +18,8 @@ jobs:
           sort-paths: api/
   black:
     runs-on: ubuntu-latest
-    container:
-      image: cytopia/black
-      options: "--entrypoint /bin/ash"
-    timeout-minutes: 60
     steps:
-    - uses: actions/checkout@v3.5.0
-      with:
-        fetch-depth: 20
-        lfs: true
-    - run: python3 -m black --check --diff api/
+      - uses: actions/checkout@v3
+      - uses: psf/black@stable
+        with:
+          src: api/
