@@ -60,6 +60,11 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
+      args:
+          REACT_APP_KEYCLOAK_CLIENT_URL: ${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
+          REACT_APP_KEYCLOAK_CLIENT_REALM: ${KEYCLOAK_REALM_ID:-geonature-annotation}
+          REACT_APP_KEYCLOAK_CLIENT_CLIENT_ID: ${KEYCLOAK_CLIENT_CLIENT_ID:-frontend}
+          REACT_APP_API_PATH: ${API_ROOT_PATH-/api/v1}
     depends_on:
       api:
         condition: service_healthy
@@ -68,7 +73,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 60s
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND-PathPrefix(`/`)}
@@ -105,7 +110,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 60s
+      start_period: 80s
     depends_on:
       db:
         condition: service_healthy
