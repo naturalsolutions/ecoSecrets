@@ -67,7 +67,6 @@ interface AuthContextProviderProps {
  * @param props
  */
 const AuthContextProvider = (props: AuthContextProviderProps) => {
-  console.log("rendering AuthContextProvider");
 
   // Create the local state in which we will keep track if a user is authenticated
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
@@ -80,24 +79,18 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
      * Initialize the Keycloak instance
      */
     async function initializeKeycloak() {
-      console.log("initialize Keycloak");
       try {
         const isAuthenticatedResponse = await keycloak.init(
           keycloakInitOptions
         );
         // If the authentication was not successfull the user is send back to the Keycloak login form
         if (!isAuthenticatedResponse) {
-          console.log(
-            "user is not yet authenticated. forwarding user to login."
-          );
           keycloak.login();
         }
         // If we get here the user is authenticated and we can update the state accordingly
-        console.log("user already authenticated");
         OpenAPI.TOKEN = keycloak.token
         setAuthenticated(isAuthenticatedResponse);
       } catch (err) {
-        console.log("error initializing Keycloak: ", err);
         setAuthenticated(false);
         throw err;
       }
