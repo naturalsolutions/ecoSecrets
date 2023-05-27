@@ -94,6 +94,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
         }
         // If we get here the user is authenticated and we can update the state accordingly
         console.log("user already authenticated");
+        OpenAPI.TOKEN = keycloak.token
         setAuthenticated(isAuthenticatedResponse);
       } catch (err) {
         console.log("error initializing Keycloak: ", err);
