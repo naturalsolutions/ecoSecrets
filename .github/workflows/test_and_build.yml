@@ -1,4 +1,4 @@
-name: Build Images
+name: Code (test and build)
 
 on:
   push:
@@ -10,7 +10,13 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  test_api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: "./scripts/test-ci.sh"
   build_api:
+    needs: test_api
     runs-on: ubuntu-latest
     permissions:
       contents: read
