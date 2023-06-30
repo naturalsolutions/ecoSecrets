@@ -1,7 +1,7 @@
 import { VerticalAlignBottom } from "@mui/icons-material";
 import { Alert, Snackbar } from "@mui/material";
 import React, { createContext, FC, useContext, useState } from "react";
-import { Snack } from "../client/models/Snack";
+import { Snack } from "../components/common/snack";
 
 
 export interface SnackContextProps {
