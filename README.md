@@ -100,8 +100,26 @@ http://localhost:8133
 
 ```
 
-## Planned work
+## Contributing
 
-- [ ] Use AI to help treating media on the fly
-- [ ] Use keycloak to manage users and their rights
-- [ ] Many other things!
+To contribute to this project, please fork and create a pull request, describing the new functionality or bug fixed. Please link to an issue if relevant.
+We use 'black' and 'isort' for Python code-formatting, this is checked via a GitHub action.
+
+## Licence
+
+GeoCam  
+Copyright (C) 2023 Natural Solutions
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
