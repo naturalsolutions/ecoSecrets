@@ -17,16 +17,50 @@ const Label = styled(Paper)(({ theme }) => ({
   borderBottomRightRadius: 0,
 }));
 
+const thumbnailStyle = {
+  borderBottomLeftRadius: 4,
+  borderBottomRightRadius: 4,
+  display: "block",
+  width: "100%"
+}
+
 export default function ImageMasonry() {
   const { files } = useMainContext();
 
   let navigate = useNavigate();
   const { t } = useTranslation();
 
-  const displayImg = (id: string) => {
+  const displayMedia = (id: string) => {
     navigate(`${id}`);
   };
 
+  const displayThumbnail = (item) => {
+    if (item.extension.includes("image")) {
+        return (
+          <img
+            src={`${item.url}`}
+            alt={item.name}
+            loading="lazy"
+            onClick={() => displayMedia(item.id)}
+            style={thumbnailStyle}
+          />
+        )
+    }
+    else {
+      return (
+          <video
+            style={thumbnailStyle}
+            onClick={() => displayMedia(item.id)}
+          >
+              <source 
+                  src={`${item.url}#t=1`} // t value can be ajusted to display a specific start time as video thumbnail
+                  type="video/mp4"
+              />
+              {item.name}
+          </video>
+      )
+    };
+};
 
   return (
     <Box sx={{ width: "100%", minHeight: 829, paddingTop: "2vh" }}>
@@ -38,18 +72,7 @@ export default function ImageMasonry() {
             borderRadius: "5px",
             borderColor: item.treated ? "green" : "red"
           }}>
-            <img
-              src={`${item.url}`}
-              alt={item.name}
-              loading="lazy"
-              onClick={() => displayImg(item.id)}
-              style={{
-                borderBottomLeftRadius: 4,
-                borderBottomRightRadius: 4,
-                display: "block",
-                width: "100%"
-              }}
-            />
+            {displayThumbnail(item)}
           </div>
         ))}
       </Masonry>
