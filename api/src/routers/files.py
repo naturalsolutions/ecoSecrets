@@ -17,6 +17,7 @@ from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files
 from src.schemas.schemas import Annotation
 from src.services import dependencies, files
+from src.utils import check_mime
 
 router = APIRouter(
     prefix="/files",
@@ -84,14 +85,22 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
 
 @router.post("/upload/{deployment_id}")
 def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    import magic
+    
     hash = dependencies.generate_checksum(file)
-    ext = file.filename.split(".")[1]
+
+    mime = magic.from_buffer(file.file.read(), mime=True)
+    file.file.seek(0)
+
+    if not check_mime(mime):
+        raise HTTPException(status_code=400, detail="Invalid type file")
+
     insert = files.upload_file(
         db=db,
         hash=hash,
         new_file=file.file,
         filename=file.filename,
-        ext=ext,
+        ext=mime,
         deployment_id=deployment_id,
     )
     return insert
