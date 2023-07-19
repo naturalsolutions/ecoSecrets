@@ -3,12 +3,47 @@ import { Box, Grid, capitalize } from "@mui/material";
 import AnnotationImageNavigation from "./annotationImageNavigation";
 import { useTranslation } from "react-i18next";
 
+const mediaDisplayStyle = {
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    display: "block",
+    height: "fit-content",
+    maxWidth: "100%",
+};
 
 const AnnotationImageDisplay = (
     props
 ) => {
     const { t } = useTranslation()
     const [isAnnotedColor, setIsAnnoted] = useState<string>("")
+
+    const displayMedia = (image) => {
+        if (image.extension.includes("image")) {
+            return (
+                <img
+                    src={image.url}
+                    alt={image.name}
+                    loading="lazy"
+                    style={mediaDisplayStyle}
+                />
+            )
+        }
+        else {
+            return (
+                <video
+                    src={image.url}
+                    style={mediaDisplayStyle}
+                    controls
+                    autoPlay
+                >
+                    <source 
+                        type="video/mp4"
+                    />
+                    {image.name}
+                </video>
+            )
+        }
+    };
 
     useEffect(() => {
         (async () => {
@@ -26,18 +61,7 @@ const AnnotationImageDisplay = (
                         borderColor: isAnnotedColor,
                         marginTop: "2vh"
                     }}>
-                        <img
-                            src={`${props.image.url}`}
-                            alt={props.image.name}
-                            loading="lazy"
-                            style={{
-                                borderBottomLeftRadius: 4,
-                                borderBottomRightRadius: 4,
-                                display: "block",
-                                height: "fit-content",
-                                maxWidth: "100%",
-                            }}
-                        />
+                        {displayMedia(props.image)}
                     </Box>
                     <div className="groupNumber">
                         <AnnotationImageNavigation
