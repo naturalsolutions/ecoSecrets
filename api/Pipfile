@@ -17,6 +17,7 @@ exif = "*"
 pillow = "*"
 alembic = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
+python-magic = "*"
 
 [dev-packages]
 httpx = ">=0.23.0"
