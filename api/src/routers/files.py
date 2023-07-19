@@ -17,7 +17,7 @@ from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files
 from src.schemas.schemas import Annotation
 from src.services import dependencies, files
-from src.utils import check_mime
+from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(
     prefix="/files",
@@ -38,11 +38,6 @@ router = APIRouter(
 #     if db_file is None:
 #         raise HTTPException(status_code=404, detail="File not found")
 #     return db_file
-
-
-def file_as_bytes(file):
-    with file:
-        return file.read()
 
 
 @router.get("/")

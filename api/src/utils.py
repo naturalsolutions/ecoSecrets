@@ -1,5 +1,9 @@
 
 
+def file_as_bytes(file):
+    with file:
+        return file.read()
+
 # Authorized mime types
 authorized_mime = [
     "video/mp4",

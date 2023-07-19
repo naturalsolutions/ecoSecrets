@@ -13,6 +13,7 @@ from src.models.file import CreateFiles, Files
 
 # import schemas.schemas
 from src.schemas.schemas import Annotation
+from src.utils import file_as_bytes
 
 # async def stockage_image(file):
 #     try :
@@ -25,11 +26,6 @@ from src.schemas.schemas import Annotation
 #         await file.close()
 
 #     return {"message": f"Successfuly uploaded {file.filename}"}
-
-
-def file_as_bytes(file):
-    with file:
-        return file.read()
 
 
 def get_hash(file):
