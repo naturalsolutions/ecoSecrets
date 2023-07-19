@@ -21,7 +21,6 @@ def test_upload_files(
 
 
 def test_update_annotations(client, file_object, db):
-
     url = app.url_path_for("update_annotations", file_id=file_object.id)
 
     annotations = [

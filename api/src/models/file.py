@@ -21,7 +21,6 @@ class BaseFiles(SQLModel):
 
     @property
     def minio_filename(self):
-
         return f"{self.hash}.{self.extension}"
 
     # url: str
