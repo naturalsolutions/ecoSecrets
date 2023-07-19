@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 import "../css/first.css";
 
-import ImageMasonry from "./masonry";
+import MediaGallery from "./mediaGallery";
 import Dropzone from "react-dropzone";
 import { Button, Grid, Stack, Typography, capitalize } from "@mui/material";
 import { useParams } from "react-router-dom";
@@ -95,7 +95,7 @@ const ImageList: FC<{}> = () => {
               {capitalize(t("main.save"))}
             </Button>
           </Stack>
-          <ImageMasonry />
+          <MediaGallery />
         </Stack>
       ) : (
         <Stack>
