@@ -1,11 +1,11 @@
-import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Button, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import { DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
+import { DeploymentsService, DeploymentWithTemplateSequence } from "../client";
 import DropzoneComponent from "./dropzoneComponent";
 import SiteModale from "./siteMenu/siteModale";
 import Map from "./Map";
@@ -16,27 +16,24 @@ import ButtonValidate from "./common/buttonValidate";
 
 const deployment_img = undefined;
 
+const supportList = ["Support type 1", "Support type 2"]
+const featureList = ["Arbre fruitier", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
+const baitList = ["Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z", "None"]
+
 const DeploymentForm = (
     props
 ) => {
 
     const { setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates } = useMainContext();
     let params = useParams();
-    const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
+    const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWith
+    
+    >({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
     const { t } = useTranslation();
-    const supportList = ["Support type 1", "Support type 2"]
-    const featureList = ["Arbre fruitier", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
-    const baitList = ["Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z", "None"]
 
     const [siteName, setSiteName] = useState<string>('');
     const [deviceName, setDeviceName] = useState<string>('');
     const [isEditable, setIsEditable] = useState(false);
-
-    const [AutomaticImgNb, setAutomaticImgNb] = useState(0);
-    const [AutomaticFrequency, setAutomaticFrequency] = useState(0);
-
-    const [triggerImgNb, setTriggerImgNb] = useState(0);
-    const [triggerFrequency, setTriggerFrequency] = useState(0);
 
     const [automatic, setAutomatic] = useState({ isAutomatic: false, imageNumber: 0, frequency: 0 });
     const [trigger, setTrigger] = useState({ isTrigger: false, imageNumber: 0, frequency: 0 });
@@ -85,19 +82,15 @@ const DeploymentForm = (
     }, [tmpDeploymentData?.device_id]);
 
     useEffect(() => {
-        setAutomaticFrequency(automatic?.frequency)
-        setAutomaticImgNb(automatic?.imageNumber)
-        setTriggerFrequency(trigger?.frequency)
-        setTriggerImgNb(trigger?.imageNumber)
-    }, [tmpDeploymentData]);
+        let tmpDevice = devices.find((d) => d.id === tmpDeploymentData?.device_id)?.name;
+        setDeviceName(tmpDevice);
+    }, [tmpDeploymentData?.device_id]);
 
 
     const handleFormChange = (
         params: string,
         value: number | string
     ) => {
-        console.log(value);
-
         let updated_deployment_data = { ...tmpDeploymentData };
         updated_deployment_data[params] = value;
         setTmpDeploymentData(updated_deployment_data);
@@ -163,23 +156,35 @@ const DeploymentForm = (
 
         if (props.isNewDeployment) {
             // POST
+            console.log(tmpDeploymentData);
             DeploymentsService
                 .createDeploymentDeploymentsPost(tmpDeploymentData)
                 .then(() => {
                     updateProjectSheetData();
                     props.handleCloseNewDeployment();
+                    updateAutoTemplates();
+                    updateTriggerTemplates();
                 })
                 .catch((err) => {
+                    console.log("Error during deployment creation");
                     console.log(err);
                 });
         }
         else {
             // PUT
-            DeploymentsService.
-                updateDeploymentDeploymentsDeploymentIdPut(tmpDeploymentData);
-            setDeploymentData(tmpDeploymentData);
-            setCurrentDeployment(Number(params.deploymentId));
-            isEditable ? setIsEditable(false) : setIsEditable(true);
+            DeploymentsService
+                .updateDeploymentDeploymentsDeploymentIdPut(tmpDeploymentData)
+                .then(() => {
+                    setDeploymentData(tmpDeploymentData);
+                    setCurrentDeployment(Number(params.deploymentId));
+                    isEditable ? setIsEditable(false) : setIsEditable(true);
+                    updateAutoTemplates();
+                    updateTriggerTemplates();
+                })
+                .catch((err) => {
+                    console.log("Error during deployment update");
+                    console.log(err);
+                });
         }
     };
 
@@ -198,28 +203,23 @@ const DeploymentForm = (
         };
     };
 
-    const handleValueModeAutomaticImgNb = (param: string, value: string) => {
-        setAutomaticImgNb(parseInt(value))
-        automatic.imageNumber = parseInt(value);
-        setAutomatic(automatic);
-    };
-
-    const handleValueModeAutomaticFrequency = (param: string, value: string) => {
-        setAutomaticFrequency(parseFloat(value))
-        automatic.frequency = parseFloat(value);
-        setAutomatic(automatic);
-    };
-
-    const handleValueModeTriggerImgNb = (param: string, value: string) => {
-        setTriggerImgNb(parseInt(value))
-        trigger.imageNumber = parseInt(value);
-        setTrigger(trigger);
-    };
-
-    const handleValueModeTriggerFrequency = (param: string, value: string) => {
-        setTriggerFrequency(parseFloat(value))
-        trigger.frequency = parseFloat(value);
-        setTrigger(trigger);
+    const handleValueMode = (param: string, value: number) => {
+        if (param === "autoImgNb") {
+            setAutomatic({ ...automatic, imageNumber: value });
+            return;
+        }
+        if (param === "triggerImgNb") {
+            setTrigger({ ...trigger, imageNumber: value });
+            return;
+        }
+        if (param === "autoFreq") {
+            setAutomatic({ ...automatic, frequency: value });
+            return;
+        }
+        if (param === "triggerFreq") {
+            setTrigger({ ...trigger, frequency: value });
+            return;
+        }
     };
 
     return (
@@ -267,8 +267,6 @@ const DeploymentForm = (
                                     size="small"
                                     variant="filled"
                                     fullWidth
-                                // error={tmpDeploymentData?.name === ""}
-                                // helperText={tmpDeploymentData?.name === "" &&"Champs requis"}
                                 />
                             </Grid>
                         }
@@ -415,10 +413,10 @@ const DeploymentForm = (
                         <Grid item xs={12} sm={12} md={6} lg={6}>
                             <TextField
                                 id="height"
-                                label={!isEditable && tmpDeploymentData?.height ? `${capitalize(t("deployments.height"))} : ${tmpDeploymentData?.height}` : `${capitalize(t("deployments.height"))}`}
+                                label={`${capitalize(t("deployments.height"))}`}
                                 name="height"
-                                value={isEditable ? tmpDeploymentData?.height : ""}
-                                onChange={(e) => handleFormChange("height", e.target.value)}
+                                value={Number(tmpDeploymentData?.height) || ""}
+                                onChange={(e) => handleFormChange("height", Number(e.target.value))}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">cm</InputAdornment>
@@ -486,9 +484,9 @@ const DeploymentForm = (
 
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && automatic?.imageNumber ? `${capitalize(t("deployments.img_nb"))} : ${automatic?.imageNumber}` : `${capitalize(t("deployments.img_nb"))}`}
-                                        value={isEditable ? AutomaticImgNb : ""}
-                                        onChange={(e) => handleValueModeAutomaticImgNb("imageNumber", e.target.value)}
+                                        label={`${capitalize(t("deployments.img_nb"))}`}
+                                        value={Number(automatic.imageNumber) || ""}
+                                        onChange={(e) => handleValueMode("autoImgNb", Number(e.target.value))}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -504,9 +502,9 @@ const DeploymentForm = (
 
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && automatic?.frequency ? `${capitalize(t("deployments.frequency"))} : ${automatic?.frequency}` : `${capitalize(t("deployments.frequency"))}`}
-                                        value={isEditable ? AutomaticFrequency : ""}
-                                        onChange={(e) => handleValueModeAutomaticFrequency("frequency", e.target.value)}
+                                        label={`${capitalize(t("deployments.frequency"))}`}
+                                        value={Number(automatic.frequency) || ""}
+                                        onChange={(e) => handleValueMode("autoFreq", Number(e.target.value))}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
@@ -542,9 +540,9 @@ const DeploymentForm = (
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && trigger?.imageNumber ? `${capitalize(t("deployments.img_nb"))} : ${trigger?.imageNumber}` : `${capitalize(t("deployments.img_nb"))}`}
-                                        value={isEditable ? triggerImgNb : ""}
-                                        onChange={(e) => handleValueModeTriggerImgNb("imageNumber", e.target.value)}
+                                        label={`${capitalize(t("deployments.img_nb"))}`}
+                                        value={Number(trigger.imageNumber) || ""}
+                                        onChange={(e) => handleValueMode("triggerImgNb", Number(e.target.value))}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -558,9 +556,9 @@ const DeploymentForm = (
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && trigger?.frequency ? `${capitalize(t("deployments.frequency"))} : ${trigger?.frequency}` : `${capitalize(t("deployments.frequency"))}`}
-                                        value={isEditable ? triggerFrequency : ""}
-                                        onChange={(e) => handleValueModeTriggerFrequency("frequency", e.target.value)}
+                                        label={`${capitalize(t("deployments.frequency"))}`}
+                                        value={Number(trigger.frequency) || ""}
+                                        onChange={(e) => handleValueMode("triggerFreq", Number(e.target.value))}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
@@ -593,7 +591,7 @@ const DeploymentForm = (
                         disabled={!props.isNewDeployment && !isEditable}
                     />
                 </Paper>
-                
+              
                 <Stack
                     direction="row"
                     justifyContent="flex-end"

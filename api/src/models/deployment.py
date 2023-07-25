@@ -60,6 +60,10 @@ class DeploymentWithTemplateSequence(ReadDeployment):
     template_sequences: Optional[List[TemplateSequence]]
 
 
+class NewDeploymentWithTemplateSequence(DeploymentBase):
+    template_sequences: Optional[List[TemplateSequence]]
+
+
 class DeploymentForProjectSheet(DeploymentEssentials):
     id: int
     site_name: Optional[str]
