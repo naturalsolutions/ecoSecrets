@@ -1,10 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, capitalize } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import ImportForm from "./importForm";
 import { useMainContext } from "../contexts/mainContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FilesService } from "../client";
 import { useTranslation } from "react-i18next";
+import ButtonValidate from "./common/buttonValidate";
 
 
 const ImportModale = (
@@ -65,11 +66,7 @@ const ImportModale = (
                 />
             </DialogContent>
             <DialogActions>
-                <Button
-                    onClick={saveImport}
-                >
-                   {capitalize(t("main.save"))}
-                </Button>
+                <ButtonValidate content={ capitalize(t("main.save")) } validate={ saveImport } />
             </DialogActions>
         </Dialog>
     );

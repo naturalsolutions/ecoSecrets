@@ -8,6 +8,9 @@ import { useMainContext } from '../../contexts/mainContext';
 import { ProjectSheet, ProjectsService } from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
 import { useTranslation } from 'react-i18next';
+import ButtonModify from '../common/buttonModify';
+import ButtonValidate from '../common/buttonValidate';
+import ButtonCancel from '../common/buttonCancel';
 
 const ProjectForm = () => {
     const { t } = useTranslation()
@@ -195,14 +198,18 @@ const ProjectForm = () => {
                 direction='row'
                 spacing={3}
                 justifyContent='flex-end'
-            >
-                <Button onClick={handleChange} variant="contained" color='primary'>
-                    {modified ? <>{capitalize(t("main.cancel"))}</> : <>{capitalize(t("main.modify"))}</>}
-                </Button>
-                <Button disabled={!modified} onClick={dialog} variant="contained" color='secondary'>
-                    {capitalize(t("main.save"))}
-                </Button>
-
+            >   
+                <ButtonModify
+                    content={
+                        modified ? 
+                        <>{capitalize(t("main.cancel"))}</> : 
+                        <>{capitalize(t("main.modify"))}</>
+                    }
+                    edit={ handleChange }
+                    variant={ modified }
+                />
+                <ButtonValidate content={ capitalize(t("main.save")) } validate={ dialog } disabled={ !modified } />
+                
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>
                         <Typography variant="h6">
@@ -217,8 +224,8 @@ const ProjectForm = () => {
                     </DialogContent>
                     <Divider />
                     <DialogActions>
-                        <Button onClick={save} >{capitalize(t("main.yes"))}</Button>
-                        <Button onClick={handleClose} color='secondary'>{capitalize(t("main.no"))}</Button>
+                        <ButtonCancel content={ t('main.no') } cancel={ handleClose } />
+                        <ButtonValidate content={ t('main.yes') } validate={ save } />
                     </DialogActions>
                 </Dialog>
             </Stack>

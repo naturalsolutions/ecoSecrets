@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertTitle,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -28,6 +27,7 @@ import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import DialogYesNo from "../common/dialogYesNo";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -148,12 +148,7 @@ const DevicesTable = () => {
           <Typography>{capitalize(t("main.unavailable"))}</Typography>
         </DialogContent>
         <Divider />
-        <DialogActions>
-          <Button>{capitalize(t("main.yes"))}</Button>
-          <Button onClick={handleClose} color="secondary">
-            {capitalize(t("main.no"))}
-          </Button>
-        </DialogActions>
+        <DialogYesNo onYes={ () => { return } } onNo={ handleClose } />
       </Dialog>
     </Stack>
   ) : (

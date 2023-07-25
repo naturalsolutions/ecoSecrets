@@ -6,6 +6,8 @@ import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Map from "../Map";
 import { Grid } from "@mui/material";
+import ButtonValidate from "../common/buttonValidate";
+import ButtonCancel from "../common/buttonCancel";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -112,8 +114,8 @@ const SitesTable = () => {
           </DialogContent>
           <Divider />
           <DialogActions>
-            <Button >{capitalize(t('main.yes'))}</Button>
-            <Button onClick={handleClose} color='secondary'>{capitalize(t('main.no'))}</Button>
+            <ButtonCancel content={ capitalize(t('main.no')) } cancel={ handleClose } />
+            <ButtonValidate content={ capitalize(t('main.yes')) } validate={ () => { return } }/>
           </DialogActions>
       </Dialog>
     </Stack> : 
