@@ -26,9 +26,7 @@ const DeploymentForm = (
 
     const { setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates } = useMainContext();
     let params = useParams();
-    const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWith
-    
-    >({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
+    const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
     const { t } = useTranslation();
 
     const [siteName, setSiteName] = useState<string>('');
