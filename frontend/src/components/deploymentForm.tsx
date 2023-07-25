@@ -11,6 +11,8 @@ import SiteModale from "./siteMenu/siteModale";
 import Map from "./Map";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
+import ButtonModify from "./common/buttonModify";
+import ButtonValidate from "./common/buttonValidate";
 
 const deployment_img = undefined;
 
@@ -24,7 +26,9 @@ const DeploymentForm = (
 
     const { setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates } = useMainContext();
     let params = useParams();
-    const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
+    const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWith
+    
+    >({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
     const { t } = useTranslation();
 
     const [siteName, setSiteName] = useState<string>('');
@@ -587,49 +591,30 @@ const DeploymentForm = (
                         disabled={!props.isNewDeployment && !isEditable}
                     />
                 </Paper>
-
-                {!props.isNewDeployment ?
-                    (
-                        <Stack
-                            direction="row"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                            spacing={2}
-                        >
-                            <Button
-                                onClick={handleEdit}
-                                size="small"
-                                variant="contained"
-                                color="secondary"
-                            >
-                                {
-                                    isEditable ? 
-                                    <>{capitalize(t("main.cancel"))}</> : 
-                                    <>{capitalize(t("main.modify"))}</>
-                                }
-                            </Button>
-                            <Button
-                                onClick={handleSave}
-                                disabled={!isEditable}
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                            >
-                                {capitalize(t("main.save"))}
-                            </Button>
-                        </Stack>
-                    ) : (
-                        <Stack justifyContent="flex-end" direction="row">
-                            <Button
-                                onClick={handleSave}
-                                color="primary"
-                                variant="contained"
-                            >
-                                {capitalize(t("main.save"))}
-                            </Button>
-                        </Stack>
-                    )
-                }
+              
+                <Stack
+                    direction="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    { !props.isNewDeployment &&
+                        <ButtonModify
+                            content={ 
+                                isEditable ? 
+                                <>{capitalize(t("main.cancel"))}</> : 
+                                <>{capitalize(t("main.modify"))}</>
+                            }
+                            edit={ handleEdit }
+                            variant={ isEditable }
+                        />
+                    }
+                    <ButtonValidate 
+                        content={ capitalize(t("main.save")) }
+                        validate={ handleSave }
+                        disabled={ !(props.isNewDeployment || isEditable) }
+                    />
+                </Stack>
             </Stack>
         </form>
     )

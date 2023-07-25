@@ -7,7 +7,6 @@ from src.models.file import Files
 from src.models.models import DeploymentTemplateSequenceCorrespondance, TemplateSequence
 
 if TYPE_CHECKING:  # pragma: no cover
-
     from .project import Projects
 
 
