@@ -23,3 +23,9 @@ jobs:
       - uses: psf/black@stable
         with:
           src: api/
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actionsx/prettier@v2
+        with:
+          args: --check ./frontend/src/
