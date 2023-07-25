@@ -8,7 +8,7 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useMainContext } from "../contexts/mainContext";
 import { ProjectBase, ProjectsService } from "../client";
-import { Snack } from "../client/models/Snack";
+import { Snack } from "./common/snack";
 import { useSnackContext } from "../contexts/snackContext";
 import { useTranslation } from "react-i18next";
 import ButtonValidate from "./common/buttonValidate";
