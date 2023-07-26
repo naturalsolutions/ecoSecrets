@@ -3,7 +3,7 @@ name: Check Style (API)
 on:
   push:
     paths:
-      - api/
+      - api/*
   workflow_dispatch:
   pull_request:
 

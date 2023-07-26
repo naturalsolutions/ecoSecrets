@@ -3,7 +3,7 @@ name: Check Style (frontend)
 on:
   push:
     paths:
-      - frontend/
+      - frontend/*
   workflow_dispatch:
   pull_request:
 
