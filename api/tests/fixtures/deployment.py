@@ -19,7 +19,7 @@ def deployment(db, device, project, site) -> Deployments:
         feature="feature",
         description="desc",
         project_id=project.id,
-        template_sequences=[]
+        template_sequences=[],
     )
 
     return create_deployment(db=db, deployment=data)
