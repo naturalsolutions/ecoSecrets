@@ -1,12 +1,11 @@
 name: Test (API)
 
 on:
-  push:
-    branches: ["dev"]
-    paths:
-      - api/
+  workflow_run:
+    workflows: [Check Style (API)]
+    types:
+      - completed
   workflow_dispatch:
-  pull_request:
 
 env:
   REGISTRY: ghcr.io
