@@ -1,4 +1,4 @@
-name: API (check style)
+name: Check Style (API)
 
 on:
   push:

@@ -1,0 +1,20 @@
+name: Test (API)
+
+on:
+  push:
+    branches: ["dev"]
+    paths:
+      - api/
+  workflow_dispatch:
+  pull_request:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test_api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: "./scripts/test-ci.sh"
