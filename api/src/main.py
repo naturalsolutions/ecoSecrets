@@ -49,6 +49,7 @@ app.add_middleware(
 )
 idp.add_swagger_config(app)
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello Bigger Applications!"}
