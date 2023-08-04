@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,7 +9,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import ImportModale from "./importModale";
 import { Link } from "react-router-dom";
-import ModalError from "./modalError";
 import { Button, capitalize, Menu, MenuItem } from "@mui/material";
 import LanguageSelector from "./languageSelector";
 import { useTranslation } from "react-i18next";
@@ -102,7 +100,6 @@ const HeadBar = () => {
         >
           <AccountCircleIcon />
         </IconButton>
-        <ModalError open={open} />
         <Menu
           id="basic-menu"
           open={open}
