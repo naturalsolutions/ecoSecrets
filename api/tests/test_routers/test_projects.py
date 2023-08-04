@@ -5,19 +5,19 @@ from src.services.project import get_project
 from tests.utils.date import compare_date
 
 
-def test_read_projects(client, project, deployment, db):
+def test_read_projects(client, project, deployment, db, admin_headers):
     url = app.url_path_for("read_projects")
 
-    response = client.get(url)
+    response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
     content = response.json()
 
 
-def test_read_project(client, project):
+def test_read_project(client, project, admin_headers):
     url = app.url_path_for("read_project", project_id=project.id)
 
-    response = client.get(url)
+    response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -26,9 +26,9 @@ def test_read_project(client, project):
     assert project.id == content["id"]
 
 
-def test_read_projects_with_deployments(client, deployment, db):
+def test_read_projects_with_deployments(client, deployment, db, admin_headers):
     url = app.url_path_for("read_projects_with_deployments")
-    response = client.get(url)
+    response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
     assert get_project(db, project_id=deployment.project_id)
@@ -50,7 +50,7 @@ def test_read_projects_with_deployments(client, deployment, db):
         assert deployment.dict()[key] == value, key
 
 
-def test_create_project(client, db):
+def test_create_project(client, db, admin_headers):
     url = app.url_path_for("create_project")
     project = {
         "name": "New project",
@@ -60,14 +60,14 @@ def test_create_project(client, db):
         "status": "statut",
     }
 
-    response = client.post(url, json=project)
+    response = client.post(url, json=project, headers=admin_headers)
     content = response.json()
     assert response.status_code == status.HTTP_200_OK
 
     assert get_project(db=db, project_id=content["id"])
 
 
-def test_update_project(client, project):
+def test_update_project(client, project, admin_headers):
     url = app.url_path_for("update_project", project_id=project.id)
 
     data = {
@@ -85,10 +85,7 @@ def test_update_project(client, project):
         # "contact_id": 1
     }
 
-    response = client.put(
-        url,
-        json=data,
-    )
+    response = client.put(url, json=data, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -97,10 +94,10 @@ def test_update_project(client, project):
     assert content["id"] == project.id
 
 
-def test_delete_project(client, project, db):
+def test_delete_project(client, project, db, admin_headers):
     url = app.url_path_for("delete_project", project_id=project.id)
 
-    response = client.delete(url)
+    response = client.delete(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
     content = response.json()
