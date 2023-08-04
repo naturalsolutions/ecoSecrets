@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: actionsx/prettier@v2
         with:
-          args: --check ./frontend/src/
+          args: --check frontend/**/*.ts
