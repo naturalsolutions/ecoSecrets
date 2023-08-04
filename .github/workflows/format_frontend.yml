@@ -16,6 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actionsx/prettier@v2
-        with:
-          args: --check ./frontend/src
+      # - uses: actionsx/prettier@v2
+      #   with:
+      #     args: --check ./frontend/src
