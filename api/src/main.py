@@ -1,20 +1,11 @@
-from fastapi import FastAPI, Depends
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import settings
 from src.connectors.s3 import init_bucket
 from src.internal import admin
 from src.keycloak.idp import idp
-from src.routers import (
-    deployments,
-    devices,
-    files,
-    home,
-    projects,
-    sites,
-    templateSequences,
-    users,
-)
+from src.routers import deployments, devices, files, home, projects, sites, templateSequences, users
 
 ROOT_PATH = settings.API_ROOT_PATH
 
