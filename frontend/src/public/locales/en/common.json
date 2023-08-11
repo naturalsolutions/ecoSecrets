@@ -72,6 +72,7 @@
     "description": "description",
     "details": "details",
     "home": "home",
+    "logout": "logout",
     "medias": "media files",
     "modifications_saved": "saved changes",
     "modify": "change",
