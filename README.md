@@ -23,6 +23,13 @@ try it out!
 
 ---
 
+<p align="center">
+    <img src="https://github.com/naturalsolutions/geocam/actions/workflows/test_api.yml/badge.svg?branch=dev"/>
+    <img src="https://github.com/naturalsolutions/geocam/actions/workflows/build_frontend.yml/badge.svg?branch=dev"/>
+    <img src="https://github.com/naturalsolutions/geocam/actions/workflows/documentation.yml/badge.svg?branch=dev"/>
+</p>
+
+---
 ## Installation
 
 ### Cloning
