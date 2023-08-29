@@ -21,25 +21,25 @@ const AnnotationImageDisplay = (
         if (image.extension.includes("image")) {
             return (
                 <img
-                    src={image.url}
-                    alt={image.name}
+                    src={ image.url }
+                    alt={ image.name }
                     loading="lazy"
-                    style={mediaDisplayStyle}
+                    style={ mediaDisplayStyle }
                 />
             )
         }
         else {
             return (
                 <video
-                    src={image.url}
-                    style={mediaDisplayStyle}
+                    src={ image.url }
+                    style={ mediaDisplayStyle }
                     controls
                     autoPlay={ false }
                 >
                     <source 
                         type="video/mp4"
                     />
-                    {image.name}
+                    { image.name }
                 </video>
             )
         }
