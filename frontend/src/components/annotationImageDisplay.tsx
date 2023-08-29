@@ -34,7 +34,7 @@ const AnnotationImageDisplay = (
                     src={image.url}
                     style={mediaDisplayStyle}
                     controls
-                    autoPlay
+                    autoPlay={ false }
                 >
                     <source 
                         type="video/mp4"
