@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import List
 from zipfile import ZipFile
 
+import magic
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
@@ -80,8 +81,6 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
 
 @router.post("/upload/{deployment_id}")
 def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
-    import magic
-    
     hash = dependencies.generate_checksum(file)
 
     mime = magic.from_buffer(file.file.read(), mime=True)
@@ -108,7 +107,6 @@ def upload_files(
     db: Session = Depends(get_db),
 ):
     if len(list_files) < 20:
-
         print(list_files)
         for file in list_files:
             hash = dependencies.generate_checksum(file)
