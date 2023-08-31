@@ -656,6 +656,7 @@
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
+      "login_theme" : "customtheme",
       "tls-client-certificate-bound-access-tokens" : "false",
       "oidc.ciba.grant.enabled" : "false",
       "backchannel.logout.session.required" : "true",
@@ -1461,8 +1462,9 @@
       }
     } ]
   },
-  "internationalizationEnabled" : false,
-  "supportedLocales" : [ ],
+  "internationalizationEnabled" : true,
+  "supportedLocales" : [ "en", "fr" ],
+  "defaultLocale" : "en",
   "authenticationFlows" : [ {
     "id" : "d3c990a3-d06a-44f9-bbc8-f065e9dce1a6",
     "alias" : "Account verification options",
