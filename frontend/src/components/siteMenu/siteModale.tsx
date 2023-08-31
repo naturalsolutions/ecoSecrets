@@ -1,4 +1,4 @@
-import { Button, capitalize, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { capitalize, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { SiteBase, SitesService } from "../../client";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
@@ -6,6 +6,7 @@ import { useMainContext } from "../../contexts/mainContext";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next";
+import ButtonValidate from "../common/buttonValidate";
 
 export default function SiteModale(props) {
   const { t } = useTranslation();
@@ -43,18 +44,11 @@ export default function SiteModale(props) {
   return (
     <Grid>
       {props.page == 'deploymentPage' ?
-          <Button
-              variant="contained"
-              startIcon={<AddCircleIcon />}
-              color='secondary'
-              onClick={() => onclick()}
-          >
-             {capitalize(t("sites.new"))}
-          </Button>
+        <ButtonValidate content={ capitalize(t("sites.new")) } validate={ () => onclick() } startIcon="add" />
         :
-          <IconButton aria-label="menu" onClick={() => onclick()} sx={{ mr: 2, display: {color: "#2FA37C"} }}>
-            <AddCircleIcon />
-          </IconButton>
+        <IconButton aria-label="menu" onClick={() => onclick()} sx={{ mr: 2, display: {color: "#2FA37C"} }}>
+          <AddCircleIcon />
+        </IconButton>
       }
       <Dialog open={open} onClose={handleClose}>
         <Stack
@@ -132,7 +126,7 @@ export default function SiteModale(props) {
           </DialogContent>
           <Divider />
           <DialogActions>
-            <Button onClick={save} style={{color: "#2FA37C"}}>{t('main.save')}</Button>
+            <ButtonValidate content={ t('main.save') } validate={save} />
           </DialogActions>
         </Dialog>
       </Grid>

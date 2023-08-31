@@ -1,5 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import ButtonCancel from "./common/buttonCancel";
 
 const AnnotationSaveError = (props) => {
     const { t } = useTranslation()
@@ -16,12 +17,7 @@ const AnnotationSaveError = (props) => {
             </DialogContent>
 
             <DialogActions>
-                <Button
-                    onClick={props.handleCloseSaveErrorDialog}
-                    color="secondary"
-                >
-                    { capitalize(t("annotations.fix_my_data")) }
-                </Button>
+                <ButtonCancel content={ capitalize(t("annotations.fix_my_data")) } cancel={ props.handleCloseSaveErrorDialog } />
             </DialogActions>
         </Dialog>
     )

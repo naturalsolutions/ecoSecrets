@@ -8,7 +8,6 @@ from src.models.deployment import DeploymentForProjectSheet, Deployments, Deploy
 from src.schemas.schemas import DataProject
 
 if TYPE_CHECKING:  # pragma: no cover
-
     from .deployment import Deployments
 
 

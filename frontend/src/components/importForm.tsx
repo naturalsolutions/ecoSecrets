@@ -5,6 +5,7 @@ import { useMainContext } from "../contexts/mainContext";
 import { DeploymentForProjectSheet, ProjectsService, ProjectWithDeployment } from "../client";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ButtonInteract from "./common/buttonInteract";
 
 
 const ImportForm = (
@@ -156,8 +157,9 @@ const ImportForm = (
                 <Stack direction="row" justifyContent="center">
                     <Button
                         startIcon={<CloudDownloadIcon />} 
-                        variant="contained" 
-                        color="secondary"
+                        variant="outlined" 
+                        color="primary"
+                        size="small"
                     >
                         <Input 
                             onChange={onChange}

@@ -1,8 +1,9 @@
-import { Stack, Typography, Button, CircularProgress, capitalize } from "@mui/material";
+import { Stack, Typography, CircularProgress, capitalize } from "@mui/material";
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { useMainContext } from "../../contexts/mainContext";
 import GoAnnotation from "../goAnnotation";
 import { useTranslation } from "react-i18next";
+import ButtonDisplay from "../common/buttonDisplay";
 
 const ProjectInformations = () => {
     const { t } = useTranslation()
@@ -20,9 +21,7 @@ const ProjectInformations = () => {
                         <PhotoLibraryIcon sx={{display: {color: "#BCAAA4"}}} style={{verticalAlign:"middle", minWidth: '40px'}}/>
                         {projectSheetData.stats.media_number}
                     </Typography>
-                    <Button variant="outlined" >
-                        {capitalize(t("main.show_media"))}
-                    </Button>
+                    <ButtonDisplay content={ capitalize(t("main.show_media")) } />
                 </Stack>
                 <Stack
                     alignItems="center"

@@ -104,7 +104,6 @@ def upload_files(
     db: Session = Depends(get_db),
 ):
     if len(list_files) < 20:
-
         print(list_files)
         for file in list_files:
             hash = dependencies.generate_checksum(file)

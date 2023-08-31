@@ -4,18 +4,18 @@ from src.main import app
 from src.services.site import get_site
 
 
-def test_read_sites(client, site):
+def test_read_sites(client, site, admin_headers):
     url = app.url_path_for("read_sites")
 
-    response = client.get(url)
+    response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_read_site(client, site):
+def test_read_site(client, site, admin_headers):
     url = app.url_path_for("read_site", site_id=site.id)
 
-    response = client.get(url)
+    response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -24,7 +24,7 @@ def test_read_site(client, site):
     assert site.id == content["id"]
 
 
-def test_create_site(client):
+def test_create_site(client, admin_headers):
     url = app.url_path_for("create_site")
     site = {
         "name": "New site",
@@ -34,12 +34,12 @@ def test_create_site(client):
         "habitat": "habitat",
     }
 
-    response = client.post(url, json=site)
+    response = client.post(url, json=site, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_update_site(client, site):
+def test_update_site(client, site, admin_headers):
     url = app.url_path_for("update_site", site_id=site.id)
 
     data = {
@@ -50,10 +50,7 @@ def test_update_site(client, site):
         "habitat": "habitat",
     }
 
-    response = client.put(
-        url,
-        json=data,
-    )
+    response = client.put(url, json=data, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -62,10 +59,10 @@ def test_update_site(client, site):
     assert content["id"] == site.id
 
 
-def test_delete_site(client, site, db):
+def test_delete_site(client, site, db, admin_headers):
     url = app.url_path_for("delete_site", site_id=site.id)
 
-    response = client.delete(url)
+    response = client.delete(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
     content = response.json()

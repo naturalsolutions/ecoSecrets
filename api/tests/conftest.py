@@ -44,4 +44,5 @@ pytest_plugins = [
     "tests.fixtures.site",
     "tests.fixtures.project",
     "tests.fixtures.file",
+    "tests.fixtures.keycloak",
 ]

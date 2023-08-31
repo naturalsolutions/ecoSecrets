@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:  # pragma: no cover
-
     from api.src.models.file import Files
 
 

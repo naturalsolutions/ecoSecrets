@@ -1,0 +1,19 @@
+name: Test (API)
+
+on:
+  workflow_run:
+    workflows: [Check Style (API)]
+    types:
+      - completed
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test_api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: "./scripts/test-ci.sh"
