@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type DeploymentBase = {
+import type { TemplateSequence } from './TemplateSequence';
+
+export type NewDeploymentWithTemplateSequence = {
     name: string;
     start_date: string;
     end_date?: string;
@@ -15,5 +17,6 @@ export type DeploymentBase = {
     description?: string;
     image?: string;
     project_id: number;
+    template_sequences?: Array<TemplateSequence>;
 };
 

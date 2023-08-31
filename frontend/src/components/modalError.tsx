@@ -1,7 +1,8 @@
-import { Button, capitalize, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography } from "@mui/material"
+import { capitalize, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Stack, Typography } from "@mui/material"
 import { useState, useEffect } from "react";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { useTranslation } from "react-i18next";
+import ButtonCancel from "./common/buttonCancel";
 
 const ModalError = (props) => {
     const { t } = useTranslation();
@@ -42,7 +43,7 @@ const ModalError = (props) => {
             </DialogContent>
             <Divider />
             <DialogActions>
-                <Button onClick={handleClose} color='secondary'>{capitalize(t('main.close'))}</Button>
+                <ButtonCancel content={ capitalize(t('main.close')) } cancel={ handleClose } />
             </DialogActions>
         </Dialog>
     )

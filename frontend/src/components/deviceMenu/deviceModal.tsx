@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -9,6 +9,7 @@ import { useMainContext } from "../../contexts/mainContext";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next";
+import ButtonValidate from "../common/buttonValidate";
 
 export default function DeviceModal () {
   const { t } = useTranslation()
@@ -158,7 +159,7 @@ export default function DeviceModal () {
           </DialogContent>
           <Divider />
           <DialogActions>
-            <Button onClick={save} style={{color: "#2FA37C"}}>{capitalize(t("main.description"))}</Button>
+            <ButtonValidate content={ capitalize(t("main.save")) } validate={ save } />
           </DialogActions>
         </Dialog>
       </Grid>
