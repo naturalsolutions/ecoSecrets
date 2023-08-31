@@ -15,9 +15,9 @@ const thumbnailStyle = {
 
 export default function MediaGallery() {
     const { files } = useMainContext();
+    const { t } = useTranslation();
 
     let navigate = useNavigate();
-    const { t } = useTranslation();
 
     const displayMedia = (id: string) => {
         navigate(`${id}`);
@@ -37,16 +37,16 @@ export default function MediaGallery() {
         }
         else {
             return(
-              <video
-                  style={ thumbnailStyle }
-                  onClick={ () => displayMedia(item.id) }
-              >
-                  <source 
-                      src={ `${item.url}#t=1` } // t value can be ajusted to display a specific start time as video thumbnail
-                      type="video/mp4"
-                  />
-                  { item.name }
-              </video>
+                <video
+                    style={ thumbnailStyle }
+                    onClick={ () => displayMedia(item.id) }
+                >
+                    <source 
+                        src={ `${item.url}#t=1` } // t value can be ajusted to display a specific start time as video thumbnail
+                        type="video/mp4"
+                    />
+                    { item.name }
+                </video>
             )
         }
     };
@@ -54,7 +54,7 @@ export default function MediaGallery() {
     const displayThumbnail = (item) => {
         if (item.extension.includes("image")) {
             return (
-                <Box>
+                <>
                   { displayImage(item) }
                   <Grid 
                       container
@@ -63,14 +63,14 @@ export default function MediaGallery() {
                       alignItems="center"
                   >
                       <CameraAltIcon/>
-                      <p>{ item.name }</p>
+                      <Typography component={"span"}>{ item.name }</Typography>
                   </Grid>
-                </Box>
+                </>
             )
         }
         else {
             return (
-                <Box>
+                <>
                     { displayImage(item) }
                     <Grid 
                         container
@@ -79,9 +79,9 @@ export default function MediaGallery() {
                         alignItems="center"
                     >
                         <VideocamIcon/>
-                        <p>{ item.name }</p>
+                        <Typography component={"span"}>{ item.name }</Typography>
                     </Grid>
-                </Box>
+                </>
             )
         };
     };
@@ -105,16 +105,16 @@ export default function MediaGallery() {
               spacing={2} 
             >
                 {files?.map((item, index) => (
-                  <div 
-                    key={index} 
-                    style={{
-                        border: "2px solid",
-                        borderRadius: "5px",
-                        borderColor: item.treated ? "green" : "red"
-                    }}
-                  >
-                      { displayThumbnail(item) }
-                  </div>
+                    <div 
+                        key={ index } 
+                        style={{
+                            border: "2px solid",
+                            borderRadius: "5px",
+                            borderColor: item.treated ? "green" : "red"
+                        }}
+                    >
+                        { displayThumbnail(item) }
+                    </div>
                 ))}
             </Masonry>
         </Box>
