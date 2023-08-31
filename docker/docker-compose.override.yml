@@ -52,7 +52,7 @@ services:
       - "8888:8080"
     volumes:
       - ../keycloak/realm.json:/opt/keycloak/data/import/realm.json
-      - ../keycloak/theme/geocam:/opt/keycloak/themes/geocam
+      - ../keycloak/theme/customtheme:/opt/keycloak/themes/customtheme
     command: start-dev --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false --import-realm
 
   doc:
