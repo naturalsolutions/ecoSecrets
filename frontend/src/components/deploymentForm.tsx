@@ -227,8 +227,7 @@ const DeploymentForm = (
                 spacing={5}
             >
                 <Grid container direction="row"  alignItems="center" spacing={2}>
-                    {/* Si image du deploiement, la mettre sinon mettre zone drag&drop pour l'image */}
-                    <Grid item lg={6}>
+                    <Grid item lg={6} height={300}>
                         {
                             deployment_img ?
                                 <img></img> :
@@ -254,7 +253,7 @@ const DeploymentForm = (
 
                     <Grid container spacing={2}>
                         {(props.isNewDeployment || isEditable) &&
-                            <Grid item xs={12} sm={12} md={8} lg={8}>
+                            <Grid item xs={12} sm={12} md={12} lg={12}>
                                 <TextField
                                     id="name"
                                     name="name"
@@ -264,12 +263,11 @@ const DeploymentForm = (
                                     onChange={(e) => handleFormChange("name", e.target.value)}
                                     size="small"
                                     variant="filled"
-                                    fullWidth
                                 />
                             </Grid>
                         }
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
                             <TextField
                                 id="site_id"
                                 name="site_id"
@@ -294,7 +292,7 @@ const DeploymentForm = (
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
                             <TextField
                                 id="device_id"
                                 name="device_id"
@@ -319,6 +317,33 @@ const DeploymentForm = (
                                 ))}
                             </TextField>
                         </Grid>
+
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DesktopDatePicker
+                                    label={capitalize(t("projects.start_date"))}
+                                    inputFormat="dd/MM/yyyy"
+                                    value={tmpDeploymentData?.start_date || null}
+                                    onChange={(date) => handleDateChange("start_date", date)}
+                                    renderInput={(params) => <TextField size="small" variant="filled" required {...params} fullWidth />}
+                                    disabled={!props.isNewDeployment && !isEditable}
+                                />
+                            </LocalizationProvider>
+                        </Grid>
+
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DesktopDatePicker
+                                    label={capitalize(t("projects.end_date"))}
+                                    inputFormat="dd/MM/yyyy"
+                                    value={tmpDeploymentData?.end_date || null}
+                                    onChange={(date) => handleDateChange("end_date", date)}
+                                    renderInput={(params) => <TextField size="small" variant="filled" {...params} fullWidth />}
+                                    disabled={!props.isNewDeployment && !isEditable}
+                                />
+                            </LocalizationProvider>
+                        </Grid>
+
                         <Grid
                             item
                             xs={12} sm={12} md={12} lg={12}
@@ -338,33 +363,7 @@ const DeploymentForm = (
                             
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DesktopDatePicker
-                                    label={capitalize(t("projects.start_date"))}
-                                    inputFormat="dd/MM/yyyy"
-                                    value={tmpDeploymentData?.start_date || null}
-                                    onChange={(date) => handleDateChange("start_date", date)}
-                                    renderInput={(params) => <TextField size="small" variant="filled" required {...params} />}
-                                    disabled={!props.isNewDeployment && !isEditable}
-                                />
-                            </LocalizationProvider>
-                        </Grid>
-
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DesktopDatePicker
-                                    label={capitalize(t("projects.end_date"))}
-                                    inputFormat="dd/MM/yyyy"
-                                    value={tmpDeploymentData?.end_date || null}
-                                    onChange={(date) => handleDateChange("end_date", date)}
-                                    renderInput={(params) => <TextField size="small" variant="filled" {...params} />}
-                                    disabled={!props.isNewDeployment && !isEditable}
-                                />
-                            </LocalizationProvider>
-                        </Grid>
-
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
                             <TextField
                                 id="support"
                                 name="support"
@@ -386,7 +385,7 @@ const DeploymentForm = (
                             </TextField>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
                             <TextField
                                 id="feature"
                                 name="feature"
@@ -408,7 +407,7 @@ const DeploymentForm = (
                             </TextField>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
                             <TextField
                                 id="height"
                                 label={`${capitalize(t("deployments.height"))}`}
@@ -432,7 +431,7 @@ const DeploymentForm = (
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={3} lg={3}>
                             <TextField
                                 id="bait"
                                 name="bait"
