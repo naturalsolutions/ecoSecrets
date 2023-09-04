@@ -83,7 +83,12 @@ const ImageList: FC<{}> = () => {
             alignItems="center"
             spacing={2}
           >
-            <ButtonsYesNo onYes={ save } onNo={ clear } />
+            <ButtonsYesNo 
+              onYes={ save } 
+              onNo={ clear } 
+              yesContent={ capitalize(t("main.save"))} 
+              noContent={capitalize(t("main.cancel"))}
+            />
           </Stack>
           <ImageMasonry />
         </Stack>
