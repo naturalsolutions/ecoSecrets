@@ -16,10 +16,6 @@ import ButtonValidate from "./common/buttonValidate";
 
 const deployment_img = undefined;
 
-const supportList = ["Support type 1", "Support type 2"]
-const featureList = ["Arbre fruitier", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
-const baitList = ["Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z", "None"]
-
 const DeploymentForm = (
     props
 ) => {
@@ -369,20 +365,13 @@ const DeploymentForm = (
                                 name="support"
                                 label={capitalize(t("deployments.hanging"))}
                                 defaultValue=""
-                                select
                                 value={tmpDeploymentData?.support}
                                 onChange={(e) => handleFormChange("support", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 disabled={!props.isNewDeployment && !isEditable}
-                            >
-                                {supportList.map((supportOption) => (
-                                    <MenuItem key={supportOption} value={supportOption}>
-                                        {supportOption}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            />
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={3} lg={3}>
@@ -391,20 +380,13 @@ const DeploymentForm = (
                                 name="feature"
                                 label={capitalize(t('deployments.features'))}
                                 defaultValue=""
-                                select
                                 value={tmpDeploymentData?.feature}
                                 onChange={(e) => handleFormChange("feature", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 disabled={!props.isNewDeployment && !isEditable}
-                            >
-                                {featureList.map((featureOption) => (
-                                    <MenuItem key={featureOption} value={featureOption}>
-                                        {featureOption}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            />
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={3} lg={3}>
@@ -437,24 +419,14 @@ const DeploymentForm = (
                                 name="bait"
                                 label={capitalize(t("deployments.bait"))}
                                 defaultValue=""
-                                select
                                 value={tmpDeploymentData?.bait}
                                 onChange={(e) => handleFormChange("bait", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 disabled={!props.isNewDeployment && !isEditable}
-                            >
-                                {baitList.map((baitOption) => (
-                                    <MenuItem
-                                        key={baitOption}
-                                        value={baitOption}>
-                                        {baitOption}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            />
                         </Grid>
-
                     </Grid>
                 </Paper>
 
