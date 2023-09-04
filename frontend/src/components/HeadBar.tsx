@@ -2,11 +2,9 @@ import { useContext, useState } from "react";
 import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ImportModale from "./importModale";
 import { Link } from "react-router-dom";
 import { Button, capitalize, Menu, MenuItem } from "@mui/material";
@@ -50,23 +48,15 @@ const HeadBar = () => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <IconButton color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <VideoCameraBackIcon />
-          </IconButton>
-          <Link to={`/`} style={{ textDecoration: "none" }}>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex", color: "white" },
-              }}
-            >
-              GeoCam
-            </Typography>
-          </Link>
-          
+          <Grid item>
+            <Link to={`/`} style={{ textDecoration: "none" }}>
+              <img
+                src={process.env.PUBLIC_URL + "/assets/geocam-logo-dark.png"}
+                width="135"
+                height="30"
+              />
+            </Link>
+          </Grid>
         </Grid>
         <Grid
           container
@@ -75,44 +65,48 @@ const HeadBar = () => {
           justifyContent="flex-end"
           alignItems="center"
         >
-
-          <Button variant="contained" color="secondary" href="https://natural-solutions.gitlab.io/geonature/annotation/user/start/" target="_blank" sx={{ mr: 4}}>
+          <Button
+            variant="contained"
+            color="secondary"
+            href="https://natural-solutions.gitlab.io/geonature/annotation/user/start/"
+            target="_blank"
+            sx={{ mr: 4 }}
+          >
             {`${capitalize(t("header.user_doc"))}`}
           </Button>
           <IconButton
             onClick={openImportModale}
             sx={{ mr: 4, display: { color: "white" } }}
           >
-            <CloudDownloadIcon />
+            <CloudUploadIcon />
           </IconButton>
 
-          <ImportModale
-            open={openImport}
-            close={closeImportModale}
-          />
+          <ImportModale open={openImport} close={closeImportModale} />
+
+          <ImportModale open={openImport} close={closeImportModale} />
 
           <LanguageSelector />
 
-        <IconButton
-          aria-label="menu"
-          sx={{ mr: 2, display: { color: "white" } }}
-          onClick={handleClick}
-        >
-          <AccountCircleIcon />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-        >
-          <MenuItem onClick={handleLogout}>
-            {capitalize(t("main.logout"))}
-          </MenuItem>
-        </Menu>
+          <IconButton
+            aria-label="menu"
+            sx={{ mr: 2, display: { color: "white" } }}
+            onClick={handleClick}
+          >
+            <AccountCircleIcon />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem onClick={handleLogout}>
+              {capitalize(t("main.logout"))}
+            </MenuItem>
+          </Menu>
         </Grid>
       </Toolbar>
     </AppBar>
