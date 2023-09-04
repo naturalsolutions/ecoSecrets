@@ -2,7 +2,7 @@ import pytest
 
 from src.utils import check_mime
 
-all_authorized_mimes = [
+all_authorized_mimes = {
     "video/mp4",
     "video/mpeg",
     "video/ogg",
@@ -13,9 +13,9 @@ all_authorized_mimes = [
     "image/gif",
     "image/tiff",
     "image/webp",
-]
+}
 
-some_unauthorized_mimes = [
+some_unauthorized_mimes = {
     "audio/aac",
     "video/x-msvideo",
     "application/pdf",
@@ -25,10 +25,10 @@ some_unauthorized_mimes = [
     "video/3gpp2",
     "audio/3gpp2",
     "application/x-7z-compressed",
-]
+}
 
 
-if any(item in all_authorized_mimes for item in some_unauthorized_mimes):
+if not all_authorized_mimes.isdisjoint(some_unauthorized_mimes):
     raise Exception(
         "Value(s) shared between lists of authorized and unauthorized mime types. Tests cannot be performed."
     )
