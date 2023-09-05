@@ -12,7 +12,6 @@ export type { Body_upload_file_files_upload__deployment_id__post } from './model
 export type { Body_upload_files_files_upload_files__deployment_id__post } from './models/Body_upload_files_files_upload_files__deployment_id__post';
 export type { Body_upload_zip_files_upload_zip__deployment_id__post } from './models/Body_upload_zip_files_upload_zip__deployment_id__post';
 export type { DataProject } from './models/DataProject';
-export type { DeploymentBase } from './models/DeploymentBase';
 export type { DeploymentForProjectSheet } from './models/DeploymentForProjectSheet';
 export type { Deployments } from './models/Deployments';
 export type { DeploymentWithFile } from './models/DeploymentWithFile';
@@ -23,6 +22,7 @@ export type { Devices } from './models/Devices';
 export type { Files } from './models/Files';
 export type { FirstUntreated } from './models/FirstUntreated';
 export type { HTTPValidationError } from './models/HTTPValidationError';
+export type { NewDeploymentWithTemplateSequence } from './models/NewDeploymentWithTemplateSequence';
 export type { ProjectBase } from './models/ProjectBase';
 export type { ProjectSheet } from './models/ProjectSheet';
 export type { ProjectWithDeployment } from './models/ProjectWithDeployment';

@@ -1,6 +1,7 @@
-import { Button, Stack, capitalize } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import { Stack, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import ButtonModify from "./common/buttonModify";
+import ButtonValidate from "./common/buttonValidate";
 
 const AnnotationButtons = (props) => {
     const { t } = useTranslation()
@@ -11,17 +12,11 @@ const AnnotationButtons = (props) => {
             height={"auto"}
         >
             <Stack direction="row" justifyContent="flex-start" spacing={2}>
-                <Button 
-                    startIcon={<AddIcon/>} 
-                    onClick={() => props.handleAddObservation()} variant="contained"color='secondary'>
-                    {capitalize(t("observations.new"))}
-                </Button>
+                <ButtonModify content={ capitalize(t("observations.new")) } edit={ () => props.handleAddObservation() } startIcon="add" />
             </Stack>
             
             <Stack justifyContent="flex-end">
-                <Button variant="contained" onClick={() => props.saveandnext()} >
-                    {capitalize(t("main.save_and_continue"))}
-                </Button>
+                <ButtonValidate content={ capitalize(t("main.save_and_continue")) } validate={ () => props.saveandnext() } />
             </Stack>
         </Stack>
     )

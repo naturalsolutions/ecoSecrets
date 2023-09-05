@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:  # pragma: no cover
-
     from .deployment import Deployments
 
 

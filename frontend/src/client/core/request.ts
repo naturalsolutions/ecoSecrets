@@ -156,11 +156,11 @@ const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptions, for
         ...options.headers,
         ...formHeaders,
     })
-        .filter(([_, value]) => isDefined(value))
-        .reduce((headers, [key, value]) => ({
-            ...headers,
-            [key]: String(value),
-        }), {} as Record<string, string>);
+    .filter(([_, value]) => isDefined(value))
+    .reduce((headers, [key, value]) => ({
+        ...headers,
+        [key]: String(value),
+    }), {} as Record<string, string>);
 
     if (isStringWithValue(token)) {
         headers['Authorization'] = `Bearer ${token}`;
@@ -294,7 +294,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                 };
 
                 catchErrorCodes(options, result);
-                console.log("inside client,core,result", result)
+
                 resolve(result.body);
             }
         } catch (error) {

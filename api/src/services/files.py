@@ -102,7 +102,6 @@ def upload_file(
     ext: str,
     deployment_id: int,
 ):
-
     try:
         s3.upload_file_obj(new_file, f"{hash}.{ext}")
     except Exception as e:

@@ -2,12 +2,15 @@ import * as React from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton, capitalize } from "@mui/material";
+import { Grid, Stack, TextField, Typography, MenuItem, Dialog, DialogTitle, Divider, DialogContent, Alert, AlertTitle, Collapse, IconButton, capitalize } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
 import { Devices, DevicesService} from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
 import { useTranslation } from 'react-i18next';
+import ButtonModify from '../common/buttonModify';
+import ButtonValidate from '../common/buttonValidate';
+import DialogYesNo from '../common/dialogYesNo';
 
 const DeviceForm = () => {
     const { t } = useTranslation()
@@ -190,12 +193,16 @@ const DeviceForm = () => {
                     spacing={3}
                     justifyContent='flex-end'
                 >
-                    <Button  onClick={handleChange} size="small" variant="contained" style={{backgroundColor: "#2FA37C"}}>
-                    { modified ? <>{capitalize(t("main.cancel"))}</> : <>{capitalize(t("main.modify"))}</>}
-                    </Button>
-                    <Button disabled={!modified} onClick={dialog} size="small" variant="contained" style={{backgroundColor: "#BCAAA4"}}>
-                        {capitalize(t("main.save"))}
-                    </Button>
+                    <ButtonModify 
+                        content={ 
+                            modified ? 
+                            <>{ capitalize(t("main.cancel")) } </> : 
+                            <>{ capitalize(t("main.modify")) } </>
+                        }
+                        edit={ handleChange }
+                        variant={ modified }
+                    />
+                    <ButtonValidate content={ capitalize(t("main.save")) } validate={ dialog } disabled={ !modified } />
 
                     <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>
@@ -210,12 +217,7 @@ const DeviceForm = () => {
                             </Typography>
                         </DialogContent>
                         <Divider />
-                        <DialogActions>
-                        <Button onClick={save} style={{color: "#2FA37C"}}>
-                            {capitalize(t("main.yes"))}</Button>
-                        <Button onClick={handleClose} style={{color: "#BCAAA4"}}>
-                            {capitalize(t("main.no"))}</Button>
-                        </DialogActions>
+                        <DialogYesNo onYes={ save } onNo={ handleClose } />
                     </Dialog>
                 </Stack>
             </Stack>

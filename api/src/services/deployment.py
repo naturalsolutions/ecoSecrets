@@ -2,7 +2,11 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
-from src.models.deployment import DeploymentBase, Deployments, DeploymentWithTemplateSequence
+from src.models.deployment import (
+    Deployments,
+    DeploymentWithTemplateSequence,
+    NewDeploymentWithTemplateSequence,
+)
 from src.models.models import TemplateSequence
 
 
@@ -22,8 +26,21 @@ def get_deployment_by_name(db: Session, name_deployment: str):
     return db.query(Deployments).filter(Deployments.name == name_deployment).first()
 
 
-def create_deployment(db: Session, deployment: DeploymentBase):
-    db_deployment = Deployments(**deployment.dict())
+def create_deployment(db: Session, deployment: NewDeploymentWithTemplateSequence):
+    field = "template_sequences"
+    create_data = deployment.dict()
+    tmp_deployment = {**create_data, field: []}
+
+    for template in create_data[field]:
+        if "id" in template and template["id"] is not None:
+            existing_template = (
+                db.query(TemplateSequence).filter(TemplateSequence.id == template["id"]).one()
+            )
+            tmp_deployment[field].append(existing_template)
+        if "id" in template and template["id"] is None:
+            tmp_deployment[field].append(TemplateSequence(**template))
+
+    db_deployment = Deployments(**tmp_deployment)
     db.add(db_deployment)
     db.commit()
     db.refresh(db_deployment)
