@@ -1,8 +1,7 @@
-
-
 def file_as_bytes(file):
     with file:
         return file.read()
+
 
 # Authorized mime types
 authorized_mime = [
@@ -17,6 +16,7 @@ authorized_mime = [
     "image/tiff",
     "image/webp",
 ]
+
 
 def check_mime(mime):
     return mime in authorized_mime
