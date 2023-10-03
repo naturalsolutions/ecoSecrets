@@ -96,7 +96,7 @@ def init_db():
                 bait="None",
                 feature="Arbre fruitier",
                 project_id=project_example.id,
-                template_sequences=[]
+                template_sequences=[],
             ),
         )
 
