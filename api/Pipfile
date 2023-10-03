@@ -17,6 +17,7 @@ exif = "*"
 pillow = "*"
 alembic = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
+python-magic = "*"
 fastapi-keycloak = "*"
 
 [dev-packages]
