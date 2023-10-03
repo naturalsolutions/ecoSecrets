@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 import "../css/first.css";
 
-import ImageMasonry from "./masonry";
+import MediaGallery from "./mediaGallery";
 import Dropzone from "react-dropzone";
 import { Grid, Stack, Typography, capitalize } from "@mui/material";
 import { useParams } from "react-router-dom";
@@ -83,9 +83,14 @@ const ImageList: FC<{}> = () => {
             alignItems="center"
             spacing={2}
           >
-            <ButtonsYesNo onYes={ save } onNo={ clear } />
+            <ButtonsYesNo 
+              onYes={ save } 
+              onNo={ clear } 
+              yesContent={ capitalize(t("main.save"))} 
+              noContent={capitalize(t("main.cancel"))}
+            />
           </Stack>
-          <ImageMasonry />
+          <MediaGallery />
         </Stack>
       ) : (
         <Stack>
