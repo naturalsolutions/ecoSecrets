@@ -60,11 +60,6 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
-      args:
-          REACT_APP_KEYCLOAK_CLIENT_URL: ${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
-          REACT_APP_KEYCLOAK_CLIENT_REALM: ${KEYCLOAK_REALM_ID:-geonature-annotation}
-          REACT_APP_KEYCLOAK_CLIENT_CLIENT_ID: ${KEYCLOAK_CLIENT_CLIENT_ID:-frontend}
-          REACT_APP_API_PATH: ${API_ROOT_PATH-/api/v1}
     depends_on:
       api:
         condition: service_healthy

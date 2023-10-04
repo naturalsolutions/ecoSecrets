@@ -25,7 +25,8 @@ import { useContext } from "react";
 // import { Snack } from "./client/models/Snack";
 // import { useState } from "react";
 
-OpenAPI.BASE = process.env.REACT_APP_API_PATH || "/api/v1";
+// Env var processed by nginx
+OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
 
 function App() {
   const authContext = useContext(AuthContext);
