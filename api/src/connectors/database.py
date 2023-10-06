@@ -5,7 +5,7 @@ from pathlib import Path
 from sqlmodel import Session, create_engine
 
 from src.config import settings
-from src.models.deployment import DeploymentBase
+from src.models.deployment import NewDeploymentWithTemplateSequence
 from src.models.device import DeviceBase
 from src.models.models import Roles
 from src.models.project import ProjectBase
@@ -86,7 +86,7 @@ def init_db():
 
         deployment_example = deployment.create_deployment(
             db=session,
-            deployment=DeploymentBase(
+            deployment=NewDeploymentWithTemplateSequence(
                 name="Déploiement 1",
                 site_id=site_example.id,
                 device_id=device_example.id,
@@ -96,6 +96,7 @@ def init_db():
                 bait="None",
                 feature="Arbre fruitier",
                 project_id=project_example.id,
+                template_sequences=[],
             ),
         )
 
