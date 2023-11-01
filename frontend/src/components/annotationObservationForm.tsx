@@ -76,7 +76,7 @@ const AnnotationObservationForm = (
                 spacing={2}
             >
                 <Typography component={"span"} variant="h6">
-                    {`Observation ${props.observation.id}`}
+                    { `Observation ${ props.index }` }
                 </Typography>
 
                 <IconButton

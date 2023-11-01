@@ -302,13 +302,14 @@ const AnnotationMainComponent = () => {
             </span>
 
             {
-              observations.map((observation) => (
+              observations.map((observation, index) => (
                 <AnnotationObservationForm 
-                  key={observation.id} 
-                  observation={observation} 
-                  handleFormChange={handleFormChange} 
-                  handleCheckChange={handleCheckChange} 
-                  handleDeleteObservation={handleDeleteObservation} 
+                  key={ observation.id } 
+                  index={ index + 1 }
+                  observation={ observation } 
+                  handleFormChange={ handleFormChange } 
+                  handleCheckChange={ handleCheckChange } 
+                  handleDeleteObservation={ handleDeleteObservation } 
                 />
               ))
             }
