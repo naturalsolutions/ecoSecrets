@@ -1,8 +1,8 @@
 import { Autocomplete, createFilterOptions, Grid, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
-import NestedList from "./common/collapsableButton";
+import NestedList from "../common/collapsableButton";
 import { useCallback, useEffect, useState } from "react";
-import { request as __request } from '../client/core/request';
+import { request as __request } from '../../client/core/request';
 import axios from 'axios';
 import debounce from "lodash/debounce";
 import { useTranslation } from "react-i18next";
@@ -28,55 +28,55 @@ async function getData (search_name: string) {
     data = Array.from(new Set(speciesByLatinName.concat(speciesByVernName)));
     return data;
 }
-interface SpeciesOptionType {
-    REGNE: string;
-    PHYLUM: string;
-    CLASSE: string;
-    ORDRE: string;
-    FAMILLE: string;
-    SOUS_FAMILLE: string;
-    TRIBU: string;
-    GROUP1_INPN: string;
-    GROUP2_INPN: string;
-    CD_NOM: string;
-    CD_TAXSUP: string;
-    CD_SUP: string;
-    CD_REF: string;
-    RANG: string;
-    LB_NOM: string;
-    LB_AUTEUR: string;
-    NOM_COMPLET: string;
-    NOM_COMPLET_HTML: string;
-    NOM_VALIDE: string;
-    NOM_VERN: string;
-    NOM_VERN_ENG: string;
-    HABITAT: string;
-    FR: string;
-    GF: string;
-    MAR: string;
-    GUA: string;
-    SM: string;
-    SB: string;
-    SPM: string;
-    MAY: string;
-    EPA: string;
-    REU: string;
-    SA: string;
-    TA: string;
-    TAAF: string;
-    PF: string;
-    NC: string;
-    WF: string;
-    CLI: string;
-    URL: string;
-}
+// interface SpeciesOptionType {
+//     REGNE: string;
+//     PHYLUM: string;
+//     CLASSE: string;
+//     ORDRE: string;
+//     FAMILLE: string;
+//     SOUS_FAMILLE: string;
+//     TRIBU: string;
+//     GROUP1_INPN: string;
+//     GROUP2_INPN: string;
+//     CD_NOM: string;
+//     CD_TAXSUP: string;
+//     CD_SUP: string;
+//     CD_REF: string;
+//     RANG: string;
+//     LB_NOM: string;
+//     LB_AUTEUR: string;
+//     NOM_COMPLET: string;
+//     NOM_COMPLET_HTML: string;
+//     NOM_VALIDE: string;
+//     NOM_VERN: string;
+//     NOM_VERN_ENG: string;
+//     HABITAT: string;
+//     FR: string;
+//     GF: string;
+//     MAR: string;
+//     GUA: string;
+//     SM: string;
+//     SB: string;
+//     SPM: string;
+//     MAY: string;
+//     EPA: string;
+//     REU: string;
+//     SA: string;
+//     TA: string;
+//     TAAF: string;
+//     PF: string;
+//     NC: string;
+//     WF: string;
+//     CLI: string;
+//     URL: string;
+// }
 
 
 const AnnotationObservationForm = (
     props
 ) => {
     const { t } = useTranslation()
-    const [especeOptions, setEspeceOptions] = useState<SpeciesOptionType[]>([]);
+    const [especeOptions, setEspeceOptions] = useState([]);
     const [especeInputValue, setEspeceInputValue] = useState<string>('');
 
     const getOptionsDelayed = useCallback(

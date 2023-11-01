@@ -1,7 +1,7 @@
 import { Stack, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import ButtonModify from "./common/buttonModify";
-import ButtonValidate from "./common/buttonValidate";
+import ButtonModify from "../common/buttonModify";
+import ButtonValidate from "../common/buttonValidate";
 
 const AnnotationButtons = (props) => {
     const { t } = useTranslation()

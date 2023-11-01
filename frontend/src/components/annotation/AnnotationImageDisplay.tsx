@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Grid, capitalize } from "@mui/material";
-import AnnotationImageNavigation from "./annotationImageNavigation";
+import AnnotationImageNavigation from "./AnnotationImageNavigation";
+import { Grid, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 const AnnotationImageDisplay = (

@@ -1,6 +1,6 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, capitalize } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Typography, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import ButtonCancel from "./common/buttonCancel";
+import ButtonCancel from "../common/buttonCancel";
 
 const AnnotationSaveError = (props) => {
     const { t } = useTranslation()

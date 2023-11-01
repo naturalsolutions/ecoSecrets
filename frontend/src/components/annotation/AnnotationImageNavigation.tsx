@@ -1,5 +1,5 @@
 import { Grid, IconButton, Typography } from "@mui/material";
-import { useMainContext } from "../contexts/mainContext";
+import { useMainContext } from "../../contexts/mainContext";
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import FastForwardIcon from '@mui/icons-material/FastForward';

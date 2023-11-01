@@ -1,16 +1,16 @@
 import { Alert, Divider, FormControlLabel, Paper, Stack, styled, Switch, Tab, Tabs, Typography, capitalize } from "@mui/material";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useMainContext } from "../contexts/mainContext";
+import { useMainContext } from "../../contexts/mainContext";
 import { v4 as uuidv4 } from 'uuid';
-import { Annotation, FilesService } from "../client";
-import AnnotationObservationForm from "./annotationObservationForm";
-import AnnotationImageDisplay from "./annotationImageDisplay";
-import AnnotationButtons from "./annotationButtons";
-import AnnotationSaveError from "./annotationSaveError";
-import "../css/annotation.css";
-import TabPanel from "./tabPanel";
-import ButtonStatus from "./common/buttonStatus";
+import { Annotation, FilesService } from "../../client";
+import AnnotationObservationForm from "./AnnotationObservationForm";
+import AnnotationImageDisplay from "./AnnotationImageDisplay";
+import AnnotationButtons from "./AnnotationButtons";
+import AnnotationSaveError from "./AnnotationSaveError";
+import "../../css/annotation.css";
+import TabPanel from "../tabPanel";
+import ButtonStatus from "../common/buttonStatus";
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useTranslation } from "react-i18next";
@@ -42,7 +42,7 @@ const LayoutImageForm = styled("div")(({ theme }) => ({
   overflowY: "scroll",
 }));
 
-const AnnotationMainComponent = () => {
+const AnnotationMain = () => {
   const { t } = useTranslation()
   const {
     projects,
@@ -335,4 +335,4 @@ const AnnotationMainComponent = () => {
     </LayoutImageContainer >
   );
 };
-export default AnnotationMainComponent;
+export default AnnotationMain;
