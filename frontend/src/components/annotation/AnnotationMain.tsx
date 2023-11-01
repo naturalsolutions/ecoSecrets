@@ -182,15 +182,12 @@ const AnnotationMain = () => {
     setChecked(!checked);
   };
 
-  const handleFormChange = (id: string, params: string, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormChange = (id: string, params: string, value: string) => {
     let tmp_obs = [...observations]
-    
+
     tmp_obs.forEach(ob => {
       if (ob.id === id) {
-        ob[params] = e.target.value;
-        if (params === 'specie'){
-          ob[params] = e.target.innerHTML;
-        }
+        ob[params] = value;
         if (["specie", "classe", "order", "genus"].includes(params) && ob[params] != " ") {
           ob["number"] = 1;
           setIsMinimalObservation(true);
