@@ -5,13 +5,7 @@ import { request as __request } from '../../client/core/request';
 import { useTranslation } from "react-i18next";
 import TaxonomicInput from "./TaxonomicInput";
 import { useState } from "react";
-
-// TODO: retrieve from database
-const sexList = ["", "Mâle", "Femelle", "Indéterminé"];
-const behaviourList = ["", "Comportement A", "Comportement B", "Comportement C"];
-const lifeStageList = ["", "Oeuf", "Juvénile", "Adulte"];
-const biologicalStateList = [" ", "Vivant", "Mort"];
-
+import TraitInput from "./TraitInput";
 
 // interface SpeciesOptionType {
 //     REGNE: string;
@@ -63,9 +57,9 @@ interface observationType {
     genus: string;
     species: string;
     number: number;
-    bio_state: string;
+    biological_stade: string;
     sex: string;
-    behavior: string;
+    behaviour: string;
     life_stage: string;
     comments: string;
 }
@@ -82,9 +76,9 @@ const AnnotationObservationForm = (
         genus: "",
         species: "",
         number: 0,
-        bio_state: "",
+        biological_stade: "",
         sex: "",
-        behavior: "",
+        behaviour: "",
         life_stage: "",
         comments: ""
     });
@@ -162,105 +156,22 @@ const AnnotationObservationForm = (
                     />
                 </Grid>
             </Grid>
-            <NestedList>
+            {/* <NestedList>
                 <Grid container spacing={1}>
-                    <Grid item lg={6} xs={12}>
-                        <TextField
-                            id="biologicalState"
-                            select
-                            label={capitalize(t("species.bio_state"))}
-                            size="small"
-                            variant='filled'
-                            value={props.observation.biological_state}
-                            onChange={
-                                (e) => props.handleFormChange(props.observation.id, "biological_state", e)
-                            }
-                            fullWidth
-                        >
-                            {biologicalStateList.map((item) => (
-                                <MenuItem key={item} value={item}>
-                                    {item}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid item lg={6} xs={12}>
-                        <TextField
-                            id="sex"
-                            select
-                            label={capitalize(t("species.sex"))}
-                            variant='filled'
-                            value={props.observation.sex}
-                            onChange={(e) => props.handleFormChange(props.observation.id, "sex", e)}
-                            size="small"
-                            fullWidth
-                        >
-                            {sexList.map((item) => (
-                                <MenuItem
-                                    key={item}
-                                    value={item}
-                                >
-                                    {item}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid item lg={6} xs={12}>
-                        <TextField
-                            id="behaviour"
-                            select
-                            label={capitalize(t("species.behaviour"))}
-                            size="small"
-                            variant='filled'
-                            value={props.observation.behaviour}
-                            onChange={(e) => props.handleFormChange(props.observation.id, "behaviour", e)}
-                            fullWidth
-                        >
-                            {behaviourList.map((item) => (
-                                <MenuItem
-                                    key={item}
-                                    value={item}
-                                >
-                                    {item}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid item lg={6} xs={12}>
-                        <TextField
-                            id="lifeStage"
-                            select
-                            label={capitalize(t("species.life_stage"))}
-                            size="small"
-                            variant='filled'
-                            value={props.observation.life_stage}
-                            onChange={
-                                (e) => props.handleFormChange(props.observation.id, "life_stage", e)
-                            }
-                            fullWidth
-                        >
-                            {lifeStageList.map((item) => (
-                                <MenuItem key={item} value={item}>
-                                    {item}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-
-                    <Grid item lg={12} xs={12}>
-                        <TextField
-                            id="comment"
-                            name="comment"
-                            label={capitalize(t("main.comment"))}
-                            size="small"
-                            variant='filled'
-                            value={props.observation.comment}
-                            onChange={(e) => props.handleFormChange(props.observation.id, "comment", e)}
-                            fullWidth
-                        />
-                    </Grid>
+                    <TraitInput 
+                        type="biological_state" 
+                    />
+                    <TraitInput 
+                        type="sex" 
+                    />
+                    <TraitInput 
+                        type="behaviour" 
+                    />
+                    <TraitInput 
+                        type="life_stage" 
+                    />
                 </Grid>
-            </NestedList>
+            </NestedList> */}
         </form>
     )
 };
