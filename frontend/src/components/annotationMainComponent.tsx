@@ -50,7 +50,8 @@ const AnnotationMainComponent = () => {
     currentImage, setCurrentImage,
     files,
     updateListFile,
-    setCurrentProject
+    setCurrentProject,
+    image
   } = useMainContext();
 
   let params = useParams();
@@ -68,10 +69,6 @@ const AnnotationMainComponent = () => {
   const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
   const handleCloseSaveErrorDialog = () => {
     setOpenSaveErrorDialog(false);
-  };
-
-  const image = (): any | null => {
-    return files.find((f) => f.id === currentImage);
   };
 
   useEffect(() => {
