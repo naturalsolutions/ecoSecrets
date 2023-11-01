@@ -54,6 +54,16 @@ services:
       - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL-http://keycloak:8080/auth}
       - KEYCLOAK_TOKEN_URI=${KEYCLOAK_TOKEN_URI}
 
+  taxapi:
+    <<: *project_defaults
+    build:
+      context: ../taxapi
+      dockerfile: Dockerfile
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.taxapi.rule=PathPrefix(`/taxapi/V1`)
+      - traefik.http.routers.taxapi.entrypoints=web
+
   frontend:
     <<: *project_defaults
     image: ${FRONTEND_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}

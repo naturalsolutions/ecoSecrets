@@ -17,28 +17,59 @@ const familyList = ["", "Cervidae"]
 const genusList = ["", "Capreolus"]
 const classList = ["", "Mammalia"]
 
-async function getData (search_name: string) {
-    const promise = axios.get(`https://geonature.demos.natural-solutions.eu/taxhub/api/taxref/allnamebylist?search_name=${search_name}`)
-    const speciesListe = (await promise).data
-    return speciesListe
-}
+const sep = " - "
 
-async function getDataFromCdNom (cd_nom: number) {
-    const promise = axios.get(`https://geonature.demos.natural-solutions.eu/taxhub/api/taxref/?cd_nom=${cd_nom}&is_inbibtaxons=false&is_ref=false&limit=25&order=asc&orderby=nom_complet&page=1`)
-    const test = (await promise).data
-    const species = (await test).items
+async function getData (search_name: string) {
+    let data:string[];
+
+    const speciesByLatinName = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=ES&LB_NOM=${search_name}`)).data;
+    const speciesByVernName = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=ES&NOM_VERN=${search_name}`)).data;
+    
+    data = Array.from(new Set(speciesByLatinName.concat(speciesByVernName)));
+    return data;
 }
-  interface SpeciesOptionType {
-        gid: number;
-        cd_nom: number;
-        search_name: string;
-        cd_ref: number;
-        nom_valide: string;
-        lb_nom: string;
-        nom_vern: string;
-        regne: string;
-        group2_inpn: string;
-      }
+interface SpeciesOptionType {
+    REGNE: string;
+    PHYLUM: string;
+    CLASSE: string;
+    ORDRE: string;
+    FAMILLE: string;
+    SOUS_FAMILLE: string;
+    TRIBU: string;
+    GROUP1_INPN: string;
+    GROUP2_INPN: string;
+    CD_NOM: string;
+    CD_TAXSUP: string;
+    CD_SUP: string;
+    CD_REF: string;
+    RANG: string;
+    LB_NOM: string;
+    LB_AUTEUR: string;
+    NOM_COMPLET: string;
+    NOM_COMPLET_HTML: string;
+    NOM_VALIDE: string;
+    NOM_VERN: string;
+    NOM_VERN_ENG: string;
+    HABITAT: string;
+    FR: string;
+    GF: string;
+    MAR: string;
+    GUA: string;
+    SM: string;
+    SB: string;
+    SPM: string;
+    MAY: string;
+    EPA: string;
+    REU: string;
+    SA: string;
+    TA: string;
+    TAAF: string;
+    PF: string;
+    NC: string;
+    WF: string;
+    CLI: string;
+    URL: string;
+}
 
 
 const AnnotationObservationForm = (
@@ -177,7 +208,13 @@ const AnnotationObservationForm = (
                     }}
                         onInputChange={(e, newInputValue) => {setEspeceInputValue(newInputValue)}}
                         inputValue={especeInputValue}
-                        getOptionLabel={(opt) => (typeof(opt) === "string") ? opt : `${opt.cd_nom} - ${opt.nom_vern} - ${opt.nom_valide}`}
+                        getOptionLabel={ (opt) => 
+                            (typeof(opt) === "string") ? 
+                            opt : 
+                                (opt.NOM_VERN) ?
+                                `${opt.CD_NOM}${sep}${opt.LB_NOM} (${opt.NOM_VERN})`:
+                                `${opt.CD_NOM}${sep}${opt.LB_NOM}`
+                        }
                         options={especeOptions}
                         noOptionsText="Pas d'options"
                         renderInput={(params) => (
