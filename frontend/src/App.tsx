@@ -2,7 +2,7 @@ import "./App.css";
 import Main from "./pages/main";
 import Project from "./pages/project";
 import Deployment from "./pages/deployment";
-import Image from "./pages/image";
+import Image from "./pages/annotation";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";

@@ -1,7 +1,6 @@
-import AnnotationMainComponent from "../components/annotationMainComponent";
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
-import Drawer from "../components/drawer";
+import AnnotationMain from "../components/annotation/AnnotationMain";
 import NavigationPath from "../components/navigationPath";
 
 function Image() {
@@ -9,9 +8,8 @@ function Image() {
     <div className="Main">
       <MainLayout
         Header={<HeadBar />}
-        Side={<Drawer />}
         Navigation={<NavigationPath />}
-        Main={<AnnotationMainComponent />}
+        Main={<AnnotationMain />}
       />
     </div>
   );
