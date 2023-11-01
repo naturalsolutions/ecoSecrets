@@ -147,7 +147,7 @@
     "sites": "sites",
     "title": "mes sites"
   },
-  "species": {
+  "taxon": {
     "behaviour": "comportement",
     "bio_state": "stade biologique",
     "class": "classe",
