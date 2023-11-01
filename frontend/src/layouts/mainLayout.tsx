@@ -14,9 +14,9 @@ export const MainLayout = ({
   Side,
   ...rest
 }: MainLayoutProps) => (
-  <Box sx={{ flexGrow: 1 }}>
+  <Box>
     {Header}
-    <Grid container sx={{ height: "90vh" }} spacing={2} justifyContent='center'>
+    <Grid container sx={{ height: "87vh" }} justifyContent='center'>
       <Grid item sx={{ height: "100%" }} xs={12} md={11} lg={11}>
         {Navigation}
         {Main}

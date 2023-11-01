@@ -1,12 +1,9 @@
-import { Grid, IconButton, Switch, Typography } from "@mui/material";
+import { Grid, IconButton, Typography } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import FastForwardIcon from '@mui/icons-material/FastForward';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
-import GridViewIcon from '@mui/icons-material/GridView';
-import PhotoIcon from '@mui/icons-material/Photo';
 
 
 const AnnotationImageNavigation = (
@@ -20,48 +17,54 @@ const AnnotationImageNavigation = (
     }
 
     return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="space-around"
-            alignItems="center"
-            spacing={5}
-        >
-            <Grid item>
-                <IconButton>
+        <div className="groupNumber">
+            <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+            >
+                {/* <IconButton>
                     <PhotoIcon />
                 </IconButton>
+
                 <Switch />
+                
                 <IconButton>
-                    <GridViewIcon fontSize='large' />
-                </IconButton>
-            </Grid>
+                    <GridViewIcon fontSize="large" />
+                </IconButton> */}
 
-            <Grid item>
-                <IconButton onClick={() => props.lastOrFirstImage('first')}>
-                    <FastRewindIcon fontSize='large' />
+                <IconButton onClick={() => props.lastOrFirstImage("first")}>
+                    <FastRewindIcon fontSize="large" />
                 </IconButton>
+
                 <IconButton onClick={() => props.previous()} >
-                    <SkipPreviousIcon fontSize='large' />
+                    <SkipPreviousIcon fontSize="large" />
                 </IconButton>
+
                 <IconButton>
-                    <Typography component={"span"} variant="h6" style={{ backgroundColor: "#f5f5f5" }}>{imageIndex() + ' | ' + files.length}</Typography>
+                    <Typography 
+                        component={"span"} 
+                        variant="h6" 
+                        style={{ backgroundColor: "#f5f5f5" }}
+                    >
+                        { imageIndex() + " | " + files.length }
+                    </Typography>
                 </IconButton>
+
                 <IconButton onClick={() => props.next()}>
-                    < SkipNextIcon fontSize='large' />
+                    < SkipNextIcon fontSize="large" />
                 </IconButton>
-                <IconButton onClick={() => props.lastOrFirstImage('last')}>
-                    <FastForwardIcon fontSize='large' />
-                </IconButton>
-            </Grid >
 
-            <Grid item>
-                <IconButton >
-                    <FullscreenIcon fontSize='large' />
+                <IconButton onClick={() => props.lastOrFirstImage("last")}>
+                    <FastForwardIcon fontSize="large" />
                 </IconButton>
+
+                {/* <IconButton >
+                    <FullscreenIcon fontSize="large" />
+                </IconButton> */}
             </Grid>
-
-        </Grid>
+        </div>
     );
 };
 
