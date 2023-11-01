@@ -149,14 +149,14 @@
   },
   "taxon": {
     "behaviour": "behaviour",
-    "bio_state": "biological state",
-    "class": "class",
+    "biological_state": "biological state",
+    "classe": "class",
     "family": "family",
     "genus": "genus",
     "life_stage": "life stage",
     "number": "number of individuals",
     "order": "order",
     "sex": "sex",
-    "species": "species"
+    "specie": "species"
   }
 }

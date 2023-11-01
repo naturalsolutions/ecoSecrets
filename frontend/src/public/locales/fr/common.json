@@ -149,14 +149,14 @@
   },
   "taxon": {
     "behaviour": "comportement",
-    "bio_state": "stade biologique",
-    "class": "classe",
+    "biological_state": "stade biologique",
+    "classe": "classe",
     "family": "famille",
     "genus": "genre",
     "life_stage": "stade de vie",
     "number": "nombre d'individus",
     "order": "ordre",
     "sex": "sexe",
-    "species": "espèce"
+    "specie": "espèce"
   }
 }
