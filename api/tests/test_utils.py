@@ -9,6 +9,7 @@ all_authorized_mimes = {
     "video/webm",
     "image/jpeg",
     "image/png",
+    "image/avif",
     "image/bmp",
     "image/gif",
     "image/tiff",
