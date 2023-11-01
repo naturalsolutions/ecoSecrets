@@ -1,11 +1,11 @@
-import { Grid, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
+import { Grid, IconButton, Stack, TextField, Typography, capitalize } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
-import NestedList from "../common/collapsableButton";
 import { request as __request } from '../../client/core/request';
 import { useTranslation } from "react-i18next";
 import TaxonomicInput from "./TaxonomicInput";
 import { useState } from "react";
-import TraitInput from "./TraitInput";
+// import NestedList from "../common/collapsableButton";
+// import TraitInput from "./TraitInput";
 
 // interface SpeciesOptionType {
 //     REGNE: string;
@@ -144,13 +144,13 @@ const AnnotationObservationForm = (
                 <Grid item lg={6} xs={12}>
                     <TextField
                         name="number"
-                        label={capitalize(t("species.number"))}
+                        label={capitalize(t("taxon.number"))}
                         size="small"
                         variant='filled'
                         inputProps={{ type: 'number' }}
                         value={props.observation.number}
                         onChange={
-                            (e) => props.handleFormChange(props.observation.id, "number", e)
+                            (e) => props.handleFormChange(props.observation.id, "number", e.target.value)
                         }
                         fullWidth
                     />
