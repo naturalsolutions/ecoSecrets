@@ -16,7 +16,7 @@ import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useTranslation } from "react-i18next";
 
 
-const fieldsMandatory = ["specie", "classe", "order", "genus", "family"]
+const fieldsMandatory = ["species", "classe", "order", "genus", "family"]
 const LayoutImageContainer = styled("div")({
   flexGrow: 1,
   display: "grid",
@@ -58,7 +58,7 @@ const AnnotationMain = () => {
   const [isAnnoted, setIsAnnoted] = useState<undefined | boolean>(undefined)
   const [treated, setTreated] = useState<undefined | boolean>(undefined)
   const [observations, setObservations] = useState<Annotation[]>([]);
-  const tmpObservation = { id: uuidv4(), classe: "", order: "", family: "", genus: "", specie: "", life_stage: "", biological_state: "", comment: "", behaviour: "", sex: "", number: 0 };
+  const tmpObservation = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
   const [isMinimalObservation, setIsMinimalObservation] = useState(observations.length == 0)
 
   const [tabValue, setTabValue] = useState(0);
@@ -132,6 +132,7 @@ const AnnotationMain = () => {
   };
 
   const save = () => {
+    console.log("save : ", observations)
     FilesService
       .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations)
       .then(res =>
@@ -188,7 +189,7 @@ const AnnotationMain = () => {
     tmp_obs.forEach(ob => {
       if (ob.id === id) {
         ob[params] = value;
-        if (["specie", "classe", "order", "genus"].includes(params) && ob[params] != " ") {
+        if (["species", "classe", "order", "genus"].includes(params) && ob[params] != " ") {
           ob["number"] = 1;
           setIsMinimalObservation(true);
         }

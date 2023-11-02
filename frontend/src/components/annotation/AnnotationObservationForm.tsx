@@ -56,7 +56,7 @@ const AnnotationObservationForm = (
                 />
 
                 <TaxonomicInput 
-                    rank="specie" 
+                    rank="species" 
                     observation={ props.observation }
                     handleFormChange={ props.handleFormChange }
                 />

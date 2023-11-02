@@ -168,7 +168,7 @@ const ProjectCard = (props) => {
                         {(
                             props.selectedProject.targeted_species === null 
                             ? capitalize(t("projects.community_study"))
-                            : capitalize(t("projects.target_specie")) + ': '+ props.selectedProject.targeted_species 
+                            : capitalize(t("projects.target_species")) + ': '+ props.selectedProject.targeted_species 
                         )}
                     </Typography>
                 </ListItem>

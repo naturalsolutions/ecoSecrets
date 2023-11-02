@@ -67,7 +67,7 @@
     "ask_save": "êtes-vous sûr de vouloir enregistrer vos modifications ?",
     "cancel": "annuler",
     "close": "fermer",
-    "comment": "commentaires",
+    "comments": "commentaires",
     "delete": "supprimer",
     "description": "description",
     "details": "détails",
@@ -129,7 +129,7 @@
     "start_year": "année de début",
     "status": "statut",
     "studies_area": "zone d'étude",
-    "target_specie": "espèce cible",
+    "target_species": "espèce cible",
     "unknown": "projet inconnu",
     "validators": "validateurs"
   },
@@ -157,6 +157,6 @@
     "number": "nombre d'individus",
     "order": "ordre",
     "sex": "sexe",
-    "specie": "espèce"
+    "species": "espèce"
   }
 }

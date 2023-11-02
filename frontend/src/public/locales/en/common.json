@@ -67,7 +67,7 @@
     "ask_save": "are you sure you want to save your changes?",
     "cancel": "cancel",
     "close": "close",
-    "comment": "comments",
+    "comments": "comments",
     "delete": "delete",
     "description": "description",
     "details": "details",
@@ -129,7 +129,7 @@
     "start_year": "start year",
     "status": "status",
     "studies_area": "study area",
-    "target_specie": "target species",
+    "target_species": "target species",
     "unknown": "unknown project",
     "validators": "validators"
   },
@@ -157,6 +157,6 @@
     "number": "number of individuals",
     "order": "order",
     "sex": "sex",
-    "specie": "species"
+    "species": "species"
   }
 }

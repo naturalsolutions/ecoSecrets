@@ -135,7 +135,7 @@ export default function ProjectModal(props) {
                         </Grid>
                         <Grid item lg={6} md={6} xs={12}>
                             <TextField
-                                label={capitalize(t("projects.target_specie"))}
+                                label={capitalize(t("projects.target_species"))}
                                 id="targetedSpecies"
                                 select
                                 value={projectData.targeted_species}
