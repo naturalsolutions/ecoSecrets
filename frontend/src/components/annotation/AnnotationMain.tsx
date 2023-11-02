@@ -1,5 +1,5 @@
 import { Alert, Divider, FormControlLabel, Paper, Stack, styled, Switch, Tab, Tabs, Typography, capitalize } from "@mui/material";
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainContext } from "../../contexts/mainContext";
 import { v4 as uuidv4 } from 'uuid';
@@ -117,7 +117,6 @@ const AnnotationMain = () => {
         updateUrl(files[ind + 1].id);
       }
     });
-    setIsMinimalObservation(true);
   };
 
   const lastOrFirstImage = (indice) => {
@@ -132,7 +131,6 @@ const AnnotationMain = () => {
   };
 
   const save = () => {
-    console.log("save : ", observations)
     FilesService
       .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations)
       .then(res =>
@@ -188,43 +186,19 @@ const AnnotationMain = () => {
 
     tmp_obs.forEach(ob => {
       if (ob.id === id) {
+
         ob[params] = value;
-        if (["species", "classe", "order", "genus"].includes(params) && ob[params] != " ") {
-          ob["number"] = 1;
-          setIsMinimalObservation(true);
-        }
+        if (fieldsMandatory.includes(params) 
+          && ob[params] && 
+          ob["number"] === 0) {
+            setIsMinimalObservation(true);
+            ob["number"] = 1;
+        };
       }
     })
     setObservations(tmp_obs);
   };
-
-  useEffect(() => {
-    let fieldToCheck: string[] = [];
-    
-    for (var i = 0; i < observations.length; i++) {
-      
-
-      for (const property in observations[i]) {
-        
-        if (fieldsMandatory.includes(property)) {
-          
-          fieldToCheck.push(observations[i][property])
-        }
-      }
-
-    }
-    
-    const result = fieldToCheck.some(element => {
-      if (element !== '') {
-        return true
-      } else {
-        return false
-      }
-    });
-
-    
-    setIsAnnoted(result)
-  }, [handleCheckChange])
+  
   return (
     <LayoutImageContainer className="page">
 

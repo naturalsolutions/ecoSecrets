@@ -92,6 +92,7 @@ const TaxonomicInput = (
             props.handleFormChange(props.observation.id, "family", "");
             props.handleFormChange(props.observation.id, "genus", "");
             props.handleFormChange(props.observation.id, "species", "");
+            props.handleFormChange(props.observation.id, "number", 0);
         };
         props.handleFormChange(props.observation.id, "id_annotation", id);
         setTaxonList([]);
@@ -174,7 +175,8 @@ const TaxonomicInput = (
                         InputProps={{
                             ...params.InputProps, 
                             endAdornment: 
-                            input && <IconButton
+                            props.observation[props.rank] &&
+                            <IconButton
                                 onClick={ () => { reset() }}
                             >
                                 <HighlightOffIcon fontSize="small"/>
