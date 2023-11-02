@@ -43,14 +43,45 @@ const TaxonomicInput = (
         setInput(newInput);
         
         if (newInput === "") {
-            // reset();
-            console.log("reset");
+            reset();
         };
 
         if (newInput.length >= 3) {
             setLoad(true);
             getData(newInput);
         };
+    };
+
+    
+
+    async function reset () {
+
+        if (props.rank === "specie") {
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        if (props.rank === "genus") {
+            props.handleFormChange(props.observation.id, "genus", "");
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        if (props.rank === "family") {
+            props.handleFormChange(props.observation.id, "family", "");
+            props.handleFormChange(props.observation.id, "genus", "");
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        if (props.rank === "order") {
+            props.handleFormChange(props.observation.id, "order", "");
+            props.handleFormChange(props.observation.id, "family", "");
+            props.handleFormChange(props.observation.id, "genus", "");
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        if (props.rank === "classe") {
+            props.handleFormChange(props.observation.id, "classe", "");
+            props.handleFormChange(props.observation.id, "order", "");
+            props.handleFormChange(props.observation.id, "family", "");
+            props.handleFormChange(props.observation.id, "genus", "");
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        setTaxonList([]);
     };
 
     async function onChange (newValue) {
