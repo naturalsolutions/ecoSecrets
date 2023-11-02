@@ -1,7 +1,8 @@
-import { Autocomplete, capitalize, Grid, TextField } from "@mui/material";
+import { Autocomplete, capitalize, Grid, IconButton, TextField } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from 'axios';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
 const sep = " - "
@@ -41,35 +42,45 @@ const TaxonomicInput = (
 
     const onInputChange = (newInput) => {
         setInput(newInput);
-        
-        if (newInput === "") {
-            reset();
-        };
+
         if (newInput.length >= 3) {
             setLoad(true);
             getData(newInput);
         };
     };
 
-    async function reset () {
-        let id;
+    async function reset() {
+        let id: string = "";
+
         if (props.rank === "species") {
             id = (
                 await axios
                 .get(`http://localhost:8889/taxapi/V1/taxons?RANG=GN&LB_NOM=${ props.observation.genus }`)
-            ).data.CD_NOM;
+            ).data[0].CD_NOM;
             props.handleFormChange(props.observation.id, "species", "");
         };
         if (props.rank === "genus") {
+            id = (
+                await axios
+                .get(`http://localhost:8889/taxapi/V1/taxons?RANG=FM&LB_NOM=${ props.observation.family }`)
+            ).data[0].CD_NOM;
             props.handleFormChange(props.observation.id, "genus", "");
             props.handleFormChange(props.observation.id, "species", "");
         };
         if (props.rank === "family") {
+            id = (
+                await axios
+                .get(`http://localhost:8889/taxapi/V1/taxons?RANG=OR&LB_NOM=${ props.observation.order }`)
+            ).data[0].CD_NOM;
             props.handleFormChange(props.observation.id, "family", "");
             props.handleFormChange(props.observation.id, "genus", "");
             props.handleFormChange(props.observation.id, "species", "");
         };
         if (props.rank === "order") {
+            id = (
+                await axios
+                .get(`http://localhost:8889/taxapi/V1/taxons?RANG=CL&LB_NOM=${ props.observation.classe }`)
+            ).data[0].CD_NOM;
             props.handleFormChange(props.observation.id, "order", "");
             props.handleFormChange(props.observation.id, "family", "");
             props.handleFormChange(props.observation.id, "genus", "");
@@ -82,6 +93,7 @@ const TaxonomicInput = (
             props.handleFormChange(props.observation.id, "genus", "");
             props.handleFormChange(props.observation.id, "species", "");
         };
+        props.handleFormChange(props.observation.id, "id_annotation", id);
         setTaxonList([]);
     };
 
@@ -121,6 +133,7 @@ const TaxonomicInput = (
             props.handleFormChange(props.observation.id, "genus", "");
             props.handleFormChange(props.observation.id, "species", "");
         };
+        props.handleFormChange(props.observation.id, "id_annotation", newValue.CD_NOM);
         setTaxonList([]);
     };
 
@@ -159,7 +172,13 @@ const TaxonomicInput = (
                         size="small" 
                         variant="filled"
                         InputProps={{
-                            ...params.InputProps, type: "search"
+                            ...params.InputProps, 
+                            endAdornment: 
+                            input && <IconButton
+                                onClick={ () => { reset() }}
+                            >
+                                <HighlightOffIcon fontSize="small"/>
+                            </IconButton>
                         }}
                     />
                 )}
