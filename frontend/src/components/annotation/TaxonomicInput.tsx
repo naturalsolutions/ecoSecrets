@@ -10,8 +10,9 @@ const TaxonomicInput = (
     props
 ) => {
     const { t } = useTranslation();
-    const [load, setLoad] = useState(false);
-    const [taxonList, setTaxonList] = useState<any[]>([]);
+    const [load, setLoad] = useState<boolean>(false);
+    const [taxonList, setTaxonList] = useState<string[]>([]);
+    const [input, setInput] = useState<string>("");
     
     async function getData (search_name: string) {
         let data:string[]=[];
@@ -39,11 +40,7 @@ const TaxonomicInput = (
     };
 
     const onInputChange = (newInput) => {
-        if (props.rank == "specie") { props.setCurrentObservation({ ...props.currentObservation, species: newInput }) };
-        if (props.rank === "genus") { props.setCurrentObservation({ ...props.currentObservation, genus: newInput }) };
-        if (props.rank === "family") { props.setCurrentObservation({ ...props.currentObservation, family: newInput }) };
-        if (props.rank === "order") { props.setCurrentObservation({ ...props.currentObservation, order: newInput }) };
-        if (props.rank === "classe") { props.setCurrentObservation({ ...props.currentObservation, classe: newInput }) };
+        setInput(newInput);
         
         if (newInput === "") {
             // reset();
@@ -58,54 +55,40 @@ const TaxonomicInput = (
 
     async function onChange (newValue) {
         if (newValue.RANG === "ES") {
-            props.setCurrentObservation({
-                ...props.currentObservation,
-                id: newValue.CD_NOM,
-                classe: newValue.CLASSE,
-                order: newValue.ORDRE,
-                family: newValue.FAMILLE,
-                genus: newValue.LB_NOM.split(' ')[0],
-                specie: newValue.LB_NOM
-            });
-            // props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
-            // props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
-            // props.handleFormChange(props.observation.id, "family", newValue.FAMILLE);
-            // props.handleFormChange(props.observation.id, "genus", newValue.LB_NOM.split(' ')[0]);
+            props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
+            props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
+            props.handleFormChange(props.observation.id, "family", newValue.FAMILLE);
+            props.handleFormChange(props.observation.id, "genus", newValue.LB_NOM.split(' ')[0]);
             props.handleFormChange(props.observation.id, "specie", newValue.LB_NOM);
         };
-        // if (newValue.RANG === "GN") {
-        //     console.log("newValue GN", newValue)
-        //     props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
-        //     props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
-        //     props.handleFormChange(props.observation.id, "family", newValue.FAMILLE);
-        //     props.handleFormChange(props.observation.id, "genus", newValue.LB_NOM.split(' ')[0]);
-        //     props.handleFormChange(props.observation.id, "specie", "");
-        // };
-        // if (newValue.RANG === "FM") {
-        //     console.log("newValue FM", newValue)
-        //     props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
-        //     props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
-        //     props.handleFormChange(props.observation.id, "family", newValue.FAMILLE);
-        //     props.handleFormChange(props.observation.id, "genus", "");
-        //     props.handleFormChange(props.observation.id, "specie", "");
-        // };
-        // if (newValue.RANG === "OR") {
-        //     console.log("newValue OR", newValue)
-        //     props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
-        //     props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
-        //     props.handleFormChange(props.observation.id, "family", "");
-        //     props.handleFormChange(props.observation.id, "genus", "");
-        //     props.handleFormChange(props.observation.id, "specie", "");
-        // };
-        // if (newValue.RANG === "CL") {
-        //     console.log("newValue CL", newValue)
-        //     props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
-        //     props.handleFormChange(props.observation.id, "order", "");
-        //     props.handleFormChange(props.observation.id, "family", "");
-        //     props.handleFormChange(props.observation.id, "genus", "");
-        //     props.handleFormChange(props.observation.id, "specie", "");
-        // };
-        // props.handleFormChange(props.observation.id, newValue);
+        if (newValue.RANG === "GN") {
+            props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
+            props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
+            props.handleFormChange(props.observation.id, "family", newValue.FAMILLE);
+            props.handleFormChange(props.observation.id, "genus", newValue.LB_NOM.split(' ')[0]);
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        if (newValue.RANG === "FM") {
+            props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
+            props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
+            props.handleFormChange(props.observation.id, "family", newValue.FAMILLE);
+            props.handleFormChange(props.observation.id, "genus", "");
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        if (newValue.RANG === "OR") {
+            props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
+            props.handleFormChange(props.observation.id, "order", newValue.ORDRE);
+            props.handleFormChange(props.observation.id, "family", "");
+            props.handleFormChange(props.observation.id, "genus", "");
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
+        if (newValue.RANG === "CL") {
+            props.handleFormChange(props.observation.id, "classe", newValue.CLASSE);
+            props.handleFormChange(props.observation.id, "order", "");
+            props.handleFormChange(props.observation.id, "family", "");
+            props.handleFormChange(props.observation.id, "genus", "");
+            props.handleFormChange(props.observation.id, "specie", "");
+        };
         setTaxonList([]);
     };
 
@@ -121,13 +104,13 @@ const TaxonomicInput = (
                     ? " " 
                     : props.observation[props.rank] 
                 }
-                onChange={(event: any, newValue, params) => {
+                onChange={(_, newValue) => {
                     onChange(newValue);
                 }}
-                onInputChange={ (event, newInput) => {
+                inputValue={ input }
+                onInputChange={ (_, newInput) => {
                     onInputChange(newInput);
                 }}
-                inputValue={ props.currentObservation[props.rank] }
                 getOptionLabel={ (opt) => 
                     (typeof(opt) === "string") ? 
                     opt : 

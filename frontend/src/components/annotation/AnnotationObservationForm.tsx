@@ -7,81 +7,11 @@ import { useState } from "react";
 // import NestedList from "../common/collapsableButton";
 // import TraitInput from "./TraitInput";
 
-// interface SpeciesOptionType {
-//     REGNE: string;
-//     PHYLUM: string;
-//     CLASSE: string;
-//     ORDRE: string;
-//     FAMILLE: string;
-//     SOUS_FAMILLE: string;
-//     TRIBU: string;
-//     GROUP1_INPN: string;
-//     GROUP2_INPN: string;
-//     CD_NOM: string;
-//     CD_TAXSUP: string;
-//     CD_SUP: string;
-//     CD_REF: string;
-//     RANG: string;
-//     LB_NOM: string;
-//     LB_AUTEUR: string;
-//     NOM_COMPLET: string;
-//     NOM_COMPLET_HTML: string;
-//     NOM_VALIDE: string;
-//     NOM_VERN: string;
-//     NOM_VERN_ENG: string;
-//     HABITAT: string;
-//     FR: string;
-//     GF: string;
-//     MAR: string;
-//     GUA: string;
-//     SM: string;
-//     SB: string;
-//     SPM: string;
-//     MAY: string;
-//     EPA: string;
-//     REU: string;
-//     SA: string;
-//     TA: string;
-//     TAAF: string;
-//     PF: string;
-//     NC: string;
-//     WF: string;
-//     CLI: string;
-//     URL: string;
-// }
-
-interface observationType {
-    classe: string;
-    order: string;
-    family: string;
-    genus: string;
-    species: string;
-    number: number;
-    biological_stade: string;
-    sex: string;
-    behaviour: string;
-    life_stage: string;
-    comments: string;
-}
 
 const AnnotationObservationForm = (
     props
 ) => {
     const { t } = useTranslation();
-
-    const [currentObservation, setCurrentObservation] = useState<observationType>({
-        classe: "",
-        order: "",
-        family: "",
-        genus: "",
-        species: "",
-        number: 0,
-        biological_stade: "",
-        sex: "",
-        behaviour: "",
-        life_stage: "",
-        comments: ""
-    });
 
     return (
         <form key={props.observation.id}>
@@ -104,40 +34,30 @@ const AnnotationObservationForm = (
                 <TaxonomicInput 
                     rank="classe" 
                     observation={ props.observation }
-                    currentObservation={ currentObservation }
-                    setCurrentObservation={ setCurrentObservation }
                     handleFormChange={ props.handleFormChange }
                 />
 
                 <TaxonomicInput 
                     rank="order" 
                     observation={ props.observation }
-                    currentObservation={ currentObservation }
-                    setCurrentObservation={ setCurrentObservation }
                     handleFormChange={ props.handleFormChange }
                 />
 
                 <TaxonomicInput 
                     rank="family" 
                     observation={ props.observation }
-                    currentObservation={ currentObservation }
-                    setCurrentObservation={ setCurrentObservation }
                     handleFormChange={ props.handleFormChange }
                 />
 
                 <TaxonomicInput 
                     rank="genus" 
                     observation={ props.observation }
-                    currentObservation={ currentObservation }
-                    setCurrentObservation={ setCurrentObservation }
                     handleFormChange={ props.handleFormChange }
                 />
 
                 <TaxonomicInput 
                     rank="specie" 
                     observation={ props.observation }
-                    currentObservation={ currentObservation }
-                    setCurrentObservation={ setCurrentObservation }
                     handleFormChange={ props.handleFormChange }
                 />
                 
