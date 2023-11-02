@@ -1,6 +1,9 @@
+import tempfile
+
 import pytest
 
-from src.utils import check_mime
+from src.models.file import Files
+from src.utils import check_mime, file_as_bytes
 
 all_authorized_mimes = {
     "video/mp4",
@@ -40,3 +43,9 @@ if not all_authorized_mimes.isdisjoint(some_unauthorized_mimes):
 def test_check_mime(authorized, unauthorized):
     assert check_mime(authorized)
     assert not check_mime(unauthorized)
+
+
+def test_file_as_bytes(file_object):
+    temp = file_as_bytes(tempfile.TemporaryFile())
+
+    assert isinstance(temp, (bytes, bytearray))
