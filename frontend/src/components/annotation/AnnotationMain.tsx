@@ -14,10 +14,12 @@ import ButtonStatus from "../common/buttonStatus";
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useTranslation } from "react-i18next";
+import AnnotationContextProvider from "../../contexts/annotationContext";
+import MetadataTab from "./MetadataTab";
 
 
-const fieldsMandatory = ["species", "classe", "order", "genus", "family"]
-const LayoutImageContainer = styled("div")({
+const fieldsMandatory = ["species", "genus", "family", "order", "classe"];
+const LayoutAnnotationContainer = styled("div")({
   flexGrow: 1,
   display: "grid",
   gridTemplateColumns: "repeat(12, 1fr)",
@@ -25,7 +27,7 @@ const LayoutImageContainer = styled("div")({
   rowGap: "1rem",
 });
 
-const LayoutImageImage = styled("div")(({ theme }) => ({
+const LayoutAnnotationImage = styled("div")(({ theme }) => ({
   gridColumn: "1/8",
   [theme.breakpoints.down("md")]: {
     gridColumn: "1/13",
@@ -33,7 +35,7 @@ const LayoutImageImage = styled("div")(({ theme }) => ({
   }
 }));
 
-const LayoutImageForm = styled("div")(({ theme }) => ({
+const LayoutAnnotationForm = styled("div")(({ theme }) => ({
   gridColumn: "8/13",
   [theme.breakpoints.down("md")]: {
     gridColumn: "1/13",
@@ -55,10 +57,11 @@ const AnnotationMain = () => {
   } = useMainContext();
 
   let params = useParams();
-  const [isAnnoted, setIsAnnoted] = useState<undefined | boolean>(undefined)
-  const [treated, setTreated] = useState<undefined | boolean>(undefined)
+  const [annotated, setAnnotated] = useState<undefined | boolean>(undefined);
+  const [treated, setTreated] = useState<undefined | boolean>(undefined);
+
   const [observations, setObservations] = useState<Annotation[]>([]);
-  const tmpObservation = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
+  const observationTemplate = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
   const [isMinimalObservation, setIsMinimalObservation] = useState(observations.length == 0)
 
   const [tabValue, setTabValue] = useState(0);
@@ -151,7 +154,7 @@ const AnnotationMain = () => {
 
   const handleAddObservation = () => {
     if (isMinimalObservation) {
-      setObservations([...observations, tmpObservation]);
+      setObservations([...observations, observationTemplate]);
     };
     if (checked) {
       setChecked(false);
@@ -175,7 +178,7 @@ const AnnotationMain = () => {
       setIsMinimalObservation(true);
     };
     if (checked) {
-      setObservations([...observations, tmpObservation]);
+      setObservations([...observations, observationTemplate]);
       setIsMinimalObservation(false);
     };
     setChecked(!checked);
@@ -199,112 +202,123 @@ const AnnotationMain = () => {
     setObservations(tmp_obs);
   };
   
-  return (
-    <LayoutImageContainer className="page">
-
-      <LayoutImageImage>
-        <AnnotationImageDisplay image={image()} next={next} previous={previous} lastOrFirstImage={lastOrFirstImage} isAnnoted={isAnnoted}/>
-      </LayoutImageImage >
-
-      <LayoutImageForm className="annotations">
+    return (
         
-        <Stack
-          direction="column"
-          justifyContent="space-between"
-          alignItems="stretch"
-          spacing={2}
-          className="stackAnnotations"
-        >
-          <Typography 
-            component={"span"} 
-            variant="h3"
-          >
-            { capitalize(t("annotations.annotation")) }
-          </Typography>
+        <AnnotationContextProvider >
+            <LayoutAnnotationContainer className="page">
 
-          <Tabs
-            value={ tabValue }
-            aria-label="basic tabs example"
-            variant="fullWidth"
-            onChange={ handleTabChange }
-          >
-            <Tab
-              label={ capitalize(t("observations.observations_maybe_plural")) }
-            />
-            <Tab 
-              label={ capitalize(t("annotations.metadata")) }
-            />
-          </Tabs>
+                <LayoutAnnotationImage>
+                    <AnnotationImageDisplay 
+                        image={ image() } 
+                        next={ next }
+                        previous={ previous } 
+                        lastOrFirstImage={ lastOrFirstImage } 
+                        isAnnoted={ annotated }
+                    />
+                </LayoutAnnotationImage >
 
-          
-          <TabPanel 
-              valueTab={ tabValue } 
-              index={ 0 }
-          >
-            <span className="info-annotation-ctn">
-              { treated ?
-                <ButtonStatus 
-                  icon={ <CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} /> } 
-                  title={ capitalize(t("annotations.media_processed_manually")) } 
-                  stylClassButton="valid" 
-                /> : (
-                  isAnnoted ?
-                  <ButtonStatus 
-                    icon={ <HelpRoundedIcon sx={{ color: '#FF9800' }} /> } 
-                    title={ capitalize(t("observations.not_saved")) } 
-                    stylClassButton="info" 
-                  /> :
-                  <ButtonStatus 
-                    icon={ <HelpRoundedIcon sx={{ color: '#F44336' }} /> } 
-                    title={ capitalize(t("annotations.media_not_processed")) } 
-                    stylClassButton="warning" 
-                  />
-              )}
-              <FormControlLabel
-                id="switch-empty-control"
-                control={
-                  <Switch
-                    id="switch-empty"
-                    checked={ checked }
-                    onChange={ handleCheckChange }
-                  />
-                }
-                label={ capitalize(t("annotations.empty_media")) }
-              />
-            </span>
+                <LayoutAnnotationForm className="annotations">
+                  
+                  <Stack
+                    direction="column"
+                    justifyContent="space-between"
+                    alignItems="stretch"
+                    spacing={2}
+                    className="stackAnnotations"
+                  >
+                    <Typography 
+                      component={"span"} 
+                      variant="h3"
+                    >
+                      { capitalize(t("annotations.annotation")) }
+                    </Typography>
 
-            {
-              observations.map((observation, index) => (
-                <AnnotationObservationForm 
-                  key={ observation.id } 
-                  index={ index + 1 }
-                  observation={ observation } 
-                  handleFormChange={ handleFormChange } 
-                  handleCheckChange={ handleCheckChange } 
-                  handleDeleteObservation={ handleDeleteObservation } 
+                    <Tabs
+                      value={ tabValue }
+                      aria-label="basic tabs example"
+                      variant="fullWidth"
+                      onChange={ handleTabChange }
+                    >
+                      <Tab
+                        label={ capitalize(t("observations.observations_maybe_plural")) }
+                      />
+                      <Tab 
+                        label={ capitalize(t("annotations.metadata")) }
+                      />
+                    </Tabs>
+
+                    
+                    <TabPanel 
+                        valueTab={ tabValue } 
+                        index={ 0 }
+                    >
+                      <span className="info-annotation-ctn">
+                        { treated ?
+                          <ButtonStatus 
+                            icon={ <CheckCircleRoundedIcon sx={{ color: '#4CAF50' }} /> } 
+                            title={ capitalize(t("annotations.media_processed_manually")) } 
+                            stylClassButton="valid" 
+                          /> : (
+                            annotated ?
+                            <ButtonStatus 
+                              icon={ <HelpRoundedIcon sx={{ color: '#FF9800' }} /> } 
+                              title={ capitalize(t("observations.not_saved")) } 
+                              stylClassButton="info" 
+                            /> :
+                            <ButtonStatus 
+                              icon={ <HelpRoundedIcon sx={{ color: '#F44336' }} /> } 
+                              title={ capitalize(t("annotations.media_not_processed")) } 
+                              stylClassButton="warning" 
+                            />
+                        )}
+                        <FormControlLabel
+                          id="switch-empty-control"
+                          control={
+                            <Switch
+                              id="switch-empty"
+                              checked={ checked }
+                              onChange={ handleCheckChange }
+                            />
+                          }
+                          label={ capitalize(t("annotations.empty_media")) }
+                        />
+                      </span>
+
+                      {
+                        observations.map((observation, index) => (
+                          <AnnotationObservationForm 
+                            key={ observation.id } 
+                            index={ index + 1 }
+                            observation={ observation } 
+                            handleFormChange={ handleFormChange } 
+                            handleCheckChange={ handleCheckChange } 
+                            handleDeleteObservation={ handleDeleteObservation } 
+                          />
+                        ))
+                      }
+                    </TabPanel >
+
+                    <MetadataTab valueTab={ tabValue } index={ 1 } /> 
+
+                    <Divider />
+
+                    <AnnotationButtons
+                      saveandnext={saveandnext}
+                      handleAddObservation={handleAddObservation}
+                    />
+
+                    </Stack >
+                </LayoutAnnotationForm >
+
+                <AnnotationSaveError
+                  openSaveErrorDialog={openSaveErrorDialog} handleCloseSaveErrorDialog={handleCloseSaveErrorDialog}
                 />
-              ))
-            }
-          </TabPanel >
 
-            <TabPanel valueTab={tabValue} index={1}>
-              <Alert severity="info">{capitalize(t("main.unavailable"))}.</Alert>
-            </TabPanel >
+            </LayoutAnnotationContainer>
+        </AnnotationContextProvider>
 
-            <Divider />
+      
 
-            <AnnotationButtons
-              saveandnext={saveandnext}
-              handleAddObservation={handleAddObservation}
-            />
-
-          </Stack >
-      </LayoutImageForm >
-
-      <AnnotationSaveError
-        openSaveErrorDialog={openSaveErrorDialog} handleCloseSaveErrorDialog={handleCloseSaveErrorDialog}
-      />
-    </LayoutImageContainer >
   );
 };
 export default AnnotationMain;
