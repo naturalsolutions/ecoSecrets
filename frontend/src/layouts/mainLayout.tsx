@@ -16,9 +16,9 @@ export const MainLayout = ({
 }: MainLayoutProps) => (
   <Box>
     {Header}
-    <Grid container
+    <Grid container 
+      sx={{ height: "87vh" }} 
       justifyContent="center"
-      style={{ height: "fit-content" }} 
     >
       <Grid item sx={{ height: "100%" }} xs={12} md={11} lg={11}>
         {Navigation}
