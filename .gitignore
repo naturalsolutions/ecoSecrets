@@ -1,3 +1,4 @@
 docker/.env
 /venv
-taxapi/TAXREFv14.json
+taxapi/script.js
+taxapi/TAXREFv14_full.json
