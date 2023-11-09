@@ -2,7 +2,7 @@ import "./App.css";
 import Main from "./pages/main";
 import Project from "./pages/project";
 import Deployment from "./pages/deployment";
-import Image from "./pages/annotation";
+import Annotation from "./pages/annotation";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";
@@ -71,11 +71,11 @@ function App() {
                   ></Route>
                   <Route
                     path="/project/:projectId/deployment/:deploymentId/medias/:imageId"
-                    element={<Image />}
+                    element={<Annotation />}
                   ></Route>
                   <Route
                     path="/project/:projectId/deployment/:deploymentId/details/:imageId"
-                    element={<Image />}
+                    element={<Annotation />}
                   ></Route>
                   <Route path="*" element={<Main />}></Route>
                 </Routes>

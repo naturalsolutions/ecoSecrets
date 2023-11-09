@@ -4,7 +4,7 @@ import NavigationPath from "../components/navigationPath";
 import AnnotationContextProvider from "../contexts/annotationContext";
 import AnnotationMain from "../components/annotation/AnnotationMain";
 
-function Image() {
+function Annotation() {
   return (
     <div className="Main">
       <MainLayout
@@ -13,10 +13,11 @@ function Image() {
         Main={
           <AnnotationContextProvider>
             <AnnotationMain />
-          </AnnotationContextProvider>}
+          </AnnotationContextProvider>
+        }
       />
     </div>
   );
 }
 
-export default Image;
+export default Annotation;
