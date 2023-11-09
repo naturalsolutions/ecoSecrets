@@ -1,16 +1,16 @@
 import { Grid, IconButton, Typography } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
+import { useAnnotationContext } from "../../contexts/annotationContext";
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 
 
-const AnnotationImageNavigation = (
-    props
-) => {
+const AnnotationImageNavigation = () => {
 
     const { files, currentImage } = useMainContext();
+    const { previous, lastOrFirstImage, next } = useAnnotationContext();
 
     const imageIndex = () => {
         return (files && files.findIndex((f) => f.id === currentImage) + 1);
@@ -34,11 +34,11 @@ const AnnotationImageNavigation = (
                     <GridViewIcon fontSize="large" />
                 </IconButton> */}
 
-                <IconButton onClick={() => props.lastOrFirstImage("first")}>
+                <IconButton onClick={() => lastOrFirstImage("first")}>
                     <FastRewindIcon fontSize="large" />
                 </IconButton>
 
-                <IconButton onClick={() => props.previous()} >
+                <IconButton onClick={() => previous()} >
                     <SkipPreviousIcon fontSize="large" />
                 </IconButton>
 
@@ -52,11 +52,11 @@ const AnnotationImageNavigation = (
                     </Typography>
                 </IconButton>
 
-                <IconButton onClick={() => props.next()}>
+                <IconButton onClick={() => next()}>
                     < SkipNextIcon fontSize="large" />
                 </IconButton>
 
-                <IconButton onClick={() => props.lastOrFirstImage("last")}>
+                <IconButton onClick={() => lastOrFirstImage("last")}>
                     <FastForwardIcon fontSize="large" />
                 </IconButton>
 

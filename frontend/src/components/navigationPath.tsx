@@ -50,7 +50,7 @@ const NavigationPath: FC<{}> = () => {
     return (
       <BreadcrumbElement
         key="image"
-        current_option={ image().name }
+        current_option={ image()?.name }
         link={ `/project/${project().id}/deployment/${deploymentData.id}/details/${currentImage}` }
         parentlink={ `/project/${ project().id }/deployment/${deploymentData.id}/details` }
         options={ files }

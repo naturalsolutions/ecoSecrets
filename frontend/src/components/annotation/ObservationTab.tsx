@@ -5,6 +5,7 @@ import ButtonStatus from "../common/buttonStatus";
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useTranslation } from "react-i18next";
+import { useAnnotationContext } from "../../contexts/annotationContext";
 
 
 const ObservationTab = (
@@ -12,19 +13,27 @@ const ObservationTab = (
 ) => {
     const { t } = useTranslation();
     
+    const { 
+        observations,
+        annotated,
+        treated,
+        checked,
+        handleCheckChange,
+    } = useAnnotationContext();
+
     return(
         <TabPanel 
             valueTab={ props.valueTab } 
             index={ props.index }
         >
             <span className="info-annotation-ctn">
-            { props.treated ?
+            { treated ?
                 <ButtonStatus 
                     icon={ <CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} /> } 
                     title={ capitalize(t("annotations.media_processed_manually")) } 
                     stylClassButton="valid" 
                 /> : (
-                props.annotated ?
+                annotated ?
                 <ButtonStatus 
                     icon={ <HelpRoundedIcon sx={{ color: "#FF9800" }} /> } 
                     title={ capitalize(t("observations.not_saved")) } 
@@ -41,22 +50,19 @@ const ObservationTab = (
                 control={
                 <Switch
                     id="switch-empty"
-                    checked={ props.checked }
-                    onChange={ props.handleCheckChange }
+                    checked={ checked }
+                    onChange={ handleCheckChange }
                 />
                 }
                 label={ capitalize(t("annotations.empty_media")) }
             />
             </span>
 
-            {props.observations.map((observation, index) => (
+            {observations?.map((observation, index) => (
                 <AnnotationObservationForm 
                     key={ observation.id } 
                     index={ index + 1 }
                     observation={ observation } 
-                    handleFormChange={ props.handleFormChange } 
-                    handleCheckChange={ props.handleCheckChange } 
-                    handleDeleteObservation={ props.handleDeleteObservation } 
                 />
             ))}
         </TabPanel >

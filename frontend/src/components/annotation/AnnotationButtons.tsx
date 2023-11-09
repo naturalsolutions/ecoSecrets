@@ -1,10 +1,14 @@
 import { Stack, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useAnnotationContext } from "../../contexts/annotationContext";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
 
-const AnnotationButtons = (props) => {
-    const { t } = useTranslation()
+const AnnotationButtons = () => {
+    const { t } = useTranslation();
+
+    const { saveandnext, handleAddObservation } = useAnnotationContext();
+
     return (
         <Stack 
             direction="row" 
@@ -18,7 +22,7 @@ const AnnotationButtons = (props) => {
             >
                 <ButtonModify 
                     content={ capitalize(t("observations.new")) } 
-                    edit={ () => props.handleAddObservation() } 
+                    edit={ () => handleAddObservation() } 
                     startIcon="add" 
                 />
             </Stack>
@@ -26,7 +30,7 @@ const AnnotationButtons = (props) => {
             <Stack justifyContent="flex-end">
                 <ButtonValidate 
                     content={ capitalize(t("main.save_and_continue")) } 
-                    validate={ () => props.saveandnext() } 
+                    validate={ () => saveandnext() } 
                 />
             </Stack>
         </Stack>

@@ -1,7 +1,8 @@
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
-import AnnotationMain from "../components/annotation/AnnotationMain";
 import NavigationPath from "../components/navigationPath";
+import AnnotationContextProvider from "../contexts/annotationContext";
+import AnnotationMain from "../components/annotation/AnnotationMain";
 
 function Image() {
   return (
@@ -9,7 +10,10 @@ function Image() {
       <MainLayout
         Header={<HeadBar />}
         Navigation={<NavigationPath />}
-        Main={<AnnotationMain />}
+        Main={
+          <AnnotationContextProvider>
+            <AnnotationMain />
+          </AnnotationContextProvider>}
       />
     </div>
   );

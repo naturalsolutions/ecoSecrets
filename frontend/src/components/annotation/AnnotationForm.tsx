@@ -6,9 +6,7 @@ import { useTranslation } from "react-i18next";
 import ObservationTab from "./ObservationTab";
 
 
-export default function AnnotationForm(
-    props
-) {
+export default function AnnotationForm() {
     const { t } = useTranslation();
 
     const [tabValue, setTabValue] = useState(0);
@@ -41,25 +39,16 @@ export default function AnnotationForm(
                 <Tab label={ capitalize(t("annotations.metadata")) } />
             </Tabs>
 
-            <ObservationTab 
-                observations={ props.observations } 
-                treated={ props.treated } 
-                annotated={ props.annotated } 
-                checked={ props.checked }
-                handleFormChange={ props.handleFormChange } 
-                handleCheckChange={ props.handleCheckChange } 
-                handleDeleteObservation={ props.handleDeleteObservation } 
+            <ObservationTab
                 valueTab={ tabValue } 
                 index={ 0 }
             />
+
             <MetadataTab valueTab={ tabValue } index={ 1 } /> 
-
+            
             <Divider />
-
-            <AnnotationButtons
-                saveandnext={ props.saveandnext }
-                handleAddObservation={ props.handleAddObservation }
-            />
+            
+            <AnnotationButtons />
         </Stack >
     )
 };

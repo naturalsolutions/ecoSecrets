@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
+import { useMainContext } from "../../contexts/mainContext";
+import { useAnnotationContext } from "../../contexts/annotationContext";
 
-const AnnotationImageDisplay = (
-    props
-) => {
+const AnnotationImageDisplay = () => {
 
-    const [isAnnotatedColor, setIsAnnotatedColor] = useState<string>("")
+    const [isAnnotatedColor, setIsAnnotatedColor] = useState<string>("");
+    const { image } = useMainContext();
+    const { annotated } = useAnnotationContext();
 
     const mediaDisplayStyle = {
         borderBottomLeftRadius: 4,
@@ -47,13 +49,13 @@ const AnnotationImageDisplay = (
 
     useEffect(() => {
         (async () => {
-            props.image?.treated
+            image()?.treated
             ? setIsAnnotatedColor("green") 
-            : (props.isAnnotated 
+            : (annotated 
                 ? setIsAnnotatedColor("orange") 
                 : setIsAnnotatedColor("red"))
         })();
-    }, [props.image?.annotations, props.isAnnotated]);
+    }, [image()?.annotations, annotated]);
 
     return (
         <>
@@ -65,7 +67,7 @@ const AnnotationImageDisplay = (
                     backgroundColor: "#D9D9D9",
                 }}
             >
-                {displayMedia(props.image)}
+                { displayMedia(image()) }
             </Grid>
         </>
     );

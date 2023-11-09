@@ -10,7 +10,6 @@ const traitList = {
 };
 
 
-
 const TraitInput = (
     props
 ) => {
