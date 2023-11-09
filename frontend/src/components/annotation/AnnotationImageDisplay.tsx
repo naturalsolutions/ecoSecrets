@@ -1,22 +1,20 @@
 import { useState, useEffect } from "react";
-import AnnotationImageNavigation from "./AnnotationImageNavigation";
-import { Grid, capitalize } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { Grid } from "@mui/material";
 
 const AnnotationImageDisplay = (
     props
 ) => {
-    const { t } = useTranslation()
-    const [isAnnotedColor, setIsAnnoted] = useState<string>("")
+
+    const [isAnnotatedColor, setIsAnnotatedColor] = useState<string>("")
 
     const mediaDisplayStyle = {
         borderBottomLeftRadius: 4,
         borderBottomRightRadius: 4,
         maxWidth: "99.5%",
-        maxHeight: "740px",
+        maxHeight: "670px",
         border: "3px solid",
         borderRadius: "5px",
-        borderColor: isAnnotedColor,
+        borderColor: isAnnotatedColor,
     };
     
     const displayMedia = (image) => {
@@ -49,38 +47,26 @@ const AnnotationImageDisplay = (
 
     useEffect(() => {
         (async () => {
-            props.image?.treated? setIsAnnoted("green") : (props.isAnnoted ? setIsAnnoted("orange") : setIsAnnoted("red"))
+            props.image?.treated
+            ? setIsAnnotatedColor("green") 
+            : (props.isAnnotated 
+                ? setIsAnnotatedColor("orange") 
+                : setIsAnnotatedColor("red"))
         })();
-    }, [props.image?.annotations, props.isAnnoted]);
+    }, [props.image?.annotations, props.isAnnotated]);
 
     return (
         <>
-            {props.image ? (
-                <Grid 
-                    container 
-                    direction="column"
-                    className="pageContainer"
-                >
-                    <Grid item
-                        alignItems="center"
-                        justifyContent="center"
-                        className="boxImage"
-                        style={{ 
-                            backgroundColor: "#D9D9D9",
-                        }}
-                    >
-                        {displayMedia(props.image)}
-                    </Grid>
-                    
-                    <AnnotationImageNavigation
-                        previous={props.previous}
-                        next={props.next}
-                        lastOrFirstImage={props.lastOrFirstImage}
-                    />
-                </Grid>
-            ) : (
-                <p>{capitalize(t("annotations.unknown_image"))}</p>
-            )}
+            <Grid item
+                alignItems="center"
+                justifyContent="center"
+                className="boxImage"
+                style={{ 
+                    backgroundColor: "#D9D9D9",
+                }}
+            >
+                {displayMedia(props.image)}
+            </Grid>
         </>
     );
 };

@@ -21,9 +21,8 @@ const MetadataTab: FC<MetadataTabProps> = ({
             index={ index }
         >
             <Alert severity="info">
-                {capitalize(t("main.unavailable"))}
+                { capitalize(t("main.unavailable")) }
             </Alert>
-
         </TabPanel >
     )
 };

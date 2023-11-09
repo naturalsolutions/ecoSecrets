@@ -9,14 +9,25 @@ const AnnotationButtons = (props) => {
         <Stack 
             direction="row" 
             justifyContent="space-between" 
-            height={"auto"}
+            height="auto"
         >
-            <Stack direction="row" justifyContent="flex-start" spacing={2}>
-                <ButtonModify content={ capitalize(t("observations.new")) } edit={ () => props.handleAddObservation() } startIcon="add" />
+            <Stack 
+                direction="row" 
+                justifyContent="flex-start" 
+                spacing={2}
+            >
+                <ButtonModify 
+                    content={ capitalize(t("observations.new")) } 
+                    edit={ () => props.handleAddObservation() } 
+                    startIcon="add" 
+                />
             </Stack>
             
             <Stack justifyContent="flex-end">
-                <ButtonValidate content={ capitalize(t("main.save_and_continue")) } validate={ () => props.saveandnext() } />
+                <ButtonValidate 
+                    content={ capitalize(t("main.save_and_continue")) } 
+                    validate={ () => props.saveandnext() } 
+                />
             </Stack>
         </Stack>
     )

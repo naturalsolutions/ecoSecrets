@@ -3,7 +3,6 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { request as __request } from '../../client/core/request';
 import { useTranslation } from "react-i18next";
 import TaxonomicInput from "./TaxonomicInput";
-import { useState } from "react";
 // import NestedList from "../common/collapsableButton";
 // import TraitInput from "./TraitInput";
 
