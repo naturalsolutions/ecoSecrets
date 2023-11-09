@@ -1,14 +1,20 @@
 import { Autocomplete, capitalize, Grid, IconButton, TextField } from "@mui/material";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from 'axios';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useAnnotationContext } from "../../contexts/annotationContext";
+import { Annotation } from "../../client/models/Annotation";
 
 
-const sep = " - "
+const sep = " - ";
 
-const TaxonomicInput = (
+interface TaxonomicInputProps {
+    rank: string;
+    observation: Annotation;
+};
+
+const TaxonomicInput: FC<TaxonomicInputProps> = (
     props
 ) => {
     const { t } = useTranslation();

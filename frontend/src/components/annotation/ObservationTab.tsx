@@ -6,11 +6,19 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
+import { Annotation } from "../../client";
+import { FC } from "react";
+
+interface ObservationTabProps {
+    valueTab: number;
+    index: number;
+};
 
 
-const ObservationTab = (
-    props
-) => {
+const ObservationTab: FC<ObservationTabProps> = ({
+    valueTab,
+    index
+}) => {
     const { t } = useTranslation();
     
     const { 
@@ -23,8 +31,8 @@ const ObservationTab = (
 
     return(
         <TabPanel 
-            valueTab={ props.valueTab } 
-            index={ props.index }
+            valueTab={ valueTab } 
+            index={ index }
         >
             <span className="info-annotation-ctn">
             { treated ?
@@ -58,9 +66,9 @@ const ObservationTab = (
             />
             </span>
 
-            {observations?.map((observation, index) => (
+            {observations?.map((observation: Annotation, index: number) => (
                 <AnnotationObservationForm 
-                    key={ observation.id } 
+                    key={ observation.id }
                     index={ index + 1 }
                     observation={ observation } 
                 />

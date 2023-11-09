@@ -4,13 +4,20 @@ import { request as __request } from '../../client/core/request';
 import { useTranslation } from "react-i18next";
 import TaxonomicInput from "./TaxonomicInput";
 import { useAnnotationContext } from "../../contexts/annotationContext";
+import { FC } from "react";
+import { Annotation } from "../../client/models/Annotation";
 // import NestedList from "../common/collapsableButton";
 // import TraitInput from "./TraitInput";
+// 
 
+interface AnnotationObservationFormProps {
+    observation: Annotation;
+    index: number;
+};
 
-const AnnotationObservationForm = (
-    props
-) => {
+const AnnotationObservationForm: FC<AnnotationObservationFormProps> = ({ 
+    observation, index 
+}) => {
     const { t } = useTranslation();
 
     const { 
@@ -19,7 +26,7 @@ const AnnotationObservationForm = (
     } = useAnnotationContext();
     
     return (
-        <form key={props.observation.id}>
+        <form key={ observation.id }>
             <Stack
                 direction="row"
                 justifyContent="space-between"
@@ -27,38 +34,38 @@ const AnnotationObservationForm = (
                 spacing={2}
             >
                 <Typography component={"span"} variant="h6">
-                    { `Observation ${ props.index }` }
+                    { `Observation ${ index }` }
                 </Typography>
 
                 <IconButton
-                    onClick={() => handleDeleteObservation(props.observation.id)} >
+                    onClick={() => handleDeleteObservation(observation.id)} >
                     <ClearTwoToneIcon />
                 </IconButton>
             </Stack>
             <Grid container spacing={1}>
                 <TaxonomicInput 
                     rank="classe" 
-                    observation={ props.observation }
+                    observation={ observation }
                 />
 
                 <TaxonomicInput 
                     rank="order" 
-                    observation={ props.observation }
+                    observation={ observation }
                 />
 
                 <TaxonomicInput 
                     rank="family" 
-                    observation={ props.observation }
+                    observation={ observation }
                 />
 
                 <TaxonomicInput 
                     rank="genus" 
-                    observation={ props.observation }
+                    observation={ observation }
                 />
 
                 <TaxonomicInput 
                     rank="species" 
-                    observation={ props.observation }
+                    observation={ observation }
                 />
                 
                 <Grid item lg={6} xs={12}>
@@ -68,9 +75,9 @@ const AnnotationObservationForm = (
                         size="small"
                         variant='filled'
                         inputProps={{ type: 'number' }}
-                        value={props.observation.number}
+                        value={observation.number}
                         onChange={
-                            (e) => handleFormChange(props.observation.id, "number", e.target.value)
+                            (e) => handleFormChange(observation.id, "number", e.target.value)
                         }
                         fullWidth
                     />

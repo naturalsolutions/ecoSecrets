@@ -4,8 +4,8 @@ import { Alert, capitalize } from "@mui/material";
 import TabPanel from "../tabPanel";
 
 interface MetadataTabProps {
-    valueTab: number,
-    index: number
+    valueTab: number;
+    index: number;
 };
 
 
