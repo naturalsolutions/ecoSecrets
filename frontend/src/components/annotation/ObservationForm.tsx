@@ -8,14 +8,13 @@ import { FC } from "react";
 import { Annotation } from "../../client/models/Annotation";
 import NestedList from "../common/collapsableButton";
 // import TraitInput from "./TraitInput";
-// 
 
-interface AnnotationObservationFormProps {
+interface ObservationFormProps {
     observation: Annotation;
     index: number;
 };
 
-const AnnotationObservationForm: FC<AnnotationObservationFormProps> = ({ 
+const ObservationForm: FC<ObservationFormProps> = ({ 
     observation, index 
 }) => {
     const { t } = useTranslation();
@@ -114,4 +113,4 @@ const AnnotationObservationForm: FC<AnnotationObservationFormProps> = ({
         </form>
     )
 };
-export default AnnotationObservationForm;
+export default ObservationForm;
