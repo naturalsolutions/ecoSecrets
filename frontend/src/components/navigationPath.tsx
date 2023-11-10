@@ -12,11 +12,11 @@ const NavigationPath: FC<{}> = () => {
 
   const homeBreadcrumb = (isActive: boolean = false) => {
     return (
+      !isActive &&
         <BreadcrumbElement 
             key="home"
             current_option={capitalize(t("main.home"))}
             link="/"
-            icon={true}
             isActive={isActive}
         />)
   }
@@ -41,7 +41,7 @@ const NavigationPath: FC<{}> = () => {
         link={`/project/${project().id}/deployment/${deploymentData.id}/details`}
         parentlink={`/project/${project().id}/deployment`}
         options={projects.find((p) => p.id === project().id).deployments}
-        linkSuffix={`details`}
+        linkSuffix="details"
         isActive={isActive}
       />)
   }
