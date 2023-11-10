@@ -1,5 +1,5 @@
 import { capitalize, FormControlLabel, Switch } from "@mui/material";
-import AnnotationObservationForm from "./AnnotationObservationForm";
+import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
@@ -67,7 +67,7 @@ const ObservationTab: FC<ObservationTabProps> = ({
             </span>
 
             {observations?.map((observation: Annotation, index: number) => (
-                <AnnotationObservationForm 
+                <ObservationForm 
                     key={ observation.id }
                     index={ index + 1 }
                     observation={ observation } 
