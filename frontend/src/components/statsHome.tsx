@@ -1,11 +1,11 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, ListItemSecondaryAction, Typography } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
 import CollectionsIcon from '@mui/icons-material/Collections';
 import NotesIcon from '@mui/icons-material/Notes';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 
@@ -14,10 +14,30 @@ const StatsHome = () => {
     const { t } = useTranslation();
 
     const graphicStats = {
-        "medias": {'buttonLabel':`${capitalize(t("main.number_of"))} ${t("projects.media")}`, "url":"/gallery/", "icon":<CollectionsIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />}, 
-        "annotations": {'buttonLabel': `${capitalize(t("main.number"))} ${t("observations.observations")}`, "url":"", "icon":<NotesIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}} />},
-        "device":{'buttonLabel':`${capitalize(t("main.number_of"))} ${t("devices.devices")}`, "url":"/devices/", "icon": <CameraAltIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>},
-        "sites": {'buttonLabel':`${capitalize(t("main.number_of"))} ${t("sites.sites")}`, "url":"/sites/", "icon": <LocationOnIcon fontSize="large" sx={{display: {color: "#BCAAA4"}}}/>}
+        "medias": {
+            "buttonLabel":`${t("projects.medias")}`,
+            "url":"/gallery/", 
+            "icon":<CollectionsIcon fontSize="large" color="secondary" />,
+            "clickable": false,
+        }, 
+        "annotations": {
+            "buttonLabel": `${t("observations.observations")}`,
+            "url": "", 
+            "icon":<NotesIcon fontSize="large" color="secondary" />,
+            "clickable": false,
+        },
+        "device":{
+            "buttonLabel":`${t("devices.devices")}`, 
+            "url":"/devices/", 
+            "icon": <CameraAltIcon fontSize="large" color="secondary" />,
+            "clickable": true,
+        },
+        "sites": {
+            "buttonLabel":`${t("sites.sites")}`, 
+            "url":"/sites/", 
+            "icon": <LocationOnIcon fontSize="large" color="secondary"/>,
+            "clickable": true,
+        }
     };
 
     useEffect(() => {
@@ -60,8 +80,10 @@ const StatsHome = () => {
                             <Grid item >
                                 <Button 
                                     variant="outlined"
-                                    component={Link}
-                                    to={graphicStats[key].url}
+                                    component={ Link }
+                                    to={ graphicStats[key].url }
+                                    color={ graphicStats[key].clickable ? "primary" : "secondary" }
+                                    disabled={ !graphicStats[key].clickable }
                                 >
                                     {graphicStats[key].buttonLabel}
                                 </Button>
