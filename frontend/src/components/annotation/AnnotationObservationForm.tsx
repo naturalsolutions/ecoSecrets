@@ -6,7 +6,7 @@ import TaxonomicInput from "./TaxonomicInput";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { FC } from "react";
 import { Annotation } from "../../client/models/Annotation";
-// import NestedList from "../common/collapsableButton";
+import NestedList from "../common/collapsableButton";
 // import TraitInput from "./TraitInput";
 // 
 
@@ -71,11 +71,11 @@ const AnnotationObservationForm: FC<AnnotationObservationFormProps> = ({
                 <Grid item lg={6} xs={12}>
                     <TextField
                         name="number"
-                        label={capitalize(t("taxon.number"))}
+                        label={ capitalize(t("taxon.number")) }
                         size="small"
-                        variant='filled'
-                        inputProps={{ type: 'number' }}
-                        value={observation.number}
+                        variant="filled"
+                        inputProps={{ type: "number" }}
+                        value={ observation.number }
                         onChange={
                             (e) => handleFormChange(observation.id, "number", e.target.value)
                         }
@@ -83,8 +83,8 @@ const AnnotationObservationForm: FC<AnnotationObservationFormProps> = ({
                     />
                 </Grid>
             </Grid>
-            {/* <NestedList>
-                <Grid container spacing={1}>
+            <NestedList>
+                {/* <Grid container spacing={1}>
                     <TraitInput 
                         type="biological_state" 
                     />
@@ -97,8 +97,20 @@ const AnnotationObservationForm: FC<AnnotationObservationFormProps> = ({
                     <TraitInput 
                         type="life_stage" 
                     />
+                </Grid> */}
+                <Grid item lg={12} xs={12}>
+                    <TextField
+                        id="comments"
+                        name="comments"
+                        label={ capitalize(t("main.comments")) }
+                        size="small"
+                        variant="filled"
+                        value={ observation.comments}
+                        onChange={ (e) => handleFormChange(observation.id, "comments", e.target.value) }
+                        fullWidth
+                    />
                 </Grid>
-            </NestedList> */}
+            </NestedList>
         </form>
     )
 };
