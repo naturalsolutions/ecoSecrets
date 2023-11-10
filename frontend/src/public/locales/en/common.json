@@ -12,6 +12,10 @@
     "metadata": "metadata",
     "unknown_image": "unknown image"
   },
+  "medias": {
+    "media": "media file",
+    "medias": "media files"
+  },
   "deployments": {
     "annotation": "annotation",
     "ask_delete": "are you sure you want to delete this deployment? This will lead to a complete deletion of every media file and data associated with this deployment",
@@ -117,8 +121,6 @@
     "error": "error",
     "error_msg": "this project does not exist",
     "import_media": "import media files",
-    "media": "media file",
-    "medias": "media files",
     "members": "members",
     "new_deploy": "new deployment",
     "project": "project",

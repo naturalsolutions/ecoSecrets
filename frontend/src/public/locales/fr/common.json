@@ -12,6 +12,10 @@
     "metadata": "métadonnées",
     "unknown_image": "image inconnue"
   },
+  "medias": {
+    "media": "média",
+    "medias": "médias"
+  },
   "deployments": {
     "annotation": "annotation",
     "ask_delete": "êtes-vous sûr de vouloir supprimer ce déploiement ? Cela engendrera la suppression de l'ensemble des médias et des données associées à ce déploiement.",
@@ -117,8 +121,6 @@
     "error": "erreur",
     "error_msg": "ce projet n'existe pas !",
     "import_media": "importer des médias",
-    "media": "média",
-    "medias": "médias",
     "members": "membres",
     "new_deploy": "nouveau déploiement",
     "project": "projet",

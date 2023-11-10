@@ -54,14 +54,32 @@ const testStatus = (status) => {
     )
 };
 
+const IconStyle = { verticalAlign: "middle", minWidth: "40px" }
+
 const ProjectCard = (props) => {
-    const { t } = useTranslation()
+
+    const { t } = useTranslation();
     const [openImport, setOpenImport] = useState(false);
     const openImportModale = (id: number) => {
         setOpenImport(true);
     };
     const closeImportModale = () => {
         setOpenImport(false);
+    };
+
+    const getLegend = (key: string, number: number) => {
+        let keyTranslation = key + "s." + key;
+        if (number === 0) {
+            return `${ capitalize(t("main.zero")) } ${t(keyTranslation)}`
+        };
+        if (number === 1) {
+            return `${ capitalize(t(keyTranslation)) }: ${ number }`
+        };
+        if (number > 1) {
+            keyTranslation += "s";
+            return `${ capitalize(t(keyTranslation)) }: ${ number }`
+        };
+        return;
     };
 
     return (
@@ -106,86 +124,55 @@ const ProjectCard = (props) => {
                     }
                 >
                     <Typography variant="body1" gutterBottom>
-                        <CollectionsIcon
-                            style={{ verticalAlign: "middle", minWidth: '40px' }}
-                        />
-                        {(
-                            props.selectedProject.media_number === 0 
-                            ? `${capitalize(t("main.zero"))} ${t("projects.media")}`
-                            : capitalize(t("projects.medias")) + ': ' + props.selectedProject.media_number 
-                        )}
+                        <CollectionsIcon style={{ ...IconStyle }} />
+                        { getLegend("media", props.selectedProject.media_number) }
                     </Typography>
                 </ListItem>
 
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
-                        <NaturePeopleIcon
-                            style={{ verticalAlign: "middle", minWidth: '40px' }}
-                        />
-                        {(
-                            props.selectedProject.deployment_number === 0 
-                            ? `${capitalize(t("main.zero"))} ${t("deployments.deployment")}`
-                            : capitalize(t("deployments.deployments")) + ': ' + props.selectedProject.deployment_number 
-                        )}
+                        <NaturePeopleIcon style={{ ...IconStyle }} />
+                        { getLegend("deployment", props.selectedProject.deployment_number) }
                     </Typography>
                 </ListItem>
 
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
-                        <LocationOnIcon
-                            style={{ verticalAlign: "middle", minWidth: '40px' }}
-                        />
-                        {(
-                            props.selectedProject.site_number === 0 
-                            ? `${capitalize(t("main.zero"))} ${t("sites.site")}`
-                            : capitalize(t("sites.sites")) + ': ' + props.selectedProject.site_number 
-                            )}
+                        <LocationOnIcon style={{ ...IconStyle }} />
+                        { getLegend("site", props.selectedProject.site_number) }
                     </Typography>
                 </ListItem>
 
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
-                        <PhotoCameraIcon
-                            style={{ verticalAlign: "middle", minWidth: '40px' }}
-                        />
-                        {(
-                            props.selectedProject.device_number === 0 
-                            ? `${capitalize(t("main.zero"))} ${t("devices.device")}`
-                            : (
-                                props.selectedProject.device_number === 1 
-                                ? capitalize(t("devices.device"))+ ': ' + props.selectedProject.device_number 
-                                : capitalize(t("devices.devices")) + ': '+ props.selectedProject.device_number 
-                            )
-                        )}
+                        <PhotoCameraIcon style={{ ...IconStyle }} />
+                        { getLegend("device", props.selectedProject.device_number) }
                     </Typography>
                 </ListItem>
 
                 <ListItem>
                     <Typography variant="body1" gutterBottom>
-                        <EmojiNatureIcon
-                            style={{ verticalAlign: "middle", minWidth: '40px' }}
-                        />
+                        <EmojiNatureIcon style={{ ...IconStyle }} />
                         {(
-                            props.selectedProject.targeted_species === null 
+                            ["", undefined, null].includes(props.selectedProject.targeted_species)
                             ? capitalize(t("projects.community_study"))
-                            : capitalize(t("projects.target_species")) + ': '+ props.selectedProject.targeted_species 
+                            : capitalize(t("projects.target_species")) + ": " + props.selectedProject.targeted_species 
                         )}
                     </Typography>
                 </ListItem>
 
                 <ListItem secondaryAction={
                     <GoAnnotation
-                        project_id={props.selectedProject.id}
-                        nb_media={props.selectedProject.media_number}
-                        annotation_percentage={props.selectedProject.annotation_percentage}
-                        page='home'
+                        project_id={ props.selectedProject.id }
+                        nb_media={ props.selectedProject.media_number }
+                        annotation_percentage={ props.selectedProject.annotation_percentage }
+                        page="home"
                     />
                 }>
                     <Typography variant="body1" gutterBottom >
-                        < NotesIcon
-                            style={{ verticalAlign: "middle", minWidth: '40px' }}
-                        />
-                        {`${capitalize(t(`deployments.annotation`))}: ${props.selectedProject.annotation_percentage} %`}
+                        < NotesIcon style={{ ...IconStyle }} />
+                        { `${capitalize(t("deployments.annotation"))}: 
+                        ${props.selectedProject.annotation_percentage} %` }
                     </Typography>
                 </ListItem>
             </CardContent>
