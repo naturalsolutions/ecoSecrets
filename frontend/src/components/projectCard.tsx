@@ -150,7 +150,7 @@ const ProjectCard = (props) => {
                     </Typography>
                 </ListItem>
 
-                <ListItem>
+                {/* <ListItem>
                     <Typography variant="body1" gutterBottom>
                         <EmojiNatureIcon style={{ ...IconStyle }} />
                         {(
@@ -159,7 +159,7 @@ const ProjectCard = (props) => {
                             : capitalize(t("projects.target_species")) + ": " + props.selectedProject.targeted_species 
                         )}
                     </Typography>
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem secondaryAction={
                     <GoAnnotation

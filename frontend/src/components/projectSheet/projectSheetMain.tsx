@@ -4,10 +4,9 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Stack, Typography, Alert, AlertTitle, Button, capitalize} from "@mui/material";
+import { Stack, Typography, Alert, AlertTitle, capitalize} from "@mui/material";
 import ProjectDeployments from './projectDeployments';
 import ProjectForm from './projectForm';
-import ProjectMembers from './projectMembers';
 import ProjectInformations from './projectInformations';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -104,13 +103,8 @@ const ProjectSheet = () => {
                         </AppBar>
                     </Box>
                     <ProjectInformations />
-
-                    <Stack>
-                        <Typography variant="h4" color="#000000" component="div">
-                            {capitalize(t("projects.sheet"))}
-                        </Typography>
-                        < ProjectForm/>
-                    </Stack>
+                    
+                    <ProjectForm/>
 
                     <Stack spacing={3}>
                         <Stack
@@ -154,7 +148,7 @@ const ProjectSheet = () => {
                         <></>
                     }
 
-                    <ProjectMembers />
+                    {/* <ProjectMembers /> */}
 
                 </Stack> :
                     <Alert severity="error" >
