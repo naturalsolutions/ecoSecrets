@@ -1,9 +1,7 @@
-import { Grid, Typography, Stack, TextField, IconButton, Box, MenuItem } from "@mui/material";
+import { Grid, Typography, Stack, Box } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
-import SearchIcon from '@mui/icons-material/Search';
 import ProjectCard from "./projectCard";
 import ProjectModal from "./projectModale";
-import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 
