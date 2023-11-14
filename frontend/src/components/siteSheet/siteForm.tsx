@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton, capitalize } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
-import { DevicesService, Sites, SitesService} from '../../client';
-import DropzoneComponent from '../dropzoneComponent';
+import { Sites, SitesService} from '../../client';
 import { useTranslation } from "react-i18next";
 import Map from "../Map";
 import ButtonValidate from '../common/buttonValidate';
@@ -54,10 +53,7 @@ const SiteForm = () => {
                 spacing={2}
                 justifyContent="center"
             >
-                <Grid container direction="row"  alignItems="center" spacing={2}>
-                    <Grid item lg={6}>
-                        <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("sites.site")}`}/>
-                    </Grid>
+                <Grid container  justifyContent="center" spacing={2}>
                     <Grid item lg={6} container width={500} height={300}>
                         <Map position={{ lat: siteData.latitude, lng: siteData.longitude, name: siteData.name}} zoom={3} />    
                     </Grid>
