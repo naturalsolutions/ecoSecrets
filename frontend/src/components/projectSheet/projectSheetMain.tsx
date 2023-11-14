@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Stack, Typography, Alert, AlertTitle, capitalize} from "@mui/material";
 import ProjectDeployments from './projectDeployments';
 import ProjectForm from './projectForm';
@@ -12,7 +11,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
-import DeploymentCreationModale from '../deploymentCreationModale';
+import DeploymentNewModale from '../DeploymentNewModale';
 import ImportModale from '../importModale';
 import ProjectModal from '../projectModale';
 import Map from '../Map';
@@ -86,7 +85,7 @@ const ProjectSheet = () => {
                                     </Typography>
                                 </Grid>
                                 <ProjectModal />
-                                <IconButton color="primary" aria-label="menu" sx={{ mr: 2 }}
+                                <IconButton aria-label="menu" sx={{ mr: 2 }}
                                     onClick={openImportModale}
                                 >
                                     <CloudDownloadIcon />
@@ -96,9 +95,6 @@ const ProjectSheet = () => {
                                     close={closeImportModale}
                                     projectIsSet={true}
                                 />
-                                <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: { color: "#2FA37C" } }}>
-                                    <CloudUploadIcon />
-                                </IconButton>
                             </Toolbar>
                         </AppBar>
                     </Box>
@@ -121,7 +117,7 @@ const ProjectSheet = () => {
                                     startIcon="add"
                                 />
                             </Grid>
-                            <DeploymentCreationModale 
+                            <DeploymentNewModale 
                                 openNewDeployment={openNewDeployment}
                                 handleCloseNewDeployment={handleCloseNewDeployment}
                             />
