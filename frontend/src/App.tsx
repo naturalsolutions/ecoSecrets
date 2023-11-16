@@ -1,6 +1,5 @@
 import "./App.css";
 import Main from "./pages/main";
-import Project from "./pages/project";
 import Deployment from "./pages/deployment";
 import Annotation from "./pages/annotation";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -10,7 +9,6 @@ import DeploymentSheet from "./pages/deploymentSheet";
 import DeviceMenuPage from "./pages/deviceMenu";
 import DeviceSheet from "./components/deviceSheet/deviceSheetMain";
 import DeviceSheetPage from "./pages/deviceSheet";
-import ProjectSheetPage from "./pages/projectSheet";
 import { theme } from "./theme";
 import { LinearProgress, ThemeProvider } from "@mui/material";
 import { I18nextProvider } from "react-i18next";
