@@ -228,55 +228,55 @@ import {
             res &
             e["NOM_COMPLET"]
               ?.toLowerCase()
-              .includes(req.query["NOM_COMPLET"].toString().toLowerCase());
+              .startsWith(req.query["NOM_COMPLET"].toString().toLowerCase());
         if (req.query["NOM_VERN"] && req.query["NOM_VERN"] !== "")
           res =
             res &
             e["NOM_VERN"]
               ?.toLowerCase()
-              .includes(req.query["NOM_VERN"].toString().toLowerCase());
+              .startsWith(req.query["NOM_VERN"].toString().toLowerCase());
         if (req.query["LB_NOM"] && req.query["LB_NOM"] !== "")
           res =
             res &
             e["LB_NOM"]
               ?.toLowerCase()
-              .includes(req.query["LB_NOM"].toString().toLowerCase());
+              .startsWith(req.query["LB_NOM"].toString().toLowerCase());
         if (req.query["REGNE"] && req.query["REGNE"] !== "")
           res =
             res &
             e["REGNE"]
               ?.toLowerCase()
-              .includes(req.query["REGNE"].toString().toLowerCase());
+              .startsWith(req.query["REGNE"].toString().toLowerCase());
         if (req.query["CLASSE"] && req.query["CLASSE"] !== "")
           res =
             res &
             e["CLASSE"]
               ?.toLowerCase()
-              .includes(req.query["CLASSE"].toString().toLowerCase());
+              .startsWith(req.query["CLASSE"].toString().toLowerCase());
         if (req.query["ORDRE"] && req.query["ORDRE"] !== "")
           res =
             res &
             e["ORDRE"]
               ?.toLowerCase()
-              .includes(req.query["ORDRE"].toString().toLowerCase());
+              .startsWith(req.query["ORDRE"].toString().toLowerCase());
         if (req.query["FAMILLE"] && req.query["FAMILLE"] !== "")
           res =
             res &
             e["FAMILLE"]
               ?.toLowerCase()
-              .includes(req.query["FAMILLE"].toString().toLowerCase());
+              .startsWith(req.query["FAMILLE"].toString().toLowerCase());
         if (req.query["GENRE"] && req.query["GENRE"] !== "")
           res =
             res &
             e["GENRE"]
               ?.toLowerCase()
-              .includes(req.query["GENRE"].toString().toLowerCase());
+              .startsWith(req.query["GENRE"].toString().toLowerCase());
         if (req.query["GROUP1_INPN"] && req.query["GROUP1_INPN"] !== "")
           res =
             res &
             e["GROUP1_INPN"]
               ?.toLowerCase()
-              .includes(req.query["GROUP1_INPN"].toString().toLowerCase());
+              .startsWith(req.query["GROUP1_INPN"].toString().toLowerCase());
         if (req.query["GROUP2_INPN"] && req.query["GROUP2_INPN"] !== "")
           res =
             res &
