@@ -29,21 +29,21 @@ const TaxonomicInput: FC<TaxonomicInputProps> = (
         let data:string[]=[];
     
         if (props.rank === "species") {
-            const speciesByLatinName = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=ES&LB_NOM=${search_name}`)).data;
-            const speciesByVernName = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=ES&NOM_VERN=${search_name}`)).data;
+            const speciesByLatinName = (await axios.get(`/taxapi/V1/taxons?RANG=ES&LB_NOM=${search_name}`)).data;
+            const speciesByVernName = (await axios.get(`/taxapi/V1/taxons?RANG=ES&NOM_VERN=${search_name}`)).data;
             data = Array.from(new Set(speciesByLatinName.concat(speciesByVernName)));
         };
         if (props.rank === "genus") {
-            data = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=GN&LB_NOM=${search_name}`)).data;
+            data = (await axios.get(`/taxapi/V1/taxons?RANG=GN&LB_NOM=${search_name}`)).data;
         };
         if (props.rank === "family") {
-            data = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=FM&LB_NOM=${search_name}`)).data;
+            data = (await axios.get(`/taxapi/V1/taxons?RANG=FM&LB_NOM=${search_name}`)).data;
         };
         if (props.rank === "order") {
-            data = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=OR&LB_NOM=${search_name}`)).data;
+            data = (await axios.get(`/taxapi/V1/taxons?RANG=OR&LB_NOM=${search_name}`)).data;
         };
         if (props.rank === "classe") {
-            data = (await axios.get(`http://localhost:8889/taxapi/V1/taxons?RANG=CL&LB_NOM=${search_name}`)).data;
+            data = (await axios.get(`/taxapi/V1/taxons?RANG=CL&LB_NOM=${search_name}`)).data;
         };
 
         setTaxonList(data);
@@ -65,14 +65,14 @@ const TaxonomicInput: FC<TaxonomicInputProps> = (
         if (props.rank === "species") {
             id = (
                 await axios
-                .get(`http://localhost:8889/taxapi/V1/taxons?RANG=GN&LB_NOM=${ props.observation.genus }`)
+                .get(`/taxapi/V1/taxons?RANG=GN&LB_NOM=${ props.observation.genus }`)
             ).data[0].CD_NOM;
             handleFormChange(props.observation.id, "species", "");
         };
         if (props.rank === "genus") {
             id = (
                 await axios
-                .get(`http://localhost:8889/taxapi/V1/taxons?RANG=FM&LB_NOM=${ props.observation.family }`)
+                .get(`/taxapi/V1/taxons?RANG=FM&LB_NOM=${ props.observation.family }`)
             ).data[0].CD_NOM;
             handleFormChange(props.observation.id, "genus", "");
             handleFormChange(props.observation.id, "species", "");
@@ -80,7 +80,7 @@ const TaxonomicInput: FC<TaxonomicInputProps> = (
         if (props.rank === "family") {
             id = (
                 await axios
-                .get(`http://localhost:8889/taxapi/V1/taxons?RANG=OR&LB_NOM=${ props.observation.order }`)
+                .get(`/taxapi/V1/taxons?RANG=OR&LB_NOM=${ props.observation.order }`)
             ).data[0].CD_NOM;
             handleFormChange(props.observation.id, "family", "");
             handleFormChange(props.observation.id, "genus", "");
@@ -89,7 +89,7 @@ const TaxonomicInput: FC<TaxonomicInputProps> = (
         if (props.rank === "order") {
             id = (
                 await axios
-                .get(`http://localhost:8889/taxapi/V1/taxons?RANG=CL&LB_NOM=${ props.observation.classe }`)
+                .get(`/taxapi/V1/taxons?RANG=CL&LB_NOM=${ props.observation.classe }`)
             ).data[0].CD_NOM;
             handleFormChange(props.observation.id, "order", "");
             handleFormChange(props.observation.id, "family", "");
