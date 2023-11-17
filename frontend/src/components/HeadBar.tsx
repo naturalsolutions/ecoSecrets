@@ -51,7 +51,7 @@ const HeadBar = () => {
           <Grid item>
             <Link to={`/`} style={{ textDecoration: "none" }}>
               <img
-                src={process.env.PUBLIC_URL + "/assets/geocam-logo-dark.png"}
+                src={process.env.PUBLIC_URL + "/assets/geocam-logo.svg"}
                 width="135"
                 height="30"
               />
