@@ -15,13 +15,11 @@ import ButtonValidate from "./common/buttonValidate";
 
 export default function ProjectModal(props) {
     const { t } = useTranslation()
-    const { updateProjects, setCurrentProject, updateProjectSheetData } = useMainContext();
+    const { updateProjects } = useMainContext();
     const [open, setOpen] = useState(false);
-    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: ''});
+    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '' });
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
-    const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
-    const species = ["Loup", "Coccinelle", "Ours", "Chamois", "Chevreuil", "Cerf", "Marmotte", "Renard", "Aigle"];
 
 
     const { setSnack } = useSnackContext();
@@ -47,7 +45,7 @@ export default function ProjectModal(props) {
 
     const handleClose = () => {
         setOpen(false);
-        setProjectData({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: ''});
+        setProjectData({ name: '', protocol: '', creation_date: '' });
         setStartDate(null);
         setEndDate(null);
     };
@@ -117,41 +115,6 @@ export default function ProjectModal(props) {
                                 variant="filled"
                             />
                         </Grid>
-                        <Grid item lg={6} md={6} xs={12}>
-                            <TextField
-                                select
-                                label={capitalize(t("projects.acquisition_framework"))}
-                                variant="filled"
-                                value={projectData.acquisition_framework}
-                                fullWidth
-                                onChange={(e) => handleFormChange("acquisition_framework", e)}
-                            >
-                                {protocoles.map((item) => (
-                                    <MenuItem key={item} value={item}>
-                                        {item}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                        <Grid item lg={6} md={6} xs={12}>
-                            <TextField
-                                label={capitalize(t("projects.target_specie"))}
-                                id="targetedSpecies"
-                                select
-                                value={projectData.targeted_species}
-                                fullWidth
-                                variant="filled"
-                                onChange={(e) => handleFormChange("targeted_species", e)}
-
-                            >
-                                {species.map((item) => (
-                                    <MenuItem key={item} value={item}>
-                                        {item}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-
                         <Grid item lg={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker

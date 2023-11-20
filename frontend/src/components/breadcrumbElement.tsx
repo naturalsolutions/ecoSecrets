@@ -1,17 +1,27 @@
-import React from "react";
+import { FC, useState, MouseEvent } from "react";
 import { IconButton, Link, Menu, MenuItem, Stack } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HomeIcon from "@mui/icons-material/Home";
+
 
 const ITEM_HEIGHT = 48;
 
-const BreadcrumbElement = (
+interface BreadcrumbElementProps {
+  key: string;
+  current_option: string;
+  link: string;
+  isActive: boolean;
+  parentlink?: string;
+  options?: any;
+  linkSuffix?: string;
+};
+
+const BreadcrumbElement: FC<BreadcrumbElementProps> = (
   props
 ) => {
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -34,8 +44,7 @@ const BreadcrumbElement = (
           direction="row"
           justifyContent="center"
         >
-          {props.icon && <HomeIcon fontSize="small" />}
-          {props.current_option || "test"}
+          { props.current_option }
         </Stack>
       </Link>
 

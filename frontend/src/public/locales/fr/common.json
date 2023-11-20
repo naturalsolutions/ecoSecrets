@@ -12,6 +12,10 @@
     "metadata": "métadonnées",
     "unknown_image": "image inconnue"
   },
+  "medias": {
+    "media": "média",
+    "medias": "médias"
+  },
   "deployments": {
     "annotation": "annotation",
     "ask_delete": "êtes-vous sûr de vouloir supprimer ce déploiement ? Cela engendrera la suppression de l'ensemble des médias et des données associées à ce déploiement.",
@@ -67,7 +71,7 @@
     "ask_save": "êtes-vous sûr de vouloir enregistrer vos modifications ?",
     "cancel": "annuler",
     "close": "fermer",
-    "comment": "commentaires",
+    "comments": "commentaires",
     "delete": "supprimer",
     "description": "description",
     "details": "détails",
@@ -117,8 +121,6 @@
     "error": "erreur",
     "error_msg": "ce projet n'existe pas !",
     "import_media": "importer des médias",
-    "media": "média",
-    "medias": "médias",
     "members": "membres",
     "new_deploy": "nouveau déploiement",
     "project": "projet",
@@ -129,7 +131,7 @@
     "start_year": "année de début",
     "status": "statut",
     "studies_area": "zone d'étude",
-    "target_specie": "espèce cible",
+    "target_species": "espèce cible",
     "unknown": "projet inconnu",
     "validators": "validateurs"
   },
@@ -147,10 +149,10 @@
     "sites": "sites",
     "title": "mes sites"
   },
-  "species": {
+  "taxon": {
     "behaviour": "comportement",
-    "bio_state": "stade biologique",
-    "class": "classe",
+    "biological_state": "stade biologique",
+    "classe": "classe",
     "family": "famille",
     "genus": "genre",
     "life_stage": "stade de vie",

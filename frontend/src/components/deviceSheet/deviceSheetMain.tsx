@@ -1,8 +1,6 @@
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Alert, Stack, Typography, capitalize} from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -42,9 +40,6 @@ const DeviceSheet = () => {
                         
                     </Grid>
                         <DeviceModal/>
-                        <IconButton color="inherit" aria-label="menu" sx={{ mr: 2, display: {color: "#2FA37C"} }}>
-                            <CloudDownloadIcon />
-                        </IconButton>
                     </Toolbar>
                 </AppBar>
             </Box>

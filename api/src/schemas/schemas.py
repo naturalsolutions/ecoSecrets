@@ -6,17 +6,18 @@ from sqlmodel import Field
 
 class Annotation(BaseModel):
     id: str
+    id_annotation: str
     classe: str
     family: str
     genus: str
     order: str
-    specie: str
+    species: str
+    number: int
     life_stage: str
     biological_state: str
-    comment: str
     behaviour: str
     sex: str
-    number: int
+    comments: str
 
 
 class Stats(BaseModel):

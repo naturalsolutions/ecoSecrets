@@ -1,8 +1,7 @@
 import "./App.css";
 import Main from "./pages/main";
-import Project from "./pages/project";
 import Deployment from "./pages/deployment";
-import Image from "./pages/image";
+import Annotation from "./pages/annotation";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";
@@ -10,7 +9,6 @@ import DeploymentSheet from "./pages/deploymentSheet";
 import DeviceMenuPage from "./pages/deviceMenu";
 import DeviceSheet from "./components/deviceSheet/deviceSheetMain";
 import DeviceSheetPage from "./pages/deviceSheet";
-import ProjectSheetPage from "./pages/projectSheet";
 import { theme } from "./theme";
 import { LinearProgress, ThemeProvider } from "@mui/material";
 import { I18nextProvider } from "react-i18next";
@@ -71,11 +69,11 @@ function App() {
                   ></Route>
                   <Route
                     path="/project/:projectId/deployment/:deploymentId/medias/:imageId"
-                    element={<Image />}
+                    element={<Annotation />}
                   ></Route>
                   <Route
                     path="/project/:projectId/deployment/:deploymentId/details/:imageId"
-                    element={<Image />}
+                    element={<Annotation />}
                   ></Route>
                   <Route path="*" element={<Main />}></Route>
                 </Routes>

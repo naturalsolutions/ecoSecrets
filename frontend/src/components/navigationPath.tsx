@@ -6,17 +6,17 @@ import BreadcrumbElement from './breadcrumbElement';
 import { useTranslation } from "react-i18next";
 
 const NavigationPath: FC<{}> = () => {
-  const { project, projects, deploymentData, currentImage, device, devices, site, sites, setCurrentImage, setCurrentProject, setDeploymentData, setCurrentDevice, setCurrentSite } = useMainContext();
+  const { project, projects, deploymentData, currentImage, device, devices, site, sites, setCurrentImage, setCurrentProject, setDeploymentData, setCurrentDevice, setCurrentSite, files, image } = useMainContext();
   const { t } = useTranslation()
   const location = useLocation();
 
   const homeBreadcrumb = (isActive: boolean = false) => {
     return (
+      !isActive &&
         <BreadcrumbElement 
             key="home"
             current_option={capitalize(t("main.home"))}
             link="/"
-            icon={true}
             isActive={isActive}
         />)
   }
@@ -41,7 +41,7 @@ const NavigationPath: FC<{}> = () => {
         link={`/project/${project().id}/deployment/${deploymentData.id}/details`}
         parentlink={`/project/${project().id}/deployment`}
         options={projects.find((p) => p.id === project().id).deployments}
-        linkSuffix={`details`}
+        linkSuffix="details"
         isActive={isActive}
       />)
   }
@@ -50,10 +50,11 @@ const NavigationPath: FC<{}> = () => {
     return (
       <BreadcrumbElement
         key="image"
-        current_option={currentImage}
-        link={`/project/${project().id}/deployment/${deploymentData.id}/details/${currentImage}`}
-        parentlink={`/project/${project().id}/deployment/${deploymentData.id}/details`}
-        isActive={isActive}
+        current_option={ image()?.name }
+        link={ `/project/${project().id}/deployment/${deploymentData.id}/details/${currentImage}` }
+        parentlink={ `/project/${ project().id }/deployment/${deploymentData.id}/details` }
+        options={ files }
+        isActive={ isActive }
       />)
   }
 
