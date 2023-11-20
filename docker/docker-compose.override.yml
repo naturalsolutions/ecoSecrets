@@ -23,9 +23,6 @@ services:
     command: "./entrypoint.sh uvicorn --host 0.0.0.0 --reload src.main:app"
 
   taxapi:
-    build:
-      context: ../taxapi
-      dockerfile: Dockerfile
     ports:
       - "5666:5666"
 
