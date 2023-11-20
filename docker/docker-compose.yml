@@ -80,10 +80,7 @@ services:
 
   db:
     <<: *project_defaults
-    image: ${DB_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:db-dev}
-    build:
-      context: ../db
-      dockerfile: Dockerfile
+    image: ${DB_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:db-latest}
     healthcheck:      
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-annotation} -h 127.0.0.1"]     
       interval: 10s      
