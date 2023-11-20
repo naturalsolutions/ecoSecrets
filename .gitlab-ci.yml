@@ -83,6 +83,21 @@ build_frontend_production:
   tags:
     - NSCICDDOCKER
 
+build_db_production:
+  stage: build
+  script:
+    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - docker build -t ${CI_REGISTRY_IMAGE}:db-latest ./db
+    - docker push ${CI_REGISTRY_IMAGE}:db-latest
+  only:
+    refs:
+      - dev
+    changes:
+      - db/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDDOCKER
+
 test_api:
   stage: test
   script:
