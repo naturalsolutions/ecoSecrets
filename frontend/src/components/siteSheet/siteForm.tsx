@@ -4,8 +4,6 @@ import {
   Stack,
   TextField,
   Typography,
-  Button,
-  MenuItem,
   Dialog,
   DialogTitle,
   Divider,
@@ -13,7 +11,6 @@ import {
   DialogActions,
   Alert,
   AlertTitle,
-  Box,
   Collapse,
   IconButton,
   capitalize,
@@ -31,7 +28,6 @@ const SiteForm = () => {
   const { t } = useTranslation();
   const { site, updateSites } = useMainContext();
   const [siteData, setSiteData] = React.useState<Sites>(site());
-  const habitats = ["Prairie", "Forêt", "Littoral"];
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);
@@ -86,6 +82,29 @@ const SiteForm = () => {
       
       <Grid item lg={6} md={6} sm={12} xs={12}>
         <Stack direction="column" spacing={2}>
+          <Grid item>
+            <Collapse in={success}>
+              <Alert
+                severity="success"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setSuccess(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+              >
+                <AlertTitle>Success</AlertTitle>
+                {capitalize(t("main.modifications_saved"))}
+              </Alert>
+            </Collapse>
+          </Grid>
+
           <form key={siteData.id}>
               <Grid container spacing={2}>
                 {modified && (
@@ -176,29 +195,6 @@ const SiteForm = () => {
               </DialogActions>
             </Dialog>
           </Stack>
-
-          <Grid item>
-            <Collapse in={success}>
-              <Alert
-                severity="success"
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setSuccess(false);
-                    }}
-                  >
-                    <CloseIcon fontSize="inherit" />
-                  </IconButton>
-                }
-              >
-                <AlertTitle>Success</AlertTitle>
-                {capitalize(t("main.modifications_saved"))}
-              </Alert>
-            </Collapse>
-          </Grid>
 
         </Stack>
       </Grid>
