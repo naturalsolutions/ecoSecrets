@@ -72,8 +72,8 @@ const SiteForm = () => {
   };
 
   return (
-    <Stack direction="row" spacing={2}>
-      <Grid item lg={6} width={500} height={300}>
+    <Grid container direction="row" spacing={2}>
+      <Grid item lg={6} md={6} sm={12} xs={12} height={300}>
         <Map
           position={{
             lat: siteData.latitude,
@@ -83,8 +83,98 @@ const SiteForm = () => {
           zoom={3}
         />
       </Grid>
-      <Grid item lg={6} width={500} height={300} rowSpacing={5}>
-        <Grid container spacing={2}>
+      
+      <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Stack direction="column" spacing={2}>
+          <form key={siteData.id}>
+              <Grid container spacing={2}>
+                {modified && (
+                  <Grid item lg={12} md={12} xs={12}>
+                    <TextField
+                      required
+                      id="name"
+                      name="name"
+                      label={capitalize(t("main.name"))}
+                      value={siteData.name}
+                      onChange={(e) => handleFormChange("name", e)}
+                      fullWidth
+                      variant="filled"
+                    />
+                  </Grid>
+                )}
+                <Grid item lg={6} md={6} xs={12}>
+                  <TextField
+                    disabled={!modified}
+                    label={capitalize(t("sites.longitude"))}
+                    variant="filled"
+                    value={siteData.longitude}
+                    fullWidth
+                    onChange={(e) => handleFormChange("longitude", e)}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} xs={12}>
+                  <TextField
+                    disabled={!modified}
+                    label={capitalize(t("sites.latitude"))}
+                    name="latitude"
+                    inputProps={{ type: "number" }}
+                    value={siteData.latitude}
+                    fullWidth
+                    variant="filled"
+                    onChange={(e) => handleFormChange("latitude", e)}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} xs={12}>
+                  <TextField
+                    disabled={!modified}
+                    label={capitalize(t("main.description"))}
+                    id="description"
+                    value={siteData.description}
+                    fullWidth
+                    multiline={true}
+                    variant="filled"
+                    onChange={(e) => handleFormChange("description", e)}
+                  />
+                </Grid>
+              </Grid>
+          </form>
+
+          <Stack direction="row" spacing={3} justifyContent="flex-end">
+            <ButtonModify
+              content={
+                modified ? (
+                  <>{capitalize(t("main.cancel"))}</>
+                ) : (
+                  <>{capitalize(t("main.modify"))}</>
+                )
+              }
+              edit={handleChange}
+              variant={modified}
+            />
+            <ButtonValidate
+              content={capitalize(t("main.save"))}
+              validate={dialog}
+              disabled={!modified}
+            />
+
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>
+                <Typography variant="h6">
+                  {capitalize(t("sites.save_modifications_site"))}
+                </Typography>
+              </DialogTitle>
+              <Divider />
+              <DialogContent>
+                <Typography>{capitalize(t("main.ask_save"))}</Typography>
+              </DialogContent>
+              <Divider />
+              <DialogActions>
+                <ButtonCancel content={t("main.no")} cancel={handleClose} />
+                <ButtonValidate content={t("main.yes")} validate={save} />
+              </DialogActions>
+            </Dialog>
+          </Stack>
+
           <Grid item>
             <Collapse in={success}>
               <Alert
@@ -107,104 +197,10 @@ const SiteForm = () => {
               </Alert>
             </Collapse>
           </Grid>
-          <Grid item>
-            <form key={siteData.id}>
-              <Stack direction="row" spacing={40}>
-                <Grid container spacing={2}>
-                  {modified ? (
-                    <Grid item lg={12} md={12} xs={12}>
-                      <TextField
-                        required
-                        id="name"
-                        name="name"
-                        label={capitalize(t("main.name"))}
-                        value={siteData.name}
-                        onChange={(e) => handleFormChange("name", e)}
-                        fullWidth
-                        variant="filled"
-                      />
-                    </Grid>
-                  ) : (
-                    <></>
-                  )}
-                  <Grid item lg={2.4} md={4} xs={6}>
-                    <TextField
-                      disabled={!modified}
-                      label={capitalize(t("sites.longitude"))}
-                      variant="filled"
-                      value={siteData.longitude}
-                      fullWidth
-                      onChange={(e) => handleFormChange("longitude", e)}
-                    />
-                  </Grid>
-                  <Grid item lg={2.4} md={4} xs={6}>
-                    <TextField
-                      disabled={!modified}
-                      label={capitalize(t("sites.latitude"))}
-                      name="latitude"
-                      inputProps={{ type: "number" }}
-                      value={siteData.latitude}
-                      fullWidth
-                      variant="filled"
-                      onChange={(e) => handleFormChange("latitude", e)}
-                    />
-                  </Grid>
-                  <Grid item lg={12} md={12} xs={12}>
-                    <TextField
-                      disabled={!modified}
-                      label={capitalize(t("main.description"))}
-                      id="description"
-                      value={siteData.description}
-                      fullWidth
-                      multiline={true}
-                      variant="filled"
-                      onChange={(e) => handleFormChange("description", e)}
-                    />
-                  </Grid>
-                </Grid>
-              </Stack>
-            </form>
-          </Grid>
-          <Grid item>
-            <Stack direction="row" spacing={3} justifyContent="flex-end">
-              <ButtonModify
-                content={
-                  modified ? (
-                    <>{capitalize(t("main.cancel"))}</>
-                  ) : (
-                    <>{capitalize(t("main.modify"))}</>
-                  )
-                }
-                edit={handleChange}
-                variant={modified}
-              />
-              <ButtonValidate
-                content={capitalize(t("main.save"))}
-                validate={dialog}
-                disabled={!modified}
-              />
 
-              <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>
-                  <Typography variant="h6">
-                    {capitalize(t("sites.save_modifications_site"))}
-                  </Typography>
-                </DialogTitle>
-                <Divider />
-                <DialogContent>
-                  <Typography>{capitalize(t("main.ask_save"))}</Typography>
-                </DialogContent>
-                <Divider />
-                <DialogActions>
-                  <ButtonCancel content={t("main.no")} cancel={handleClose} />
-                  <ButtonValidate content={t("main.yes")} validate={save} />
-                </DialogActions>
-              </Dialog>
-            </Stack>
-          </Grid>
-        </Grid>
+        </Stack>
       </Grid>
-    </Stack>
+    </Grid>
   );
 };
 export default SiteForm;

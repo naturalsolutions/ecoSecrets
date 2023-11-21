@@ -28,26 +28,23 @@ const SiteSheet = () => {
             direction="column"
             spacing={3}
         >
-            <Box sx={{ flexGrow: 1 }}>
-                <AppBar position="static" color='transparent'>
-                    <Toolbar variant="dense">
-                    <Grid
-                        container
-                    >
-                        <Typography variant="h6" component="div" sx={{ mr: 1 }}>
-                            {site().name}
-                        </Typography>
-                        
-                    </Grid>
-                        <SiteModale/>
-                    </Toolbar>
-                </AppBar>
-            </Box>
-                <Typography variant="h4" color="#000000" component="div">
-                    {capitalize(t("sites.sheet"))}
-                </Typography>
+            <AppBar position="static" color='transparent'>
+                <Toolbar variant="dense">
+                <Grid
+                    container
+                >
+                    <Typography variant="h6" component="div" sx={{ mr: 1 }}>
+                        {site().name}
+                    </Typography>
+                    
+                </Grid>
+                    <SiteModale/>
+                </Toolbar>
+            </AppBar>
+            <Typography variant="h4" color="#000000" component="div">
+                {capitalize(t("sites.sheet"))}
+            </Typography>
             < SiteForm/>
-            <div></div>
         </Stack> ) : <div>{capitalize(t("sites.no_sheet"))}</div>
     );
 };
