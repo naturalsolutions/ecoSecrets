@@ -46,6 +46,7 @@ const SiteForm = () => {
   };
 
   const handleChange = () => {
+    setSuccess(false);
     setModified(!modified);
   };
 
