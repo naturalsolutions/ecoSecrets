@@ -59,8 +59,9 @@ services:
     image: ${TAXAPI_IMAGE-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.taxapi.rule=PathPrefix(`/taxapi/V1`)
+      - traefik.http.routers.taxapi.rule=${TRAEFIK_ROUTER_RULE_TAXAPI-PathPrefix(`/taxapi`)}
       - traefik.http.routers.taxapi.entrypoints=web
+      - traefik.http.middlewares.add-foo.addprefix.prefix=${TAXAPI_ROOT_PATH-/taxapi}
     environment:
       - TAXREF_FILE=${TAXAPI_TAXREF_FILE-TAXREF_v16_2022.zip}
     healthcheck:
@@ -127,7 +128,7 @@ services:
         condition: service_healthy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.keycloak.rule=${KEYCLOAK_TRAEFIK_RULE-PathPrefix(`/auth`)}
+      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK-PathPrefix(`/auth`)}
       - traefik.http.routers.keycloak.entrypoints=web
 
   minio:
@@ -141,6 +142,9 @@ services:
       timeout: 20s      
       retries: 3
     command: server --console-address :9001 /data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO-PathPrefix(`/miniobucket`)}
 
 volumes:
   db_data:
