@@ -106,9 +106,11 @@ const SiteForm = () => {
                   <TextField
                     disabled={!modified}
                     label={capitalize(t("sites.longitude"))}
-                    variant="filled"
+                    name="longitude"
+                    inputProps={{ type: "number" }}
                     value={siteData.longitude}
                     fullWidth
+                    variant="filled"
                     onChange={(e) => handleFormChange("longitude", e)}
                   />
                 </Grid>
