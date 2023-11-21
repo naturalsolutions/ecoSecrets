@@ -141,6 +141,9 @@ services:
       timeout: 20s      
       retries: 3
     command: server --console-address :9001 /data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO-PathPrefix(`/miniobucket`)}
 
 volumes:
   db_data:
