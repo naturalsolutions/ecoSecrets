@@ -59,8 +59,9 @@ services:
     image: ${TAXAPI_IMAGE-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.taxapi.rule=PathPrefix(`/taxapi/V1`)
+      - traefik.http.routers.taxapi.rule=${TRAEFIK_ROUTER_RULE_TAXAPI-PathPrefix(`/taxapi`)}
       - traefik.http.routers.taxapi.entrypoints=web
+      - traefik.http.middlewares.add-foo.addprefix.prefix=${TAXAPI_ROOT_PATH-/taxapi}
     environment:
       - TAXREF_FILE=${TAXAPI_TAXREF_FILE-TAXREF_v16_2022.zip}
     healthcheck:
