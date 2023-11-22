@@ -10,6 +10,7 @@ authorized_mime = [
     "video/ogg",
     "video/webm",
     "image/jpeg",
+    "image/avif",
     "image/png",
     "image/bmp",
     "image/gif",

@@ -24,17 +24,18 @@ def test_update_annotations(client, file_object, db, admin_headers):
     annotations = [
         {
             "id": "string",
+            "id_annotation": "string",
             "classe": "string",
             "family": "string",
             "genus": "string",
             "order": "string",
-            "specie": "string",
-            "life_stage": "string",
-            "biological_state": "string",
-            "comment": "string",
-            "behaviour": "string",
-            "sex": "string",
+            "species": "string",
             "number": 1,
+            "biological_state": "string",
+            "life_stage": "string",
+            "sex": "string",
+            "behaviour": "string",
+            "comments": "string",
         }
     ]
 

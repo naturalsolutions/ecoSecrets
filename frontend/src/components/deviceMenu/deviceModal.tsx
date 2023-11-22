@@ -1,53 +1,82 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Stack, TextField, Typography, capitalize } from "@mui/material";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Grid,
+  IconButton,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+  capitalize,
+} from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState } from "react";
-import { DeviceBase, DevicesService} from "../../client";
-import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
+import { DeviceBase, DevicesService } from "../../client";
+import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import { useMainContext } from "../../contexts/mainContext";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useNavigate } from "react-router-dom"
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ButtonValidate from "../common/buttonValidate";
 
-export default function DeviceModal () {
-  const { t } = useTranslation()
-  const {updateDeviceMenu, updateDevices} = useMainContext();
+export default function DeviceModal() {
+  const { t } = useTranslation();
+  const { updateDeviceMenu, updateDevices } = useMainContext();
   const [open, setOpen] = useState(false);
-  const [device, setDevice] = useState<DeviceBase>({ name: '', model: '', price: 0, description: '', detection_area: 0, status: 'En stock', operating_life:0})
-  const models = ['Modèle A', 'Modèle B', 'Modèle C'];
+  const [device, setDevice] = useState<DeviceBase>({
+    name: "",
+    model: "",
+    price: 0,
+    description: "",
+    detection_area: 0,
+    status: "En stock",
+    operating_life: 0,
+  });
   const handleClose = () => {
     setOpen(false);
   };
-  
+
   const onclick = () => {
     setOpen(true);
-  }
+  };
 
-  const handleFormChange = (params:string,  e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>| Date | null) => {
-    let tmp_device_data = {...device};
-    if(e)
-        tmp_device_data[params] = e instanceof Date ? e.toISOString().slice(0, 10) : e.target.value;
+  const handleFormChange = (
+    params: string,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | Date | null
+  ) => {
+    let tmp_device_data = { ...device };
+    if (e)
+      tmp_device_data[params] =
+        e instanceof Date ? e.toISOString().slice(0, 10) : e.target.value;
     setDevice(tmp_device_data);
-  }
+  };
 
   const navigate = useNavigate();
   const save = () => {
-    DevicesService.createDeviceDevicesPost(device).then((d) => {
-      updateDeviceMenu();
-      updateDevices();
-      setOpen(false);
-      navigate(`/devices/${d.id}`)
-  })
-  .catch((err) => {
-      console.log(err);
-  });
+    DevicesService.createDeviceDevicesPost(device)
+      .then((d) => {
+        updateDeviceMenu();
+        updateDevices();
+        setOpen(false);
+        navigate(`/devices/${d.id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <Grid>
-      <IconButton aria-label="menu" onClick={() => onclick()} sx={{ mr: 2, display: {color: "#2FA37C"} }}>
+      <IconButton
+        aria-label="menu"
+        onClick={() => onclick()}
+        sx={{ mr: 2, display: { color: "#2FA37C" } }}
+      >
         <AddCircleIcon />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
@@ -159,7 +188,7 @@ export default function DeviceModal () {
           </DialogContent>
           <Divider />
           <DialogActions>
-            <ButtonValidate content={ capitalize(t("main.save")) } validate={ save } />
+            <Button onClick={save} style={{color: "#2FA37C"}}>{capitalize(t("main.description"))}</Button>
           </DialogActions>
         </Dialog>
       </Grid>

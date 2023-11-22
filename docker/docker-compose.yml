@@ -54,17 +54,29 @@ services:
       - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL-http://keycloak:8080/auth}
       - KEYCLOAK_TOKEN_URI=${KEYCLOAK_TOKEN_URI}
 
+  taxapi:
+    <<: *project_defaults
+    image: ${TAXAPI_IMAGE-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.taxapi.rule=${TRAEFIK_ROUTER_RULE_TAXAPI-PathPrefix(`/taxapi`)}
+      - traefik.http.routers.taxapi.entrypoints=web
+      - traefik.http.middlewares.add-foo.addprefix.prefix=${TAXAPI_ROOT_PATH-/taxapi}
+    environment:
+      - TAXREF_FILE=${TAXAPI_TAXREF_FILE-TAXREF_v16_2022.zip}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5666/taxapi/V1/healthcheck" ]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+
   frontend:
     <<: *project_defaults
     image: ${FRONTEND_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
     build:
       context: ../frontend
       dockerfile: Dockerfile
-      args:
-          REACT_APP_KEYCLOAK_CLIENT_URL: ${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
-          REACT_APP_KEYCLOAK_CLIENT_REALM: ${KEYCLOAK_REALM_ID:-geonature-annotation}
-          REACT_APP_KEYCLOAK_CLIENT_CLIENT_ID: ${KEYCLOAK_CLIENT_CLIENT_ID:-frontend}
-          REACT_APP_API_PATH: ${API_ROOT_PATH-/api/v1}
     depends_on:
       api:
         condition: service_healthy
@@ -130,6 +142,9 @@ services:
       timeout: 20s      
       retries: 3
     command: server --console-address :9001 /data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO-PathPrefix(`/miniobucket`)}
 
 volumes:
   db_data:

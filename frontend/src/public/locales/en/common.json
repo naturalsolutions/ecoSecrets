@@ -12,6 +12,10 @@
     "metadata": "metadata",
     "unknown_image": "unknown image"
   },
+  "medias": {
+    "media": "media file",
+    "medias": "media files"
+  },
   "deployments": {
     "annotation": "annotation",
     "ask_delete": "are you sure you want to delete this deployment? This will lead to a complete deletion of every media file and data associated with this deployment",
@@ -67,7 +71,7 @@
     "ask_save": "are you sure you want to save your changes?",
     "cancel": "cancel",
     "close": "close",
-    "comment": "comments",
+    "comments": "comments",
     "delete": "delete",
     "description": "description",
     "details": "details",
@@ -117,8 +121,6 @@
     "error": "error",
     "error_msg": "this project does not exist",
     "import_media": "import media files",
-    "media": "media file",
-    "medias": "media files",
     "members": "members",
     "new_deploy": "new deployment",
     "project": "project",
@@ -129,7 +131,7 @@
     "start_year": "start year",
     "status": "status",
     "studies_area": "study area",
-    "target_specie": "target species",
+    "target_species": "target species",
     "unknown": "unknown project",
     "validators": "validators"
   },
@@ -147,10 +149,10 @@
     "sites": "sites",
     "title": "sites"
   },
-  "species": {
+  "taxon": {
     "behaviour": "behaviour",
-    "bio_state": "biological state",
-    "class": "class",
+    "biological_state": "biological state",
+    "classe": "class",
     "family": "family",
     "genus": "genus",
     "life_stage": "life stage",
