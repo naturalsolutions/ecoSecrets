@@ -90,107 +90,107 @@ export default function DeviceModal() {
             <Typography variant="h6">
               {`${capitalize(t("main.new"))} ${t("devices.device")}`}
             </Typography>
-            </DialogTitle>
-            <IconButton onClick = {handleClose} >
-              <ClearTwoToneIcon/>
-            </IconButton>
-          </Stack>
-          <Divider />
-          <DialogContent>
-            <Grid container spacing={3}>
-              <Grid item lg={12} md={12} xs={12}>
-                <TextField 
-                  required
-                  id="name"
-                  name="name"
-                  label={capitalize(t("main.name"))}
-                  value ={device.name}
-                  onChange={(e) => handleFormChange("name", e)}
-                  fullWidth 
-                  variant="filled" 
-                />
-              </Grid>
-                <Grid item lg={6} md={6} xs={12}>
-                  <TextField
-                    select 
-                    label={capitalize(t("devices.model"))}
-                    variant="filled"
-                    value={device.model}
-                    fullWidth
-                    onChange={(e) => handleFormChange("model", e)}
-                  >
-                    {models.map((item) => (
-                        <MenuItem key={item} value={item}>
-                        {item}
-                        </MenuItem>
-                    ))}
-                  </TextField>
-              </Grid>
-              <Grid item lg={6} md={6}  xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    inputFormat="dd/MM/yyyy"
-                    label={capitalize(t("devices.purchase_date"))}
-                    value={device?.purchase_date || null}
-                    onChange={(purchaseDate) => {
-                      purchaseDate && handleFormChange("purchase_date", new Date(purchaseDate));
-                    }}
-                    renderInput={(params) => <TextField {...params} variant="filled" />}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item lg={6} md={6} xs={6}>
-                <TextField 
-                  label={`${capitalize(t("devices.operating_life"))} (h)`}
-                  id="operating_life"
-                  inputProps={{ type: 'number' }}
-                  value={device.operating_life}
-                  fullWidth 
-                  variant="filled"
-                  onChange={(e) => handleFormChange("operating_life", e)}
-                />
-              </Grid>
-              <Grid item lg={6} md={6} xs={6}>
-                <TextField 
-                  label={`${capitalize(t("devices.price"))} (€)`}
-                  name='price'
-                  id="price"
-                  inputProps={{ type: 'number' }}
-                  value={device.price}
-                  fullWidth 
-                  variant="filled"
-                  onChange={(e) => handleFormChange("price", e)}
-                />
-              </Grid>
-              <Grid item lg={12} md={12} xs={6}>
-                <TextField 
-                  label={`${capitalize(t("devices.detection_area"))} (m)`}
-                  id="detection_area"
-                  inputProps={{ type: 'number' }}
-                  value={device.detection_area}
-                  fullWidth 
-                  variant="filled"
-                  onChange={(e) => handleFormChange("detection_area", e)}
-                />
-              </Grid>
-              <Grid item lg={12} md={12} xs={12}>
-                <TextField 
-                  id="description"
-                  name="description"
-                  label={capitalize(t("main.description"))}
-                  value ={device.description}
-                  onChange={(e) => handleFormChange("description", e)}
-                  fullWidth 
-                  variant="filled" 
-                />
-              </Grid>
+          </DialogTitle>
+          <IconButton onClick={handleClose}>
+            <ClearTwoToneIcon />
+          </IconButton>
+        </Stack>
+        <Divider />
+        <DialogContent>
+          <Grid container spacing={3}>
+            <Grid item lg={12} md={12} xs={12}>
+              <TextField
+                required
+                id="name"
+                name="name"
+                label={capitalize(t("main.name"))}
+                value={device.name}
+                onChange={(e) => handleFormChange("name", e)}
+                fullWidth
+                variant="filled"
+              />
             </Grid>
-          </DialogContent>
-          <Divider />
-          <DialogActions>
-            <Button onClick={save} style={{color: "#2FA37C"}}>{capitalize(t("main.description"))}</Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
-);
+            <Grid item lg={6} md={6} xs={12}>
+              <TextField
+                label={capitalize(t("devices.model"))}
+                variant="filled"
+                value={device.model}
+                fullWidth
+                onChange={(e) => handleFormChange("model", e)}
+              />
+            </Grid>
+            <Grid item lg={6} md={6} xs={6}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  inputFormat="dd/MM/yyyy"
+                  label={capitalize(t("devices.purchase_date"))}
+                  value={device?.purchase_date || null}
+                  onChange={(purchaseDate) => {
+                    purchaseDate &&
+                      handleFormChange("purchase_date", new Date(purchaseDate));
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} variant="filled" />
+                  )}
+                />
+              </LocalizationProvider>
+            </Grid>
+            <Grid item lg={6} md={6} xs={6}>
+              <TextField
+                label={`${capitalize(t("devices.operating_life"))} (h)`}
+                id="operating_life"
+                inputProps={{ type: "number" }}
+                value={device.operating_life}
+                fullWidth
+                variant="filled"
+                onChange={(e) => handleFormChange("operating_life", e)}
+              />
+            </Grid>
+            <Grid item lg={6} md={6} xs={6}>
+              <TextField
+                label={`${capitalize(t("devices.price"))} (€)`}
+                name="price"
+                id="price"
+                inputProps={{ type: "number" }}
+                value={device.price}
+                fullWidth
+                variant="filled"
+                onChange={(e) => handleFormChange("price", e)}
+              />
+            </Grid>
+            <Grid item lg={12} md={12} xs={6}>
+              <TextField
+                label={`${capitalize(t("devices.detection_area"))} (m)`}
+                id="detection_area"
+                inputProps={{ type: "number" }}
+                value={device.detection_area}
+                fullWidth
+                variant="filled"
+                onChange={(e) => handleFormChange("detection_area", e)}
+              />
+            </Grid>
+            <Grid item lg={12} md={12} xs={12}>
+              <TextField
+                id="description"
+                name="description"
+                label={capitalize(t("main.description"))}
+                value={device.description}
+                onChange={(e) => handleFormChange("description", e)}
+                fullWidth
+                multiline={true}
+                variant="filled"
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <Divider />
+        <DialogActions>
+          <ButtonValidate
+            content={capitalize(t("main.save"))}
+            validate={save}
+          />
+        </DialogActions>
+      </Dialog>
+    </Grid>
+  );
 }

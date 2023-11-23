@@ -128,7 +128,7 @@ services:
         condition: service_healthy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.keycloak.rule=${KEYCLOAK_TRAEFIK_RULE-PathPrefix(`/auth`)}
+      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK-PathPrefix(`/auth`)}
       - traefik.http.routers.keycloak.entrypoints=web
 
   minio:
