@@ -15,7 +15,7 @@ This web-application is in development and offers several features that meet the
 We would be delighted if you use it, or even contribute in its development.
 
 A demo is available [here](https://geocam.natural-solutions.eu). Don't hesitate to 
-try it out!
+try it out! User : admin ; password : password
 
 ---
 
