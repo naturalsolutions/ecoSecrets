@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import settings
 from src.connectors.s3 import init_bucket
+from src.connectors.database import init_db
 from src.internal import admin
 from src.routers import deployments, devices, files, home, projects, sites, templateSequences, users
 
@@ -10,6 +11,7 @@ ROOT_PATH = settings.API_ROOT_PATH
 
 app = FastAPI(
     root_path=ROOT_PATH,
+    openapi_url="/api/v1/openapi.json",
     swagger_ui_parameters={"persistAuthorization": True},
 )  # dependencies=[Depends(get_query_token)]
 
@@ -37,11 +39,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+init_db()
 
 @app.get("/")
 async def root():
     return {"message": "Hello Bigger Applications!"}
-
 
 @app.on_event("startup")
 def on_startup():

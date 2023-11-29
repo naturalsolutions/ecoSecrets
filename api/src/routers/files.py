@@ -6,8 +6,9 @@ import uuid as uuid_pkg
 from datetime import datetime
 from typing import List
 from zipfile import ZipFile
+import time
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import BackgroundTasks, APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
@@ -17,6 +18,8 @@ from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files
 from src.schemas.schemas import Annotation
 from src.services import dependencies, files
+from src.connectors.celery import celery_app
+from celery.result import AsyncResult
 
 router = APIRouter(
     prefix="/files",
@@ -82,8 +85,22 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
     return res
 
 
+def ask_answers_celery(task_id, num):
+    res = celery_app.AsyncResult(task_id)
+    state = res.state
+    while res.state == "PENDING":
+        state = res.state
+    try:
+        final_res = res.get(timeout=2)
+        print(num)
+        print(str(final_res))
+    except :
+        print(num)
+        print("failed")
+    
+
 @router.post("/upload/{deployment_id}")
-def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
+def upload_file(deployment_id: int, background_tasks: BackgroundTasks, file: UploadFile = File(...), db: Session = Depends(get_db)):
     hash = dependencies.generate_checksum(file)
     ext = file.filename.split(".")[1]
     insert = files.upload_file(
@@ -94,6 +111,12 @@ def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = 
         ext=ext,
         deployment_id=deployment_id,
     )
+    url = s3.get_url(f"{hash}.{ext}")
+    print(url)
+    # TODO: verifier l'url, il me semble qu'il y a un problème
+    for i in range(0, 1):
+        task = celery_app.send_task("deepfaune.pi", [['https://www.francebleu.fr/s3/cruiser-production/2023/01/9e8890c9-7327-4324-aa30-19ac96f07138/1200x680_maxmatinnews538629.jpg']*5])
+        background_tasks.add_task(ask_answers_celery, task.get(), i)
     return insert
 
 
