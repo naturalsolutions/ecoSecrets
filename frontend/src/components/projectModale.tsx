@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { Grid, Typography, Stack, Button, TextField, MenuItem, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Collapse, Alert, AlertTitle, Box, ListItem, AlertColor, capitalize } from "@mui/material";
+import { Grid, Typography, Stack, TextField, MenuItem, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, capitalize } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -8,19 +8,18 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useMainContext } from "../contexts/mainContext";
 import { ProjectBase, ProjectsService } from "../client";
-import { Snack } from "../client/models/Snack";
+import { Snack } from "./common/snack";
 import { useSnackContext } from "../contexts/snackContext";
 import { useTranslation } from "react-i18next";
+import ButtonValidate from "./common/buttonValidate";
 
 export default function ProjectModal(props) {
     const { t } = useTranslation()
-    const { updateProjects, setCurrentProject, updateProjectSheetData } = useMainContext();
+    const { updateProjects } = useMainContext();
     const [open, setOpen] = useState(false);
-    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1 });
+    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '' });
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
-    const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
-    const species = ["Loup", "Coccinelle", "Ours", "Chamois", "Chevreuil", "Cerf", "Marmotte", "Renard", "Aigle"];
 
 
     const { setSnack } = useSnackContext();
@@ -46,7 +45,7 @@ export default function ProjectModal(props) {
 
     const handleClose = () => {
         setOpen(false);
-        setProjectData({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: '', owner_id: 1, contact_id: 1 });
+        setProjectData({ name: '', protocol: '', creation_date: '' });
         setStartDate(null);
         setEndDate(null);
     };
@@ -71,16 +70,14 @@ export default function ProjectModal(props) {
         <Grid>
 
             {props.page == 'home' ?
-                <Button
-                    variant="contained"
-                    startIcon={<AddCircleIcon />}
-                    color='secondary'
-                    onClick={handleClickOpen}
-                >
-                    {`${capitalize(t("main.new"))} ${t("projects.project")}`}
-                </Button>
+                <ButtonValidate content={ `${capitalize(t("main.new"))} ${t("projects.project")}` } validate={ handleClickOpen } startIcon="add" />
                 :
-                <IconButton onClick={handleClickOpen} aria-label="menu" color='primary' sx={{ mr: 2 }}>
+                <IconButton 
+                    onClick={handleClickOpen} 
+                    aria-label="menu" 
+                    color="primary"
+                    sx={{ mr: 2 }}
+                >
                     <AddCircleIcon />
                 </IconButton>
             }
@@ -118,41 +115,6 @@ export default function ProjectModal(props) {
                                 variant="filled"
                             />
                         </Grid>
-                        <Grid item lg={6} md={6} xs={12}>
-                            <TextField
-                                select
-                                label={capitalize(t("projects.acquisition_framework"))}
-                                variant="filled"
-                                value={projectData.acquisition_framework}
-                                fullWidth
-                                onChange={(e) => handleFormChange("acquisition_framework", e)}
-                            >
-                                {protocoles.map((item) => (
-                                    <MenuItem key={item} value={item}>
-                                        {item}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                        <Grid item lg={6} md={6} xs={12}>
-                            <TextField
-                                label={capitalize(t("projects.target_specie"))}
-                                id="targetedSpecies"
-                                select
-                                value={projectData.targeted_species}
-                                fullWidth
-                                variant="filled"
-                                onChange={(e) => handleFormChange("targeted_species", e)}
-
-                            >
-                                {species.map((item) => (
-                                    <MenuItem key={item} value={item}>
-                                        {item}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-
                         <Grid item lg={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
@@ -196,7 +158,10 @@ export default function ProjectModal(props) {
                 </DialogContent>
                 <Divider />
                 <DialogActions>
-                    <Button onClick={save} style={{ color: "#2FA37C" }}>{ capitalize(t("main.save")) }</Button>
+                    <ButtonValidate 
+                        content={ capitalize(t("main.save")) }
+                        validate={save}
+                    />
                 </DialogActions>
             </Dialog>
         </Grid>

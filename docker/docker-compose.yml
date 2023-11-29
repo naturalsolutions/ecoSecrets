@@ -37,12 +37,22 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
+      keycloak: 
+        condition: service_healthy
     labels:
       - traefik.enable=true
       - traefik.http.routers.api.rule=PathPrefix(`/api/v1`)
       - traefik.http.routers.api.entrypoints=web
       - traefik.http.routers.api.middlewares=api-stripprefix
-      - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=/api/v1
+      - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=${API_ROOT_PATH-/api/v1}
+    environment:
+      - KEYCLOAK_ADMIN_CLIENT_SECRET=${KEYCLOAK_ADMIN_CLIENT_SECRET}
+      - KEYCLOAK_CALLBACK_URI=${KEYCLOAK_CALLBACK_URI-http://api:8000/callback}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID-geonature-annotation}
+      - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM-geonature-annotation}
+      - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL-http://keycloak:8080/auth}
+      - KEYCLOAK_TOKEN_URI=${KEYCLOAK_TOKEN_URI}
 
   deepfaune:
     <<: *project_defaults
@@ -73,6 +83,23 @@ services:
     volumes: 
       - broker:/data
 
+  taxapi:
+    <<: *project_defaults
+    image: ${TAXAPI_IMAGE-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.taxapi.rule=${TRAEFIK_ROUTER_RULE_TAXAPI-PathPrefix(`/taxapi`)}
+      - traefik.http.routers.taxapi.entrypoints=web
+      - traefik.http.middlewares.add-foo.addprefix.prefix=${TAXAPI_ROOT_PATH-/taxapi}
+    environment:
+      - TAXREF_FILE=${TAXAPI_TAXREF_FILE-TAXREF_v16_2022.zip}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5666/taxapi/V1/healthcheck" ]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+
   frontend:
     <<: *project_defaults
     image: ${FRONTEND_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
@@ -87,11 +114,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 60s
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend.rule=PathPrefix(`/`)
       - traefik.http.routers.frontend.entrypoints=web
+    environment:
+      - REACT_APP_KEYCLOAK_CLIENT_URL=${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
+      - REACT_APP_KEYCLOAK_CLIENT_REALM=${KEYCLOAK_REALM_ID:-geonature-annotation}
+      - REACT_APP_KEYCLOAK_CLIENT_CLIENT_ID=${KEYCLOAK_CLIENT_CLIENT_ID:-frontend}
 
   db:
     <<: *project_defaults
@@ -111,8 +142,19 @@ services:
 
   keycloak:
     <<: *project_defaults
-    image: quay.io/keycloak/keycloak:18.0.2
-    command: start-dev
+    image: fastcam-keycloak-dev
+    build:
+      context: ../keycloak
+    command: start-dev --import-realm  
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 80s
+    depends_on:
+      db:
+        condition: service_healthy
     labels:
       - traefik.enable=true
       - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK-PathPrefix(`/auth`)}
@@ -129,6 +171,9 @@ services:
       timeout: 20s      
       retries: 3
     command: server --console-address :9001 /data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO-PathPrefix(`/miniobucket`)}
 
 volumes:
   db_data:

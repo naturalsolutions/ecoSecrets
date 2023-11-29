@@ -2,24 +2,26 @@ from __future__ import annotations
 
 import io
 import tempfile
+import time
 import uuid as uuid_pkg
 from datetime import datetime
 from typing import List
 from zipfile import ZipFile
-import time
 
-from fastapi import BackgroundTasks, APIRouter, Depends, File, Form, HTTPException, UploadFile
+import magic
+from celery.result import AsyncResult
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
 from src.config import settings
 from src.connectors import s3
+from src.connectors.celery import celery_app
 from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files
 from src.schemas.schemas import Annotation
 from src.services import dependencies, files
-from src.connectors.celery import celery_app
-from celery.result import AsyncResult
+from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(
     prefix="/files",
@@ -40,11 +42,6 @@ router = APIRouter(
 #     if db_file is None:
 #         raise HTTPException(status_code=404, detail="File not found")
 #     return db_file
-
-
-def file_as_bytes(file):
-    with file:
-        return file.read()
 
 
 @router.get("/")
@@ -102,13 +99,19 @@ def ask_answers_celery(task_id, num):
 @router.post("/upload/{deployment_id}")
 def upload_file(deployment_id: int, background_tasks: BackgroundTasks, file: UploadFile = File(...), db: Session = Depends(get_db)):
     hash = dependencies.generate_checksum(file)
-    ext = file.filename.split(".")[1]
+
+    mime = magic.from_buffer(file.file.read(), mime=True)
+    file.file.seek(0)
+
+    if not check_mime(mime):
+        raise HTTPException(status_code=400, detail="Invalid type file")
+
     insert = files.upload_file(
         db=db,
         hash=hash,
         new_file=file.file,
         filename=file.filename,
-        ext=ext,
+        ext=mime,
         deployment_id=deployment_id,
     )
     url = s3.get_url(f"{hash}.{ext}")
@@ -127,7 +130,6 @@ def upload_files(
     db: Session = Depends(get_db),
 ):
     if len(list_files) < 20:
-
         print(list_files)
         for file in list_files:
             hash = dependencies.generate_checksum(file)

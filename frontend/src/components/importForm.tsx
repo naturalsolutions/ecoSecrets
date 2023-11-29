@@ -156,8 +156,9 @@ const ImportForm = (
                 <Stack direction="row" justifyContent="center">
                     <Button
                         startIcon={<CloudDownloadIcon />} 
-                        variant="contained" 
-                        color="secondary"
+                        variant="outlined" 
+                        color="primary"
+                        size="small"
                     >
                         <Input 
                             onChange={onChange}

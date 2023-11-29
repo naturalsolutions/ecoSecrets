@@ -1,22 +1,17 @@
-import { Button, DialogTitle, FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { FormControlLabel, Grid, InputAdornment, MenuItem, Paper, Stack, Switch, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import TurnedInNotTwoToneIcon from '@mui/icons-material/TurnedInNotTwoTone'; import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import { Deployments, DeploymentsService, DeploymentWithTemplateSequence, SequencesService, TemplateSequence } from "../client";
-import DropzoneComponent from "./dropzoneComponent";
+import { DeploymentsService, DeploymentWithTemplateSequence } from "../client";
 import SiteModale from "./siteMenu/siteModale";
 import Map from "./Map";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
-
-const deployment_img = undefined;
+import ButtonModify from "./common/buttonModify";
+import ButtonValidate from "./common/buttonValidate";
 
 const DeploymentForm = (
     props
@@ -26,19 +21,10 @@ const DeploymentForm = (
     let params = useParams();
     const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
     const { t } = useTranslation();
-    const supportList = ["Support type 1", "Support type 2"]
-    const featureList = ["Arbre fruitier", "Caractéristique A", "Caractéristique B", "Caractéristique C"]
-    const baitList = ["Appât u", "Appât v", "Appât w", "Appât x", "Appât y", "Appât z", "None"]
 
     const [siteName, setSiteName] = useState<string>('');
     const [deviceName, setDeviceName] = useState<string>('');
     const [isEditable, setIsEditable] = useState(false);
-
-    const [AutomaticImgNb, setAutomaticImgNb] = useState(0);
-    const [AutomaticFrequency, setAutomaticFrequency] = useState(0);
-
-    const [triggerImgNb, setTriggerImgNb] = useState(0);
-    const [triggerFrequency, setTriggerFrequency] = useState(0);
 
     const [automatic, setAutomatic] = useState({ isAutomatic: false, imageNumber: 0, frequency: 0 });
     const [trigger, setTrigger] = useState({ isTrigger: false, imageNumber: 0, frequency: 0 });
@@ -87,19 +73,15 @@ const DeploymentForm = (
     }, [tmpDeploymentData?.device_id]);
 
     useEffect(() => {
-        setAutomaticFrequency(automatic?.frequency)
-        setAutomaticImgNb(automatic?.imageNumber)
-        setTriggerFrequency(trigger?.frequency)
-        setTriggerImgNb(trigger?.imageNumber)
-    }, [tmpDeploymentData]);
+        let tmpDevice = devices.find((d) => d.id === tmpDeploymentData?.device_id)?.name;
+        setDeviceName(tmpDevice);
+    }, [tmpDeploymentData?.device_id]);
 
 
     const handleFormChange = (
         params: string,
         value: number | string
     ) => {
-        console.log(value);
-
         let updated_deployment_data = { ...tmpDeploymentData };
         updated_deployment_data[params] = value;
         setTmpDeploymentData(updated_deployment_data);
@@ -165,23 +147,35 @@ const DeploymentForm = (
 
         if (props.isNewDeployment) {
             // POST
+            console.log(tmpDeploymentData);
             DeploymentsService
                 .createDeploymentDeploymentsPost(tmpDeploymentData)
                 .then(() => {
                     updateProjectSheetData();
                     props.handleCloseNewDeployment();
+                    updateAutoTemplates();
+                    updateTriggerTemplates();
                 })
                 .catch((err) => {
+                    console.log("Error during deployment creation");
                     console.log(err);
                 });
         }
         else {
             // PUT
-            DeploymentsService.
-                updateDeploymentDeploymentsDeploymentIdPut(tmpDeploymentData);
-            setDeploymentData(tmpDeploymentData);
-            setCurrentDeployment(Number(params.deploymentId));
-            isEditable ? setIsEditable(false) : setIsEditable(true);
+            DeploymentsService
+                .updateDeploymentDeploymentsDeploymentIdPut(tmpDeploymentData)
+                .then(() => {
+                    setDeploymentData(tmpDeploymentData);
+                    setCurrentDeployment(Number(params.deploymentId));
+                    isEditable ? setIsEditable(false) : setIsEditable(true);
+                    updateAutoTemplates();
+                    updateTriggerTemplates();
+                })
+                .catch((err) => {
+                    console.log("Error during deployment update");
+                    console.log(err);
+                });
         }
     };
 
@@ -200,28 +194,23 @@ const DeploymentForm = (
         };
     };
 
-    const handleValueModeAutomaticImgNb = (param: string, value: string) => {
-        setAutomaticImgNb(parseInt(value))
-        automatic.imageNumber = parseInt(value);
-        setAutomatic(automatic);
-    };
-
-    const handleValueModeAutomaticFrequency = (param: string, value: string) => {
-        setAutomaticFrequency(parseFloat(value))
-        automatic.frequency = parseFloat(value);
-        setAutomatic(automatic);
-    };
-
-    const handleValueModeTriggerImgNb = (param: string, value: string) => {
-        setTriggerImgNb(parseInt(value))
-        trigger.imageNumber = parseInt(value);
-        setTrigger(trigger);
-    };
-
-    const handleValueModeTriggerFrequency = (param: string, value: string) => {
-        setTriggerFrequency(parseFloat(value))
-        trigger.frequency = parseFloat(value);
-        setTrigger(trigger);
+    const handleValueMode = (param: string, value: number) => {
+        if (param === "autoImgNb") {
+            setAutomatic({ ...automatic, imageNumber: value });
+            return;
+        }
+        if (param === "triggerImgNb") {
+            setTrigger({ ...trigger, imageNumber: value });
+            return;
+        }
+        if (param === "autoFreq") {
+            setAutomatic({ ...automatic, frequency: value });
+            return;
+        }
+        if (param === "triggerFreq") {
+            setTrigger({ ...trigger, frequency: value });
+            return;
+        }
     };
 
     return (
@@ -230,15 +219,15 @@ const DeploymentForm = (
                 direction="column"
                 spacing={5}
             >
-                <Grid container direction="row"  alignItems="center" spacing={2}>
-                    {/* Si image du deploiement, la mettre sinon mettre zone drag&drop pour l'image */}
+                <Grid container justifyContent="center" spacing={2}>
+                    {/* Si image du deploiement, la mettre sinon mettre zone drag&drop pour l'image
                     <Grid item lg={6}>
                         {
                             deployment_img ?
                                 <img></img> :
                                 <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("deployments.deployment")}`}/>
                         }
-                    </Grid>
+                    </Grid> */}
 
                     {
                         deploymentData && position.lng !== 0 ?
@@ -257,25 +246,31 @@ const DeploymentForm = (
                     </Typography>
 
                     <Grid container spacing={2}>
-                        {(props.isNewDeployment || isEditable) &&
-                            <Grid item xs={12} sm={12} md={8} lg={8}>
-                                <TextField
-                                    id="name"
-                                    name="name"
-                                    label={capitalize(t("deployments.name"))}
-                                    required
-                                    defaultValue={tmpDeploymentData?.name}
-                                    onChange={(e) => handleFormChange("name", e.target.value)}
-                                    size="small"
-                                    variant="filled"
-                                    fullWidth
-                                // error={tmpDeploymentData?.name === ""}
-                                // helperText={tmpDeploymentData?.name === "" &&"Champs requis"}
-                                />
+
+                        { ( isEditable || props.isNewDeployment ) && 
+                            <Grid container direction="row" spacing={2} sx={{ px: 2 }}>
+                                <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
+                                    <TextField
+                                        id="name"
+                                        name="name"
+                                        label={capitalize(t("deployments.name"))}
+                                        required
+                                        defaultValue={tmpDeploymentData?.name}
+                                        onChange={(e) => handleFormChange("name", e.target.value)}
+                                        size="small"
+                                        variant="filled"
+                                        fullWidth
+                                    />
+                                </Grid>
+                                { (isEditable && !props.isNewDeployment) &&
+                                    <Grid item xs={12} sm={12} md={3} lg={3} >
+                                        <SiteModale page='deploymentPage'/>
+                                    </Grid>
+                                }
                             </Grid>
                         }
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <TextField
                                 id="site_id"
                                 name="site_id"
@@ -300,7 +295,7 @@ const DeploymentForm = (
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <TextField
                                 id="device_id"
                                 name="device_id"
@@ -325,102 +320,70 @@ const DeploymentForm = (
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid
-                            item
-                            xs={12} sm={12} md={12} lg={12}
-                        >
-                            {isEditable ?
-                                <Grid
-                                    container
-                                    direction="row"
-                                    justifyContent="flex-start"
-                                    alignItems="center"
-                                >
-                                    <SiteModale page='deploymentPage'/>
-                                </Grid>
-                                :
-                                    <></>
-                                }
-                            
-                        </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DesktopDatePicker
                                     label={capitalize(t("projects.start_date"))}
                                     inputFormat="dd/MM/yyyy"
                                     value={tmpDeploymentData?.start_date || null}
                                     onChange={(date) => handleDateChange("start_date", date)}
-                                    renderInput={(params) => <TextField size="small" variant="filled" required {...params} />}
+                                    renderInput={(params) => <TextField size="small" variant="filled" fullWidth required {...params} />}
                                     disabled={!props.isNewDeployment && !isEditable}
                                 />
                             </LocalizationProvider>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DesktopDatePicker
                                     label={capitalize(t("projects.end_date"))}
                                     inputFormat="dd/MM/yyyy"
                                     value={tmpDeploymentData?.end_date || null}
                                     onChange={(date) => handleDateChange("end_date", date)}
-                                    renderInput={(params) => <TextField size="small" variant="filled" {...params} />}
+                                    renderInput={(params) => <TextField size="small" variant="filled" fullWidth {...params} />}
                                     disabled={!props.isNewDeployment && !isEditable}
                                 />
                             </LocalizationProvider>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <TextField
                                 id="support"
                                 name="support"
                                 label={capitalize(t("deployments.hanging"))}
                                 defaultValue=""
-                                select
                                 value={tmpDeploymentData?.support}
                                 onChange={(e) => handleFormChange("support", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 disabled={!props.isNewDeployment && !isEditable}
-                            >
-                                {supportList.map((supportOption) => (
-                                    <MenuItem key={supportOption} value={supportOption}>
-                                        {supportOption}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            />
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <TextField
                                 id="feature"
                                 name="feature"
                                 label={capitalize(t('deployments.features'))}
                                 defaultValue=""
-                                select
                                 value={tmpDeploymentData?.feature}
                                 onChange={(e) => handleFormChange("feature", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 disabled={!props.isNewDeployment && !isEditable}
-                            >
-                                {featureList.map((featureOption) => (
-                                    <MenuItem key={featureOption} value={featureOption}>
-                                        {featureOption}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            />
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <TextField
                                 id="height"
-                                label={!isEditable && tmpDeploymentData?.height ? `${capitalize(t("deployments.height"))} : ${tmpDeploymentData?.height}` : `${capitalize(t("deployments.height"))}`}
+                                label={`${capitalize(t("deployments.height"))}`}
                                 name="height"
-                                value={isEditable ? tmpDeploymentData?.height : ""}
-                                onChange={(e) => handleFormChange("height", e.target.value)}
+                                value={Number(tmpDeploymentData?.height) || ""}
+                                onChange={(e) => handleFormChange("height", Number(e.target.value))}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">cm</InputAdornment>
@@ -438,28 +401,19 @@ const DeploymentForm = (
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
+                        <Grid item xs={12} sm={12} md={props.isNewDeployment ? 6 : 3} lg={props.isNewDeployment ? 6 : 3}>
                             <TextField
                                 id="bait"
                                 name="bait"
                                 label={capitalize(t("deployments.bait"))}
                                 defaultValue=""
-                                select
                                 value={tmpDeploymentData?.bait}
                                 onChange={(e) => handleFormChange("bait", e.target.value)}
                                 size="small"
                                 variant="filled"
                                 fullWidth
                                 disabled={!props.isNewDeployment && !isEditable}
-                            >
-                                {baitList.map((baitOption) => (
-                                    <MenuItem
-                                        key={baitOption}
-                                        value={baitOption}>
-                                        {baitOption}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            />
                         </Grid>
 
                     </Grid>
@@ -488,9 +442,9 @@ const DeploymentForm = (
 
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && automatic?.imageNumber ? `${capitalize(t("deployments.img_nb"))} : ${automatic?.imageNumber}` : `${capitalize(t("deployments.img_nb"))}`}
-                                        value={isEditable ? AutomaticImgNb : ""}
-                                        onChange={(e) => handleValueModeAutomaticImgNb("imageNumber", e.target.value)}
+                                        label={`${capitalize(t("deployments.img_nb"))}`}
+                                        value={Number(automatic.imageNumber) || ""}
+                                        onChange={(e) => handleValueMode("autoImgNb", Number(e.target.value))}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -506,9 +460,9 @@ const DeploymentForm = (
 
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && automatic?.frequency ? `${capitalize(t("deployments.frequency"))} : ${automatic?.frequency}` : `${capitalize(t("deployments.frequency"))}`}
-                                        value={isEditable ? AutomaticFrequency : ""}
-                                        onChange={(e) => handleValueModeAutomaticFrequency("frequency", e.target.value)}
+                                        label={`${capitalize(t("deployments.frequency"))}`}
+                                        value={Number(automatic.frequency) || ""}
+                                        onChange={(e) => handleValueMode("autoFreq", Number(e.target.value))}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
@@ -544,9 +498,9 @@ const DeploymentForm = (
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && trigger?.imageNumber ? `${capitalize(t("deployments.img_nb"))} : ${trigger?.imageNumber}` : `${capitalize(t("deployments.img_nb"))}`}
-                                        value={isEditable ? triggerImgNb : ""}
-                                        onChange={(e) => handleValueModeTriggerImgNb("imageNumber", e.target.value)}
+                                        label={`${capitalize(t("deployments.img_nb"))}`}
+                                        value={Number(trigger.imageNumber) || ""}
+                                        onChange={(e) => handleValueMode("triggerImgNb", Number(e.target.value))}
                                         inputProps={{
                                             step: 1,
                                             min: 1,
@@ -560,9 +514,9 @@ const DeploymentForm = (
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12} lg={12}>
                                     <TextField
-                                        label={!isEditable && trigger?.frequency ? `${capitalize(t("deployments.frequency"))} : ${trigger?.frequency}` : `${capitalize(t("deployments.frequency"))}`}
-                                        value={isEditable ? triggerFrequency : ""}
-                                        onChange={(e) => handleValueModeTriggerFrequency("frequency", e.target.value)}
+                                        label={`${capitalize(t("deployments.frequency"))}`}
+                                        value={Number(trigger.frequency) || ""}
+                                        onChange={(e) => handleValueMode("triggerFreq", Number(e.target.value))}
                                         inputProps={{
                                             step: 0.05,
                                             min: 0.05,
@@ -595,50 +549,30 @@ const DeploymentForm = (
                         disabled={!props.isNewDeployment && !isEditable}
                     />
                 </Paper>
-
-                {!props.isNewDeployment ?
-                    (
-                        <Stack
-                            direction="row"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                            spacing={2}
-                        >
-                            <Button
-                                onClick={handleEdit}
-                                size="small"
-                                variant="contained"
-                                color="secondary"
-                            >
-                                {
-                                    isEditable ? 
-                                    <><CancelIcon />{capitalize(t("main.cancel"))}</> : 
-                                    <><EditIcon />{capitalize(t("main.modify"))}</>
-                                }
-                            </Button>
-                            <Button
-                                onClick={handleSave}
-                                disabled={!isEditable}
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                            >
-                                <SaveIcon />
-                                {capitalize(t("main.save"))}
-                            </Button>
-                        </Stack>
-                    ) : (
-                        <Stack justifyContent="flex-end" direction="row">
-                            <Button
-                                onClick={handleSave}
-                                color="primary"
-                                variant="contained"
-                            >
-                                {capitalize(t("main.save"))}
-                            </Button>
-                        </Stack>
-                    )
-                }
+              
+                <Stack
+                    direction="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    { !props.isNewDeployment &&
+                        <ButtonModify
+                            content={ 
+                                isEditable ? 
+                                <>{capitalize(t("main.cancel"))}</> : 
+                                <>{capitalize(t("main.modify"))}</>
+                            }
+                            edit={ handleEdit }
+                            variant={ isEditable }
+                        />
+                    }
+                    <ButtonValidate 
+                        content={ capitalize(t("main.save")) }
+                        validate={ handleSave }
+                        disabled={ !(props.isNewDeployment || isEditable) }
+                    />
+                </Stack>
             </Stack>
         </form>
     )

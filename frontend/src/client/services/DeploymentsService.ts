@@ -1,10 +1,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { DeploymentBase } from '../models/DeploymentBase';
 import type { Deployments } from '../models/Deployments';
 import type { DeploymentWithFile } from '../models/DeploymentWithFile';
 import type { DeploymentWithTemplateSequence } from '../models/DeploymentWithTemplateSequence';
+import type { NewDeploymentWithTemplateSequence } from '../models/NewDeploymentWithTemplateSequence';
 import type { ReadDeployment } from '../models/ReadDeployment';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -45,7 +45,7 @@ export class DeploymentsService {
      * @throws ApiError
      */
     public static createDeploymentDeploymentsPost(
-        requestBody: DeploymentBase,
+        requestBody: NewDeploymentWithTemplateSequence,
     ): CancelablePromise<Deployments> {
         return __request(OpenAPI, {
             method: 'POST',
