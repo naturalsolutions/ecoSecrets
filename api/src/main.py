@@ -4,7 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.config import settings
 from src.connectors.database import init_db
 from src.connectors.s3 import init_bucket
-from src.internal import admin
 from src.keycloak.idp import idp
 from src.routers import deployments, devices, files, home, projects, sites, templateSequences, users
 
@@ -25,13 +24,6 @@ app.include_router(sites.router, dependencies=[USER_DEPENDS])
 app.include_router(devices.router, dependencies=[USER_DEPENDS])
 app.include_router(home.router, dependencies=[USER_DEPENDS])
 app.include_router(templateSequences.router, dependencies=[USER_DEPENDS])
-app.include_router(
-    admin.router,
-    prefix="/admin",
-    tags=["admin"],
-    # dependencies=[Depends(get_token_header)],
-    responses={418: {"description": "I'm a teapot"}},
-)
 
 app.add_middleware(
     CORSMiddleware,
@@ -41,7 +33,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 idp.add_swagger_config(app)
-init_db()
 
 @app.get("/")
 async def root():
