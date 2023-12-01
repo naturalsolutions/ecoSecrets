@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import { useAnnotationContext } from "../../contexts/annotationContext";
-import { height } from "@mui/system";
-import { isPropertyAccessChain } from "typescript";
 
 const AnnotationImageDisplay = () => {
-  const [isAnnotatedColor, setIsAnnotatedColor] = useState<string>("");
   const { image } = useMainContext();
   const { annotated } = useAnnotationContext();
 
@@ -17,9 +13,6 @@ const AnnotationImageDisplay = () => {
     height: "100%",
     "object-fit": "contain",
     display: "block",
-    // border: "3px solid",
-    // borderRadius: "5px",
-    // borderColor: isAnnotatedColor,
   };
 
   const displayMedia = (image) => {
@@ -46,16 +39,6 @@ const AnnotationImageDisplay = () => {
       );
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      image()?.treated
-        ? setIsAnnotatedColor("green")
-        : annotated
-        ? setIsAnnotatedColor("orange")
-        : setIsAnnotatedColor("red");
-    })();
-  }, [image()?.annotations, annotated]);
 
   return (
     <>
