@@ -23,6 +23,7 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 date = dt.today()
 
+
 def init_db():
     with Session(engine) as session:
         role = Roles(role="user", description="default_user")
@@ -110,7 +111,7 @@ def init_db():
 
         if not os.path.isdir(img_dir):
             os.mkdir(img_dir)
-        
+
         for filename_example in os.listdir(img_dir):
             with open(os.path.join(img_dir, filename_example), "rb") as f:
                 file_content = f.read()
