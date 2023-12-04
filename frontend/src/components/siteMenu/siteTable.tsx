@@ -120,7 +120,7 @@ const SitesTable = () => {
       </Dialog>
     </Stack> : 
       <Alert severity="warning" >
-        <AlertTitle>{t('main.warning')}</AlertTitle>
+        <AlertTitle>{capitalize(t('main.warning'))}</AlertTitle>
         {`${capitalize(t('main.zero'))} ${t('sites.site')}`}
       </Alert>
 );

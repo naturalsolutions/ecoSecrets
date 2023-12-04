@@ -1,21 +1,18 @@
-import { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 
 const AnnotationImageDisplay = () => {
-  const [isAnnotatedColor, setIsAnnotatedColor] = useState<string>("");
   const { image } = useMainContext();
   const { annotated } = useAnnotationContext();
 
   const mediaDisplayStyle = {
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    maxWidth: "99.5%",
-    maxHeight: "600px",
-    border: "3px solid",
-    borderRadius: "5px",
-    borderColor: isAnnotatedColor,
+    width: "100%",
+    height: "100%",
+    "object-fit": "contain",
+    display: "block",
   };
 
   const displayMedia = (image) => {
@@ -43,16 +40,6 @@ const AnnotationImageDisplay = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      image()?.treated
-        ? setIsAnnotatedColor("green")
-        : annotated
-        ? setIsAnnotatedColor("orange")
-        : setIsAnnotatedColor("red");
-    })();
-  }, [image()?.annotations, annotated]);
-
   return (
     <>
       <Grid
@@ -62,6 +49,7 @@ const AnnotationImageDisplay = () => {
         className="boxImage"
         style={{
           backgroundColor: "#D9D9D9",
+          overflow: "auto",
         }}
       >
         {displayMedia(image())}
