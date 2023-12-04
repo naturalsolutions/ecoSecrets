@@ -10,11 +10,13 @@ const LayoutAnnotationContainer = styled("div")({
   gridTemplateColumns: "repeat(12, 1fr)",
   columnGap: "1rem",
   rowGap: "1rem",
-  overflowY: "scroll",
+  overflowY: "auto",
 });
 
 const LayoutAnnotationImage = styled("div")(({ theme }) => ({
   gridColumn: "1/8",
+  height: "100%",
+  overflow: "auto",
   [theme.breakpoints.down("md")]: {
     gridColumn: "1/13",
     gridRow: "1/5",
