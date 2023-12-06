@@ -54,5 +54,8 @@ nav:
       - Les déploiements: user/deployment.md
       - Importer des médias: user/import.md
       - Annoter une image: user/annotation.md
+      - Mon compte: user/user.md
+      - Administrateur - Keycloak: user/admin.md
   - Guide technique:
       - Technologies: technical_guide/technologies.md
+      - Keycloak: technical_guide/keycloak.md
