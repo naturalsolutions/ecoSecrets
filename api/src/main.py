@@ -40,6 +40,6 @@ idp.add_swagger_config(app)
 def on_startup():
     init_bucket()
 
-    is_demo_instance = os.environ.get("DEMO_INSTANCE", False)
+    is_demo_instance = (os.environ.get("DEMO_INSTANCE", None) == "True")
     if is_demo_instance:
         init_db()
