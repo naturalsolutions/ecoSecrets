@@ -133,11 +133,11 @@ services:
 
   minio:
     <<: *project_defaults
-    image: minio/minio
+    image: ${MINIO_IMAGE-minio/minio:RELEASE.2023-08-23T10-07-06Z}
     volumes:
       - minio_data:/data
     healthcheck:      
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]      
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s      
       timeout: 20s      
       retries: 3
