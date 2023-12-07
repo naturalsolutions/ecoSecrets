@@ -133,7 +133,7 @@ services:
 
   minio:
     <<: *project_defaults
-    image: minio/minio:${MINIO_IMAGE-RELEASE.2023-08-23T10-07-06Z}
+    image: ${MINIO_IMAGE-minio/minio:RELEASE.2023-08-23T10-07-06Z}
     volumes:
       - minio_data:/data
     healthcheck:      
