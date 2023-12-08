@@ -48,10 +48,6 @@ def init_db():
         for curent_user in user.get_users(db=session):
             user.delete_user(db=session, id=curent_user.id)
 
-        # owner = user.create_user(
-        #     db=session,
-        #     user=UserCreate(name="user", email="user@user.com", password="password"),
-        # )
         project_example = project.create_project(
             db=session,
             project=ProjectBase(
@@ -60,8 +56,6 @@ def init_db():
                 creation_date=date,
                 start_date=date,
                 end_date=date + relativedelta(years=+1),
-                # onwner_id=owner.id,
-                # contact_id=owner.id,
             ),
         )
 
