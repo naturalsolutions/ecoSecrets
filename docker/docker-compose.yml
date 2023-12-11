@@ -12,7 +12,7 @@ x-project-defaults: &project_defaults
 services:
   traefik:
     <<: *project_defaults
-    image: ${TRAEFIK_IMAGE-traefik:v2.6}
+    image: ${TRAEFIK_IMAGE:-traefik:v2.6}
     depends_on:
       frontend:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
 
   api:
     <<: *project_defaults
-    image: ${API_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:api-dev}
+    image: ${API_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:api-dev}
     build:
       context: ../api
       dockerfile: Dockerfile
@@ -56,7 +56,7 @@ services:
 
   taxapi:
     <<: *project_defaults
-    image: ${TAXAPI_IMAGE-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
+    image: ${TAXAPI_IMAGE:-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
     labels:
       - traefik.enable=true
       - traefik.http.routers.taxapi.rule=${TRAEFIK_ROUTER_RULE_TAXAPI-PathPrefix(`/taxapi`)}
@@ -73,7 +73,7 @@ services:
 
   frontend:
     <<: *project_defaults
-    image: ${FRONTEND_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
+    image: ${FRONTEND_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
     build:
       context: ../frontend
       dockerfile: Dockerfile
@@ -133,7 +133,7 @@ services:
 
   minio:
     <<: *project_defaults
-    image: ${MINIO_IMAGE-minio/minio:RELEASE.2023-08-23T10-07-06Z}
+    image: ${MINIO_IMAGE:-minio/minio:RELEASE.2023-08-23T10-07-06Z}
     volumes:
       - minio_data:/data
     healthcheck:      
