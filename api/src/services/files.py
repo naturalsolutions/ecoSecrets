@@ -112,7 +112,7 @@ def upload_file(
         name=filename,
         extension=ext,
         bucket=settings.MINIO_BUCKET_NAME,
-        date=datetime.fromisoformat("2022-01-22"),
+        date=datetime.now(),
         deployment_id=deployment_id,
     )
     try:
