@@ -4,27 +4,25 @@ import AnnotationImageDisplay from "./AnnotationImageDisplay";
 import AnnotationImageNavigation from "./AnnotationImageNavigation";
 import { useMainContext } from "../../contexts/mainContext";
 
+export default function AnnotationImage() {
+  const { t } = useTranslation();
+  const { image } = useMainContext();
 
-export default function AnnotationImage () {
-    const { t } = useTranslation();
-    const { image } = useMainContext();
-
-    return (
-        <>
-            { image() ? (
-                <Grid 
-                    container 
-                    direction="column"
-                    className="pageContainer"
-                >
-                    <AnnotationImageDisplay />
-                    <AnnotationImageNavigation />
-                </Grid>
-            ) : (
-                <p>
-                    { capitalize(t("annotations.unknown_image")) }
-                </p>
-            )}
-        </>
-    );
-};
+  return (
+    <>
+      {image() ? (
+        <Grid
+          container
+          direction="column"
+          className="pageContainer"
+          sx={{ overflow: "auto" }}
+        >
+          <AnnotationImageDisplay />
+          <AnnotationImageNavigation />
+        </Grid>
+      ) : (
+        <p>{capitalize(t("annotations.unknown_image"))}</p>
+      )}
+    </>
+  );
+}

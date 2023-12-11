@@ -1,9 +1,11 @@
+import os
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import settings
 from src.connectors.database import init_db
-from src.connectors.s3 import init_bucket
+from src.connectors.s3 import get_bucket_name, init_bucket, remove_bucket
 from src.keycloak.idp import idp
 from src.routers import deployments, devices, files, home, projects, sites, templateSequences, users
 
@@ -41,3 +43,7 @@ async def root():
 @app.on_event("startup")
 def on_startup():
     init_bucket()
+
+    is_demo_instance = (os.environ.get("DEMO_INSTANCE", None) == "True")
+    if is_demo_instance:
+        init_db()
