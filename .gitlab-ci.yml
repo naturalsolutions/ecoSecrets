@@ -83,6 +83,21 @@ build_frontend_production:
   tags:
     - NSCICDDOCKER
 
+build_keycloak:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:  
+    - /kaniko/executor --context "${CI_PROJECT_DIR}/keycloak" --dockerfile "${CI_PROJECT_DIR}/keycloak/Dockerfile" --destination "${CI_REGISTRY_IMAGE}:keycloak-${CI_COMMIT_REF_NAME}"
+  tags:
+    - NSCICDK8S
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^(main|dev)$/ && $CI_PIPELINE_SOURCE == "push"'
+      changes:
+        - keycloak/**/*
+    - if: '$build_keycloak'
+
 test_api:
   stage: test
   script:
