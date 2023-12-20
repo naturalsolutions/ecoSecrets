@@ -34,7 +34,7 @@ try it out! User : admin ; password : password
 
 ### Prerequisite
 
-Docker and docker-compose must be installed on the server/machine (cf. [official website](https://docs.docker.com/engine/install/debian/))
+Docker and docker-compose must be installed on the server/machine (cf. [official website](https://docs.docker.com/engine/install/debian/)).
 
 ### Application downloading
 
