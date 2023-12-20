@@ -38,7 +38,7 @@ Docker and docker-compose must be installed on the server/machine (cf. [official
 
 ### Application downloading
 
-Replace the `X.Y.Z.zip` archive by the name of the release you want to install.
+Replace the `X.Y.Z` mention by the name of the release you want to install.
 
 ```
 cd
