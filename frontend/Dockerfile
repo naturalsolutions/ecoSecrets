@@ -20,6 +20,11 @@ USER node
 COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node . .
 
+ARG REACT_APP_KEYCLOAK_CLIENT_URL
+ARG REACT_APP_KEYCLOAK_CLIENT_REALM
+ARG REACT_APP_KEYCLOAK_CLIENT_CLIENT_ID
+ARG REACT_APP_API_PATH
+
 RUN npm run build
 
 EXPOSE 3000

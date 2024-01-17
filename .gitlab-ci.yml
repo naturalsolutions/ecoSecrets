@@ -28,7 +28,7 @@ black:
 build_api_development:
   stage: build
   script:
-    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     - docker build --target development -t ${CI_REGISTRY_IMAGE}:api-dev ./api
     - docker push ${CI_REGISTRY_IMAGE}:api-dev
   only:
@@ -42,7 +42,7 @@ build_api_development:
 build_api_production:
   stage: build
   script:
-    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     - docker build --target production -t ${CI_REGISTRY_IMAGE}:api-latest ./api
     - docker push ${CI_REGISTRY_IMAGE}:api-latest
   only:
@@ -57,7 +57,7 @@ build_api_production:
 build_frontend_development:
   stage: build
   script:
-    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     - docker build --target development -t ${CI_REGISTRY_IMAGE}:frontend-dev ./frontend
     - docker push ${CI_REGISTRY_IMAGE}:frontend-dev
   only:
@@ -71,7 +71,7 @@ build_frontend_development:
 build_frontend_production:
   stage: build
   script:
-    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     - docker build --target production -t ${CI_REGISTRY_IMAGE}:frontend-latest ./frontend
     - docker push ${CI_REGISTRY_IMAGE}:frontend-latest
   only:
@@ -82,6 +82,21 @@ build_frontend_production:
       - .gitlab-ci.yml
   tags:
     - NSCICDDOCKER
+
+build_keycloak:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:  
+    - /kaniko/executor --context "${CI_PROJECT_DIR}/keycloak" --dockerfile "${CI_PROJECT_DIR}/keycloak/Dockerfile" --destination "${CI_REGISTRY_IMAGE}:keycloak-${CI_COMMIT_REF_NAME}"
+  tags:
+    - NSCICDK8S
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^(main|dev)$/ && $CI_PIPELINE_SOURCE == "push"'
+      changes:
+        - keycloak/**/*
+    - if: '$build_keycloak'
 
 test_api:
   stage: test
