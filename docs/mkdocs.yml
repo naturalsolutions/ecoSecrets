@@ -1,4 +1,4 @@
-site_name: GeoCam
+site_name: ecoSecrets
 
 repo_name: geonature/annotaion
 repo_url: https://gitlab.com/natural-solutions/geonature/annotation
@@ -46,7 +46,7 @@ nav:
   - Introduction: index.md
   - Guide utilisateur:
       - Structure de la donnée au sein de l'application: user/data.md
-      - Commencer avec GeoCam: user/start.md
+      - Commencer avec ecoSecrets: user/start.md
       - Page d'accueil: user/home.md
       - Les projets: user/project.md
       - Les sites: user/site.md
