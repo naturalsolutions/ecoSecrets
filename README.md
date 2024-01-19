@@ -25,9 +25,9 @@ try it out! User : admin ; password : password
 ---
 
 <p align="center">
-    <img src="https://github.com/naturalsolutions/geocam/actions/workflows/test_api.yml/badge.svg?branch=dev"/>
-    <img src="https://github.com/naturalsolutions/geocam/actions/workflows/build_frontend.yml/badge.svg?branch=dev"/>
-    <img src="https://github.com/naturalsolutions/geocam/actions/workflows/documentation.yml/badge.svg?branch=dev"/>
+    <img src="https://github.com/naturalsolutions/ecosecrets/actions/workflows/test_api.yml/badge.svg?branch=dev"/>
+    <img src="https://github.com/naturalsolutions/ecosecrets/actions/workflows/build_frontend.yml/badge.svg?branch=dev"/>
+    <img src="https://github.com/naturalsolutions/ecosecrets/actions/workflows/documentation.yml/badge.svg?branch=dev"/>
 </p>
 
 ---
@@ -44,10 +44,10 @@ Replace the `X.Y.Z` mention by the name of the release you want to install.
 
 ```
 cd
-wget https://github.com/naturalsolutions/geocam/archive/refs/tags/X.Y.Z.zip
+wget https://github.com/naturalsolutions/ecosecrets/archive/refs/tags/X.Y.Z.zip
 unzip X.Y.Z.zip
 rm X.Y.Z.zip
-mv geocam-X.Y.Z geocam/
+mv ecosecrets-X.Y.Z ecosecrets/
 ```
 
 ### Settings
@@ -55,7 +55,7 @@ mv geocam-X.Y.Z geocam/
 Copy the `.env.sample` inside the docker directory to `.env`:
 
 ```
-cd geocam
+cd ecosecrets
 cp docker/.env.sample docker/.env
 nano docker/.env
 ```
