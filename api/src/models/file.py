@@ -37,7 +37,7 @@ class Files(BaseFiles, table=True):
     name: str = Field(index=True)
     date: Optional[datetime] = Field(default_factory=datetime.utcnow)
     megadetector_id: Optional[int] = Field(foreign_key="megadetector.id")
-    deepfaune_id: Optional[int] = Field(foreign_key="deepfaune.id")
+    prediction_deepfaune: Optional[dict] = Field(sa_column=Column(JSONB), default={})
     deployment_id: int = Field(foreign_key="deployments.id")
     treated: bool = Field(default=False)
     annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default=[])

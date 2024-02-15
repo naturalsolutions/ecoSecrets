@@ -82,17 +82,16 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
     return res
 
 
-def ask_answers_celery(task_id, num):
+def ask_answers_celery(task_id, file, db):
     res = celery_app.AsyncResult(task_id)
-    state = res.state
     while res.state == "PENDING":
-        state = res.state
+        pass
     try:
+        db_file = files.get_file(db=db, file_id=file.id)
         final_res = res.get(timeout=2)
-        print(num)
-        print(str(final_res))
+        db_file.prediction_deepfaune = final_res
+        db.commit()
     except :
-        print(num)
         print("failed")
     
 
@@ -118,9 +117,8 @@ def upload_file(deployment_id: int, background_tasks: BackgroundTasks, file: Upl
     # url = s3.get_url(f"{hash}.{mime}")
     # print(url)
     # # TODO: verifier l'url, il me semble qu'il y a un problème
-    for i in range(0, 1):
-        task = celery_app.send_task("deepfaune.pi", [['https://www.francebleu.fr/s3/cruiser-production/2023/01/9e8890c9-7327-4324-aa30-19ac96f07138/1200x680_maxmatinnews538629.jpg']*5])
-        background_tasks.add_task(ask_answers_celery, task.get(), i)
+    task = celery_app.send_task("deepfaune.pi", [['https://www.francebleu.fr/s3/cruiser-production/2023/01/9e8890c9-7327-4324-aa30-19ac96f07138/1200x680_maxmatinnews538629.jpg']])
+    background_tasks.add_task(ask_answers_celery, task.get(), insert, db)
     return insert
 
 

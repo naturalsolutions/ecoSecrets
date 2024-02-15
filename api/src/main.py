@@ -13,7 +13,6 @@ ROOT_PATH = settings.API_ROOT_PATH
 
 app = FastAPI(
     root_path=ROOT_PATH,
-    openapi_url="/api/v1/openapi.json",
     swagger_ui_parameters={"persistAuthorization": True},
 )  # dependencies=[Depends(get_query_token)]
 
