@@ -91,12 +91,17 @@ def ask_answers_celery(task_id, file, db):
         final_res = res.get(timeout=2)
         db_file.prediction_deepfaune = final_res
         db.commit()
-    except :
+    except:
         print("failed")
-    
+
 
 @router.post("/upload/{deployment_id}")
-def upload_file(deployment_id: int, background_tasks: BackgroundTasks, file: UploadFile = File(...), db: Session = Depends(get_db)):
+def upload_file(
+    deployment_id: int,
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
     hash = dependencies.generate_checksum(file)
 
     mime = magic.from_buffer(file.file.read(), mime=True)

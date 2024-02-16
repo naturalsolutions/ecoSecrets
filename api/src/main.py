@@ -35,14 +35,16 @@ app.add_middleware(
 )
 idp.add_swagger_config(app)
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello Bigger Applications!"}
+
 
 @app.on_event("startup")
 def on_startup():
     init_bucket()
 
-    is_demo_instance = (os.environ.get("DEMO_INSTANCE", None) == "True")
+    is_demo_instance = os.environ.get("DEMO_INSTANCE", None) == "True"
     if is_demo_instance:
         init_db()
