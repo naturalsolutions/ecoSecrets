@@ -50,7 +50,7 @@ def get_files(db: Session = Depends(get_db)):
     res = []
     for f in List_files:
         new_f = f.dict()
-        url = s3.get_url(f"{f.hash}.{f.extension}")
+        url = s3.get_url_client(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)
     return res
@@ -65,7 +65,7 @@ def update_annotations(
 
 @router.get("/urls/")
 def display_file(name: str):
-    return s3.get_url(name)
+    return s3.get_url_client(name)
 
 
 @router.post("/exif/")
@@ -114,10 +114,8 @@ def upload_file(deployment_id: int, background_tasks: BackgroundTasks, file: Upl
         deployment_id=deployment_id,
     )
 
-    # url = s3.get_url(f"{hash}.{mime}")
-    # print(url)
-    # # TODO: verifier l'url, il me semble qu'il y a un problème
-    task = celery_app.send_task("deepfaune.pi", [['https://www.francebleu.fr/s3/cruiser-production/2023/01/9e8890c9-7327-4324-aa30-19ac96f07138/1200x680_maxmatinnews538629.jpg']])
+    url = s3.get_url_server(f"{hash}.{mime}")
+    task = celery_app.send_task("deepfaune.pi", [[url]])
     background_tasks.add_task(ask_answers_celery, task.get(), insert, db)
     return insert
 
@@ -198,7 +196,7 @@ def read_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
     res = []
     for f in List_files:
         new_f = f.dict()
-        url = s3.get_url(f"{f.hash}.{f.extension}")
+        url = s3.get_url_client(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)
     return res

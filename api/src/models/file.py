@@ -6,7 +6,7 @@ from pydantic import AnyHttpUrl, root_validator
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from src.connectors.s3 import get_url
+from src.connectors.s3 import get_url_client
 
 if TYPE_CHECKING:  # pragma: no cover
     from .deployment import Deployments
@@ -55,5 +55,5 @@ class ReadFiles(BaseFiles):
     @root_validator
     def gen_url(cls, values):  # pylint: disable=no-self-argument,no-self-use
         filename = f"{values['hash']}.{values['ext']}"
-        values["url"] = get_url(filename)
+        values["url"] = get_url_client(filename)
         return values
