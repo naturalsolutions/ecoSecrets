@@ -15,12 +15,15 @@ def predict(filenames: list):
 
     ## GETTING THE RESULTS
     ## without using the sequences
-    predictedclass_base, predictedscore_base = predictor.getPredictions()
+    predictedclass_bases, predictedscore_bases = predictor.getPredictions()
     ## or using the sequences
-    predictedclass, predictedscore = predictor.getPredictionsWithSequences(MAXLAG)
+    predictedclasses, predictedscores = predictor.getPredictionsWithSequences(MAXLAG)
 
     ## OUTPUT
     dates = predictor.getDates()
     seqnum = predictor.getSeqnums()
 
-    return {'filename':filenames, 'dates':dates, 'seqnum':seqnum, 'predictionbase':predictedclass_base, 'scorebase':predictedscore_base, 'prediction':predictedclass, 'score':predictedscore}
+    result = []
+    for filename, date, seq, predictedclass_base, predictedscore_base, predictedclass, predictedscore in zip(filenames, dates, seqnum, predictedclass_bases, predictedscore_bases, predictedclasses, predictedscores):
+        result.append({'filename':filename, 'dates':date, 'seqnum':seq, 'predictionbase':predictedclass_base, 'scorebase':predictedscore_base, 'prediction':predictedclass, 'score':predictedscore})
+    return result
