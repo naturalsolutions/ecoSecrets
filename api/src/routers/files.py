@@ -4,6 +4,7 @@ import io
 import tempfile
 import time
 import uuid as uuid_pkg
+from copy import deepcopy
 from datetime import datetime
 from typing import List
 from zipfile import ZipFile
@@ -50,7 +51,8 @@ def get_files(db: Session = Depends(get_db)):
     res = []
     for f in List_files:
         new_f = f.dict()
-        url = s3.get_url_client(f"{f.hash}.{f.extension}")
+        ext = f.extension.split("/")[1]
+        url = s3.get_url_client(f"{f.hash}.{ext}")
         new_f["url"] = url
         res.append(new_f)
     return res
@@ -82,15 +84,16 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
     return res
 
 
-def ask_answers_celery(task_id, file, db):
+def ask_answers_celery(task_id, file_list, db):
     res = celery_app.AsyncResult(task_id)
     while res.state == "PENDING":
         pass
     try:
-        db_file = files.get_file(db=db, file_id=file.id)
         final_res = res.get(timeout=2)
-        db_file.prediction_deepfaune = final_res
-        db.commit()
+        for res, file in zip(final_res, file_list):
+            db_file = files.get_file(db=db, file_id=file.id)
+            db_file.prediction_deepfaune = res
+            db.commit()
     except:
         print("failed")
 
@@ -119,9 +122,10 @@ def upload_file(
         deployment_id=deployment_id,
     )
 
-    url = s3.get_url_server(f"{hash}.{mime}")
+    ext = mime.split("/")[1]
+    url = s3.get_url_server(f"{hash}.{ext}")
     task = celery_app.send_task("deepfaune.pi", [[url]])
-    background_tasks.add_task(ask_answers_celery, task.get(), insert, db)
+    background_tasks.add_task(ask_answers_celery, task.get(), [insert], db)
     return insert
 
 
@@ -173,23 +177,46 @@ def download_file(id: str, db: Session = Depends(get_db)):
 
 @router.post("/upload_zip/{deployment_id}")
 def upload_zip(
+    background_tasks: BackgroundTasks,
     deployment_id: int,
-    hash: List[str] = Form(),
     zipFile: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    listHash = hash[0].split(",")
     ext = zipFile.filename.split(".")[1]
     if ext == "zip":
         with ZipFile(io.BytesIO(zipFile.file.read()), "r") as myzip:
             res = []
-            for info, hash in zip(myzip.infolist(), listHash):
+            names = []
+            for info in myzip.infolist():
                 bytes = myzip.read(info.filename)
                 with tempfile.SpooledTemporaryFile() as tf:
                     tf.write(bytes)
                     tf.seek(0)
-                    insert = files.upload_file(db, hash, tf, info.filename, "JPG", deployment_id)
-                    res.append(insert)
+
+                    hash = dependencies.generate_checksum_content(bytes)
+
+                    mime = magic.from_buffer(tf.read(), mime=True)
+                    tf.seek(0)
+
+                    if not check_mime(mime):
+                        raise HTTPException(status_code=400, detail="Invalid type file")
+                    insert = files.upload_file(
+                        db=db,
+                        hash=hash,
+                        new_file=tf,
+                        filename=info.filename,
+                        ext=mime,
+                        deployment_id=deployment_id,
+                    )
+                    res.append(deepcopy(insert))
+                    ext = mime.split("/")[1]
+                    names.append(f"{hash}.{ext}")
+            urls = []
+            for name in names:
+                url = s3.get_url_server(name)
+                urls.append(url)
+            task = celery_app.send_task("deepfaune.pi", [urls])
+            background_tasks.add_task(ask_answers_celery, task.get(), res, db)
             return res
     else:
         raise HTTPException(status_code=500, detail="Vous ne pouvez déposer que des fichiers.zip")
@@ -201,7 +228,8 @@ def read_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
     res = []
     for f in List_files:
         new_f = f.dict()
-        url = s3.get_url_client(f"{f.hash}.{f.extension}")
+        ext = f.extension.split("/")[1]
+        url = s3.get_url_client(f"{f.hash}.{ext}")
         new_f["url"] = url
         res.append(new_f)
     return res
