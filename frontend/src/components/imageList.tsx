@@ -26,11 +26,23 @@ const ImageList: FC<{}> = () => {
 
   const save = () => {
     for (const file of files) {
-      FilesService
-      .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
-      .then((res) => {
-        updateListFile();
-      });
+      console.log("file:", file)
+      if(file.name.includes("zip")) {
+        console.log("j'importe un zip")
+        FilesService
+        .uploadZipFilesUploadZipDeploymentIdPost(Number(params.deploymentId), { zipFile: file })
+        .then((res) => {
+          updateListFile();
+        });
+      }
+      else {
+        console.log("je n'importe pas un zip")
+        FilesService
+        .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
+        .then((res) => {
+          updateListFile();
+        });
+      }
     }
     clear();
   };
@@ -59,7 +71,7 @@ const ImageList: FC<{}> = () => {
       {deploymentData ? (
         <Stack spacing={2}>
           <Typography variant="h6" sx={{ mb:2}}>{capitalize(t("projects.import_media"))}</Typography>
-          <Dropzone onDrop={loadFile} multiple maxFiles={10}>
+          <Dropzone onDrop={loadFile} multiple maxFiles={30}>
             {({ getRootProps, getInputProps }) => (
               <section id="dropzone">
                 <div {...getRootProps()}>
@@ -73,6 +85,24 @@ const ImageList: FC<{}> = () => {
                     </Grid>
                   </Grid>
 
+                </div>
+              </section>
+            )}
+          </Dropzone>
+
+          <Dropzone onDrop={loadFile} maxFiles={1}>
+            {({ getRootProps, getInputProps }) => (
+              <section id="dropzone">
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} accept="zip"/>
+                  <Grid container direction="column" alignItems='center'>
+                    <Grid item>
+                      <CameraAltIcon fontSize="large" />
+                    </Grid>
+                    <Grid item>
+                      {dropZoneDisplayText()}
+                    </Grid>
+                  </Grid>
                 </div>
               </section>
             )}
