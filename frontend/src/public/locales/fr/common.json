@@ -10,7 +10,8 @@
     "media_not_processed": "média non traité",
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
-    "unknown_image": "image inconnue"
+    "unknown_image": "image inconnue",
+    "prediction": "prédiction"
   },
   "medias": {
     "media": "média",
