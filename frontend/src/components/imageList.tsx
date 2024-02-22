@@ -29,7 +29,6 @@ const ImageList: FC<{}> = () => {
     for (const file of files) {
       console.log("file:", file)
       if(file.name.includes("zip")) {
-        console.log("j'importe un zip")
         FilesService
         .uploadZipFilesUploadZipDeploymentIdPost(Number(params.deploymentId), { zipFile: file })
         .then((res) => {
@@ -37,7 +36,6 @@ const ImageList: FC<{}> = () => {
         });
       }
       else {
-        console.log("je n'importe pas un zip")
         FilesService
         .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
         .then((res) => {
