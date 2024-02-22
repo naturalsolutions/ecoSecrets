@@ -58,10 +58,10 @@ const PredictionArea: FC<{}> = () => {
         
     };
 
-    // useEffect(() => {
-    //     setPredChecked(false);
-    // }, [image()]);
-    
+    useEffect(() => {
+        setPredChecked(false);
+    }, [image()?.id]);
+
     useEffect(() => {
         setObservations([observation]);
     },[observation]);
