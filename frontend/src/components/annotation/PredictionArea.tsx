@@ -45,7 +45,6 @@ const PredictionArea: FC<{}> = () => {
         // };
         // data = data[0];
         data = data.find((element) => element.CD_REF == id_annot);
-        console.log(data);
 
         let classe = data.CLASSE || "";
         let order = data.ORDRE || "";
