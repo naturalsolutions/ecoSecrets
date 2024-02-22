@@ -1,4 +1,4 @@
-import { capitalize, FormControlLabel, Grid, Switch, Typography } from "@mui/material";
+import { capitalize, FormControlLabel, Switch } from "@mui/material";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { Annotation } from "../../client";
 import { FC } from "react";
-import { useMainContext } from "../../contexts/mainContext";
+import PredictionArea from "./PredictionArea";
 
 interface ObservationTabProps {
     valueTab: number;
@@ -22,8 +22,6 @@ const ObservationTab: FC<ObservationTabProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    const { image } = useMainContext();
-    
     const { 
         observations,
         annotated,
@@ -32,19 +30,13 @@ const ObservationTab: FC<ObservationTabProps> = ({
         handleCheckChange,
     } = useAnnotationContext();
 
-    console.log("image", image())
     return(
         <TabPanel 
             valueTab={ valueTab } 
             index={ index }
         >
-            {
-                image() && Object.keys(image().prediction_deepfaune).length !== 0 && 
-                <Grid>
-                    <span> Prediction : </span>
-                    <Typography> Deepfaune : {image().prediction_deepfaune.prediction.toString()}  (score : {image().prediction_deepfaune.score.toString()})  </Typography>
-                </Grid>
-            }
+            <PredictionArea/>
+            
             <span className="info-annotation-ctn">
             { treated ?
                 <ButtonStatus 
