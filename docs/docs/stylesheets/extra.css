@@ -1,0 +1,14 @@
+/* Permet de réduire l'espace énorme sur les # texte */
+h1,
+h2 {
+  margin: 25px 0px -5px 0px !important;
+}
+
+/* Gagner en place en enlevant le "Made with Material for MkDocs" */
+.md-footer-meta {
+  display: none !important;
+}
+
+.docker {
+  color: #1da1f2;
+}

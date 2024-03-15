@@ -1,0 +1,194 @@
+stages:
+  - format
+  - build
+  - pages
+  - test
+  - deploy
+
+isort:
+  stage: format
+  image:
+    name: registry.gitlab.com/natural-solutions/images:isort-latest
+    entrypoint: [""]
+  script:
+    - isort api/ --check-only
+  tags:
+    - NSCICDDOCKER
+
+black:
+  stage: format
+  image:
+    name: cytopia/black
+    entrypoint: ["/bin/ash", "-c"]
+  script:
+    - python3 -m black --check --diff api/
+  tags:
+    - NSCICDDOCKER
+
+build_api_development:
+  stage: build
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build --target development -t ${CI_REGISTRY_IMAGE}:api-dev ./api
+    - docker push ${CI_REGISTRY_IMAGE}:api-dev
+  only:
+    refs:
+      - dev
+    changes:
+      - api/**/*
+  tags:
+    - NSCICDDOCKER
+
+build_api_production:
+  stage: build
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build --target production -t ${CI_REGISTRY_IMAGE}:api-latest ./api
+    - docker push ${CI_REGISTRY_IMAGE}:api-latest
+  only:
+    refs:
+      - dev
+    changes:
+      - api/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDDOCKER
+
+build_frontend_development:
+  stage: build
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build --target development -t ${CI_REGISTRY_IMAGE}:frontend-dev ./frontend
+    - docker push ${CI_REGISTRY_IMAGE}:frontend-dev
+  only:
+    refs:
+      - dev
+    changes:
+      - frontend/**/*
+  tags:
+    - NSCICDDOCKER
+
+build_frontend_production:
+  stage: build
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build --target production -t ${CI_REGISTRY_IMAGE}:frontend-latest ./frontend
+    - docker push ${CI_REGISTRY_IMAGE}:frontend-latest
+  only:
+    refs:
+      - dev
+    changes:
+      - frontend/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDDOCKER
+
+build_keycloak:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:  
+    - /kaniko/executor --context "${CI_PROJECT_DIR}/keycloak" --dockerfile "${CI_PROJECT_DIR}/keycloak/Dockerfile" --destination "${CI_REGISTRY_IMAGE}:keycloak-${CI_COMMIT_REF_NAME}"
+  tags:
+    - NSCICDK8S
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^(main|dev)$/ && $CI_PIPELINE_SOURCE == "push"'
+      changes:
+        - keycloak/**/*
+    - if: '$build_keycloak'
+
+test_api:
+  stage: test
+  script:
+    - ./scripts/test-ci.sh
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: ./api/coverage.xml
+  only:
+    changes:
+      - api/**/*
+  tags:
+    - NSCICDSHELL
+
+deploy_api:
+  stage: deploy
+  image: 
+    name: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
+  script:
+    - cd /home/ansible
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=api
+  only:
+    refs:
+      - dev
+    changes:
+      - api/**/*
+      - .gitlab-ci.yml
+  variables:
+    INVENTORY_PATH: inventories/geonature/annotation
+    GIT_STRATEGY: none
+  tags:
+    - NSCICDDOCKER
+
+deploy_frontend:
+  stage: deploy
+  image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
+  script:
+    - cd /home/ansible
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=frontend
+  only:
+    refs:
+      - dev
+    changes:
+      - frontend/**/*
+      - .gitlab-ci.yml
+  variables:
+    INVENTORY_PATH: inventories/geonature/annotation
+    GIT_STRATEGY: none
+  tags:
+    - NSCICDDOCKER
+
+deploy_all:
+  stage: deploy
+  image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
+  script:
+    - cd /home/ansible
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
+    - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy
+  only:
+    variables:
+      - $DEPLOY_ALL
+  variables:
+    INVENTORY_PATH: inventories/geonature/annotation
+    GIT_STRATEGY: none
+  tags:
+    - NSCICDDOCKER
+
+pages:
+  stage: pages
+  image:
+    name: squidfunk/mkdocs-material:8.1.10
+    entrypoint:
+      - ""
+  only:
+    refs:
+      - dev
+    changes:
+      - docs/**/*
+      - .gitlab-ci.yml
+  script:
+    - cd docs
+    - mkdocs build --site-dir ../public
+  artifacts:
+    paths:
+      - public
+  tags:
+    - NSCICDDOCKER

@@ -1,46 +1,38 @@
-import { Breadcrumbs, Box, Grid, Link, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
+import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 
 type MainLayoutProps = {
   Header?: JSX.Element;
+  Navigation?: JSX.Element;
   Main?: JSX.Element;
   Side?: JSX.Element;
 };
 
-const breadcrumbs = [
-  <Link underline="hover" key="1" color="inherit" href="/">
-    MUI
-  </Link>,
-  <Link
-    underline="hover"
-    key="2"
-    color="inherit"
-    href="/material-ui/getting-started/installation/"
-  >
-    Core
-  </Link>,
-  <Typography key="3" color="text.primary">
-    Breadcrumb
-  </Typography>,
-];
-
 export const MainLayout = ({
   Header,
+  Navigation,
   Main,
   Side,
   ...rest
 }: MainLayoutProps) => (
-  <Box sx={{ flexGrow: 1 }}>
+  <Box>
     {Header}
-    <Grid container sx={{ py: 2 }} spacing={2}>
-      <Grid item>{Side}</Grid>
-      <Grid item xs={12} md={6} lg={8}>
-        <Breadcrumbs separator="›" aria-label="breadcrumb">
-          {breadcrumbs}
-        </Breadcrumbs>
+    <Grid
+      container
+      sx={{ height: "calc(100vh - 72px)" }}
+      justifyContent="center"
+    >
+      <Grid
+        item
+        sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+        xs={12}
+        md={11}
+        lg={11}
+      >
+        {Navigation}
         {Main}
       </Grid>
     </Grid>
   </Box>
 );
-
 export default MainLayout;

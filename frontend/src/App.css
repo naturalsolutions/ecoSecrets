@@ -36,3 +36,45 @@
     transform: rotate(360deg);
   }
 }
+
+button.MuiButton-root,
+a.MuiButton-root {
+  border-radius: 25px;
+}
+
+/* Filtre */
+
+.filter {
+  display: flex;
+  align-items: center;
+  padding: 2em 0;
+}
+
+.filter .MuiFormControl-root .MuiOutlinedInput-notchedOutline {
+  border-radius: 50px;
+}
+
+.filter .MuiIconButton-root {
+  background-color: #2fa37c;
+  color: #fff;
+}
+
+/*Card */
+.MuiCard-root .MuiIconButton-root {
+  background-color: rgba(47, 163, 124, 0.08);
+  color: #2fa37c;
+}
+
+/* datePicker
+.MuiTextField-root {
+  display: flex !important;
+} */
+.datePicker .MuiTextField-root {
+  display: flex !important;
+}
+
+
+.leaflet-container{
+  width: 100%;
+  height: 100%;
+}

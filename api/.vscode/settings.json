@@ -1,0 +1,13 @@
+{
+    "python.formatting.provider": "black",
+    "python.sortImports.args": [
+        "--profile",
+        "black",
+        "--src=${workspaceFolder}"
+    ],
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    }
+}

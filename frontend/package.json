@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.89",
     "@mui/material": "^5.8.7",
     "@testing-library/jest-dom": "^5.16.4",
@@ -15,19 +16,28 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
+    "date-fns": "^2.29.1",
+    "i18next": "^22.0.6",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "keycloak-js": "^18.0.1",
+    "leaflet": "^1.9.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.2",
+    "react-i18next": "^12.0.0",
+    "react-leaflet": "^4.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "./window_env.sh && mv env-config.js ./public/ && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "openapi --input http://api:8000/openapi.json --output ./src/client --client axios",
+    "extract": "i18next --config i18next-parser.config.js"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +56,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.0",
+    "@types/react-leaflet": "^2.8.2",
+    "i18next-parser": "^7.0.3",
+    "openapi-typescript-codegen": "^0.23.0"
   }
 }

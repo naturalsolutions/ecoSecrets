@@ -1,0 +1,61 @@
+site_name: ecoSecrets
+
+repo_name: geonature/annotaion
+repo_url: https://gitlab.com/natural-solutions/geonature/annotation
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+    - scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+  features:
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - codehilite:
+      guess_lang: false
+  - admonition
+  - codehilite
+  - extra
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format ""
+  - pymdownx.tabbed
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Introduction: index.md
+  - Guide utilisateur:
+      - Structure de la donnée au sein de l'application: user/data.md
+      - Commencer avec ecoSecrets: user/start.md
+      - Page d'accueil: user/home.md
+      - Les projets: user/project.md
+      - Les sites: user/site.md
+      - Les dispositifs: user/device.md
+      - Les déploiements: user/deployment.md
+      - Importer des médias: user/import.md
+      - Annoter une image: user/annotation.md
+      - Mon compte: user/user.md
+      - Administrateur - Keycloak: user/admin.md
+  - Guide technique:
+      - Technologies: technical_guide/technologies.md
+      - Keycloak: technical_guide/keycloak.md
