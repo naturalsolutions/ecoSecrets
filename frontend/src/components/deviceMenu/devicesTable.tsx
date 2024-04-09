@@ -21,13 +21,15 @@ import {
   TableRow,
   Typography,
   capitalize,
+  Grid,
 } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DialogYesNo from "../common/dialogYesNo";
+import Map from '../Map';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -46,7 +48,37 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const DevicesTable = () => {
-  const { deviceMenu } = useMainContext();
+  const { deviceMenu, projects, sites } = useMainContext();
+  const [position, setPosition] = useState<any>([])
+
+
+  const updateProjectSheetDataFromDevice = () => {
+    
+    if (deviceMenu && deviceMenu.length > 0) {
+
+      deviceMenu.map(element => {
+        
+        projects.forEach(project => {
+          
+          project.deployments.map(elem => {
+            if (element.id == elem.device_id) {
+
+              let pos = sites.find(site => site.id == elem.site_id);
+
+              setPosition(position => [...position, { lat: pos.latitude, lng: pos.longitude, name: pos.name }])
+            }
+            
+          })
+        })
+      })
+    }
+  }
+
+  useEffect(() => {
+    updateProjectSheetDataFromDevice()
+  }, [deviceMenu])
+
+
   const [open, setOpen] = useState(false);
 
   const { t } = useTranslation();
@@ -148,8 +180,13 @@ const DevicesTable = () => {
           <Typography>{capitalize(t("main.unavailable"))}</Typography>
         </DialogContent>
         <Divider />
-        <DialogYesNo onYes={ () => { return } } onNo={ handleClose } />
+        <DialogYesNo onYes={() => { return }} onNo={handleClose} />
       </Dialog>
+      <Grid container justifyContent="center" alignItems='center'>
+        <Grid container item justifyContent="center" height={400} width={1000} spacing={1} style={{ backgroundColor: "#D9D9D9" }}>
+          {position.length > 0 ? <Map position={position} zoom={2} /> : <></>}
+        </Grid>
+      </Grid>
     </Stack>
   ) : (
     <Alert severity="warning">
