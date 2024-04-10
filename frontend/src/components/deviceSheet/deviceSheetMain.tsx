@@ -128,7 +128,6 @@ const DeviceSheet = () => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell><b>Localisation</b></TableCell>
                                     <TableCell><b>Projet</b></TableCell>
                                     <TableCell><b>Site</b></TableCell>
                                     <TableCell><b>Déploiement</b></TableCell>
@@ -140,7 +139,6 @@ const DeviceSheet = () => {
                                     // console.log(item); // Déplacez cette ligne en dehors du contexte du rendu JSX si nécessaire
                                     return (
                                         <TableRow key={item.id}>
-                                            <TableCell></TableCell>
                                             <TableCell>{item.project_name}</TableCell>
                                             <TableCell>{item.site_name}</TableCell>
                                             <TableCell>{item.name}</TableCell>
