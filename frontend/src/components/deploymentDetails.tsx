@@ -19,7 +19,7 @@ const DeploymentDetails = (props) => {
     const handleTabValueChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
     };
-
+    console.log(deploymentData)
     const [openNewDeployment, setOpenNewDeployment] = useState(false);
     const handleOpenNewDeployment = () => {
         setOpenNewDeployment(true);

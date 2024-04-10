@@ -17,21 +17,69 @@ import {
     TableContainer, TableHead, TableRow
 } from '@mui/material';
 import { DeploymentForDeviceSheet, DeploymentsService } from '../../client';
+import { FilesService } from '../../client';
 
 const DeviceSheet = () => {
-    const { device, setCurrentDevice } = useMainContext();
+    const { device, setCurrentDevice, projects, sites,  } = useMainContext();
     const { t } = useTranslation();
     const [historyDeployment, setHistoryDeployment] = useState<DeploymentForDeviceSheet[]>([]);
+    const [nbMedias, setNbMedias] = useState<number>(0)
 
     let params = useParams();
     useEffect(() => {
         (async () => {
+            
             setCurrentDevice(Number(params.deviceId));
             if (params.deviceId !== undefined) {
+
                 DeploymentsService
                     .readDeviceDeploymentsDeploymentsDeviceDeviceIdGet(parseInt(params.deviceId))
-                    .then(response => {
-                        setHistoryDeployment(response)
+                    .then(response => { // liste des déploiement pour un certains dispositif
+                        
+                        let finalRes:DeploymentForDeviceSheet[] = []
+                        console.log(projects)
+                        projects.forEach(project => {
+                            
+                            project.deployments.forEach(deployment =>{
+                                
+                                response.forEach(async res => {
+                                    
+
+                                    if(res.project_id === deployment.project_id) // on cherche le deploiement du dispositif dans la liste de tous les deploiements
+                                    {
+                                        const nb_medias = await FilesService.readLengthDeploymentsFilesById(res.id)
+                                        let proj_name = project.name
+                                        let siteName = sites.find(site => site.id === res.site_id).name
+  
+                                           
+                                            if(!finalRes.some(elem => elem.id === res.id))
+                                            {
+                                                const tempRes:DeploymentForDeviceSheet = {
+                                                    name: res.name,
+                                                    start_date: res.start_date,
+                                                    end_date: res.end_date,
+                                                    site_id: res.site_id,
+                                                    device_id: res.device_id,
+                                                    id: res.id,
+                                                    site_name: siteName,
+                                                    project_name: proj_name,
+                                                    nb_images: nb_medias
+                                                }  
+
+                                                
+                                                finalRes.push(tempRes)
+                                                setHistoryDeployment([...historyDeployment].concat(finalRes))
+                                                
+                                            }                                         
+
+                            
+   
+                               
+                                    }
+
+                                })
+                            })
+                        })
                     });
             }
         })();
@@ -93,14 +141,14 @@ const DeviceSheet = () => {
                             </TableHead>
                             <TableBody>
                                 {historyDeployment.map(item => {
-                                    console.log(item); // Déplacez cette ligne en dehors du contexte du rendu JSX si nécessaire
+                                    // console.log(item); // Déplacez cette ligne en dehors du contexte du rendu JSX si nécessaire
                                     return (
                                         <TableRow key={item.id}>
                                             <TableCell></TableCell>
                                             <TableCell>{item.project_name}</TableCell>
-                                            <TableCell></TableCell>
+                                            <TableCell>{item.site_name}</TableCell>
                                             <TableCell>{item.name}</TableCell>
-                                            <TableCell></TableCell>
+                                            <TableCell>{item.nb_images}</TableCell>
                                         </TableRow>
                                     );
                                 })}
