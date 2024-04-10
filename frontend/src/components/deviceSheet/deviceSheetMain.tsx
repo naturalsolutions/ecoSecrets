@@ -23,7 +23,6 @@ const DeviceSheet = () => {
     const { device, setCurrentDevice, projects, sites,  } = useMainContext();
     const { t } = useTranslation();
     const [historyDeployment, setHistoryDeployment] = useState<DeploymentForDeviceSheet[]>([]);
-    const [nbMedias, setNbMedias] = useState<number>(0)
 
     let params = useParams();
     useEffect(() => {
@@ -37,7 +36,7 @@ const DeviceSheet = () => {
                     .then(response => { // liste des déploiement pour un certains dispositif
                         
                         let finalRes:DeploymentForDeviceSheet[] = []
-                        console.log(projects)
+
                         projects.forEach(project => {
                             
                             project.deployments.forEach(deployment =>{
@@ -68,13 +67,10 @@ const DeviceSheet = () => {
 
                                                 
                                                 finalRes.push(tempRes)
+
                                                 setHistoryDeployment([...historyDeployment].concat(finalRes))
                                                 
-                                            }                                         
-
-                            
-   
-                               
+                                            }                                                 
                                     }
 
                                 })
@@ -83,7 +79,7 @@ const DeviceSheet = () => {
                     });
             }
         })();
-    }, []);
+    }, [projects]);
 
     return (
         device() !== undefined ? (

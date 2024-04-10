@@ -64,6 +64,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const updateProjects = () => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
       .then((projects) => {
+
         setProjects(projects);
       })
       .catch((err) => {
