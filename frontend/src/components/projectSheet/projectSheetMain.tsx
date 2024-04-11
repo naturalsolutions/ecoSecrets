@@ -53,6 +53,7 @@ const ProjectSheet = () => {
     }, [projectSheetData]);
 
     useEffect(() => {
+
         if (projectSheetData !== undefined) {
             projectSheetData.deployments.map((data, k) => {
                 let pos = sites.find(element => element.id === data.site_id);
