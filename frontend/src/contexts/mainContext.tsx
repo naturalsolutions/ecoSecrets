@@ -64,6 +64,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const updateProjects = () => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
       .then((projects) => {
+
         setProjects(projects);
       })
       .catch((err) => {
@@ -96,6 +97,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     currentDeployment &&
       FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
         .then((files) => {
+
           setFiles(files);
         })
         .catch((err) => {
@@ -186,6 +188,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateSites();
       updateAutoTemplates();
       updateTriggerTemplates();
+
     })();
   }, []);
 
@@ -205,6 +208,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     (async () => {
       updateListFile();
       updateDeploymentData();
+     
     })();
   }, [currentDeployment]);
 
@@ -219,6 +223,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       value={{
         projects,
         project,
+        currentDeployment,
         setCurrentProject,
         setCurrentDeployment,
         currentImage,

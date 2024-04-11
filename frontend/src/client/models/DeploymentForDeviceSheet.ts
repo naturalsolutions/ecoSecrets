@@ -11,5 +11,6 @@ export type DeploymentForDeviceSheet = {
     id: number;
     site_name?: string;
     project_name?: string;
+    nb_images?: number;
 };
 
