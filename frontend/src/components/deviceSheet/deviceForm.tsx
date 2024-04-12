@@ -20,20 +20,63 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMainContext } from "../../contexts/mainContext";
-import { Devices, DevicesService } from "../../client";
+import { Devices, DevicesService, FilesService } from "../../client";
 import DropzoneComponent from "../dropzoneComponent";
 import { useTranslation } from "react-i18next";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
 import DialogYesNo from "../common/dialogYesNo";
+import ButtonsYesNo from "../common/buttonsYesNo";
+import { useParams } from "react-router-dom";
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import GalleryItem from "../GalleryItem";
+import Thumbnail from "../Thumbnail";
+
 
 const DeviceForm = () => {
   const { t } = useTranslation();
-  const { device, updateDeviceMenu } = useMainContext();
+  const { device, updateDeviceMenu, projects, updateListFile, setCurrentDeployment, files , devices,} = useMainContext();
   const [deviceData, setDeviceData] = React.useState<Devices>(device());
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);
+  const [file, setFile] = React.useState<any>(null);
+  const [thumbnail, setThumbnail] = React.useState<any>(null);
+  const [currentDeploymentForComponent, setCurrentDeploymentForComponent] = React.useState<number | null>(null) //à cause de l'asynchronicité surement, currentDeployment est pas mis à jour dans ce component
+  let params = useParams()
+
+  React.useEffect(() => {
+
+    projects.forEach(project => {
+
+      project.deployments.forEach(deployment => {
+        
+        if (deployment.device_id === deviceData.id) {
+
+          
+          setCurrentDeployment(deployment.id)
+          setCurrentDeploymentForComponent(deployment.id)
+
+          //boucler sur tous les files, et comparer avec deviceData.image le nom pour récupérer la miniature
+        }
+      })
+    })
+
+  }, [])
+
+  React.useEffect(() => {
+
+    
+  
+    files.forEach(file => {
+      if(file.name === deviceData.image)
+      {
+        
+        setThumbnail(file)
+ 
+      }
+    })
+  }, [files])
 
   const handleFormChange = (
     params: string,
@@ -62,6 +105,30 @@ const DeviceForm = () => {
     setOpen(false);
   };
 
+  const saveThumbnail = () => {
+
+      FilesService
+        .uploadFileFilesUploadDeploymentIdPost(Number(currentDeploymentForComponent), { file })
+        .then((res) => {
+          updateListFile();
+
+        });
+
+        DevicesService
+        .updateThumbnailDevicesPost(deviceData, deviceData.id)
+        .then((res) => {
+          updateDeviceMenu()
+        })
+
+      clear();
+
+
+  };
+
+  const clear = () => {
+    setFile("");
+  };
+
   const save = () => {
     deviceData.id &&
       DevicesService.updateDeviceDevicesDeviceIdPut(deviceData?.id, deviceData)
@@ -76,11 +143,38 @@ const DeviceForm = () => {
         });
   };
 
+  const loadFile = (f: any) => {
+    deviceData.image = f[0].name
+    setFile(f)
+  }
+
+  const dropZoneDisplayText = () => {
+    if (!file) {
+      return (
+        <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}</p>
+      );
+    } else {
+
+      return <p>{file[0].name}</p>;
+    }
+  };
+
   return (
     <Stack spacing={2} justifyContent="center">
-      {/* <Grid item lg={6}>
-                <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}/>
-            </Grid> */}
+      <Grid item lg={6}>      
+      {!thumbnail ? <> <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} /> 
+
+        <ButtonsYesNo
+          onYes={saveThumbnail}
+          onNo={clear}
+          yesContent={capitalize(t("main.save"))}
+          noContent={capitalize(t("main.cancel"))}
+        />
+         </>
+         : (<> <Thumbnail item={thumbnail}/> </>)
+       }
+        
+      </Grid>
       <Collapse in={success}>
         <Alert
           severity="success"

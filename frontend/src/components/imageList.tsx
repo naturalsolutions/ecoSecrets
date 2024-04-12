@@ -42,6 +42,7 @@ const ImageList: FC<{}> = () => {
   const loadFile = (f: any) => {
     f.forEach((f) => files.push(f));
     setFiles(files);
+    console.log("hello")
   };
 
   const dropZoneDisplayText = () => {

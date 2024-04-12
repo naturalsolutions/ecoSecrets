@@ -93,6 +93,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   };
 
   const updateListFile = () => {
+   console.log(currentDeployment)
     currentDeployment &&
       FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
         .then((files) => {
@@ -207,8 +208,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   useEffect(() => {
     (async () => {
+
       updateListFile();
       updateDeploymentData();
+
     })();
   }, [currentDeployment]);
 
@@ -260,7 +263,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         updateTriggerTemplates,
         site,
         setCurrentSite,
-        image
+        image,
       }}
     >
       {children}
