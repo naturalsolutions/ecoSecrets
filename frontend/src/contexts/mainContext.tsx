@@ -147,6 +147,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     DevicesService.readMenuDevicesDevicesMenuGet()
       .then((deviceMenu) => {
         setDeviceMenu(deviceMenu);
+        console.log(deviceMenu)
       })
       .catch((err) => {
         console.log(err);

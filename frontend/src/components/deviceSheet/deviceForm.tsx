@@ -31,6 +31,7 @@ import { useParams } from "react-router-dom";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import GalleryItem from "../GalleryItem";
 import Thumbnail from "../Thumbnail";
+import ModifyThumbnail from "../ModifyThumbnail";
 
 
 const DeviceForm = () => {
@@ -106,19 +107,13 @@ const DeviceForm = () => {
   };
 
   const saveThumbnail = () => {
-
       FilesService
-        .uploadFileFilesUploadDeploymentIdPost(Number(currentDeploymentForComponent), { file })
+        .uploadDeviceFile(Number(deviceData.id), { file })
         .then((res) => {
-          updateListFile();
-
-        });
-
-        DevicesService
-        .updateThumbnailDevicesPost(deviceData, deviceData.id)
-        .then((res) => {
+          console.log(res)
           updateDeviceMenu()
-        })
+          // setDeviceData(device())
+        });
 
       clear();
 
@@ -144,8 +139,15 @@ const DeviceForm = () => {
   };
 
   const loadFile = (f: any) => {
+    console.log(f)
     deviceData.image = f[0].name
-    setFile(f)
+    setFile(f[0])
+  }
+
+  const loadNewFile = (f: any) => {
+
+    deviceData.image = f[0].name
+    setFile(f[0])
   }
 
   const dropZoneDisplayText = () => {
@@ -155,9 +157,13 @@ const DeviceForm = () => {
       );
     } else {
 
-      return <p>{file[0].name}</p>;
+      return <p>{file.name}</p>;
     }
   };
+
+  const edit = () => {
+
+  }
 
   return (
     <Stack spacing={2} justifyContent="center">
@@ -171,7 +177,9 @@ const DeviceForm = () => {
           noContent={capitalize(t("main.cancel"))}
         />
          </>
-         : (<> <Thumbnail item={thumbnail}/> </>)
+         : (<> <Thumbnail item={thumbnail}/>
+               <ModifyThumbnail content={"Modify"} setFile={loadNewFile} saveNewThumbnail={saveThumbnail} />
+          </>)
        }
         
       </Grid>

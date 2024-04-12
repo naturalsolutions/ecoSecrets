@@ -9,7 +9,7 @@ from sqlmodel import Session
 
 from src.config import settings
 from src.connectors import s3
-from src.models.file import CreateFiles, Files
+from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
 
 # import schemas.schemas
 from src.schemas.schemas import Annotation
@@ -52,6 +52,13 @@ def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
 
 def create_file(db: Session, file: CreateFiles):
     db_file = Files(**file.dict(), annotations=[])
+    db.add(db_file)
+    db.commit()
+    db.refresh(db_file)
+    return db_file
+
+def create_file_device(db: Session, file: CreateDeviceFile):
+    db_file = CreateDeviceFile(**file.dict(), annotations=[])
     db.add(db_file)
     db.commit()
     db.refresh(db_file)

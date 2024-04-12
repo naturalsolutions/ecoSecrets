@@ -47,6 +47,8 @@ class Files(BaseFiles, table=True):
 class CreateFiles(BaseFiles):
     deployment_id: int
 
+class CreateDeviceFile(BaseFiles):
+    device_id: int
 
 class ReadFiles(BaseFiles):
     id: uuid_pkg.UUID

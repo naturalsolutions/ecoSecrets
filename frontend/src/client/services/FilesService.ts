@@ -142,6 +142,26 @@ export class FilesService {
                 'deployment_id': deploymentId,
             },
             formData: formData,
+
+            mediaType: 'multipart/form-data',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    public static uploadDeviceFile(
+        deviceId: number,
+        formData: Body_upload_file_files_upload__deployment_id__post,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/upload/device/{device_id}',
+            path: {
+                'device_id': deviceId,
+            },
+            formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
                 404: `Not found`,

@@ -29,9 +29,14 @@ export default function MediaGallery() {
               columns={6}
               spacing={2}
             >
-                {files?.map((item, index) => (
+                {files?.map((item, index) => {
+           {console.log(item)}      
+                    (
+           
                     <GalleryItem item={ item } index={ index } />
-                ))}
+                ) }
+                )
+}
             </Masonry>
         </Box>
     );

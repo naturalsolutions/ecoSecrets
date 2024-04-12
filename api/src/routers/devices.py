@@ -51,6 +51,3 @@ def delete_device(device_id: int, db: Session = Depends(get_db)):
 def read_menu_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return device.get_menu_devices(db, skip=skip, limit=limit)
 
-@router.post("/upload/{device_id}")
-def update_device_image(data_device: DeviceBase, device_id: int, db: Session = Depends(get_db)):
-    return device.upload_image_device_id(db=db, device=data_device, id=device_id)

@@ -15,9 +15,9 @@ from sqlmodel import Session
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import CreateFiles, Files
+from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
 from src.schemas.schemas import Annotation
-from src.services import dependencies, files
+from src.services import dependencies, files, device
 from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(
@@ -133,6 +133,28 @@ def upload_files(
 
     else:
         return "Erreur: le nombre de fichiers à importer est limité à 20"
+
+@router.post("/upload/device/{device_id}")
+def upload_files(
+    device_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    
+):
+    try:
+        hash = dependencies.generate_checksum(file)
+        ext = file.filename.split(".")[1]
+        s3.upload_file_obj(file.file, f"{hash}.{ext}")
+        current_device = device.upload_image_device_id(db=db, device_hash=hash, id=device_id)
+        url = s3.get_url(f"{hash}.{ext}")
+        current_device = current_device.dict()
+        current_device["url"] = url
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
+
+    
+    return current_device
+
 
 
 @router.get("/download/{id}")
