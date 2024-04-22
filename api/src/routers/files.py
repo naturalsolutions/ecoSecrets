@@ -145,16 +145,39 @@ def upload_files(
         hash = dependencies.generate_checksum(file)
         ext = file.filename.split(".")[1]
         s3.upload_file_obj(file.file, f"{hash}.{ext}")
-        current_device = device.upload_image_device_id(db=db, device_hash=hash, id=device_id)
         url = s3.get_url(f"{hash}.{ext}")
-        current_device = current_device.dict()
-        current_device["url"] = url
+        print(f"{hash}.{ext}")
+        current_device = device.upload_image_device_id(db=db, device_hash=url, id=device_id)
     except Exception as e:
         raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
 
     
     return current_device
 
+@router.post("/delete/device/{device_id}/{name}")
+def delete_files(
+    device_id:int,
+    name: str,
+    db: Session = Depends(get_db)
+):
+    try:
+        n = 0 #Je check si il n'y a pas 2 devices qui ont la meme miniature
+        devices = device.get_devices(db=db)
+        print(devices)
+        for d in devices:
+            if d.image == name:
+                n += 1
+                if n >= 2:
+                    print("more than 2")
+                    break
+        if n < 2:
+            s3.delete_file_obj(name)
+        current_device = device.delete_image_device_id(db=db, id=device_id)
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=e)
+    
+    return current_device
+        
 
 
 @router.get("/download/{id}")

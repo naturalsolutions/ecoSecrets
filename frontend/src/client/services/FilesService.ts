@@ -170,6 +170,23 @@ export class FilesService {
         });
     }
 
+    public static deleteDeviceFile(
+        deviceId: number,
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/delete/device/{device_id}/{name}',
+            path: {
+                'device_id': deviceId,
+                'name': name
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
     /**
      * Download File
      * @param id

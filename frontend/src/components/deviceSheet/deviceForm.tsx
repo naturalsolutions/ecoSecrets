@@ -36,14 +36,16 @@ import ModifyThumbnail from "../ModifyThumbnail";
 
 const DeviceForm = () => {
   const { t } = useTranslation();
-  const { device, updateDeviceMenu, projects, updateListFile, setCurrentDeployment, files , devices,} = useMainContext();
+  const { device, updateDeviceMenu, projects, updateListFile, setCurrentDeployment, files , devices, deviceMenu} = useMainContext();
   const [deviceData, setDeviceData] = React.useState<Devices>(device());
+  const [modifyState, setModifyState] = React.useState<boolean>(false)
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);
   const [file, setFile] = React.useState<any>(null);
   const [thumbnail, setThumbnail] = React.useState<any>(null);
-  const [currentDeploymentForComponent, setCurrentDeploymentForComponent] = React.useState<number | null>(null) //à cause de l'asynchronicité surement, currentDeployment est pas mis à jour dans ce component
+  const [currentDeploymentForComponent, setCurrentDeploymentForComponent] = React.useState<number | null>(null)//à cause de l'asynchronicité surement, currentDeployment est pas mis à jour dans ce component
+  const fileInputRef = React.useRef<any>(null);
   let params = useParams()
 
   React.useEffect(() => {
@@ -63,21 +65,14 @@ const DeviceForm = () => {
       })
     })
 
-  }, [])
-
-  React.useEffect(() => {
-
-    
-  
-    files.forEach(file => {
-      if(file.name === deviceData.image)
+    setDeviceData(device())
+    console.log(deviceData)
+    if(deviceData.image != null && deviceData.image.startsWith("http"))
       {
-        
-        setThumbnail(file)
- 
+        setThumbnail(deviceData.image)
       }
-    })
-  }, [files])
+    
+  }, [])
 
   const handleFormChange = (
     params: string,
@@ -112,11 +107,13 @@ const DeviceForm = () => {
         .then((res) => {
           console.log(res)
           updateDeviceMenu()
+          setThumbnail(res.image)
+          // updateListFile()
           // setDeviceData(device())
         });
 
       clear();
-
+      setModifyState(false)
 
   };
 
@@ -145,11 +142,12 @@ const DeviceForm = () => {
   }
 
   const loadNewFile = (f: any) => {
-
-    deviceData.image = f[0].name
+    console.log("new")
     setFile(f[0])
+    setModifyState(true)
   }
 
+  
   const dropZoneDisplayText = () => {
     if (!file) {
       return (
@@ -161,16 +159,30 @@ const DeviceForm = () => {
     }
   };
 
-  const edit = () => {
+  const get_file_name = (fileName) => {
+    const match = fileName.match(/([^\/]+\.png)/);
+    return match ? match[1] : null;
+  }
+  const deleteThumbnail = () => {
+    FilesService.deleteDeviceFile(Number(deviceData.id), thumbnail)
+    updateDeviceMenu()
+    setThumbnail(null)
+  }
 
+  const cancelModify = () => {
+    console.log("cancel")
+    fileInputRef.current.value = "";
+    setModifyState(false)
   }
 
   return (
     <Stack spacing={2} justifyContent="center">
       <Grid item lg={6}>      
-      {!thumbnail ? <> <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} /> 
-
-        <ButtonsYesNo
+      {!thumbnail ? <> 
+      
+      <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} /> 
+      <div style={{marginTop: "25px"}}></div>
+      <ButtonsYesNo
           onYes={saveThumbnail}
           onNo={clear}
           yesContent={capitalize(t("main.save"))}
@@ -178,7 +190,7 @@ const DeviceForm = () => {
         />
          </>
          : (<> <Thumbnail item={thumbnail}/>
-               <ModifyThumbnail content={"Modify"} setFile={loadNewFile} saveNewThumbnail={saveThumbnail} />
+               <ModifyThumbnail content={"Modify"} setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} deleteThumbnail={deleteThumbnail} cancelModify={cancelModify} />
           </>)
        }
         
