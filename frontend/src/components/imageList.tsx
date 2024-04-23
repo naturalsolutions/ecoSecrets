@@ -4,7 +4,7 @@ import "../css/first.css";
 
 import MediaGallery from "./mediaGallery";
 import Dropzone from "react-dropzone";
-import { Grid, Stack, Typography, capitalize } from "@mui/material";
+import { CircularProgress, Grid, Stack, Typography, capitalize } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
@@ -14,6 +14,7 @@ import ButtonsYesNo from "./common/buttonsYesNo";
 const ImageList: FC<{}> = () => {
   const { t } = useTranslation()
   const [files, setFiles] = useState<any[]>([]);
+  const [loader, setLoader] = useState<boolean>(false);
   const { projects, updateListFile, setCurrentDeployment, currentDeployment, deploymentData } =
     useMainContext();
   let params = useParams();
@@ -25,11 +26,17 @@ const ImageList: FC<{}> = () => {
   }, [projects]);
 
   const save = () => {
+    if(files.length > 0)
+    {
+      setLoader(true)
+    }
+
     for (const file of files) {
       FilesService
       .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
       .then((res) => {
         updateListFile();
+        setLoader(false)
       });
     }
     clear();
@@ -71,6 +78,9 @@ const ImageList: FC<{}> = () => {
                     </Grid>
                     <Grid item>
                       {dropZoneDisplayText()}
+                    </Grid>
+                    <Grid item>
+                      {loader && <CircularProgress />}
                     </Grid>
                   </Grid>
 
