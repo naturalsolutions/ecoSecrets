@@ -23,7 +23,7 @@ config_dict = {
 }
 
 config_dict_client = {
-    "endpoint_url": MINIO_ENTRYPOINT_URL,
+    "endpoint_url": str(MINIO_ENTRYPOINT_URL),
     "aws_access_key_id": MINIO_ROOT_USER,
     "aws_secret_access_key": MINIO_ROOT_PASSWORD,
     "config": Config(

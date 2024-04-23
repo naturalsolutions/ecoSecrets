@@ -32,7 +32,8 @@ const SitesTable = () => {
   const {sites} = useMainContext();
   const [open, setOpen] = useState(false);
   const [position, setPostition] = useState<any>([])
-
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -47,13 +48,22 @@ const SitesTable = () => {
     })
   }, [sites])
   
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   return (
     sites.length !== 0 ?
       <Stack
         spacing={2}
         justifyContent="center"
       >
-        <ThumbnailComponent/>
         <Grid container justifyContent="center" alignItems='center'>
           <Grid container item justifyContent="center" height={400} width={1200} spacing={1} style={{ backgroundColor: "#D9D9D9" }}>
             {
@@ -92,6 +102,15 @@ const SitesTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={sites.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
         <Dialog open={open} onClose={handleClose}>
           <Stack
             direction="row"

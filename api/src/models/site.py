@@ -10,6 +10,5 @@ class SiteBase(SQLModel):
     habitat: Optional[str]
     description: Optional[str]
 
-
 class Sites(SiteBase, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)

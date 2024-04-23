@@ -98,7 +98,8 @@
     "unavailable": "sorry, this feature is not yet available!",
     "warning": "warning",
     "yes": "yes",
-    "zero": "no"
+    "zero": "no",
+    "account": "My account"
   },
   "observations": {
     "new": "new observation",
@@ -111,7 +112,7 @@
     "add_member": "add member",
     "administrators": "administrators",
     "alert": "warning!",
-    "alert_msg": "no deployment found for this project",
+    "alert_msg": "no deployment found for this project. Please create one to import medias.",
     "annotators": "annotators",
     "change_on_project": "confirm changes",
     "community_study": "community study",
