@@ -17,7 +17,7 @@ from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
 from src.schemas.schemas import Annotation
-from src.services import dependencies, files, device, project
+from src.services import dependencies, files, device, project, deployment
 from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(
@@ -180,6 +180,43 @@ def upload_files(
     
     return current_project
 
+@router.post("/upload/deployment/{deployment_id}")
+def upload_files(
+        deployment_id: int,
+        file: UploadFile = File(...),
+        db: Session = Depends(get_db)
+):
+    try:
+        hash = dependencies.generate_checksum(file)
+        unique_id = str(uuid.uuid4())
+        
+        ext = file.filename.split(".")[1]
+        unique_filename = f"{hash}_{unique_id}.{ext}"
+        s3.upload_file_obj(file.file, unique_filename)
+        
+        url = s3.get_url(unique_filename)
+        
+        current_deployment = deployment.update_image_deployment(db=db, deployment_id=deployment_id, image=url)
+    except Exception as e:
+        raise HTTPException(detail=e)
+    
+    return current_deployment
+
+
+@router.post("/delete/deployment/{deployment_id}/{name}")
+def delete_files(
+    deployment_id: int,
+    name: str,
+    db: Session = Depends(get_db)
+):
+    try:
+        s3.delete_file_obj(name)
+        current_deployment = deployment.delete_image_deployment_id(db=db, id=deployment_id)
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=e)
+    
+    return current_deployment
+
 @router.post("/delete/project/{project_id}/{name}")
 def delete_files(
     project_id: int,
@@ -193,8 +230,6 @@ def delete_files(
         raise HTTPException(status_code=422, detail=e)
     
     return current_project
-
-
 
 @router.post("/delete/device/{device_id}/{name}")
 def delete_files(
