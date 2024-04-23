@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 const ModifyThumbnail = ({content, setFile, saveNewThumbnail, deleteThumbnail, modifyState, cancelModify, modifyRef}) => {
     const { t } = useTranslation();
-    console.log(modifyRef)
+
     return <div style={{marginTop:"20px"}}>
         <label htmlFor="modify" style={{cursor: "pointer",  marginRight: "20px", backgroundColor: "#2FA37C", color: "white", padding: "15px", borderRadius: "5px"}}>{content}</label>
         <input ref={modifyRef} type="file" id="modify" name="modify" onChange={(e) => setFile(e.target.files)} style={{display: "none"}}/>    

@@ -8,6 +8,7 @@ import Map from "../Map";
 import { Grid } from "@mui/material";
 import ButtonValidate from "../common/buttonValidate";
 import ButtonCancel from "../common/buttonCancel";
+import ThumbnailComponent from "../ThumbnailDeviceComponent";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -52,6 +53,7 @@ const SitesTable = () => {
         spacing={2}
         justifyContent="center"
       >
+        <ThumbnailComponent/>
         <Grid container justifyContent="center" alignItems='center'>
           <Grid container item justifyContent="center" height={400} width={1200} spacing={1} style={{ backgroundColor: "#D9D9D9" }}>
             {

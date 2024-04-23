@@ -17,6 +17,7 @@ import ProjectModal from '../projectModale';
 import Map from '../Map';
 import { useTranslation } from "react-i18next";
 import ButtonValidate from '../common/buttonValidate';
+import ThumbnailProjectComponent from '../ThumbnailProjectComponent';
 
 const ProjectSheet = () => {
     const { projectSheetData, setCurrentProject, sites } = useMainContext();
@@ -85,6 +86,7 @@ const ProjectSheet = () => {
                                         {projectSheetData.name}
                                     </Typography>
                                 </Grid>
+                                
                                 <ProjectModal />
                                 <IconButton aria-label="menu" sx={{ mr: 2 }}
                                     onClick={openImportModale}
@@ -99,8 +101,9 @@ const ProjectSheet = () => {
                             </Toolbar>
                         </AppBar>
                     </Box>
-                    <ProjectInformations />
                     
+                    <ProjectInformations />
+                    <ThumbnailProjectComponent />
                     <ProjectForm/>
 
                     <Stack spacing={3}>

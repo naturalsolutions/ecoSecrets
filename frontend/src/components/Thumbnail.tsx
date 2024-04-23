@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const Thumbnail = (item) => {
-    console.log(item)
+
     const thumbnailStyle: CSSProperties = {
         borderBottomLeftRadius: 4,
         borderBottomRightRadius: 4,

@@ -170,6 +170,25 @@ export class FilesService {
         });
     }
 
+    public static uploadProjectFile(
+        projectId: number,
+        formData: Body_upload_file_files_upload__deployment_id__post,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/upload/project/{project_id}',
+            path: {
+                'project_id': projectId,
+            },
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
     public static deleteDeviceFile(
         deviceId: number,
         name: string,
@@ -179,6 +198,24 @@ export class FilesService {
             url: '/files/delete/device/{device_id}/{name}',
             path: {
                 'device_id': deviceId,
+                'name': name
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    public static deleteProjectFile(
+        projectId: number,
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/delete/project/{project_id}/{name}',
+            path: {
+                'project_id': projectId,
                 'name': name
             },
             errors: {

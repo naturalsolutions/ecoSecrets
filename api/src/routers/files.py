@@ -11,13 +11,13 @@ import magic
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
-
+import uuid
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
 from src.schemas.schemas import Annotation
-from src.services import dependencies, files, device
+from src.services import dependencies, files, device, project
 from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(
@@ -143,16 +143,58 @@ def upload_files(
 ):
     try:
         hash = dependencies.generate_checksum(file)
+        unique_id = str(uuid.uuid4())
+        
         ext = file.filename.split(".")[1]
-        s3.upload_file_obj(file.file, f"{hash}.{ext}")
-        url = s3.get_url(f"{hash}.{ext}")
-        print(f"{hash}.{ext}")
+        unique_filename = f"{hash}_{unique_id}.{ext}"
+        s3.upload_file_obj(file.file, unique_filename)
+        
+        url = s3.get_url(unique_filename)
+
         current_device = device.upload_image_device_id(db=db, device_hash=url, id=device_id)
     except Exception as e:
         raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
 
     
     return current_device
+
+@router.post("/upload/project/{project_id}")
+def upload_files(
+        project_id: int,
+        file: UploadFile = File(...),
+        db: Session = Depends(get_db)
+):
+    try:
+        hash = dependencies.generate_checksum(file)
+        unique_id = str(uuid.uuid4())
+        
+        ext = file.filename.split(".")[1]
+        unique_filename = f"{hash}_{unique_id}.{ext}"
+        s3.upload_file_obj(file.file, unique_filename)
+        
+        url = s3.get_url(unique_filename)
+        
+        current_project = project.update_project_image(db=db, file_name=url, project_id=project_id)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=e)
+    
+    return current_project
+
+@router.post("/delete/project/{project_id}/{name}")
+def delete_files(
+    project_id: int,
+    name: str,
+    db: Session = Depends(get_db)
+):
+    try:
+        s3.delete_file_obj(name)
+        current_project = project.delete_image_project_id(db=db, id=project_id)
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=e)
+    
+    return current_project
+
+
 
 @router.post("/delete/device/{device_id}/{name}")
 def delete_files(
@@ -161,17 +203,7 @@ def delete_files(
     db: Session = Depends(get_db)
 ):
     try:
-        n = 0 #Je check si il n'y a pas 2 devices qui ont la meme miniature
-        devices = device.get_devices(db=db)
-        print(devices)
-        for d in devices:
-            if d.image == name:
-                n += 1
-                if n >= 2:
-                    print("more than 2")
-                    break
-        if n < 2:
-            s3.delete_file_obj(name)
+        s3.delete_file_obj(name)
         current_device = device.delete_image_device_id(db=db, id=device_id)
     except Exception as e:
         raise HTTPException(status_code=422, detail=e)

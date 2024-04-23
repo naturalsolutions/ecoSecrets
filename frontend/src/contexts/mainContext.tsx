@@ -93,7 +93,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   };
 
   const updateListFile = () => {
-   console.log(currentDeployment)
     currentDeployment &&
       FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
         .then((files) => {
@@ -147,7 +146,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     DevicesService.readMenuDevicesDevicesMenuGet()
       .then((deviceMenu) => {
         setDeviceMenu(deviceMenu);
-        console.log(deviceMenu)
+
       })
       .catch((err) => {
         console.log(err);

@@ -7,7 +7,6 @@ import {
   Stack,
   TextField,
   Typography,
-  MenuItem,
   Dialog,
   DialogTitle,
   Divider,
@@ -20,59 +19,20 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMainContext } from "../../contexts/mainContext";
-import { Devices, DevicesService, FilesService } from "../../client";
-import DropzoneComponent from "../dropzoneComponent";
+import { Devices, DevicesService, } from "../../client";
 import { useTranslation } from "react-i18next";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
 import DialogYesNo from "../common/dialogYesNo";
-import ButtonsYesNo from "../common/buttonsYesNo";
-import { useParams } from "react-router-dom";
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import GalleryItem from "../GalleryItem";
-import Thumbnail from "../Thumbnail";
-import ModifyThumbnail from "../ModifyThumbnail";
-
+import ThumbnailDeviceComponent from "../ThumbnailDeviceComponent";
 
 const DeviceForm = () => {
   const { t } = useTranslation();
-  const { device, updateDeviceMenu, projects, updateListFile, setCurrentDeployment, files , devices, deviceMenu} = useMainContext();
+  const { device, updateDeviceMenu, } = useMainContext();
   const [deviceData, setDeviceData] = React.useState<Devices>(device());
-  const [modifyState, setModifyState] = React.useState<boolean>(false)
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);
-  const [file, setFile] = React.useState<any>(null);
-  const [thumbnail, setThumbnail] = React.useState<any>(null);
-  const [currentDeploymentForComponent, setCurrentDeploymentForComponent] = React.useState<number | null>(null)//à cause de l'asynchronicité surement, currentDeployment est pas mis à jour dans ce component
-  const fileInputRef = React.useRef<any>(null);
-  let params = useParams()
-
-  React.useEffect(() => {
-
-    projects.forEach(project => {
-
-      project.deployments.forEach(deployment => {
-        
-        if (deployment.device_id === deviceData.id) {
-
-          
-          setCurrentDeployment(deployment.id)
-          setCurrentDeploymentForComponent(deployment.id)
-
-          //boucler sur tous les files, et comparer avec deviceData.image le nom pour récupérer la miniature
-        }
-      })
-    })
-
-    setDeviceData(device())
-    console.log(deviceData)
-    if(deviceData.image != null && deviceData.image.startsWith("http"))
-      {
-        setThumbnail(deviceData.image)
-      }
-    
-  }, [])
 
   const handleFormChange = (
     params: string,
@@ -101,26 +61,6 @@ const DeviceForm = () => {
     setOpen(false);
   };
 
-  const saveThumbnail = () => {
-      FilesService
-        .uploadDeviceFile(Number(deviceData.id), { file })
-        .then((res) => {
-          console.log(res)
-          updateDeviceMenu()
-          setThumbnail(res.image)
-          // updateListFile()
-          // setDeviceData(device())
-        });
-
-      clear();
-      setModifyState(false)
-
-  };
-
-  const clear = () => {
-    setFile("");
-  };
-
   const save = () => {
     deviceData.id &&
       DevicesService.updateDeviceDevicesDeviceIdPut(deviceData?.id, deviceData)
@@ -135,66 +75,10 @@ const DeviceForm = () => {
         });
   };
 
-  const loadFile = (f: any) => {
-    console.log(f)
-    deviceData.image = f[0].name
-    setFile(f[0])
-  }
-
-  const loadNewFile = (f: any) => {
-    console.log("new")
-    setFile(f[0])
-    setModifyState(true)
-  }
-
-  
-  const dropZoneDisplayText = () => {
-    if (!file) {
-      return (
-        <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}</p>
-      );
-    } else {
-
-      return <p>{file.name}</p>;
-    }
-  };
-
-  const get_file_name = (fileName) => {
-    const match = fileName.match(/([^\/]+\.png)/);
-    return match ? match[1] : null;
-  }
-  const deleteThumbnail = () => {
-    FilesService.deleteDeviceFile(Number(deviceData.id), thumbnail)
-    updateDeviceMenu()
-    setThumbnail(null)
-  }
-
-  const cancelModify = () => {
-    console.log("cancel")
-    fileInputRef.current.value = "";
-    setModifyState(false)
-  }
 
   return (
     <Stack spacing={2} justifyContent="center">
-      <Grid item lg={6}>      
-      {!thumbnail ? <> 
-      
-      <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} /> 
-      <div style={{marginTop: "25px"}}></div>
-      <ButtonsYesNo
-          onYes={saveThumbnail}
-          onNo={clear}
-          yesContent={capitalize(t("main.save"))}
-          noContent={capitalize(t("main.cancel"))}
-        />
-         </>
-         : (<> <Thumbnail item={thumbnail}/>
-               <ModifyThumbnail content={"Modify"} setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} deleteThumbnail={deleteThumbnail} cancelModify={cancelModify} />
-          </>)
-       }
-        
-      </Grid>
+      <ThumbnailDeviceComponent/>
       <Collapse in={success}>
         <Alert
           severity="success"
