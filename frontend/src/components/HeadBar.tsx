@@ -39,7 +39,7 @@ const HeadBar = () => {
   };
 
   function toAccountKeycloack(): void {
-    window.open('auth/realms/geonature-annotation/account/#/personal-info', '_blank');
+    window.open('/auth/realms/geonature-annotation/account/#/personal-info', '_blank');
   }
 
   return (

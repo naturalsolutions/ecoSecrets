@@ -9,6 +9,7 @@ import { Grid } from "@mui/material";
 import ButtonValidate from "../common/buttonValidate";
 import ButtonCancel from "../common/buttonCancel";
 import ThumbnailComponent from "../ThumbnailDeviceComponent";
+import { SitesService } from "../../client";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -29,11 +30,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const SitesTable = () => {
   const { t } = useTranslation();
 
-  const {sites} = useMainContext();
+  const {sites, updateSites} = useMainContext();
   const [open, setOpen] = useState(false);
   const [position, setPostition] = useState<any>([])
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sitesLength, setSitesLength] = useState<number>(0)
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -43,13 +46,31 @@ const SitesTable = () => {
   };
 
   useEffect(() => {
+    SitesService.getSitesNumber()
+    .then((res) => {
+      setSitesLength(res)
+    })
+    const skip = Math.abs((page) * rowsPerPage)
+    updateSites(skip, rowsPerPage)
+  }, [])
+
+
+  useEffect(() => {
+
     sites.map((data, k) => {
       setPostition(position => [...position, { lat: data.latitude, lng: data.longitude, name: data.name }])
     })
+
   }, [sites])
   
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    const skip = Math.abs(newPage * rowsPerPage)
+    updateSites(skip, rowsPerPage)
+    sites.map((data, k) => {
+      setPostition([])
+      // setPostition(position => [...position, { lat: data.latitude, lng: data.longitude, name: data.name }])
+    })
   };
 
   const handleChangeRowsPerPage = (
@@ -57,6 +78,7 @@ const SitesTable = () => {
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+    updateSites(page, event.target.value)
   };
   return (
     sites.length !== 0 ?
@@ -105,7 +127,7 @@ const SitesTable = () => {
         <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={sites.length}
+        count={sitesLength}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

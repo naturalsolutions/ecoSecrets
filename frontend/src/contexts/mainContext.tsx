@@ -71,10 +71,11 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
-  const updateSites = () => {
+  const updateSites = (skip: number = 0, limit: number | undefined = undefined) => {
 
-    SitesService.readSitesSitesGet()
+    SitesService.readSitesSitesGet(skip, limit)
       .then((sites) => {
+        console.log(sites)
         setSites(sites);
       })
       .catch((err) => {
@@ -142,9 +143,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         console.log(err);
       });
   };
-  const updateDeviceMenu = () => {
-    DevicesService.readMenuDevicesDevicesMenuGet()
+  const updateDeviceMenu = (skip: number = 0, limit: number | undefined = undefined) => {
+    DevicesService.readMenuDevicesDevicesMenuGet(skip, limit)
       .then((deviceMenu) => {
+
         setDeviceMenu(deviceMenu);
 
       })
@@ -188,7 +190,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateProjectsStats();
       updateDevices();
       updateDeviceMenu();
-      updateSites();
+      // updateSites();
       updateAutoTemplates();
       updateTriggerTemplates();
     })();

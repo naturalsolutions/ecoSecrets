@@ -15,7 +15,7 @@ const ImageList: FC<{}> = () => {
   const { t } = useTranslation()
   const [files, setFiles] = useState<any[]>([]);
   const [loader, setLoader] = useState<boolean>(false);
-  const { projects, updateListFile, setCurrentDeployment, currentDeployment, deploymentData } =
+  const { projects, updateListFile, setCurrentDeployment, deploymentData } =
     useMainContext();
   let params = useParams();
 
