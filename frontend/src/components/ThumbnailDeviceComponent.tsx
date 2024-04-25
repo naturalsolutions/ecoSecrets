@@ -22,6 +22,7 @@ const ThumbnailDeviceComponent = () => {
 
         if(deviceData.image != null && deviceData.image.startsWith("http"))
           {
+            console.log(deviceData.image)
             setThumbnail(deviceData.image)
           }
         
@@ -52,6 +53,7 @@ const ThumbnailDeviceComponent = () => {
 
       const get_file_name = (fileName) => {
         // Cette expression régulière correspond à tous les types d'extensions d'images mentionnés
+      
         const match = fileName.match(/([^\/]+\.(png|jpg|jpeg|gif|bmp))/i);
         return match ? match[1] : null;
     }
@@ -62,7 +64,7 @@ const ThumbnailDeviceComponent = () => {
       }
     
 
-    return <ThumbnailComponent saveThumbnail={saveThumbnail} deleteThumbnail={deleteThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailDeviceComponent

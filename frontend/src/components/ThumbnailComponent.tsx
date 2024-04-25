@@ -8,7 +8,7 @@ import ModifyThumbnail from "./ModifyThumbnail";
 
 type thumbnailFunction = () => void;
 
-const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, deleteThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>}> = ({saveThumbnail, deleteThumbnail, thumbnail, file, setFile, modifyState, setModifyState}) => {
+const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>}> = ({saveThumbnail, thumbnail, file, setFile, modifyState, setModifyState}) => {
 
     const { t } = useTranslation();
     const fileInputRef = useRef<any>(null);
@@ -61,7 +61,7 @@ const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, deleteThum
       />
        </>
        : (<> <Thumbnail item={thumbnail}/>
-             <ModifyThumbnail handleButtonClick={handleButtonClick}setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} deleteThumbnail={deleteThumbnail} cancelModify={cancelModify} />
+             <ModifyThumbnail handleButtonClick={handleButtonClick}setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} cancelModify={cancelModify} />
         </>)
      }
       

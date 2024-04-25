@@ -1,15 +1,39 @@
-import { Grid, Typography, Stack, Box } from "@mui/material";
+import { Grid, Typography, Stack, Box, TablePagination } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
 import ProjectCard from "./projectCard";
 import ProjectModal from "./projectModale";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
+import { ProjectsService } from "../client";
 
 const ProjectList = () => {
-  const { projectsStats, setCurrentProject } = useMainContext();
+  const { projectsStats, updateProjectsStats } = useMainContext();
   const { t } = useTranslation();
+  const [page, setPage] = useState<number>(0)
+  const [projectLength, setProjectLength] = useState<number>(0)
 
+  useEffect(() => {
+    const skip = page * rowsPerPage
+    updateProjectsStats(skip, rowsPerPage)
+    ProjectsService.getProjectsLength()
+    .then(res => {
+      setProjectLength(res)
+    })
+    console.log(projectsStats)
+  }, [])
+
+  useEffect(() => {
+    console.log(projectsStats)
+  }, [projectsStats])
+  const handleChangePage = (event: unknown, newPage: number) => {
+
+    setPage(newPage);
+    const skip = Math.abs((newPage) * rowsPerPage)
+    updateProjectsStats(skip, rowsPerPage)
+
+  };
+  const [rowsPerPage, setRowsPerPage] = useState(8);
  
   return (
     <Grid container >
@@ -53,6 +77,14 @@ const ProjectList = () => {
           </Grid>
         ))}
       </Grid>
+      {projectsStats && <TablePagination
+        rowsPerPageOptions={[8]}
+        component="div"
+        count={projectLength}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+      />}
     </Grid>
   );
 };

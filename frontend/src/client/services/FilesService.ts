@@ -244,6 +244,26 @@ export class FilesService {
             },
         });
     }
+
+    public static deleteDeploymentMediaFile(
+        hash_name: string,
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/delete/media/{hash_name}',
+            path: {
+                'hash_name': hash_name
+            },
+            query: {
+                "name": name
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
     
     public static deleteDeviceFile(
         deviceId: number,

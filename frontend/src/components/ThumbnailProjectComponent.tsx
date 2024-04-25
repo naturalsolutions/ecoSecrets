@@ -59,7 +59,7 @@ const ThumbnailProjectComponent = () => {
   
 
     }
-    return <ThumbnailComponent saveThumbnail={saveThumbnail} deleteThumbnail={deleteThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent saveThumbnail={saveThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailProjectComponent;

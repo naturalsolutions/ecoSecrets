@@ -239,6 +239,20 @@ def delete_files(
     
     return current_deployment
 
+@router.post("/delete/media/{hash_name}")
+def delete_files(
+    name:str,
+    hash_name:str,
+    db: Session = Depends(get_db)
+):
+    try:
+        s3.delete_file_obj(hash_name)
+        files.delete_media_deployment(db=db, name=name)
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=e)
+    
+    return "Image supprimée"
+        
 @router.post("/delete/project/{project_id}/{name}")
 def delete_files(
     project_id: int,

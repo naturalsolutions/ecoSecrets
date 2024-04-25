@@ -114,8 +114,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
-  const updateProjectsStats = () => {
-    ProjectsService.getStatsProjectsProjectsStatsProjectsGet()
+  const updateProjectsStats = (skip: number = 0, limit: number | undefined = undefined) => {
+    ProjectsService.getStatsProjectsProjectsStatsProjectsGet(skip, limit)
       .then((projectsStats) => {
         setProjectsStats(projectsStats);
       })
@@ -187,7 +187,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateProjects();
       updateDeployments();
       updateGlobalStats();
-      updateProjectsStats();
+      // updateProjectsStats();
       updateDevices();
       updateDeviceMenu();
       updateSites();

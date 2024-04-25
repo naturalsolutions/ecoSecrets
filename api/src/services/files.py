@@ -50,6 +50,11 @@ def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
         .all()
     )
 
+def delete_media_deployment(db: Session, name:str):
+    db_files = db.query(Files).filter(Files.name == name).first()
+    db.delete(db_files)
+    db.commit()
+    
 def create_file(db: Session, file: CreateFiles):
     db_file = Files(**file.dict(), annotations=[])
     db.add(db_file)

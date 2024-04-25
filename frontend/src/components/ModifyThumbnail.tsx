@@ -5,7 +5,7 @@ import ButtonValidate from "./common/buttonValidate";
 import ButtonModify from "./common/buttonModify";
 
 
-const ModifyThumbnail = ({handleButtonClick, setFile, saveNewThumbnail, deleteThumbnail, modifyState, cancelModify, modifyRef}) => {
+const ModifyThumbnail = ({handleButtonClick, setFile, saveNewThumbnail, modifyState, cancelModify, modifyRef}) => {
     const { t } = useTranslation();
 
     // return <div style={{marginTop:"20px"}}>

@@ -21,7 +21,14 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100):
         .all()
     )
 
-
+def get_projects_length(db: Session, skip: int = 0, limit: int = 100):
+    return len(
+        db.query(Projects)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+    
 def get_project(db: Session, project_id: int):
     return db.query(Projects).filter(Projects.id == project_id).first()
 
