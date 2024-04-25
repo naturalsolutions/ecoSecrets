@@ -103,7 +103,12 @@ def delete_file(db: Session, id: int):
     db.commit()
     return db_file
 
-
+def deleteAllFilesDeployment(db: Session, id:int):
+    db_files = db.query(Files).filter(Files.deployment_id == id).all()
+    for f in db_files:
+        db.delete(f)
+    db.commit()
+    
 def upload_file(
     db: Session,
     hash: str,
