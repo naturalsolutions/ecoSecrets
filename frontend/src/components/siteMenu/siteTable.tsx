@@ -9,7 +9,7 @@ import { Grid } from "@mui/material";
 import ButtonValidate from "../common/buttonValidate";
 import ButtonCancel from "../common/buttonCancel";
 import ThumbnailComponent from "../ThumbnailDeviceComponent";
-import { SitesService } from "../../client";
+import { Sites, SitesService } from "../../client";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -36,7 +36,7 @@ const SitesTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sitesLength, setSitesLength] = useState<number>(0)
-
+  const [allSites, setAllSites] = useState<Sites[]>()
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -46,31 +46,21 @@ const SitesTable = () => {
   };
 
   useEffect(() => {
+
     SitesService.getSitesNumber()
     .then((res) => {
       setSitesLength(res)
     })
-    const skip = Math.abs((page) * rowsPerPage)
-    updateSites(skip, rowsPerPage)
   }, [])
 
-
   useEffect(() => {
-
     sites.map((data, k) => {
       setPostition(position => [...position, { lat: data.latitude, lng: data.longitude, name: data.name }])
     })
-
   }, [sites])
   
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-    const skip = Math.abs(newPage * rowsPerPage)
-    updateSites(skip, rowsPerPage)
-    sites.map((data, k) => {
-      setPostition([])
-      // setPostition(position => [...position, { lat: data.latitude, lng: data.longitude, name: data.name }])
-    })
   };
 
   const handleChangeRowsPerPage = (
@@ -104,7 +94,7 @@ const SitesTable = () => {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                    { sites.map((row) => (
+                    { sites.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                         <StyledTableRow key={row.name}>
                             <StyledTableCell align="center">
                               <Link component={RouterLink} to ={`/sites/${row.id}`}>
@@ -127,7 +117,7 @@ const SitesTable = () => {
         <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={sitesLength}
+        count={sites.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

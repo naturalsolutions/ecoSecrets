@@ -10,7 +10,8 @@ const Thumbnail = (item) => {
         display: "block",
         height: 400,
         width: 400,
-        objectFit: "cover"
+        objectFit: "cover",
+        marginBottom: "20px"
     }
 
     let navigate = useNavigate();

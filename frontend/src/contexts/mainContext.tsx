@@ -75,7 +75,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
     SitesService.readSitesSitesGet(skip, limit)
       .then((sites) => {
-        console.log(sites)
+
         setSites(sites);
       })
       .catch((err) => {
@@ -190,7 +190,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateProjectsStats();
       updateDevices();
       updateDeviceMenu();
-      // updateSites();
+      updateSites();
       updateAutoTemplates();
       updateTriggerTemplates();
     })();

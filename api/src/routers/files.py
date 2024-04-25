@@ -17,7 +17,7 @@ from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
 from src.schemas.schemas import Annotation
-from src.services import dependencies, files, device, project, deployment
+from src.services import dependencies, files, device, project, deployment, site
 from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(
@@ -179,6 +179,28 @@ def upload_files(
         raise HTTPException(status_code=404, detail=e)
     
     return current_project
+
+@router.post("/upload/site/{site_id}")
+def upload_files(
+        site_id: int,
+        file: UploadFile = File(...),
+        db: Session = Depends(get_db)
+):
+    try:
+        hash = dependencies.generate_checksum(file)
+        unique_id = str(uuid.uuid4())
+        
+        ext = file.filename.split(".")[1]
+        unique_filename = f"{hash}_{unique_id}.{ext}"
+        s3.upload_file_obj(file.file, unique_filename)
+        
+        url = s3.get_url(unique_filename)
+        
+        current_site = site.update_site_image(db=db, image=url, id=site_id)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=e)
+    
+    return current_site
 
 @router.post("/upload/deployment/{deployment_id}")
 def upload_files(

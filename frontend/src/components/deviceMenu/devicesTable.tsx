@@ -61,11 +61,13 @@ const DevicesTable = () => {
         projects.forEach(project => {
           
           project.deployments.map(elem => {
-            if (element.id == elem.device_id) {
+            if (element.id == elem.device_id && element.status === "Déployé") {
 
               let pos = sites.find(site => site.id == elem.site_id);
 
-              setPosition(position => [...position, { lat: pos.latitude, lng: pos.longitude, name: pos.name }])
+                setPosition(position => [...position, { lat: pos.latitude, lng: pos.longitude, name: pos.name }])
+   
+              
             }
             
           })
@@ -74,17 +76,17 @@ const DevicesTable = () => {
     }
   }
   useEffect(() => {   
-
+    
       const skip = Math.abs((page) * rowsPerPage)
       updateSites()
       updateDeviceMenu(skip, rowsPerPage)      
-
+      
   }, [])
 
   useEffect(() => {
 
     updateProjectSheetDataFromDevice()
-
+    console.log(deviceMenu)
   }, [deviceMenu, sites])
 
 

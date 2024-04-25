@@ -4,10 +4,12 @@ import ProjectCard from "./projectCard";
 import ProjectModal from "./projectModale";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const ProjectList = () => {
-  const { projectsStats } = useMainContext();
+  const { projectsStats, setCurrentProject } = useMainContext();
   const { t } = useTranslation();
+
  
   return (
     <Grid container >
@@ -40,7 +42,8 @@ const ProjectList = () => {
         direction="row"
         spacing={2}
       >
-        {projectsStats && projectsStats.map((s, k) => (
+        {projectsStats && projectsStats.map((s, k) => 
+        (
           <Grid
             item
             xs={12} sm={6} md={6} lg={3}

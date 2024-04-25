@@ -22,8 +22,9 @@ const GalleryItem = (
     };
 
     const displayImage = (item) => {
+
         if (item.extension.includes("image")) {
-            console.log(item.url)
+            
           return (
             <img
                 src={ `${item.url}` }

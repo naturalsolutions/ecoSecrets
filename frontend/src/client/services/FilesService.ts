@@ -170,6 +170,25 @@ export class FilesService {
         });
     }
 
+    public static uploadSiteFile(
+        siteId: number,
+        formData: Body_upload_file_files_upload__deployment_id__post,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/upload/site/{site_id}',
+            path: {
+                'site_id': siteId,
+            },
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
     public static uploadProjectFile(
         projectId: number,
         formData: Body_upload_file_files_upload__deployment_id__post,

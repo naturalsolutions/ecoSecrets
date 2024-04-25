@@ -18,7 +18,9 @@ const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, deleteThum
 
         setFile(f[0])
       }
-
+      const handleButtonClick = () => {
+        fileInputRef.current.click(); // Déclenche un clic sur l'input de type fichier
+      };
       const dropZoneDisplayText = () => {
         
         if (!file) {
@@ -59,7 +61,7 @@ const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, deleteThum
       />
        </>
        : (<> <Thumbnail item={thumbnail}/>
-             <ModifyThumbnail content={"Modify"} setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} deleteThumbnail={deleteThumbnail} cancelModify={cancelModify} />
+             <ModifyThumbnail handleButtonClick={handleButtonClick}setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} deleteThumbnail={deleteThumbnail} cancelModify={cancelModify} />
         </>)
      }
       
