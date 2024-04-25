@@ -79,7 +79,7 @@ const SitesTable = () => {
         <Grid container justifyContent="center" alignItems='center'>
           <Grid container item justifyContent="center" height={400} width={1200} spacing={1} style={{ backgroundColor: "#D9D9D9" }}>
             {
-              position.length !== 0 ? <Map position={position} zoom={2} /> : <></>
+              <Map position={position} zoom={2} /> 
             }
           </Grid>
         </Grid>

@@ -91,7 +91,7 @@ const DevicesTable = () => {
 
 
   const [open, setOpen] = useState(false);
-
+  const defaultCenter = [34.80746, -40.4796];
   const { t } = useTranslation();
 
   const handleClickOpen = () => {
@@ -125,7 +125,7 @@ const DevicesTable = () => {
     <Stack spacing={2} justifyContent="center">
       <Grid container justifyContent="center" alignItems='center'>
         <Grid container item justifyContent="center" height={400} width={1000} spacing={1} style={{ backgroundColor: "#D9D9D9" }}>
-          {position.length > 0 ? <Map position={position} zoom={2} /> : <></>}
+          {<Map position={position} zoom={2} />}
         </Grid>
       </Grid>
       <TableContainer component={Paper}>
