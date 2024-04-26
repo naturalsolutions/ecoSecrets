@@ -44,21 +44,6 @@ const ThumbnailProjectComponent = () => {
         return match ? match[1] : null;
     }
 
-    const deleteThumbnail = () => {
-
-        if(currentProject)
-        {
-            console.log(thumbnail)
-            console.log(get_file_name(thumbnail))
-            FilesService.deleteProjectFile(currentProject?.id, get_file_name(thumbnail))
-            updateProjects()
-            setThumbnail(null)    
-            
-        }
-
-  
-
-    }
     return <ThumbnailComponent saveThumbnail={saveThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 

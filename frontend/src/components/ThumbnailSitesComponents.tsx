@@ -27,10 +27,6 @@ const ThumbnailSitesComponent = () => {
         setModifyState(false)
     }
 
-    const deleteThumbnail = () => {
-
-    }
-
     const clear = () => {
         setFile("");
       };

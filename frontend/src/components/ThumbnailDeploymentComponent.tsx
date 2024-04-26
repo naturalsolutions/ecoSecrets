@@ -35,14 +35,6 @@ const ThumbnailDeploymentComponent = () => {
         setModifyState(false)
     }
 
-    const deleteThumbnail = () => {
-        FilesService.deleteDeploymentFile(deploymentData.id, get_file_name(thumbnail))
-        .then(res => {
-            updateDeploymentData()
-            setThumbnail(null)
-        })
-    }
-
     const clear = () => {
         setFile("");
       };
