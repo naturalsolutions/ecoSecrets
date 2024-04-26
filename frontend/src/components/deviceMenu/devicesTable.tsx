@@ -22,6 +22,7 @@ import {
   Typography,
   capitalize,
   Grid,
+  TableSortLabel,
 } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
@@ -51,6 +52,14 @@ const DevicesTable = () => {
   const { deviceMenu, projects, sites, updateDeviceMenu, updateSites, devices, updateDevices} = useMainContext();
   const [position, setPosition] = useState<any>([])
   const [page, setPage] = useState<number>(0);
+  const [sortType, setSortType] = useState<"desc" | "asc" | undefined>('asc'); // État pour suivre le type de tri (ascendant ou descendant)
+  const [sortBy, setSortBy] = useState('name'); // État pour suivre la colonne par laquelle trier
+
+  const handleSort = (property) => {
+    const newSortType = sortBy === property && sortType === 'asc' ? 'desc' : 'asc';
+    setSortType(newSortType);
+    setSortBy(property);
+  };
 
   const updateProjectSheetDataFromDevice = () => {
 
@@ -137,6 +146,11 @@ const DevicesTable = () => {
           <TableHead style={{ backgroundColor: "#CCDFD9" }}>
             <TableRow>
               <StyledTableCell align="center">
+              <TableSortLabel
+            active={sortBy === 'name'}
+            direction={sortType}
+            onClick={() => handleSort('name')}
+          />
                 {capitalize(t("main.name"))}
               </StyledTableCell>
               <StyledTableCell align="center">

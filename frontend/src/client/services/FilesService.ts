@@ -227,24 +227,6 @@ export class FilesService {
         });
     }
 
-    public static deleteDeploymentFile(
-        deploymentId: number,
-        name: string,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/files/delete/deployment/{deployment_id}/{name}',
-            path: {
-                'deployment_id': deploymentId,
-                'name': name
-            },
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
-
     public static deleteDeploymentMediaFile(
         hash_name: string,
         name: string,
@@ -265,41 +247,7 @@ export class FilesService {
         });
     }
     
-    public static deleteDeviceFile(
-        deviceId: number,
-        name: string,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/files/delete/device/{device_id}/{name}',
-            path: {
-                'device_id': deviceId,
-                'name': name
-            },
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
 
-    public static deleteProjectFile(
-        projectId: number,
-        name: string,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/files/delete/project/{project_id}/{name}',
-            path: {
-                'project_id': projectId,
-                'name': name
-            },
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
     /**
      * Download File
      * @param id

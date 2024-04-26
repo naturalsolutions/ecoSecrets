@@ -57,11 +57,7 @@ const ThumbnailDeviceComponent = () => {
         const match = fileName.match(/([^\/]+\.(png|jpg|jpeg|gif|bmp))/i);
         return match ? match[1] : null;
     }
-    const deleteThumbnail = () => {
-        FilesService.deleteDeviceFile(Number(deviceData.id), get_file_name(thumbnail))
-        updateDeviceMenu()
-        setThumbnail(null)
-      }
+
     
 
     return <ThumbnailComponent saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
