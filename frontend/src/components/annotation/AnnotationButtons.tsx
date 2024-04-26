@@ -10,11 +10,15 @@ import { FilesService } from "../../client";
 
 const AnnotationButtons = () => {
     const { t } = useTranslation();
-    const {image} = useMainContext()
+    const {image, projects, project, deploymentData} = useMainContext()
     const { saveandnext, handleAddObservation } = useAnnotationContext();
     const [confirmationDelete, setConfirmationDelete] = useState<boolean>(false);
     const [img, setImg] = useState<any>(null)
 
+    useEffect(() => {
+        console.log(project())
+        console.log(deploymentData)
+    }, [deploymentData])
     const toggleModalDelete = () => {
 
         setConfirmationDelete(!confirmationDelete)
@@ -33,8 +37,11 @@ const AnnotationButtons = () => {
             .then(res => {
                 console.log(res)
             })                
-
-        window.location.href = "/project/1/deployment/6/details"
+        if(deploymentData)
+            {
+                window.location.href = `/project/${project().id}/deployment/${deploymentData.id}/medias`   
+            }
+        
         setConfirmationDelete(false)
     }
 
