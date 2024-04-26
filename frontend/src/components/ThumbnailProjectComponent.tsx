@@ -44,7 +44,7 @@ const ThumbnailProjectComponent = () => {
         return match ? match[1] : null;
     }
 
-    return <ThumbnailComponent saveThumbnail={saveThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent type="project" saveThumbnail={saveThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailProjectComponent;

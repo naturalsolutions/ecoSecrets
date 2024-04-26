@@ -59,7 +59,7 @@ const ThumbnailDeviceComponent = () => {
     }
     
 
-    return <ThumbnailComponent saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent type="device" saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailDeviceComponent

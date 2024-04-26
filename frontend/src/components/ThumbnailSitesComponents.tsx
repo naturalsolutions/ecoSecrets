@@ -38,7 +38,7 @@ const ThumbnailSitesComponent = () => {
         return match ? match[1] : null;
     }
 
-    return <ThumbnailComponent saveThumbnail={saveThumbnail}  file={file} setFile={setFile} thumbnail={thumbnail} modifyState={modifyState} setModifyState={setModifyState} />
+    return <ThumbnailComponent type="site" saveThumbnail={saveThumbnail}  file={file} setFile={setFile} thumbnail={thumbnail} modifyState={modifyState} setModifyState={setModifyState} />
 }
 
 export default ThumbnailSitesComponent

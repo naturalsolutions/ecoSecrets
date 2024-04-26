@@ -7,8 +7,9 @@ import Thumbnail from "./Thumbnail";
 import ModifyThumbnail from "./ModifyThumbnail";
 
 type thumbnailFunction = () => void;
+type typeThumbnail = "device" | "site" | "deployment" | "project";
 
-const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>}> = ({saveThumbnail, thumbnail, file, setFile, modifyState, setModifyState}) => {
+const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>, type:typeThumbnail}> = ({saveThumbnail, thumbnail, file, setFile, modifyState, setModifyState, type}) => {
 
     const { t } = useTranslation();
     const fileInputRef = useRef<any>(null);
@@ -24,9 +25,32 @@ const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:
       const dropZoneDisplayText = () => {
         
         if (!file) {
-          return (
-            <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}</p>
-          );
+          if(type==="device")
+            {
+              return (
+                <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}</p>
+              );              
+            }
+          else if(type==="site")
+            {
+              return (
+                <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("sites.site")}`}</p>
+              );  
+            }
+            else if(type==="deployment")
+              {
+                return (
+                  <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("deployments.deployment")}`}</p>
+                );  
+              }
+              else if(type==="project")
+                {
+                  return (
+                    <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("projects.project")}`}</p>
+                  );  
+                }
+          
+
         } else {
             console.log("called")
           return <p>{file.name}</p>;
