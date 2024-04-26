@@ -186,10 +186,27 @@ export class ProjectsService {
      * @returns StatsProject Successful Response
      * @throws ApiError
      */
-    public static getStatsProjectsProjectsStatsProjectsGet(): CancelablePromise<Array<StatsProject>> {
+    public static getStatsProjectsProjectsStatsProjectsGet(
+        skip?: number,
+        limit?: number | undefined
+    ): CancelablePromise<Array<StatsProject>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/stats_projects/',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+            },
+        });
+    }
+
+    public static getProjectsLength(): CancelablePromise<number> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/length/',
             errors: {
                 404: `Not found`,
             },
@@ -217,6 +234,7 @@ export class ProjectsService {
             },
         });
     }
+
 
     /**
      * Get First Untreated File

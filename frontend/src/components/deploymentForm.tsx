@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 import ButtonModify from "./common/buttonModify";
 import ButtonValidate from "./common/buttonValidate";
+import ThumbnailDeploymentComponent from "./ThumbnailDeploymentComponent";
 
 const DeploymentForm = (
     props
@@ -220,6 +221,7 @@ const DeploymentForm = (
                 spacing={5}
             >
                 <Grid container justifyContent="center" spacing={2}>
+                    <ThumbnailDeploymentComponent />
                     {/* Si image du deploiement, la mettre sinon mettre zone drag&drop pour l'image
                     <Grid item lg={6}>
                         {

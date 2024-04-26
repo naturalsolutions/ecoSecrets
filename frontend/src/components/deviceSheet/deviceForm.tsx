@@ -7,7 +7,6 @@ import {
   Stack,
   TextField,
   Typography,
-  MenuItem,
   Dialog,
   DialogTitle,
   Divider,
@@ -20,16 +19,16 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMainContext } from "../../contexts/mainContext";
-import { Devices, DevicesService } from "../../client";
-import DropzoneComponent from "../dropzoneComponent";
+import { Devices, DevicesService, } from "../../client";
 import { useTranslation } from "react-i18next";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
 import DialogYesNo from "../common/dialogYesNo";
+import ThumbnailDeviceComponent from "../ThumbnailDeviceComponent";
 
 const DeviceForm = () => {
   const { t } = useTranslation();
-  const { device, updateDeviceMenu } = useMainContext();
+  const { device, updateDeviceMenu, } = useMainContext();
   const [deviceData, setDeviceData] = React.useState<Devices>(device());
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
@@ -76,11 +75,10 @@ const DeviceForm = () => {
         });
   };
 
+
   return (
     <Stack spacing={2} justifyContent="center">
-      {/* <Grid item lg={6}>
-                <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}/>
-            </Grid> */}
+      <ThumbnailDeviceComponent/>
       <Collapse in={success}>
         <Alert
           severity="success"

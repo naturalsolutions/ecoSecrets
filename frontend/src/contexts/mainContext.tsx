@@ -71,10 +71,11 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
-  const updateSites = () => {
+  const updateSites = (skip: number = 0, limit: number | undefined = undefined) => {
 
-    SitesService.readSitesSitesGet()
+    SitesService.readSitesSitesGet(skip, limit)
       .then((sites) => {
+
         setSites(sites);
       })
       .catch((err) => {
@@ -113,8 +114,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
-  const updateProjectsStats = () => {
-    ProjectsService.getStatsProjectsProjectsStatsProjectsGet()
+  const updateProjectsStats = (skip: number = 0, limit: number | undefined = undefined) => {
+    ProjectsService.getStatsProjectsProjectsStatsProjectsGet(skip, limit)
       .then((projectsStats) => {
         setProjectsStats(projectsStats);
       })
@@ -142,10 +143,12 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         console.log(err);
       });
   };
-  const updateDeviceMenu = () => {
-    DevicesService.readMenuDevicesDevicesMenuGet()
+  const updateDeviceMenu = (skip: number = 0, limit: number | undefined = undefined) => {
+    DevicesService.readMenuDevicesDevicesMenuGet(skip, limit)
       .then((deviceMenu) => {
+
         setDeviceMenu(deviceMenu);
+
       })
       .catch((err) => {
         console.log(err);
@@ -184,7 +187,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateProjects();
       updateDeployments();
       updateGlobalStats();
-      updateProjectsStats();
+      // updateProjectsStats();
       updateDevices();
       updateDeviceMenu();
       updateSites();
@@ -207,8 +210,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   useEffect(() => {
     (async () => {
+
       updateListFile();
       updateDeploymentData();
+
     })();
   }, [currentDeployment]);
 
@@ -260,7 +265,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         updateTriggerTemplates,
         site,
         setCurrentSite,
-        image
+        image,
       }}
     >
       {children}

@@ -22,10 +22,13 @@ const GalleryItem = (
     };
 
     const displayImage = (item) => {
+
         if (item.extension.includes("image")) {
+            
           return (
             <img
                 src={ `${item.url}` }
+                
                 alt={ item.name }
                 loading="lazy"
                 onClick={ () => displayMedia(item.id) }

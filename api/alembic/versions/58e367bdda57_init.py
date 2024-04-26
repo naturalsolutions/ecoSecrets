@@ -244,6 +244,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_sequences_files_id"), "sequences_files", ["id"], unique=False)
+
     # ### end Alembic commands ###
 
 
