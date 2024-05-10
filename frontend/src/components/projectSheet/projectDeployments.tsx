@@ -5,11 +5,12 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Alert, AlertTitle, Paper, Stack, Link, capitalize, TableSortLabel } from "@mui/material";
+import { Alert, AlertTitle, Paper, Stack, Link, capitalize, TableSortLabel, TextField, Tooltip, IconButton, Menu, MenuItem, Popover, FormControl, InputLabel, Select } from "@mui/material";
 import { useMainContext } from '../../contexts/mainContext';
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProjectDeploymentDeleteModale from "./projectDeploymentsDeleteModale";
+import FilterListIcon from '@mui/icons-material/FilterList';
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useTranslation } from "react-i18next";
 
@@ -35,6 +36,29 @@ const ProjectDeployments = () => {
 
   const [sortType, setSortType] = useState<"asc" | "desc" | undefined>('asc'); // État pour suivre le type de tri (ascendant ou descendant)
   const [sortBy, setSortBy] = useState('name'); // État pour suivre la colonne par laquelle trier
+  const [filter, setFilter] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [filterBy, setFilterBy] = useState('name'); // Par défaut, filtrer par nom
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  const handleFilterByChange = (event) => {
+    setFilterBy(event.target.value);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
 
   useEffect(() => {
     if(sortBy === "name")
@@ -179,9 +203,13 @@ const ProjectDeployments = () => {
       >
 
         <TableContainer component={Paper}>
+
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
+
             <TableHead style={{ backgroundColor: "#CCDFD9" }}>
+
               <TableRow>
+
                 <StyledTableCell align="center">
                 <TableSortLabel
             active={sortBy === "name"}

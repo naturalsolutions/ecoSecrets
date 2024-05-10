@@ -5,7 +5,7 @@ import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import { DeploymentsService, DeploymentWithTemplateSequence } from "../client";
+import { DeploymentsService, DeploymentWithTemplateSequence, ProjectWithDeployment } from "../client";
 import SiteModale from "./siteMenu/siteModale";
 import Map from "./Map";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,7 @@ const DeploymentForm = (
     props
 ) => {
 
-    const { setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates } = useMainContext();
+    const {setCurrentProject, currentDeployment, setCurrentDeployment, deploymentData, setDeploymentData, updateProjectSheetData, sites, devices, autoTemplates, updateAutoTemplates, triggerTemplates, updateTriggerTemplates } = useMainContext();
     let params = useParams();
     const [tmpDeploymentData, setTmpDeploymentData] = useState<DeploymentWithTemplateSequence>({ id: currentDeployment, name: '', support: '', height: undefined, bait: '', feature: '', site_id: 0, device_id: 0, project_id: Number(params.projectId), description: '', start_date: '' });
     const { t } = useTranslation();
@@ -30,8 +30,9 @@ const DeploymentForm = (
     const [automatic, setAutomatic] = useState({ isAutomatic: false, imageNumber: 0, frequency: 0 });
     const [trigger, setTrigger] = useState({ isTrigger: false, imageNumber: 0, frequency: 0 });
     const [position, setPostition] = useState({ lat: 0, lng: 0, name: "" })
-
+    
     useEffect(() => {
+
         setCurrentProject(Number(params.projectId));
         setCurrentDeployment(Number(params.deploymentId));
     });
@@ -49,6 +50,7 @@ const DeploymentForm = (
             };
         };
 
+        
         setCurrentProject(Number(params.projectId));
         setCurrentDeployment(Number(params.deploymentId));
 
@@ -216,7 +218,7 @@ const DeploymentForm = (
 
     return (
         <form>
-            <Stack
+        <Stack
                 direction="column"
                 spacing={5}
             >
