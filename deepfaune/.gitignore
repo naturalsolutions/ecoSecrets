@@ -5,3 +5,5 @@ coverage.xml
 .pytest_cache
 htmlcov
 .vscode-server/
+.cache
+.config/Ultralytics

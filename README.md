@@ -1,20 +1,21 @@
-# GeoCam - *a web application enabling users to manage their camera traps data*
+# GeoCam - _a web application enabling users to manage their camera traps data_
 
-*GeoCam* is an open-source web application that aims to facilitate biodiversity studies that
- use autonomous data collection devices such as camera traps.
+_GeoCam_ is an open-source web application that aims to facilitate biodiversity studies that
+use autonomous data collection devices such as camera traps.
 This web-application is in development and offers several features that meet the needs
- of biodiversity stakeholders:
+of biodiversity stakeholders:
+
 - project management: to delimit the studies according to their context
 - management of study sites: to identify spatial scope
 - device management: to specify technical characteristics of the tools used in the
- field and their availability
+  field and their availability
 - deployment management: to characterize spatio-temporal limits of data acquisition
 - media management: to standardize and optimize the storage of collected data
 - media processing: to enable the addition of annotations to the raw data
 
 We would be delighted if you use it, or even contribute in its development.
 
-A demo is available [here](https://demo.geocam.natural-solutions.eu). Don't hesitate to 
+A demo is available [here](https://demo.geocam.natural-solutions.eu). Don't hesitate to
 try it out! User : admin ; password : password
 
 ---
@@ -30,15 +31,17 @@ try it out! User : admin ; password : password
 </p>
 
 ---
+
 ## Installation
 
 ### Cloning
+
 Clone this project using git
 
 Go inside the directory generated
 
 Since this app has not been released yet, no commits are available on main
-branch. Switch to `dev` branch: 
+branch. Switch to `dev` branch:
 
 ```
 git checkout dev
@@ -54,6 +57,10 @@ cp docker/.env.sample docker/.env
 
 Edit freely this `.env` file to change credentials for instance.
 
+### Add DeepFaune
+
+ecoSecrets use DeepFaune code so you need to download it and add it in the DeepFaune folder in src folder.
+
 ### Launching
 
 Docker and docker-compose must be installed on the server/machine. Then:
@@ -62,9 +69,8 @@ Docker and docker-compose must be installed on the server/machine. Then:
 ./scripts/docker.sh up -d
 ```
 
-App will run on `http://localhost:8889/` but the port of each service 
+App will run on `http://localhost:8889/` but the port of each service
 will be avaible to debug.
-
 
 ## Sample data
 
@@ -80,7 +86,7 @@ GeoCam uses [Keycloak](https://www.keycloak.org/) version 21.1.0 as authenticati
 
 A keycloak service is provided in the `docker-compose.yml` file. This also sets
 up the keycloak instance to create a new realm, add clients (frontend and
-backend) and create an admin user (credentials:  **admin** / **password**).
+backend) and create an admin user (credentials: **admin** / **password**).
 
 For now, there is no right implemented in the app. This means that all users
 have the same rights in GeoCam.
@@ -100,13 +106,14 @@ command:
 ./scripts/docker.sh exec api pytest tests --cov-report html:/home/app/src/htmlcov --cov=src
 ```
 
-The default config assumes that the backend is accessing the database through 
+The default config assumes that the backend is accessing the database through
 the docker network (via "db" adress) which prevents backend tests from
 being run locally (outside a container).
 
 ### API/backend documentation
 
 The openapi documentation accessible via swagger is available here:
+
 ```
 http://localhost:8889/api/v1/docs
 
@@ -114,7 +121,7 @@ http://localhost:8889/api/v1/docs
 
 ### GeoCam app documentation (in french for now)
 
-The documentation is generated with mkdocs and is exposed on port 8133 
+The documentation is generated with mkdocs and is exposed on port 8133
 to be able to work on it with automatic reloading.
 
 ```
@@ -139,9 +146,8 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+along with this program. If not, see <https://www.gnu.org/licenses/>.
