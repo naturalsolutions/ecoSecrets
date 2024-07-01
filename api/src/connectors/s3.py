@@ -83,7 +83,6 @@ def get_url(filename: str, expiration: float = 3600):
     url = s3_client.generate_presigned_url(
         "get_object",
         Params={"Bucket": get_bucket_name(), "Key": filename},
-        ExpiresIn=expiration,
     )
     return url
 
