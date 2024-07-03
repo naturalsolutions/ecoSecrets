@@ -17,7 +17,7 @@ import GoAnnotation from "./goAnnotation";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
-import { ProjectWithDeployment } from "../client";
+import { ProjectWithDeployment, ProjectsService } from "../client";
 
 const testStatus = (status) => {
     if (status === 'Terminé') {
@@ -64,7 +64,7 @@ const ProjectCard = (props) => {
     const [openImport, setOpenImport] = useState(false);
     const [thumbnail, setThumbnail] = useState<string | undefined>("")
 
-    const project = (): ProjectWithDeployment | undefined => {
+    const project = (): ProjectWithDeployment => {
         return projects.find((p) => p.id ==props.selectedProject.id);
       };
       
@@ -89,12 +89,14 @@ const ProjectCard = (props) => {
         };
         return;
     };
-
     useEffect(() => {
 
-        setThumbnail(project()?.image)
-
-    }, [])
+            ProjectsService.readProjectThumbnail(project().id)
+            .then(res => {
+              setThumbnail(res[0].url)
+            })
+  
+      }, [])
     return (
         <Card>
             <ImportModale

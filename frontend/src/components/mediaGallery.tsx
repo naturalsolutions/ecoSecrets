@@ -10,7 +10,7 @@ export default function MediaGallery() {
 
     const { files } = useMainContext();
     const { t } = useTranslation();
-
+    console.log(files)
     return (
         <Box 
             sx={{ 

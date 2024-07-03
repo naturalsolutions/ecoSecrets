@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import ThumbnailComponent from "./ThumbnailComponent"
-import { FilesService } from "../client"
+import { DeploymentsService, FilesService } from "../client"
 import { useMainContext } from "../contexts/mainContext"
 import { useParams } from "react-router-dom"
 
@@ -12,29 +12,35 @@ const ThumbnailDeploymentComponent = () => {
     const [file, setFile] = useState<any>(null)
     const [thumbnail, setThumbnail] = useState<string | null>(null)
     const [modifyState, setModifyState] = useState<boolean>(false)
-    
-    useEffect(() => {    
 
-        if(deploymentData && deploymentData.image != null && deploymentData.image.startsWith("http"))
+    useEffect(() => {
+      console.log(deploymentData)
+      if(deploymentData)
         {
-        
-            setThumbnail(deploymentData.image)
+          DeploymentsService.readDeploymentThumbnail(deploymentData.id)
+          .then(res => {
+            setThumbnail(res[0].url)
+            console.log("true")
+          })  
+        }
+
+    }, [deploymentData])
+
+    const saveThumbnail = async () => {
+        if(deploymentData)
+        {
+
+          FilesService.uploadDeploymentFile(deploymentData?.id, {file})
+          .then(res => {
+            DeploymentsService.readDeploymentThumbnail(deploymentData?.id)
+            .then(res => {
+              setThumbnail(res[0].url)
+            })  
+          })  
         }
         
-      }, [deploymentData])
-
-    const saveThumbnail = () => {
-        
-        FilesService.uploadDeploymentFile(deploymentData.id, {file})
-        .then(res => {
-            updateDeploymentData()
-            setThumbnail(res.image)
-        })  
-
-        clear()
         setModifyState(false)
     }
-
 
     const clear = () => {
         setFile("");

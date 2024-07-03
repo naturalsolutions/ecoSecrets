@@ -29,7 +29,7 @@ def get_file(db: Session, file_id: uuid_pkg.UUID):
 
 
 def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
-    return (
+    return (                                                                                                        
         db.query(Files)
         .filter(Files.deployment_id == id)
         .order_by(Files.name)

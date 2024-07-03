@@ -28,6 +28,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [deploymentData, setDeploymentData] = useState<DeploymentWithTemplateSequence>();
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [files, setFiles] = useState<any[]>([]);
+  const [thumbnailProject, setThumbnailProject] = useState(null)
   const [globalStats, setGlobalStats] = useState<Stats>();
   const [projectsStats, setProjectsStats] = useState<StatsProject[]>();
   const [projectSheetData, setProjectSheetData] = useState<ProjectSheet>();
@@ -39,6 +40,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [autoTemplates, setAutoTemplates] = useState<TemplateSequence[]>();
   const [triggerTemplates, setTriggerTemplates] = useState<TemplateSequence[]>();
 
+
+  const changeThumbnailProject = (file) => {
+    setThumbnailProject(file)
+  }
   const updateAutoTemplates = () => {
     SequencesService
       .readTemplateSequencesSequencesGet("automatic")
@@ -266,6 +271,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         site,
         setCurrentSite,
         image,
+        changeThumbnailProject 
       }}
     >
       {children}

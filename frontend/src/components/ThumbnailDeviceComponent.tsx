@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react"
-import { Devices, FilesService } from "../client"
+import { Devices, DevicesService, FilesService } from "../client"
 import { useMainContext } from "../contexts/mainContext"
 
 import ThumbnailComponent from "./ThumbnailComponent"
@@ -17,35 +17,35 @@ const ThumbnailDeviceComponent = () => {
     const [deviceData, setDeviceData] = useState<Devices>(device());
     const [file, setFile] = useState<any>(null);
 
-    useEffect(() => {    
-        setDeviceData(device())
+    useEffect(() => {
+      setDeviceData(device()) 
+      if(deviceData)
+        {
+          DevicesService.readDeviceThumbnail(deviceData.id)
+          .then(res => {
+            setThumbnail(res[0].url)
+          })  
+        }
 
-        if(deviceData.image != null && deviceData.image.startsWith("http"))
-          {
-            console.log(deviceData.image)
-            setThumbnail(deviceData.image)
-          }
+    }, [deviceData])
+
+    const saveThumbnail = async () => {
+        if(deviceData)
+        {
+
+          FilesService.uploadDeviceFile(deviceData.id, {file})
+          .then(res => {
+            // updateProjects()
+            DevicesService.readDeviceThumbnail(deviceData.id)
+            .then(res => {
+              console.log(res[0].url)
+              setThumbnail(res[0].url)
+            })  
+          })  
+        }
         
-      }, [])
-
-   
-    const saveThumbnail = () =>{
-      console.log(file)
-      console.log(deviceData.id)
-        FilesService
-          .uploadDeviceFile(Number(deviceData.id), { file })
-          .then((res) => {
-            console.log(res)
-            updateDeviceMenu()
-            setThumbnail(res.image)
-            // updateListFile()
-            // setDeviceData(device())
-          });
-  
-        clear();
         setModifyState(false)
-  
-    };
+    }
 
     const clear = () => {
         setFile("");
@@ -60,7 +60,7 @@ const ThumbnailDeviceComponent = () => {
 
     
 
-    return <ThumbnailComponent saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent  saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailDeviceComponent

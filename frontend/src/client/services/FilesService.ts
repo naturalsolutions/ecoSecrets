@@ -152,7 +152,7 @@ export class FilesService {
     }
 
     public static uploadDeviceFile(
-        deviceId: number,
+        deviceId: number | undefined,
         formData: Body_upload_file_files_upload__deployment_id__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -171,7 +171,7 @@ export class FilesService {
     }
 
     public static uploadSiteFile(
-        siteId: number,
+        siteId: number | undefined,
         formData: Body_upload_file_files_upload__deployment_id__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

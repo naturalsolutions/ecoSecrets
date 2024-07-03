@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import ThumbnailComponent from "./ThumbnailComponent"
-import { FilesService, Sites } from "../client"
+import { FilesService, Sites, SitesService } from "../client"
 import { useMainContext } from "../contexts/mainContext"
 
 
@@ -10,20 +10,34 @@ const ThumbnailSitesComponent = () => {
     const [thumbnail, setThumbnail] = useState<string | null>(null)
     const [modifyState, setModifyState] = useState<boolean>(false)
     const [actualSite, setActualSite] = useState<Sites | null>(null)
-    useEffect(() => {   
-        setActualSite(site()) 
-        if(actualSite && actualSite.image?.startsWith("http"))
-            {
-                setThumbnail(actualSite.image)
-            }
-      }, [])
 
-    const saveThumbnail = () => {
-        FilesService.uploadSiteFile(site().id, {file})
-        .then(res => {
-            setThumbnail(res.image)
-        })
-        clear()
+    useEffect(() => {
+      setActualSite(site()) 
+      if(actualSite)
+        {
+          console.log(actualSite.id)
+          SitesService.readSiteThumbnail(actualSite.id)
+          .then(res => {
+            setThumbnail(res[0].url)
+          })  
+        }
+
+    }, [actualSite])
+
+    const saveThumbnail = async () => {
+        if(actualSite)
+        {
+
+          FilesService.uploadSiteFile(actualSite.id, {file})
+          .then(res => {
+            // updateProjects()
+            SitesService.readSiteThumbnail(actualSite.id)
+            .then(res => {
+              setThumbnail(res[0].url)
+            })  
+          })  
+        }
+        
         setModifyState(false)
     }
 

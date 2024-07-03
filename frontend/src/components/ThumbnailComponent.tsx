@@ -1,18 +1,17 @@
 import { Grid, capitalize } from "@mui/material";
 import DropzoneComponent from "./dropzoneComponent";
 import ButtonsYesNo from "./common/buttonsYesNo";
-import { useState, useRef, Dispatch } from "react";
+import { useState,useEffect, useRef, Dispatch } from "react";
 import { useTranslation } from "react-i18next";
 import Thumbnail from "./Thumbnail";
 import ModifyThumbnail from "./ModifyThumbnail";
 
 type thumbnailFunction = () => void;
 
-const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>}> = ({saveThumbnail, thumbnail, file, setFile, modifyState, setModifyState}) => {
+const ThumbnailComponent: React.FC<{ saveThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>}> = ({saveThumbnail, thumbnail, file, setFile, modifyState, setModifyState}) => {
 
     const { t } = useTranslation();
     const fileInputRef = useRef<any>(null);
-    // const [file, setFile] = useState<any>(null);
 
     const loadFile = (f: any) => {
 
@@ -21,6 +20,7 @@ const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:
       const handleButtonClick = () => {
         fileInputRef.current.click(); // Déclenche un clic sur l'input de type fichier
       };
+
       const dropZoneDisplayText = () => {
         
         if (!file) {
@@ -48,6 +48,13 @@ const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:
         fileInputRef.current.value = "";
         setModifyState(false)
       }
+
+
+
+
+
+
+
     return <Grid item lg={6}>      
     {!thumbnail ? <> 
     
@@ -69,3 +76,4 @@ const ThumbnailComponent: React.FC<{saveThumbnail: thumbnailFunction, thumbnail:
 }
 
 export default ThumbnailComponent;
+
