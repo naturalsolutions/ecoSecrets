@@ -24,6 +24,7 @@ import ButtonValidate from "../common/buttonValidate";
 import ButtonModify from "../common/buttonModify";
 import ButtonCancel from "../common/buttonCancel";
 import ThumbnailSitesComponent from "../ThumbnailSitesComponents";
+import { useEffect, useState } from "react";
 
 const SiteForm = () => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ const SiteForm = () => {
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);
+  const [position, setPostition] = useState<any>([])
 
   const handleFormChange = (
     params: string,
@@ -41,6 +43,11 @@ const SiteForm = () => {
     tmp_site_data[params] = e.target.value;
     setSiteData(tmp_site_data);
   };
+
+  useEffect(() => {
+    console.log(site())
+    setPostition([{ lat: site().latitude, lng: site().longitude, name: site().name }])
+  }, [site])
 
   const dialog = () => {
     setOpen(true);
@@ -74,11 +81,7 @@ const SiteForm = () => {
       <ThumbnailSitesComponent/>
       <Grid item lg={6} md={6} sm={12} xs={12} height={300}>
         <Map
-          position={{
-            lat: siteData.latitude,
-            lng: siteData.longitude,
-            name: siteData.name,
-          }}
+          position={position}
           zoom={3}
         />
       </Grid>

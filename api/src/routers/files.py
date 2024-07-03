@@ -253,6 +253,7 @@ def delete_files(
     db: Session = Depends(get_db)
 ):
     try:
+        print(hash_name)
         s3.delete_file_obj(hash_name)
         files.delete_media_deployment(db=db, name=name)
     except Exception as e:
