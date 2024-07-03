@@ -20,7 +20,11 @@ const ThumbnailDeploymentComponent = () => {
           DeploymentsService.readDeploymentThumbnail(deploymentData.id)
           .then(res => {
             setThumbnail(res[0].url)
-            console.log("true")
+            fetch(res[0].url).then(r => {
+              if(r.status != 200) {
+                setThumbnail(null)
+              }
+            })
           })  
         }
 
@@ -52,7 +56,7 @@ const ThumbnailDeploymentComponent = () => {
         return match ? match[1] : null;
     }
 
-    return <ThumbnailComponent saveThumbnail={saveThumbnail} file={file} setFile={setFile} thumbnail={thumbnail} modifyState={modifyState} setModifyState={setModifyState} />
+    return <ThumbnailComponent text="deployment" saveThumbnail={saveThumbnail} file={file} setFile={setFile} thumbnail={thumbnail} modifyState={modifyState} setModifyState={setModifyState} />
 }
 
 export default ThumbnailDeploymentComponent

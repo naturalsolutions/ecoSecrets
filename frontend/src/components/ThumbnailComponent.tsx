@@ -8,7 +8,7 @@ import ModifyThumbnail from "./ModifyThumbnail";
 
 type thumbnailFunction = () => void;
 
-const ThumbnailComponent: React.FC<{ saveThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>}> = ({saveThumbnail, thumbnail, file, setFile, modifyState, setModifyState}) => {
+const ThumbnailComponent: React.FC<{ text: string, saveThumbnail: thumbnailFunction, thumbnail:string | null,file:any , setFile:any, modifyState:boolean, setModifyState:Dispatch<React.SetStateAction<boolean>>}> = ({text, saveThumbnail, thumbnail, file, setFile, modifyState, setModifyState}) => {
 
     const { t } = useTranslation();
     const fileInputRef = useRef<any>(null);
@@ -21,11 +21,11 @@ const ThumbnailComponent: React.FC<{ saveThumbnail: thumbnailFunction, thumbnail
         fileInputRef.current.click(); // Déclenche un clic sur l'input de type fichier
       };
 
-      const dropZoneDisplayText = () => {
+      const dropZoneDisplayText = (text: string) => {
         
         if (!file) {
           return (
-            <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("devices.device")}`}</p>
+            <p>{`${capitalize(t("main.add_media"))} ${t("main.of")} ${t(`${text}s.${text}`)}`}</p>
           );
         } else {
             console.log("called")
@@ -58,7 +58,7 @@ const ThumbnailComponent: React.FC<{ saveThumbnail: thumbnailFunction, thumbnail
     return <Grid item lg={6}>      
     {!thumbnail ? <> 
     
-    <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} /> 
+    <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} text={text}/> 
     <div style={{marginTop: "25px"}}></div>
     <ButtonsYesNo
         onYes={saveThumbnail}

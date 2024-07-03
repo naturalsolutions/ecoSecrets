@@ -24,6 +24,11 @@ const ThumbnailDeviceComponent = () => {
           DevicesService.readDeviceThumbnail(deviceData.id)
           .then(res => {
             setThumbnail(res[0].url)
+            fetch(res[0].url).then(r => {
+              if(r.status != 200) {
+                setThumbnail(null)
+              }
+            })
           })  
         }
 
@@ -60,7 +65,7 @@ const ThumbnailDeviceComponent = () => {
 
     
 
-    return <ThumbnailComponent  saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent text="device" saveThumbnail={saveThumbnail} thumbnail={thumbnail} file={file} setFile={setFile} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailDeviceComponent

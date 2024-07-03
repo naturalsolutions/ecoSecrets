@@ -18,7 +18,7 @@ export default function DropzoneComponent(props) {
                                 <CameraAltIcon fontSize="large" />
                             </Grid>
                             <Grid item>
-                                {props.sentence()}
+                                {props.sentence(props.text)}
                             </Grid>
                         </Grid>
                     </div>

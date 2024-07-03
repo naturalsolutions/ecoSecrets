@@ -16,7 +16,11 @@ const ThumbnailProjectComponent = () => {
           ProjectsService.readProjectThumbnail(projectSheetData?.id)
           .then(res => {
             setThumbnail(res[0].url)
-            console.log("true")
+            fetch(res[0].url).then(r => {
+              if(r.status != 200) {
+                setThumbnail(null)
+              }
+            })
           })  
         }
 
@@ -49,7 +53,7 @@ const ThumbnailProjectComponent = () => {
         return match ? match[1] : null;
     }
 
-    return <ThumbnailComponent  saveThumbnail={saveThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent  text="project" saveThumbnail={saveThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailProjectComponent;

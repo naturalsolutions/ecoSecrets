@@ -62,7 +62,7 @@ const ProjectCard = (props) => {
     const {projects} = useMainContext()
     const { t } = useTranslation();
     const [openImport, setOpenImport] = useState(false);
-    const [thumbnail, setThumbnail] = useState<string | undefined>("")
+    const [thumbnail, setThumbnail] = useState<string | null>(null)
 
     const project = (): ProjectWithDeployment => {
         return projects.find((p) => p.id ==props.selectedProject.id);
@@ -94,6 +94,11 @@ const ProjectCard = (props) => {
             ProjectsService.readProjectThumbnail(project().id)
             .then(res => {
               setThumbnail(res[0].url)
+              fetch(res[0].url).then(r => {
+                if(r.status != 200) {
+                  setThumbnail(null)
+                }
+              })
             })
   
       }, [])
