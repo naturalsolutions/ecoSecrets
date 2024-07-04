@@ -177,6 +177,10 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     return deviceMenu.find((d) => d.id === currentDevice);
   };
 
+  const image = (): any | null => {
+    return files.find((f) => f.id === currentImage);
+  };
+
   useEffect(() => {
     (async () => {
       updateProjects();
@@ -260,7 +264,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         setTriggerTemplates,
         updateTriggerTemplates,
         site,
-        setCurrentSite
+        setCurrentSite,
+        image
       }}
     >
       {children}

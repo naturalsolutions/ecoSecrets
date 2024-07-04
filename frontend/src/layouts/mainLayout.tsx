@@ -1,4 +1,5 @@
 import { Box, Grid } from "@mui/material";
+import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 
 type MainLayoutProps = {
   Header?: JSX.Element;
@@ -14,10 +15,20 @@ export const MainLayout = ({
   Side,
   ...rest
 }: MainLayoutProps) => (
-  <Box sx={{ flexGrow: 1 }}>
+  <Box>
     {Header}
-    <Grid container sx={{ height: "90vh" }} spacing={2} justifyContent='center'>
-      <Grid item sx={{ height: "100%" }} xs={12} md={11} lg={11}>
+    <Grid
+      container
+      sx={{ height: "calc(100vh - 72px)" }}
+      justifyContent="center"
+    >
+      <Grid
+        item
+        sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+        xs={12}
+        md={11}
+        lg={11}
+      >
         {Navigation}
         {Main}
       </Grid>

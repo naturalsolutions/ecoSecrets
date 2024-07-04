@@ -38,6 +38,12 @@ services:
       - traefik.http.routers.api.tls.certresolver=le
     command: "./entrypoint.sh uvicorn --host 0.0.0.0 src.main:app"
 
+  taxapi:
+    labels:
+      - traefik.http.routers.taxapi.entrypoints=websecure
+      - traefik.http.routers.taxapi.tls=true
+      - traefik.http.routers.taxapi.tls.certresolver=le
+
   keycloak:
     labels:
       - traefik.http.routers.keycloak.entrypoints=websecure
@@ -47,7 +53,7 @@ services:
   minio:
     labels:
       - traefik.enable=true
-      - traefik.http.routers.minio.rule=Host(`${DOMAIN-my.domain.com}`) && PathPrefix(`/${MINIO_BUCKET_NAME-miniobucket}`)
+      - traefik.http.routers.minio.rule=Host(`${DOMAIN:-my.domain.com}`) && PathPrefix(`/${MINIO_BUCKET_NAME:-miniobucket}`)
       - traefik.http.routers.minio.entrypoints=websecure
       - traefik.http.routers.minio.tls=true
       - traefik.http.routers.minio.tls.certresolver=le

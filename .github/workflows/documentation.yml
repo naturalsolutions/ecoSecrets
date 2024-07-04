@@ -1,10 +1,10 @@
-name: Documentation (build and deploy)
+name: Build and Deploy Documentation
 on:
   push:
     branches: [dev]
     paths:
-      - docs/
-      - .github/
+      - docs/*
+      - .github/*
   workflow_dispatch:
 permissions:
   contents: write

@@ -39,7 +39,6 @@ export type { User } from './models/User';
 export type { UserCreate } from './models/UserCreate';
 export type { ValidationError } from './models/ValidationError';
 
-export { AdminService } from './services/AdminService';
 export { DefaultService } from './services/DefaultService';
 export { DeploymentsService } from './services/DeploymentsService';
 export { DevicesService } from './services/DevicesService';

@@ -8,8 +8,8 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
     ports:
-      - ${TRAEFIK_PORT-8889}:80
-      - ${TRAEFIK_DASHBOARD_PORT-8890}:8080
+      - ${TRAEFIK_PORT:-8889}:80
+      - ${TRAEFIK_DASHBOARD_PORT:-8890}:8080
 
   api:
     build:
@@ -21,6 +21,10 @@ services:
     ports:
       - "3654:8000"
     command: "./entrypoint.sh uvicorn --host 0.0.0.0 --reload src.main:app"
+
+  taxapi:
+    ports:
+      - "5666:5666"
 
   frontend:
     build:
@@ -50,6 +54,10 @@ services:
   keycloak:
     ports:
       - "8888:8080"
+    volumes:
+      - ../keycloak/realm.json:/opt/keycloak/data/import/realm.json
+      - ../keycloak/theme/customtheme:/opt/keycloak/themes/customtheme
+    command: start-dev --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false --import-realm
 
   doc:
     image: squidfunk/mkdocs-material:8.3.9
