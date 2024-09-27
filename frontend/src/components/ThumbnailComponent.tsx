@@ -1,4 +1,4 @@
-import { Grid, capitalize } from "@mui/material";
+import { Grid, capitalize, Stack } from "@mui/material";
 import DropzoneComponent from "./dropzoneComponent";
 import ButtonsYesNo from "./common/buttonsYesNo";
 import { useState,useEffect, useRef, Dispatch } from "react";
@@ -53,26 +53,28 @@ const ThumbnailComponent: React.FC<{ text: string, saveThumbnail: thumbnailFunct
 
 
 
+             
+   return <Stack direction="column">
+        {!thumbnail ? <> 
+        
+        <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} text={text}/> 
+        <div style={{marginTop: "25px"}}></div>
+        <ButtonsYesNo
+            onYes={saveThumbnail}
+            onNo={clear}
+            yesContent={capitalize(t("main.save"))}
+            noContent={capitalize(t("main.cancel"))}
+          />
+          </>
+          : (<> <Thumbnail item={thumbnail} handleButtonClick={handleButtonClick} modifyRef={fileInputRef} setFile={loadNewFile} modifyState={modifyState} cancelModify={cancelModify}/>
+                {/* <ModifyThumbnail handleButtonClick={handleButtonClick} setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} cancelModify={cancelModify} /> */}
+            </>)
+        }   
+   </Stack>
+ 
+  
 
-
-    return <Grid item lg={6}>      
-    {!thumbnail ? <> 
-    
-    <DropzoneComponent onDrop={loadFile} sentence={dropZoneDisplayText} text={text}/> 
-    <div style={{marginTop: "25px"}}></div>
-    <ButtonsYesNo
-        onYes={saveThumbnail}
-        onNo={clear}
-        yesContent={capitalize(t("main.save"))}
-        noContent={capitalize(t("main.cancel"))}
-      />
-       </>
-       : (<> <Thumbnail item={thumbnail}/>
-             <ModifyThumbnail handleButtonClick={handleButtonClick}setFile={loadNewFile} modifyRef={fileInputRef} modifyState={modifyState} saveNewThumbnail={saveThumbnail} cancelModify={cancelModify} />
-        </>)
-     }
-      
-    </Grid>
+  
 }
 
 export default ThumbnailComponent;

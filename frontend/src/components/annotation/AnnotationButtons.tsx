@@ -31,16 +31,16 @@ const AnnotationButtons = () => {
 
     const deleteMedia = () => {
         console.log("deleted")
-        console.log(image().url)
+        console.log(image())
         console.log(get_file_name(image().url))
             FilesService.deleteDeploymentMediaFile(get_file_name(image().url), image().name)
             .then(res => {
                 console.log(res)
             })                
-        if(deploymentData)
-            {
-                window.location.href = `/project/${project().id}/deployment/${deploymentData.id}/medias`   
-            }
+        // if(deploymentData)
+        //     {
+        //         window.location.href = `/project/${project().id}/deployment/${deploymentData.id}/medias`   
+        //     }
         
         setConfirmationDelete(false)
     }

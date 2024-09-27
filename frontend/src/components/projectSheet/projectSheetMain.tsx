@@ -25,6 +25,9 @@ const ProjectSheet = () => {
     const [openNewDeployment, setOpenNewDeployment] = useState(false);
     const [load, setload] = useState(true);
     const [position, setPostition] = useState<any>([])
+    const [modifyState, setModifyState] = useState<boolean>(false)
+    const [file, setFile] = useState<any>(null)
+    const [thumbnail, setThumbnail] = useState<any>(null)
 
     const handleOpenNewDeployment = () => {
         setOpenNewDeployment(true);
@@ -102,9 +105,12 @@ const ProjectSheet = () => {
                     </Box>
                     
                     <ProjectInformations />
-                    <ThumbnailProjectComponent />
-                    <ProjectForm/>
+                    <Stack direction="row">
+                        <ThumbnailProjectComponent modifyState={modifyState} setModifyState={setModifyState} setFile={setFile} file={file}/>
+                        <ProjectForm setModifyState={setModifyState} file={file} setThumbnail={setThumbnail}/>                        
+                    </Stack>
 
+                    
                     <Stack spacing={3}>
                         <Stack
                             direction='row'

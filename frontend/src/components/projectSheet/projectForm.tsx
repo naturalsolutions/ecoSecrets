@@ -5,14 +5,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Grid, Stack, TextField, Typography, Button, MenuItem, Dialog, DialogTitle, Divider, DialogContent, DialogActions, Alert, AlertTitle, Box, Collapse, IconButton, capitalize } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMainContext } from '../../contexts/mainContext';
-import { ProjectSheet, ProjectsService } from '../../client';
+import { FilesService, ProjectSheet, ProjectsService } from '../../client';
 import DropzoneComponent from '../dropzoneComponent';
 import { useTranslation } from 'react-i18next';
 import ButtonModify from '../common/buttonModify';
 import ButtonValidate from '../common/buttonValidate';
 import ButtonCancel from '../common/buttonCancel';
+import { useState, useEffect } from 'react';
 
-const ProjectForm = () => {
+
+const ProjectForm = ({setModifyState, file, setThumbnail}) => {
     const { t } = useTranslation()
     const { projectSheetData, updateProjectSheetData } = useMainContext();
     const [projectData, setProjectData] = React.useState<ProjectSheet>(projectSheetData);
@@ -23,6 +25,10 @@ const ProjectForm = () => {
     const [open, setOpen] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [modified, setModified] = React.useState(false);
+    const [oldImage, setOldImage] = useState(null)
+
+
+
 
     const handleFormChange = (params: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let tmp_project_data = { ...projectData };
@@ -38,15 +44,19 @@ const ProjectForm = () => {
 
     const dialog = () => {
         setOpen(true);
+        
     };
 
+    
     const handleChange = () => {
         setModified(!modified);
+        setModifyState(!modified)
     };
 
     const handleClose = () => {
         setOpen(false);
     };
+
 
     const save = () => {
         setModified(!modified);
@@ -58,6 +68,7 @@ const ProjectForm = () => {
                 console.log(err);
             });
         setSuccess(true);
+        
     };
 
     return (

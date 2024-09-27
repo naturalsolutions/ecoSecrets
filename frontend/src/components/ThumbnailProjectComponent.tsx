@@ -3,11 +3,11 @@ import ThumbnailComponent from "./ThumbnailComponent";
 import { useMainContext } from "../contexts/mainContext";
 import { FilesService, ProjectWithDeployment, ProjectsService } from "../client";
 
-const ThumbnailProjectComponent = () => {
-    const {projectSheetData} = useMainContext()
-    const [file, setFile] = useState<any>(null)
-    const [thumbnail, setThumbnail] = useState<any>(null)
-    const [modifyState, setModifyState] = useState<boolean>(false)
+const ThumbnailProjectComponent = ({setModifyState, modifyState, setFile, file}) => {
+    const {projectSheetData, updateProjects, updateProjectSheetData} = useMainContext()
+    const [thumbnail, setThumbnail] = useState(null)
+    
+    
 
     useEffect(() => {
       console.log(projectSheetData)
@@ -26,23 +26,30 @@ const ThumbnailProjectComponent = () => {
 
     }, [projectSheetData])
 
-    const saveThumbnail = async () => {
-        if(projectSheetData)
-        {
+    // useEffect(() => {
+    //   if (file) {
+    //     saveThumbnail();
+    //   }
+    // }, [file]);
 
-          FilesService.uploadProjectFile(projectSheetData?.id, {file})
-          .then(res => {
-            // updateProjects()
-            ProjectsService.readProjectThumbnail(projectSheetData?.id)
-            .then(res => {
-              setThumbnail(res[0].url)
-            })  
-          })  
-        }
-        
-        setModifyState(false)
-    }
+
     
+    const saveThumbnail = async () => {
+      if(projectSheetData)
+      {
+        console.log(file)
+        FilesService.uploadProjectFile(projectSheetData?.id, {file})
+        .then(res => {
+          updateProjectSheetData()
+          ProjectsService.readProjectThumbnail(projectSheetData?.id)
+          .then(res => {
+            setThumbnail(res[0].url)
+          })  
+        })  
+      }
+      
+     
+  }
     const clear = () => {
         setFile("");
       };
@@ -53,7 +60,7 @@ const ThumbnailProjectComponent = () => {
         return match ? match[1] : null;
     }
 
-    return <ThumbnailComponent  text="project" saveThumbnail={saveThumbnail} thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
+    return <ThumbnailComponent saveThumbnail={saveThumbnail}  text="project" thumbnail={thumbnail} setFile={setFile} file={file} modifyState={modifyState} setModifyState={setModifyState}/>
 }
 
 export default ThumbnailProjectComponent;
