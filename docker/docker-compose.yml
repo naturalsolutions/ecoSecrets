@@ -12,7 +12,7 @@ x-project-defaults: &project_defaults
 services:
   traefik:
     <<: *project_defaults
-    image: ${TRAEFIK_IMAGE-traefik:v2.6}
+    image: ${TRAEFIK_IMAGE:-traefik:v2.6}
     depends_on:
       frontend:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
 
   api:
     <<: *project_defaults
-    image: ${API_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:api-dev}
+    image: ${API_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:api-dev}
     build:
       context: ../api
       dockerfile: Dockerfile
@@ -37,21 +37,21 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-      keycloak: 
+      keycloak:
         condition: service_healthy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.api.rule=PathPrefix(`/api/v1`)
+      - traefik.http.routers.api.rule=${TRAEFIK_ROUTER_RULE_API:-PathPrefix(`/api/v1`)}
       - traefik.http.routers.api.entrypoints=web
       - traefik.http.routers.api.middlewares=api-stripprefix
-      - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=${API_ROOT_PATH-/api/v1}
+      - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=${API_ROOT_PATH:-/api/v1}
     environment:
       - KEYCLOAK_ADMIN_CLIENT_SECRET=${KEYCLOAK_ADMIN_CLIENT_SECRET}
-      - KEYCLOAK_CALLBACK_URI=${KEYCLOAK_CALLBACK_URI-http://api:8000/callback}
-      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID-geonature-annotation}
+      - KEYCLOAK_CALLBACK_URI=${KEYCLOAK_CALLBACK_URI:-http://api:8000/callback}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-geonature-annotation}
       - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
-      - KEYCLOAK_REALM=${KEYCLOAK_REALM-geonature-annotation}
-      - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL-http://keycloak:8080/auth}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM:-geonature-annotation}
+      - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL:-http://keycloak:8080/auth}
       - KEYCLOAK_TOKEN_URI=${KEYCLOAK_TOKEN_URI}
 
   deepfaune:
@@ -85,16 +85,15 @@ services:
 
   taxapi:
     <<: *project_defaults
-    image: ${TAXAPI_IMAGE-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
+    image: ${TAXAPI_IMAGE:-registry.gitlab.com/natural-solutions/geonature/taxapi:taxapi-latest}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.taxapi.rule=${TRAEFIK_ROUTER_RULE_TAXAPI-PathPrefix(`/taxapi`)}
+      - traefik.http.routers.taxapi.rule=${TRAEFIK_ROUTER_RULE_TAXAPI:-PathPrefix(`/taxapi`)}
       - traefik.http.routers.taxapi.entrypoints=web
-      - traefik.http.middlewares.add-foo.addprefix.prefix=${TAXAPI_ROOT_PATH-/taxapi}
     environment:
-      - TAXREF_FILE=${TAXAPI_TAXREF_FILE-TAXREF_v16_2022.zip}
+      - TAXREF_FILE=${TAXAPI_TAXREF_FILE:-TAXREF_v16_2022.zip}
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5666/taxapi/V1/healthcheck" ]
+      test: ["CMD", "curl", "-f", "http://localhost:5666/taxapi/V1/healthcheck"]
       interval: 10s
       timeout: 30s
       retries: 5
@@ -102,7 +101,7 @@ services:
 
   frontend:
     <<: *project_defaults
-    image: ${FRONTEND_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
+    image: ${FRONTEND_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
     build:
       context: ../frontend
       dockerfile: Dockerfile
@@ -117,7 +116,7 @@ services:
       start_period: 60s
     labels:
       - traefik.enable=true
-      - traefik.http.routers.frontend.rule=PathPrefix(`/`)
+      - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND:-PathPrefix(`/`)}
       - traefik.http.routers.frontend.entrypoints=web
     environment:
       - REACT_APP_KEYCLOAK_CLIENT_URL=${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
@@ -126,28 +125,33 @@ services:
 
   db:
     <<: *project_defaults
-    image: postgres:14-alpine
-    healthcheck:      
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-annotation} -h 127.0.0.1"]     
-      interval: 10s      
-      timeout: 5s      
-      retries: 3      
+    image: ${DB_IMAGE:-postgres:14-alpine}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-annotation} -h 127.0.0.1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
       start_period: 60s
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD-dbpassword}
-      POSTGRES_DB: ${DB_NAME-annotation}      
-      POSTGRES_USER: ${DB_USER-dbuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dbpassword}
+      POSTGRES_DB: ${DB_NAME:-annotation}
+      POSTGRES_USER: ${DB_USER:-dbuser}
 
   keycloak:
     <<: *project_defaults
-    image: fastcam-keycloak-dev
+    image: ${KEYCLOAK_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:keycloak-dev}
     build:
       context: ../keycloak
-    command: start-dev --import-realm  
+    command: start-dev --import-realm
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+      # https://github.com/keycloak/keycloak/issues/17273#issuecomment-1693549331
+      test: cat /proc/net/tcp | grep '00000000:1F90 00000000:0000' || exit 1
       interval: 10s
       timeout: 5s
       retries: 10
@@ -157,23 +161,23 @@ services:
         condition: service_healthy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK-PathPrefix(`/auth`)}
+      - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK:-PathPrefix(`/auth`)}
       - traefik.http.routers.keycloak.entrypoints=web
 
   minio:
     <<: *project_defaults
-    image: ${MINIO_IMAGE-minio/minio:RELEASE.2023-08-23T10-07-06Z}
+    image: ${MINIO_IMAGE:-minio/minio:RELEASE.2023-08-23T10-07-06Z}
     volumes:
       - minio_data:/data
-    healthcheck:      
+    healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s      
-      timeout: 20s      
+      interval: 30s
+      timeout: 20s
       retries: 3
     command: server --console-address :9001 /data
     labels:
       - traefik.enable=true
-      - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO-PathPrefix(`/miniobucket`)}
+      - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO:-PathPrefix(`/miniobucket`)}
 
 volumes:
   db_data:

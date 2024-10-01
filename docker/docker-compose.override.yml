@@ -8,8 +8,8 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
     ports:
-      - ${TRAEFIK_PORT-8889}:80
-      - ${TRAEFIK_DASHBOARD_PORT-8890}:8080
+      - ${TRAEFIK_PORT:-8889}:80
+      - ${TRAEFIK_DASHBOARD_PORT:-8890}:8080
 
   api:
     build:

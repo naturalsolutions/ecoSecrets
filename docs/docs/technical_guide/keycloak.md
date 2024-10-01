@@ -1,8 +1,8 @@
 # Keycloak
 
-Keycloak est la technologie utilisée dans GeoCam pour **gérer les droits et les utilisateurs**. Vous pouvez retrouver plus d'informations sur cette technologie [ici](https://www.keycloak.org/guides#getting-started).
+Keycloak est la technologie utilisée dans ecoSecrets pour **gérer les droits et les utilisateurs**. Vous pouvez retrouver plus d'informations sur cette technologie [ici](https://www.keycloak.org/guides#getting-started).
 
-L'interface administrateur permet à aux utlilisateurs administrateurs de gérer l'ensemble des aspects relatifs à Keycloak. Elle est accessible sur : `/auth/admin/geonature-annotation/console/`. La connexion se fait avec les mêmes identifiants que ceux de l'application. 
+L'interface administrateur permet à aux utlilisateurs administrateurs de gérer l'ensemble des aspects relatifs à Keycloak. Elle est accessible sur : `/auth/admin/geonature-annotation/console/`. La connexion se fait avec les mêmes identifiants que ceux de l'application.
 
 Pour le moment, seule la gestion de l'authentification est implémentée dans l'application. Il n'est donc pas encore possible de donner des droits différents aux utilisateurs d'une instance. Cela signifie que tous les utilisateurs auront accès aux mêmes pages et pourront effectuer les mêmes opérations sur l'application.
 

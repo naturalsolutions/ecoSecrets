@@ -53,7 +53,7 @@ services:
   minio:
     labels:
       - traefik.enable=true
-      - traefik.http.routers.minio.rule=Host(`${DOMAIN-my.domain.com}`) && PathPrefix(`/${MINIO_BUCKET_NAME-miniobucket}`)
+      - traefik.http.routers.minio.rule=Host(`${DOMAIN:-my.domain.com}`) && PathPrefix(`/${MINIO_BUCKET_NAME:-miniobucket}`)
       - traefik.http.routers.minio.entrypoints=websecure
       - traefik.http.routers.minio.tls=true
       - traefik.http.routers.minio.tls.certresolver=le

@@ -12,7 +12,7 @@
             <meta name="${meta?split('==')[0]}" content="${meta?split('==')[1]}"/>
         </#list>
     </#if>
-    <title>GeoCam</title>
+    <title>ecoSecrets</title>
     <link rel="icon" href="${url.resourcesPath}/img/favicon.ico" />
     <#if properties.stylesCommon?has_content>
         <#list properties.stylesCommon?split(' ') as style>
@@ -40,7 +40,7 @@
 <div class="${properties.kcLoginClass!}">
     <div id="kc-header" class="${properties.kcHeaderClass!}">
         <div id="kc-header-wrapper"
-             class="${properties.kcHeaderWrapperClass!}"><img id="geocamlogo" src="${url.resourcesPath}/img/logo.png">
+             class="${properties.kcHeaderWrapperClass!}"><img id="ecosecretslogo" src="${url.resourcesPath}/img/logo.png">
 </div>
     </div>
     <div class="${properties.kcFormCardClass!}">
