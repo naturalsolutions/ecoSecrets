@@ -12,10 +12,12 @@ import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import AddIcon from '@mui/icons-material/Add';
 import ImportModale from "./importModale";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoAnnotation from "./goAnnotation";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
+import { useMainContext } from "../contexts/mainContext";
+import { ProjectWithDeployment } from "../client";
 
 const testStatus = (status) => {
     if (status === 'Terminé') {
@@ -57,9 +59,15 @@ const testStatus = (status) => {
 const IconStyle = { verticalAlign: "middle", minWidth: "40px" }
 
 const ProjectCard = (props) => {
-
+    const {projects} = useMainContext()
     const { t } = useTranslation();
     const [openImport, setOpenImport] = useState(false);
+    const [thumbnail, setThumbnail] = useState<string | undefined>("")
+
+    const project = (): ProjectWithDeployment | undefined => {
+        return projects.find((p) => p.id ==props.selectedProject.id);
+      };
+      
     const openImportModale = (id: number) => {
         setOpenImport(true);
     };
@@ -82,6 +90,11 @@ const ProjectCard = (props) => {
         return;
     };
 
+    useEffect(() => {
+
+        setThumbnail(project()?.image)
+
+    }, [])
     return (
         <Card>
             <ImportModale
@@ -107,7 +120,7 @@ const ProjectCard = (props) => {
             <CardMedia
                 component="img"
                 height="194"
-                image="https://cdn.pixabay.com/photo/2022/06/25/23/41/ladybug-7284337_960_720.jpg"
+                image={thumbnail ? thumbnail : "https://cdn.pixabay.com/photo/2022/06/25/23/41/ladybug-7284337_960_720.jpg"}
             />
 
             <CardContent>

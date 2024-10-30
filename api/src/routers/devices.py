@@ -50,3 +50,4 @@ def delete_device(device_id: int, db: Session = Depends(get_db)):
 @router.get("/menu/", response_model=List[DeviceMenu])
 def read_menu_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return device.get_menu_devices(db, skip=skip, limit=limit)
+

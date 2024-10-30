@@ -9,7 +9,7 @@ from sqlmodel import Session
 
 from src.config import settings
 from src.connectors import s3
-from src.models.file import CreateFiles, Files
+from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
 
 # import schemas.schemas
 from src.schemas.schemas import Annotation
@@ -50,7 +50,11 @@ def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
         .all()
     )
 
-
+def delete_media_deployment(db: Session, name:str):
+    db_files = db.query(Files).filter(Files.name == name).first()
+    db.delete(db_files)
+    db.commit()
+    
 def create_file(db: Session, file: CreateFiles):
     db_file = Files(**file.dict(), annotations=[])
     db.add(db_file)
@@ -58,6 +62,12 @@ def create_file(db: Session, file: CreateFiles):
     db.refresh(db_file)
     return db_file
 
+def create_file_device(db: Session, file: CreateDeviceFile):
+    db_file = CreateDeviceFile(**file.dict(), annotations=[])
+    db.add(db_file)
+    db.commit()
+    db.refresh(db_file)
+    return db_file
 
 def update_annotations(db: Session, file_id: int, data: List[Annotation]):
     db_file = get_file(db=db, file_id=file_id)
@@ -93,7 +103,12 @@ def delete_file(db: Session, id: int):
     db.commit()
     return db_file
 
-
+def deleteAllFilesDeployment(db: Session, id:int):
+    db_files = db.query(Files).filter(Files.deployment_id == id).all()
+    for f in db_files:
+        db.delete(f)
+    db.commit()
+    
 def upload_file(
     db: Session,
     hash: str,
@@ -119,3 +134,4 @@ def upload_file(
         return create_file(db=db, file=metadata)
     except Exception as e:
         raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
+

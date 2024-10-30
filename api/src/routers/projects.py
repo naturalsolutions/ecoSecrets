@@ -64,9 +64,12 @@ def read_projects_with_deployments(skip: int = 0, limit: int = 100, db: Session 
 
 
 @router.get("/stats_projects/", response_model=List[StatsProject])
-def get_stats_projects(db: Session = Depends(get_db)):
-    return project.get_projects_stats(db)
+def get_stats_projects(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+    return project.get_projects_stats(db, skip=skip, limit=limit)
 
+@router.get("/length/", response_model=int)
+def get_stats_projects(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+    return project.get_projects_length(db, skip=skip, limit=limit)
 
 @router.get("/project_informations/{project_id}", response_model=ProjectSheet)
 def get_informations_project(project_id: int, db: Session = Depends(get_db)):
