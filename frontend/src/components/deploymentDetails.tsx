@@ -14,6 +14,22 @@ const DeploymentDetails = (props) => {
     const handleTabValueChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
     };
+    console.log(deploymentData)
+    const [openNewDeployment, setOpenNewDeployment] = useState(false);
+    const handleOpenNewDeployment = () => {
+        setOpenNewDeployment(true);
+    };
+    const handleCloseNewDeployment = () => {
+        setOpenNewDeployment(false);
+    };
+
+    const [openImport, setOpenImport] = useState(false);
+    const openImportModale = () => {
+        setOpenImport(true);
+    };
+    const closeImportModale = () => {
+        setOpenImport(false);
+    };
     
     return(
         <Box sx={{ width: "100%" }}>
