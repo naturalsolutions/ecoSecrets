@@ -6,6 +6,7 @@ type MainLayoutProps = {
   Navigation?: JSX.Element;
   Main?: JSX.Element;
   Side?: JSX.Element;
+  is404?: boolean | null;
 };
 
 export const MainLayout = ({
@@ -13,6 +14,7 @@ export const MainLayout = ({
   Navigation,
   Main,
   Side,
+  is404,
   ...rest
 }: MainLayoutProps) => (
   <Box>
@@ -22,7 +24,9 @@ export const MainLayout = ({
       sx={{ height: "calc(100vh - 72px)" }}
       justifyContent="center"
     >
-      <Grid
+    {is404 === null ? (
+    <></>
+  ) : !is404 ? <Grid
         item
         sx={{ height: "100%", display: "flex", flexDirection: "column" }}
         xs={12}
@@ -31,7 +35,7 @@ export const MainLayout = ({
       >
         {Navigation}
         {Main}
-      </Grid>
+      </Grid> : <>{<h1>Error 404 : Page not found</h1>}</>}
     </Grid>
   </Box>
 );

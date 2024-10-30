@@ -8,7 +8,7 @@ from src.models.deployment import (
     NewDeploymentWithTemplateSequence,
 )
 from src.models.models import TemplateSequence
-
+from src.services import files
 
 def get_deployments(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Deployments).offset(skip).limit(limit).all()
@@ -73,8 +73,8 @@ def update_deployment(db: Session, deployment: DeploymentWithTemplateSequence):
     db.refresh(db_deployment)
     return db_deployment
 
-
 def delete_deployment(db: Session, id: int):
+    db_files_deployment = files.deleteAllFilesDeployment(db=db, id=id)
     db_deployment = db.query(Deployments).filter(Deployments.id == id).first()
     db.delete(db_deployment)
     db.commit()

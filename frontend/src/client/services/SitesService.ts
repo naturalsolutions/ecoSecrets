@@ -35,6 +35,23 @@ export class SitesService {
         });
     }
 
+    public static getSitesNumber(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<number> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/sites/length',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
     /**
      * Create Site
      * @param requestBody

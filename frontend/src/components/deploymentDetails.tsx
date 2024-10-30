@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMainContext } from "../contexts/mainContext";
 import { Box, capitalize, Tab, Tabs } from "@mui/material";
@@ -15,7 +15,9 @@ const DeploymentDetails = (props) => {
         setTabValue(newValue);
     };
     
+
     return(
+        <>
         <Box sx={{ width: "100%" }}>
             <PageHeadBar 
                 data={ deploymentData } 
@@ -35,13 +37,15 @@ const DeploymentDetails = (props) => {
             </Box>
 
             <TabPanel valueTab={tabValue} index={0}>
-                <DeploymentForm/>
+                <DeploymentForm setIs404={props.setIs404} />
             </TabPanel>
 
             <TabPanel valueTab={tabValue} index={1}>
                 <ImageList/>
             </TabPanel>
         </Box>
+        </>
+
     )
 };
 export default DeploymentDetails;

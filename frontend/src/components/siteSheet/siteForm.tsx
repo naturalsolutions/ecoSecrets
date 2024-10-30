@@ -23,6 +23,7 @@ import Map from "../Map";
 import ButtonValidate from "../common/buttonValidate";
 import ButtonModify from "../common/buttonModify";
 import ButtonCancel from "../common/buttonCancel";
+import ThumbnailSitesComponent from "../ThumbnailSitesComponents";
 
 const SiteForm = () => {
   const { t } = useTranslation();
@@ -70,6 +71,7 @@ const SiteForm = () => {
 
   return (
     <Grid container direction="row" spacing={2}>
+      <ThumbnailSitesComponent/>
       <Grid item lg={6} md={6} sm={12} xs={12} height={300}>
         <Map
           position={{

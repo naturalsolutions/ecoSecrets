@@ -21,7 +21,14 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100):
         .all()
     )
 
-
+def get_projects_length(db: Session, skip: int = 0, limit: int = 100):
+    return len(
+        db.query(Projects)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+    
 def get_project(db: Session, project_id: int):
     return db.query(Projects).filter(Projects.id == project_id).first()
 
@@ -56,6 +63,19 @@ def update_project(db: Session, project: ProjectBase, id: int):
     db.refresh(db_project)
     return db_project
 
+def update_project_image(db: Session, file_name: str, project_id: int):
+    db_project = db.query(Projects).filter(Projects.id == project_id).first()
+    db_project.image = file_name
+    db.commit()
+    db.refresh(db_project)
+    return db_project
+
+def delete_image_project_id(db: Session, id: int):
+    db_project = db.query(Projects).filter(Projects.id == id).first()
+    db_project.image = ""
+    db.commit()
+    db.refresh(db_project)
+    return db_project
 
 def delete_project(db: Session, id: int):
     db_project = db.query(Projects).filter(Projects.id == id).first()
