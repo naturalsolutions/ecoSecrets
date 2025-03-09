@@ -64,7 +64,7 @@ const AnnotationGalleryDisplay = () => {
   const displayAnnotation = (data) => {
     return data
       .map((item) => {
-        let taxonomicInfo = item.species || item.genus || item.order || item.family || item.classe;
+        let taxonomicInfo = item.species || item.genus || item.family || item.order || item.classe;
         return `${taxonomicInfo} (${item.number})`;
       })
       .join(', ');
