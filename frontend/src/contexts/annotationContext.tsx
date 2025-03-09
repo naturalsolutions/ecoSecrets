@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { Annotation, FilesService } from "../client";
 import { useMainContext } from "./mainContext";
+import { useFilesContext } from "./filesContext";
 
 export const AnnotationContext = createContext({} as any);
 
@@ -10,17 +11,11 @@ export const useAnnotationContext = () => useContext(AnnotationContext);
 
 export function AnnotationContextProvider({ children }) {
   let params = useParams();
-  const {
-    projects,
-    setCurrentDeployment,
-    currentImage,
-    setCurrentImage,
-    files,
-    updateListFile,
-    setCurrentProject,
-    image,
-  } = useMainContext();
+  const { projects, setCurrentDeployment, setCurrentProject } =
+    useMainContext();
 
+  const { image, updateListFile, currentImage, setCurrentImage, files } =
+    useFilesContext();
   const [observations, setObservations] = useState<Annotation[]>([]);
   const [date, setDate] = useState<Date | null>(null);
   const [annotated, setAnnotated] = useState<undefined | boolean>(undefined);

@@ -2,10 +2,10 @@ import { Box, Grid } from "@mui/material";
 
 import InputTaxo from "./TaxonomicInputs";
 import DateFilter from "../common/DateRangePicker";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 
 const MediaFilters = () => {
-  const { setFilters } = useMainContext();
+  const { setFilters } = useFilesContext();
 
   const updateFilters = (dateRange: {
     start_date: Date | null;
