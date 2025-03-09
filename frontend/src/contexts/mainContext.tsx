@@ -36,7 +36,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   );
   const [deploymentData, setDeploymentData] =
     useState<DeploymentWithTemplateSequence>();
-  const [setThumbnailProject] = useState(null);
+  const [ThumbnailProject, setThumbnailProject] = useState(null);
   const [globalStats, setGlobalStats] = useState<Stats>();
   const [projectsStats, setProjectsStats] = useState<StatsProject[]>();
   const [projectSheetData, setProjectSheetData] = useState<ProjectSheet>();
