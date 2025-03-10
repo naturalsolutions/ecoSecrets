@@ -1,6 +1,8 @@
-from typing import Optional
+from typing import List, Optional
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
+
+from src.models.deployment import Deployments
 
 
 class SiteBase(SQLModel):
@@ -14,3 +16,4 @@ class SiteBase(SQLModel):
 
 class Sites(SiteBase, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
+    deployments: Optional[List["Deployments"]] = Relationship(back_populates="sites", sa_relationship_kwargs={'lazy': 'raise'})

@@ -1,13 +1,17 @@
 # Service projet
 from datetime import datetime
+from http.client import HTTPException
 from typing import List
 
 from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
+from src.models.device import Devices
+from src.models.site import Sites
 from src.connectors import s3
 from src.models.file import Files
 from src.models.project import ProjectBase, Projects
+from src.models.deployment import DeploymentForProjectSheet, Deployments
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
 
@@ -101,20 +105,38 @@ def annotation_percentage_project(nb_media: int, nb_treated_media: int):
 
 
 def get_informations(db: Session, id: int):
-    project = (
+    result = (
         db.query(Projects)
+        .options(
+            joinedload(Projects.deployments)
+            .options(joinedload(Deployments.files), joinedload(Deployments.sites).load_only(Sites.id, Sites.name))
+            .joinedload(Deployments.devices).load_only(Devices.id, Devices.name)
+        )
         .filter(Projects.id == id)
-        .options(joinedload("deployments").options(joinedload("files")))
-        .first()
     )
+    rows = result.all()
+    if not rows:
+        raise HTTPException(status_code=404, detail="Project not found")
+    project = rows[0]
+    project_data = project.dict()
     media_number = 0
     nb_treated_media = 0
-    deploys = []
+    deploys = [
+        DeploymentForProjectSheet(
+            id=dep.id,
+            name=dep.name,
+            start_date=dep.start_date,
+            end_date=dep.end_date,
+            site_id=dep.site_id,
+            site_name=dep.sites.name,
+            device_id=dep.device_id,
+            device_name=dep.devices.name,
+        )
+        for dep in project.deployments
+    ]
     for d in project.deployments:
         media_number += len(d.files)
-        deploys.append(d.dict())
         nb_treated_media += number_treated_media(d.files)
-
     project_data = project.dict()
     project_data["deployments"] = deploys
     annotation_percentage = annotation_percentage_project(media_number, nb_treated_media)
