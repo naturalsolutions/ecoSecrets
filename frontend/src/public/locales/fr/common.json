@@ -11,7 +11,7 @@
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
     "unknown_image": "image inconnue",
-    "delete": "Supprimer un média du deploiement.",
+    "delete": "Supprimer un média",
     "delete_desc": "Etes vous sûr de vouloir supprimer ce média ?"
   },
   "medias": {

@@ -225,9 +225,9 @@ def upload_files(deployment_id: int, file: UploadFile = File(...), db: Session =
 
     return current_deployment
 
-@router.delete("/delete/{filename}")
-def delete_file(filename: str):
-    return s3.delete_file_obj(filename)
+@router.delete("/delete/{file_id}")
+def delete_file(file_id: str, db: Session = Depends(get_db)):
+    return files.delete_file(db=db, file_id=file_id)
 
 @router.get("/miniometadata")
 def get_metadata():
