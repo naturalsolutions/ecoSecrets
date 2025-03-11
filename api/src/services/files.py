@@ -4,9 +4,9 @@ import uuid as uuid_pkg
 from datetime import datetime
 from typing import List
 
+from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 from sqlmodel import Session
-from botocore.exceptions import BotoCoreError, ClientError
 
 from src.config import settings
 from src.connectors import s3
@@ -85,13 +85,12 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
 
 def delete_file(db: Session, file_id: str):
     db_file = db.query(Files).filter(Files.id == file_id).first()
-    
+
     if not db_file:
         raise ValueError("File not found")
-    
+
     filename = f"{db_file.hash}.{db_file.extension}"
-    print(filename)
-    
+
     try:
         s3.delete_file_obj(filename)
     except (BotoCoreError, ClientError) as e:
@@ -100,6 +99,7 @@ def delete_file(db: Session, file_id: str):
     db.delete(db_file)
     db.commit()
     return db_file
+
 
 def deleteAllFilesDeployment(db: Session, id: int):
     db_files = db.query(Files).filter(Files.deployment_id == id).all()
