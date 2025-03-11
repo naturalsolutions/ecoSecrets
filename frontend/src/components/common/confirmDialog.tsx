@@ -6,7 +6,6 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-  Divider,
 } from "@mui/material";
 
 interface ConfirmDialogProps {
