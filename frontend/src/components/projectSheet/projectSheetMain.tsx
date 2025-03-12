@@ -2,13 +2,14 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
   Stack,
   Typography,
   Alert,
   AlertTitle,
   capitalize,
+  Tooltip,
 } from "@mui/material";
 import ProjectDeployments from "./projectDeployments";
 import ProjectForm from "./projectForm";
@@ -88,13 +89,15 @@ const ProjectSheet = () => {
             </Grid>
 
             <ProjectModal />
-            <IconButton
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={openImportModale}
-            >
-              <CloudDownloadIcon />
-            </IconButton>
+            <Tooltip title={capitalize(t("projects.import_media"))} arrow>
+              <IconButton
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={openImportModale}
+              >
+                <CloudUploadIcon />
+              </IconButton>
+            </Tooltip>
             <ImportModale
               open={openImport}
               close={closeImportModale}

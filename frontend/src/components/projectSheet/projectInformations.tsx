@@ -21,7 +21,7 @@ const ProjectInformations = () => {
                         <PhotoLibraryIcon sx={{display: {color: "#BCAAA4"}}} style={{verticalAlign:"middle", minWidth: '40px'}}/>
                         {projectSheetData.stats.media_number}
                     </Typography>
-                    <ButtonDisplay content={ capitalize(t("main.show_media")) } />
+                    <ButtonDisplay content={ capitalize(t("devices.nb_media")) } />
                 </Stack>
                 <Stack
                     alignItems="center"

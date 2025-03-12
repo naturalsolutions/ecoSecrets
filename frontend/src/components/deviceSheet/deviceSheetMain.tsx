@@ -113,13 +113,6 @@ const DeviceSheet = () => {
               </Typography>
             </Grid>
             <DeviceModal />
-            <IconButton
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2, display: { color: "#2FA37C" } }}
-            >
-              <CloudDownloadIcon />
-            </IconButton>
           </Toolbar>
         </AppBar>
       </Box>
