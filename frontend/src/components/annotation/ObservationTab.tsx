@@ -17,7 +17,7 @@ import { useAnnotationContext } from "../../contexts/annotationContext";
 import { Annotation, FilesService } from "../../client";
 import { FC, useState } from "react";
 import ConfirmDialog from "../common/confirmDialog";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 
 interface ObservationTabProps {
   valueTab: number;
@@ -31,7 +31,7 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
   const { observations, annotated, treated, checked, handleCheckChange, next } =
     useAnnotationContext();
 
-  const { currentImage, updateListFile } = useMainContext();
+  const { currentImage, updateListFile } = useFilesContext();
 
   const save = () => {
     FilesService.deleteFileFilesDeleteFileIdDelete(currentImage).then((res) => {

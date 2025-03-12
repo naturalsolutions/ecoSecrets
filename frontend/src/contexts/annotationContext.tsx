@@ -88,8 +88,9 @@ export function AnnotationContextProvider({ children }) {
   };
 
   const save = () => {
+    const dateFormatted = date instanceof Date ? date : new Date(date!);
     FilesService.updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
-      date: date?.toISOString().slice(0, -1),
+      date: dateFormatted?.toISOString().slice(0, -1),
       annotations: observations,
     })
       .then((res) => updateListFile())
@@ -102,7 +103,7 @@ export function AnnotationContextProvider({ children }) {
   const saveandnext = () => {
     if (isMinimalObservation) {
       save();
-      next();
+      next();     
     } else {
       setOpenSaveErrorDialog(true);
     }
