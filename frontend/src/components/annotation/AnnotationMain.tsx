@@ -4,6 +4,7 @@ import AnnotationSaveError from "./AnnotationSaveError";
 import "../../css/annotation.css";
 import AnnotationImage from "./AnnotationImage";
 import GridSwitcher from "./GridSwitcher";
+import AnnotationGroupModale from "./AnnotationGroupModale";
 
 const LayoutAnnotationContainer = styled("div")({
   flexGrow: 1,
@@ -47,6 +48,8 @@ const AnnotationMain = () => {
       </LayoutAnnotationForm>
 
       <AnnotationSaveError />
+
+      <AnnotationGroupModale />
     </LayoutAnnotationContainer>
   );
 };
