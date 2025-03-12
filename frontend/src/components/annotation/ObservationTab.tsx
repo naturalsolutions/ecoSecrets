@@ -3,7 +3,9 @@ import {
   FormControlLabel,
   Switch,
   IconButton,
+  Tooltip,
 } from "@mui/material";
+import WarningIcon from "@mui/icons-material/Warning";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
@@ -42,24 +44,29 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
   return (
     <TabPanel valueTab={valueTab} index={index}>
       <span className="info-annotation-ctn">
-        <IconButton
-          aria-label="reset"
-          size="large"
-          color="error"
-          sx={{
-            border: "1px solid",
-            borderColor: "secondary",
-            borderRadius: "5px",
-            padding: "8px",
-          }}
-          onClick={() => setOpen(true)}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title={t("annotations.delete")} arrow>
+          <IconButton
+            aria-label="reset"
+            size="large"
+            color="secondary"
+            sx={{
+              border: "1px solid",
+              borderColor: "secondary",
+              borderRadius: "5px",
+              padding: "8px",
+            }}
+            onClick={() => setOpen(true)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
         <ConfirmDialog
           open={open}
           title={t("annotations.delete") as string}
           message={t("annotations.delete_desc") as string}
+          icon={WarningIcon}
+          iconColor="warning.main"
+          color="warning"
           onClose={() => setOpen(false)}
           onConfirm={() => {
             save();

@@ -6,12 +6,30 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  Box,
+  Typography,
+  Divider,
+  Icon,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
+import Close from "@mui/icons-material/Close";
+import { SvgIconComponent } from "@mui/icons-material";
 
 interface ConfirmDialogProps {
   open: boolean;
   title?: string;
   message?: string;
+  icon: SvgIconComponent;
+  iconColor?: string;
+  color?:
+    | "inherit"
+    | "secondary"
+    | "primary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning";
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -20,6 +38,9 @@ export default function ConfirmDialog({
   open,
   title = "Confirmation",
   message = "Êtes-vous sûr de vouloir effectuer cette action ?",
+  icon: Icon,
+  color = "inherit",
+  iconColor = "inherit",
   onClose,
   onConfirm,
 }: ConfirmDialogProps) {
@@ -27,7 +48,25 @@ export default function ConfirmDialog({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          {/* Icône et titre */}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexGrow={1}
+          >
+            <Icon sx={{ mr: 1, color: iconColor }} />
+            <Typography variant="h6">{title}</Typography>
+          </Box>
+          {/* Bouton de fermeture */}
+          <IconButton onClick={onClose} sx={{ ml: "auto" }}>
+            <Close />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+      <Divider />
       <DialogContent>
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>
@@ -35,7 +74,7 @@ export default function ConfirmDialog({
         <Button onClick={onClose} variant="outlined" color="secondary">
           {t("main.cancel")}
         </Button>
-        <Button onClick={onConfirm} variant="contained" color="primary">
+        <Button onClick={onConfirm} variant="contained" color={color}>
           OK
         </Button>
       </DialogActions>

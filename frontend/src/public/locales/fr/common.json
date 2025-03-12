@@ -11,7 +11,7 @@
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
     "unknown_image": "image inconnue",
-    "delete": "Supprimer un média",
+    "delete": "Supprimer le média",
     "delete_desc": "Etes vous sûr de vouloir supprimer ce média ?"
   },
   "medias": {
