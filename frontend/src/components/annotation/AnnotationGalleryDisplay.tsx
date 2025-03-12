@@ -8,6 +8,12 @@ import { getFinestTaxonomicLevel } from "../utils/annotation_utils";
 
 const AnnotationGalleryDisplay = () => {
 
+  const thumbnailStyle = {
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    display: "block",
+    width: "100%",
+  };
   const { files } = useMainContext();
   const { selectedMedias, setSelectedMedias } = useAnnotationContext();
   
@@ -48,6 +54,7 @@ const AnnotationGalleryDisplay = () => {
     } else {
       return (
         <video 
+          style={thumbnailStyle}
           onMouseOver={ () => handleImageMouseOver(item.id) }
           onMouseOut={ () => handleImageMouseOut() }
           onClick={ () => handleImageClick(item) }
