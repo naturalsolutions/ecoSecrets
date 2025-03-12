@@ -16,4 +16,6 @@ class SiteBase(SQLModel):
 
 class Sites(SiteBase, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
-    deployments: Optional[List["Deployments"]] = Relationship(back_populates="sites", sa_relationship_kwargs={'lazy': 'raise'})
+    deployments: Optional[List["Deployments"]] = Relationship(
+        back_populates="sites", sa_relationship_kwargs={"lazy": "raise"}
+    )

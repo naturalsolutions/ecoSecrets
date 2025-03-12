@@ -21,7 +21,9 @@ class DeviceBase(SQLModel):
 
 class Devices(DeviceBase, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
-    deployments: Optional[List["Deployments"]] = Relationship(back_populates="devices", sa_relationship_kwargs={'lazy': 'raise'})
+    deployments: Optional[List["Deployments"]] = Relationship(
+        back_populates="devices", sa_relationship_kwargs={"lazy": "raise"}
+    )
 
 
 class DeviceMenu(Devices):

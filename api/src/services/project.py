@@ -6,12 +6,12 @@ from typing import List
 from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
-from src.models.device import Devices
-from src.models.site import Sites
 from src.connectors import s3
+from src.models.deployment import DeploymentForProjectSheet, Deployments
+from src.models.device import Devices
 from src.models.file import Files
 from src.models.project import ProjectBase, Projects
-from src.models.deployment import DeploymentForProjectSheet, Deployments
+from src.models.site import Sites
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
 
@@ -109,8 +109,12 @@ def get_informations(db: Session, id: int):
         db.query(Projects)
         .options(
             joinedload(Projects.deployments)
-            .options(joinedload(Deployments.files), joinedload(Deployments.sites).load_only(Sites.id, Sites.name))
-            .joinedload(Deployments.devices).load_only(Devices.id, Devices.name)
+            .options(
+                joinedload(Deployments.files),
+                joinedload(Deployments.sites).load_only(Sites.id, Sites.name),
+            )
+            .joinedload(Deployments.devices)
+            .load_only(Devices.id, Devices.name)
         )
         .filter(Projects.id == id)
     )
