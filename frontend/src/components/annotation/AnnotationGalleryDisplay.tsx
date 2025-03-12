@@ -4,6 +4,7 @@ import { useState } from "react";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ButtonGoAnnotation from "../common/ButtonGoAnnotation";
 import { useAnnotationContext } from "../../contexts/annotationContext";
+import { getFinestTaxonomicLevel } from "../utils/annotation_utils";
 
 const AnnotationGalleryDisplay = () => {
 
@@ -64,7 +65,7 @@ const AnnotationGalleryDisplay = () => {
   const displayAnnotation = (data) => {
     return data
       .map((item) => {
-        let taxonomicInfo = item.species || item.genus || item.family || item.order || item.classe;
+        let taxonomicInfo = getFinestTaxonomicLevel(item);
         return `${taxonomicInfo} (${item.number})`;
       })
       .join(', ');
