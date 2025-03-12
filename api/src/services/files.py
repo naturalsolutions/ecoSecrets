@@ -30,7 +30,7 @@ def get_file(db: Session, file_id: uuid_pkg.UUID):
 
 
 def get_deployment_files_with_filters(
-    db: Session, deployment_id: int, filters_params: FilterParams, skip: int = 0, limit: int = 100
+    db: Session, deployment_id: int, filters_params: FilterParams, skip: int = 0, limit: int = 10000
 ):
     filters = filters_params.get_filters()
     query = db.query(Files).filter(
