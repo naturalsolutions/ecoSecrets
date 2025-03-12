@@ -7,7 +7,9 @@ from src.models.file import Files
 from src.models.models import DeploymentTemplateSequenceCorrespondance, TemplateSequence
 
 if TYPE_CHECKING:  # pragma: no cover
+    from .device import Devices
     from .project import Projects
+    from .site import Sites
 
 
 class DeploymentEssentials(SQLModel):
@@ -35,16 +37,16 @@ class Deployments(DeploymentBase, table=True):
         back_populates="deployment",
         sa_relationship_kwargs={"lazy": "raise", "order_by": "Files.name"},
     )
+    sites: Optional["Sites"] = Relationship(
+        back_populates="deployments", sa_relationship_kwargs={"lazy": "raise"}
+    )
+    devices: Optional["Devices"] = Relationship(
+        back_populates="deployments", sa_relationship_kwargs={"lazy": "raise"}
+    )
     template_sequences: Optional[List["TemplateSequence"]] = Relationship(
         back_populates="deployments",
         link_model=DeploymentTemplateSequenceCorrespondance,
     )
-    # Sites: Optional[List["Sites"]] = Relationship(
-    #     back_populates="deployments",
-    #     link_model=SiteBase,
-    # )
-    # site: "Sites" = Relationship(back_populates="deployments",  sa_relationship_kwargs={'lazy': 'raise'})
-    # device: "Devices" = Relationship(back_populates="deployments",  sa_relationship_kwargs={'lazy': 'raise'})
     # mode:  Field(foreign_key = "users.id")
 
 
