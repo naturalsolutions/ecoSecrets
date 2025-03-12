@@ -106,7 +106,8 @@
     "project_name": "project name",
     "deployment_name":"deployment name",
     "account": "My account",
-    "new_object": "Create a new {{object}}"
+    "new_object": "Create a new {{object}}",
+    "no_data":"No data available"
   },
   "observations": {
     "new": "new observation",
