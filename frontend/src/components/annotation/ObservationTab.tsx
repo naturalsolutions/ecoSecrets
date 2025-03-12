@@ -38,7 +38,7 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
       updateListFile();
       setOpen(false);
       next();
-    });
+    }).catch((err) => console.error("Erreur:", err));
   };
 
   return (
