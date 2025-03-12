@@ -6,8 +6,11 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState, useEffect } from "react";
 import { useMainContext } from "../../contexts/mainContext";
 import { Deployments } from "../../client/models/Deployments";
-import { Sites } from "../../client/models/Sites";
-import { Devices } from "../../client/models/Devices";
+
+interface ObjectBase {
+  id: number;
+  name: string;
+}
 
 const Filters = (props) => {
   const { t } = useTranslation();
@@ -22,27 +25,19 @@ const Filters = (props) => {
   const [start_date, setStartDate] = useState<Date | null>(null);
   const [end_date, setEndDate] = useState<Date | null>(null);
   const [name, setName] = useState<Deployments | undefined>();
-  const [sNname, setSName] = useState<Sites | undefined>();
-  const [siteList, setSiteList] = useState<Sites[]>([]);
-  const [deviceList, setDeviceList] = useState<Devices[]>([]);
-  const [dName, setDName] = useState<Devices | undefined>();
+  const [sNname, setSName] = useState<ObjectBase | undefined>();
+  const [siteList, setSiteList] = useState<ObjectBase[]>([]);
+  const [deviceList, setDeviceList] = useState<ObjectBase[]>([]);
+  const [dName, setDName] = useState<ObjectBase | undefined>();
   const [deploymentList, setdeploymentList] = useState<[]>(
     project().deployments
   );
 
-  const site = (item_site): Sites => {
-    return sites.find((s) => s.id === item_site);
-  };
-  const device = (item_device): Sites => {
-    return devices.find((s) => s.id === item_device);
-  };
-
-  const getLists = () => {
+  const getSites = () => {
     props.list.forEach((item) => {
-      const itemSite = site(item.site_id);
       setSiteList((prevSiteList) => {
-        if (!prevSiteList.some((site) => site.id === itemSite.id)) {
-          return [...prevSiteList, itemSite];
+        if (!prevSiteList.some((site) => site.id === item.site_id)) {
+          return [...prevSiteList, { id: item.site_id, name: item.site_name }];
         }
         return prevSiteList;
       });
@@ -51,10 +46,12 @@ const Filters = (props) => {
 
   const getDevices = () => {
     props.list.forEach((item) => {
-      const itemDevice = device(item.device_id);
       setDeviceList((prevSiteList) => {
-        if (!prevSiteList.some((device) => device.id === itemDevice.id)) {
-          return [...prevSiteList, itemDevice];
+        if (!prevSiteList.some((device) => device.id === item.device_id)) {
+          return [
+            ...prevSiteList,
+            { id: item.device_id, name: item.device_name },
+          ];
         }
         return prevSiteList;
       });
@@ -62,13 +59,12 @@ const Filters = (props) => {
   };
 
   useEffect(() => {
-    getLists();
+    getSites();
     setDeviceList([]);
     getDevices();
     setdeploymentList(projectSheetData.deployments);
   }, [currentProject, deployments, sites, devices, projectSheetData]);
 
-  // MAJ du parent lorsque les filtres changent
   const updateParentFilters = () => {
     props.onFilterChange({
       name: name?.id,

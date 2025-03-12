@@ -11,7 +11,7 @@
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
     "unknown_image": "image inconnue",
-    "delete": "Supprimer un média du deploiement.",
+    "delete": "Supprimer le média",
     "delete_desc": "Etes vous sûr de vouloir supprimer ce média ?"
   },
   "medias": {
@@ -105,7 +105,8 @@
     "zero": "aucun",
     "project_name": "nom du projet",
     "deployment_name":"nom du déploiement",
-    "account": "Mon compte"
+    "account": "Mon compte",
+    "new_object": "Créer un nouveau {{object}}"
   },
   "observations": {
     "new": "nouvelle observation",
@@ -158,11 +159,11 @@
   },
   "taxon": {
     "behaviour": "comportement",
-    "biological_state": "stade biologique",
+    "biological_state": "état biologique",
     "classe": "classe",
     "family": "famille",
     "genus": "genre",
-    "life_stage": "stade de vie",
+    "life_stage": "stade biologique",
     "number": "nombre d'individus",
     "order": "ordre",
     "sex": "sexe",

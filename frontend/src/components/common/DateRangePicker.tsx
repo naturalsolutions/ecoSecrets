@@ -1,19 +1,20 @@
-import React, { useState, FC } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { Box, TextField, capitalize } from "@mui/material";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import frLocale from "date-fns/locale/fr";
 import { useTranslation } from "react-i18next";
 
-interface DateRange {
+export interface DateRange {
   start_date: Date | null;
   end_date: Date | null;
 }
 
 interface DateRangeFilterProps {
-  onFilters: (dateRange: DateRange) => void;
+  onChange: (dateRange: DateRange) => void;
+  reset: boolean;
 }
-const DateRangeFilters: FC<DateRangeFilterProps> = ({ onFilters }) => {
+const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
   const { t } = useTranslation();
   const [dateRange, setDateRange] = useState<DateRange>({
     start_date: null,
@@ -22,8 +23,24 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onFilters }) => {
 
   const handleFilter = (key, value) => {
     setDateRange({ ...dateRange, [key]: value });
-    onFilters(dateRange);
   };
+
+  const onReset = () => {
+    setDateRange({
+      start_date: null,
+      end_date: null,
+    });
+  };
+
+  useEffect(() => {
+    reset && onReset();
+  });
+
+  useEffect(() => {
+    if (!reset) {
+      onChange(dateRange);
+    }
+  }, [dateRange]);
 
   return (
     <Box
@@ -39,6 +56,7 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onFilters }) => {
           label={capitalize(t("projects.start_date"))}
           value={dateRange.start_date}
           onChange={(date) => handleFilter("start_date", date)}
+          onError={(error) => console.log("Erreur de saisie :", error)}
           inputFormat="yyyy/MM/dd HH:mm:ss"
           ampm={false}
           renderInput={(params) => (

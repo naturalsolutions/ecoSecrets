@@ -13,6 +13,7 @@ import { useFilesContext } from "../../contexts/filesContext";
 
 interface InputTaxoProps {
   rank: string;
+  reset: boolean;
 }
 
 const InputTaxo: FC<InputTaxoProps> = (props) => {
@@ -111,7 +112,6 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
 
   const onInputChange = (newInput) => {
     setInput(newInput);
-
     if (newInput.length >= 3) {
       setLoad(true);
       getData(newInput);
@@ -125,7 +125,7 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
     }));
   };
 
-  async function reset() {
+  async function onReset() {
     updateFilters(rank, "");
     setTaxonList([]);
   }
@@ -170,13 +170,13 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
   }
 
   return (
-    <Grid item xs={12} sm={6} md={2} lg={1.8}>
+    <Grid item xs={12} sm={6} md={2} lg={1.7}>
       <Autocomplete
         id={rank}
         freeSolo
         disableClearable
         loading={load}
-        value={filters[rank] == undefined ? " " : filters[rank]}
+        value={filters[rank] == undefined ? "" : filters[rank]}
         onChange={(_, newValue) => {
           onChange(newValue);
         }}
@@ -204,7 +204,7 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
               endAdornment: filters[rank] && (
                 <IconButton
                   onClick={() => {
-                    reset();
+                    onReset();
                   }}
                 >
                   <HighlightOffIcon fontSize="small" />

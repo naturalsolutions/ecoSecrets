@@ -304,6 +304,43 @@ export class FilesService {
     }
 
     /**
+     * Delete File
+     * @param fileId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteFileFilesDeleteFileIdDelete(
+        fileId: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/files/delete/{file_id}',
+            path: {
+                'file_id': fileId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Get Metadata
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getMetadataFilesMiniometadataGet(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/files/miniometadata',
+            errors: {
+                404: `Not found`,
+            },
+        });
+    }
+
+    /**
      * Delete Files
      * @param deploymentId
      * @param name
