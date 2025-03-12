@@ -36,11 +36,9 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
     reset && onReset();
   });
 
-  useEffect(() => {
-    if (!reset) {
-      onChange(dateRange);
-    }
-  }, [dateRange]);
+  const onClose = () => {
+    onChange(dateRange);
+  };
 
   return (
     <Box
@@ -56,6 +54,7 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
           label={capitalize(t("projects.start_date"))}
           value={dateRange.start_date}
           onChange={(date) => handleFilter("start_date", date)}
+          onClose={onClose}
           onError={(error) => console.log("Erreur de saisie :", error)}
           inputFormat="yyyy/MM/dd HH:mm:ss"
           ampm={false}
@@ -68,6 +67,7 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
           label={capitalize(t("projects.end_date"))}
           value={dateRange.end_date}
           onChange={(date) => handleFilter("end_date", date)}
+          onClose={onClose}
           inputFormat="yyyy/MM/dd HH:mm:ss"
           ampm={false}
           renderInput={(params) => (

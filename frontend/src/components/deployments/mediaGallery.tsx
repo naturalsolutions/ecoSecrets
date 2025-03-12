@@ -22,9 +22,13 @@ export default function MediaGallery() {
       </Typography>
       <MediaFilters />
       <Masonry columns={6} spacing={2}>
-        {files.map((item, index) => (
-          <GalleryItem item={item} index={index} />
-        ))}
+        {files.length > 0 ? (
+          files.map((item, index) => (
+            <GalleryItem key={item.id} item={item} index={index} />
+          ))
+        ) : (
+          <p>{t("main.no_data")}</p>
+        )}
       </Masonry>
     </Box>
   );
