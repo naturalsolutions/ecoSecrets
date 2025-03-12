@@ -4,30 +4,27 @@ import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BreadcrumbElement from "./breadcrumbElement";
 import { useTranslation } from "react-i18next";
+import { useFilesContext } from "../contexts/filesContext";
 
 const NavigationPath: FC<{}> = () => {
   const {
     project,
     projects,
     deploymentData,
-    currentImage,
     device,
     devices,
     site,
     sites,
-    setCurrentImage,
     setCurrentProject,
     setDeploymentData,
     setCurrentDevice,
     setCurrentSite,
-    files,
-    image,
-    updateProjects
+    updateProjects,
   } = useMainContext();
+  const { files, image, currentImage, setCurrentImage } = useFilesContext();
   useEffect(() => {
-    updateProjects()
-  }, [])
-
+    updateProjects();
+  }, []);
 
   const { t } = useTranslation();
   const location = useLocation();
@@ -46,10 +43,8 @@ const NavigationPath: FC<{}> = () => {
   };
 
   const projectBreadcrumb = (isActive: boolean = false) => {
-    
     return (
-     
-    <BreadcrumbElement
+      <BreadcrumbElement
         key="project"
         current_option={project().name}
         link={`/project/${project().id}`}

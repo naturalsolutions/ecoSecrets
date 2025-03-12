@@ -1,12 +1,12 @@
 import Masonry from "@mui/lab/Masonry";
-import { useMainContext } from "../../contexts/mainContext";
 import { Box, capitalize, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import GalleryItem from "./GalleryItem";
 import MediaFilters from "./Filters";
+import { useFilesContext } from "../../contexts/filesContext";
 
 export default function MediaGallery() {
-  const { files } = useMainContext();
+  const { files } = useFilesContext();
   const { t } = useTranslation();
 
   return (

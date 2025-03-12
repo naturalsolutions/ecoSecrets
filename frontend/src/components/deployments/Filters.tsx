@@ -4,10 +4,10 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 
 import InputTaxo from "./TaxonomicInputs";
 import DateFilter from "../common/DateRangePicker";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 
 const MediaFilters = () => {
-  const { filters, setFilters } = useMainContext();
+  const { filters, setFilters } = useFilesContext();
   const [reset, setReset] = useState<boolean>(false);
 
   const updateFilters = (dateRange: {

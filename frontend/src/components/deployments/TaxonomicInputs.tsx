@@ -9,7 +9,7 @@ import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 
 interface InputTaxoProps {
   rank: string;
@@ -18,7 +18,7 @@ interface InputTaxoProps {
 
 const InputTaxo: FC<InputTaxoProps> = (props) => {
   const { t } = useTranslation();
-  const { filters, setFilters } = useMainContext();
+  const { filters, setFilters } = useFilesContext();
 
   interface Taxon {
     REGNE: string;
