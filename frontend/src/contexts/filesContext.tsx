@@ -21,6 +21,7 @@ export const useFilesContext = () => useContext(FilesContext);
 
 const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
   const { currentDeployment, updateDeploymentData } = useMainContext();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [files, setFiles] = useState<any[]>([]);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>({
@@ -38,6 +39,7 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
   };
 
   const updateListFile = () => {
+    setIsLoaded(false);
     currentDeployment &&
       FilesService.getFilesWithFiltersFilesFiltersDeploymentIdGet(
         currentDeployment,
@@ -51,6 +53,7 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
       )
         .then((files) => {
           setFiles(files);
+          setIsLoaded(true);
         })
         .catch((err) => {
           console.log(err);
@@ -74,6 +77,7 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
         currentImage,
         setCurrentImage,
         image,
+        isLoaded,
       }}
     >
       {children}
