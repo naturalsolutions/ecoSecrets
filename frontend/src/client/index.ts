@@ -7,6 +7,7 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { Annotation } from './models/Annotation';
+export type { AnnotationData } from './models/AnnotationData';
 export type { Body_extract_exif_files_exif__post } from './models/Body_extract_exif_files_exif__post';
 export type { Body_upload_file_files_upload__deployment_id__post } from './models/Body_upload_file_files_upload__deployment_id__post';
 export type { Body_upload_files_files_upload_deployment__deployment_id__post } from './models/Body_upload_files_files_upload_deployment__deployment_id__post';

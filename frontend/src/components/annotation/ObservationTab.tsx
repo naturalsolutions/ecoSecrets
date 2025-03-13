@@ -1,4 +1,4 @@
-import { capitalize, Checkbox, FormControlLabel, Switch } from "@mui/material";
+import { capitalize, Checkbox, FormControlLabel } from "@mui/material";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
@@ -67,7 +67,7 @@ const ObservationTab: FC<ObservationTabProps> = ({
             />
             </span>
 
-            {observations?.map((observation: Annotation, index: number) => (
+            {!checked && observations?.map((observation: Annotation, index: number) => (
                 <ObservationForm 
                     key={ observation.id }
                     index={ index + 1 }

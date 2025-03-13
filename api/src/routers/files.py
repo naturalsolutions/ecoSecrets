@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import io
 import tempfile
+import uuid
 import uuid as uuid_pkg
 from datetime import datetime
 from typing import List
@@ -11,13 +12,14 @@ import magic
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
-import uuid
+
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
+from src.schemas.file import AnnotationData
 from src.schemas.schemas import Annotation
-from src.services import dependencies, files, device, project, deployment, site
+from src.services import dependencies, deployment, device, files, project, site
 from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(
@@ -55,7 +57,7 @@ def get_files(db: Session = Depends(get_db)):
 
 @router.patch("/annotation/{file_id}", response_model=Files)
 def update_annotations(
-    file_id: uuid_pkg.UUID, data: List[Annotation], db: Session = Depends(get_db)
+    file_id: uuid_pkg.UUID, data: AnnotationData, db: Session = Depends(get_db)
 ):
     return files.update_annotations(db, file_id=file_id, data=data)
 

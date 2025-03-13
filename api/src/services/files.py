@@ -10,6 +10,7 @@ from sqlmodel import Session
 from src.config import settings
 from src.connectors import s3
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
+from src.schemas.file import AnnotationData
 
 # import schemas.schemas
 from src.schemas.schemas import Annotation
@@ -57,16 +58,59 @@ def create_file_device(db: Session, file: CreateDeviceFile):
     db.refresh(db_file)
     return db_file
 
-def update_annotations(db: Session, file_id: int, data: List[Annotation]):
+def update_annotations(db: Session, file_id: int, data: AnnotationData):
     db_file = get_file(db=db, file_id=file_id)
     if db_file is None:
         raise HTTPException(
             status_code=404,
             detail="No file found",
         )
-    # update des annotations
-    db_file.annotations = [d.dict() for d in data]
-    # update du statut de traitement du média
+    
+    annotation = [d.dict() for d in data.annotations]
+
+    if data.id_group:
+        if annotation:
+            db_file.annotations = db_file.annotations + annotation
+        if not annotation:
+            db_file.annotations = annotation
+        
+    if not data.id_group:
+        # processing of grouped observations that become individualized
+        if data.group_observations_id_to_individualize:
+            for observation in annotation:
+                if observation['id'] in data.group_observations_id_to_individualize:
+                    observation['id'] = str(uuid_pkg.uuid4())
+                    observation['id_group'] = ""
+
+        # update annotation for the current image displayed
+        db_file.annotations = annotation
+
+    if not data.id_group:
+        # update the observations of the group's media
+        db_files = get_files(db=db)
+        for file in db_files:
+            file_annotation = file.annotations
+            for observation in file_annotation:
+                if observation["id"] in data.group_observations_id_to_update:
+                    new = None
+                    for item in annotation:
+                        if item['id'] == observation["id"]:
+                            new = item
+                            break
+
+                    observation["id_annotation"] = new["id_annotation"]
+                    observation["id_group"] = new["id_group"]
+                    observation["classe"] = new["classe"]
+                    observation["family"] = new["family"]
+                    observation["genus"] = new["genus"]
+                    observation["order"] = new["order"]
+                    observation["species"] = new["species"]
+                    observation["number"] = new["number"]
+                    observation["life_stage"] = new["life_stage"]
+                    observation["biological_state"] = new["biological_state"]
+                    observation["behaviour"] = new["behaviour"]
+                    observation["sex"] = new["sex"]
+                file.annotations = file_annotation
     db_file.treated = True
     db.commit()
     db.refresh(db_file)
