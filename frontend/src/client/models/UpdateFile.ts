@@ -2,10 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Annotation } from './Annotation';
+import type { AnnotationData } from './AnnotationData';
 
 export type UpdateFile = {
     date?: string;
-    annotations: Array<Annotation>;
+    annotations: AnnotationData;
 };
 

@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AnnotationData } from '../models/AnnotationData';
 import type { Body_extract_exif_files_exif__post } from '../models/Body_extract_exif_files_exif__post';
 import type { Body_upload_file_files_upload__deployment_id__post } from '../models/Body_upload_file_files_upload__deployment_id__post';
 import type { Body_upload_files_files_upload_deployment__deployment_id__post } from '../models/Body_upload_files_files_upload_deployment__deployment_id__post';
@@ -43,7 +42,7 @@ export class FilesService {
      */
     public static updateAnnotationsFilesAnnotationFileIdPatch(
         fileId: string,
-        requestBody: AnnotationData,
+        requestBody: UpdateFile,
     ): CancelablePromise<Files> {
         return __request(OpenAPI, {
             method: 'PATCH',
