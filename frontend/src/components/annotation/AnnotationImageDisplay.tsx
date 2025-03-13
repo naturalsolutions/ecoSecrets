@@ -1,10 +1,8 @@
 import { Grid } from "@mui/material";
-import { useMainContext } from "../../contexts/mainContext";
-import { useAnnotationContext } from "../../contexts/annotationContext";
+import { useFilesContext } from "../../contexts/filesContext";
 
 const AnnotationImageDisplay = () => {
-  const { image } = useMainContext();
-  const { annotated } = useAnnotationContext();
+  const { image } = useFilesContext();
 
   const mediaDisplayStyle = {
     borderBottomLeftRadius: 4,

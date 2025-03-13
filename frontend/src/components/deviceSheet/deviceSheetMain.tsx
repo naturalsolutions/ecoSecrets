@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import { Stack, Typography, capitalize } from "@mui/material";
+import { Alert, Stack, Typography, capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -25,7 +25,6 @@ import DeviceData from "./deviceData";
 import { useTranslation } from "react-i18next";
 import { DeploymentsService } from "../../client";
 import { FilesService } from "../../client";
-import AlertUnavailable from "../common/AlertUnavailable";
 import { DeploymentForDeviceSheet } from "../../types/Deployments";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,59 +51,56 @@ const DeviceSheet = () => {
   >([]);
   let params = useParams();
   useEffect(() => {
-    (async () => {
-      setCurrentDevice(Number(params.deviceId));
-      if (params.deviceId !== undefined) {
-        DeploymentsService.readDeviceDeploymentsDeploymentsDeviceDeviceIdGet(
-          parseInt(params.deviceId)
-        ).then((response) => {
-          // liste des déploiements pour un certain dispositif
+    const fetchDeployments = async () => {
+      if (!params.deviceId) return;
 
-          let finalRes: DeploymentForDeviceSheet[] = [];
+      try {
+        setCurrentDevice(Number(params.deviceId));
 
-          projects.forEach((project) => {
-            project.deployments.forEach((deployment) => {
-              response.forEach(async (res) => {
-                if (res.project_id === deployment.project_id) {
-                  // on cherche le deploiement du dispositif dans la liste de tous les deploiements
-                  const nb_medias =
-                  await FilesService.getLengthDeploymentFilesFilesDeploymentIdLengthGet(
-                    res.id
-                  );
-                  // const nb_medias =
-                  //   await FilesService.readLengthDeploymentsFilesById(res.id);
-                  let proj_name = project.name;
-                  let siteName = sites.find(
-                    (site) => site.id === res.site_id
-                  ).name;
+        const response =
+          await DeploymentsService.readDeviceDeploymentsDeploymentsDeviceDeviceIdGet(
+            parseInt(params.deviceId)
+          );
 
-                  if (!finalRes.some((elem) => elem.id === res.id)) {
-                    const tempRes: DeploymentForDeviceSheet = {
-                      name: res.name,
-                      start_date: res.start_date,
-                      end_date: res.end_date,
-                      site_id: res.site_id,
-                      device_id: res.device_id,
-                      id: res.id,
-                      site_name: siteName,
-                      project_name: proj_name,
-                      nb_images: nb_medias,
-                    };
+        const newDeployments = new Set<number>();
+        const finalRes: DeploymentForDeviceSheet[] = [];
 
-                    finalRes.push(tempRes);
-                    console.log(tempRes);
-                    setHistoryDeployment(
-                      [...historyDeployment].concat(finalRes)
-                    );
-                  }
-                }
-              });
-            });
+        for (const res of response) {
+          const project = projects.find((p) => p.id === res.project_id);
+          const site = sites.find((s) => s.id === res.site_id);
+
+          if (newDeployments.has(res.id)) continue;
+          newDeployments.add(res.id);
+
+          const nb_medias =
+            await FilesService.getLengthDeploymentFilesFilesDeploymentIdLengthGet(
+              res.id
+            );
+
+          finalRes.push({
+            id: res.id,
+            name: res.name,
+            start_date: res.start_date,
+            end_date: res.end_date,
+            site_id: res.site_id,
+            device_id: res.device_id,
+            site_name: site.name,
+            project_name: project.name,
+            nb_images: nb_medias,
           });
-        });
+        }
+
+        setHistoryDeployment(finalRes);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des déploiements :",
+          error
+        );
       }
-    })();
-  }, [projects]);
+    };
+
+    fetchDeployments();
+  }, [params.deviceId, projects, sites]); // On dépend uniquement des éléments qui affectent le résultat
 
   return device() !== undefined ? (
     <Stack direction="column" spacing={3}>
@@ -117,13 +113,6 @@ const DeviceSheet = () => {
               </Typography>
             </Grid>
             <DeviceModal />
-            <IconButton
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2, display: { color: "#2FA37C" } }}
-            >
-              <CloudDownloadIcon />
-            </IconButton>
           </Toolbar>
         </AppBar>
       </Box>

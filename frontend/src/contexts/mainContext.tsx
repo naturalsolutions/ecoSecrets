@@ -1,6 +1,5 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
 import { Deployments } from "../client/models/Deployments";
-import { FilesService } from "../client/services/FilesService";
 import { ProjectWithDeployment } from "../client/models/ProjectWithDeployment";
 import { ProjectsService } from "../client/services/ProjectsService";
 import { Stats } from "../client/models/Stats";
@@ -23,6 +22,7 @@ export interface MainContextProps {
   name?: string;
   children?: any;
 }
+
 export const MainContext = createContext({} as any);
 
 export const useMainContext = () => useContext(MainContext);
@@ -36,9 +36,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   );
   const [deploymentData, setDeploymentData] =
     useState<DeploymentWithTemplateSequence>();
-  const [currentImage, setCurrentImage] = useState<string | null>(null);
-  const [files, setFiles] = useState<any[]>([]);
-  const [thumbnailProject, setThumbnailProject] = useState(null);
+  const [ThumbnailProject, setThumbnailProject] = useState(null);
   const [globalStats, setGlobalStats] = useState<Stats>();
   const [projectsStats, setProjectsStats] = useState<StatsProject[]>();
   const [projectSheetData, setProjectSheetData] = useState<ProjectSheet>();
@@ -77,7 +75,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const updateProjects = () => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
       .then((projects) => {
-
         setProjects(projects);
       })
       .catch((err) => {
@@ -106,18 +103,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  const updateListFile = () => {
-    currentDeployment &&
-      FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
-        .then((files) => {
-
-          setFiles(files);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
   };
 
   const updateGlobalStats = () => {
@@ -203,10 +188,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     return deviceMenu.find((d) => d.id === currentDevice);
   };
 
-  const image = (): any | null => {
-    return files.find((f) => f.id === currentImage);
-  };
-
   useEffect(() => {
     (async () => {
       updateProjects();
@@ -217,7 +198,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateSites();
       updateAutoTemplates();
       updateTriggerTemplates();
-
     })();
   }, []);
 
@@ -235,14 +215,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      updateListFile();
-      updateDeploymentData();
-     
-    })();
-  }, [currentDeployment]);
-
-  useEffect(() => {
-    (async () => {
       updateProjectSheetData();
     })();
   }, [currentProject]);
@@ -255,10 +227,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         currentDeployment,
         setCurrentProject,
         setCurrentDeployment,
-        currentImage,
-        setCurrentImage,
-        files,
-        updateListFile,
         globalStats,
         projectsStats,
         updateProjectsStats,
@@ -290,7 +258,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         updateTriggerTemplates,
         site,
         setCurrentSite,
-        image,
         changeThumbnailProject,
       }}
     >

@@ -11,6 +11,7 @@ import type { Body_upload_files_files_upload_project__project_id__post } from '.
 import type { Body_upload_files_files_upload_site__site_id__post } from '../models/Body_upload_files_files_upload_site__site_id__post';
 import type { Body_upload_zip_files_upload_zip__deployment_id__post } from '../models/Body_upload_zip_files_upload_zip__deployment_id__post';
 import type { Files } from '../models/Files';
+import type { UpdateFile } from '../models/UpdateFile';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -52,6 +53,51 @@ export class FilesService {
             },
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Get Files With Filters
+     * @param deploymentId
+     * @param species
+     * @param family
+     * @param genus
+     * @param classe
+     * @param order
+     * @param startDate
+     * @param endDate
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getFilesWithFiltersFilesFiltersDeploymentIdGet(
+        deploymentId: number,
+        species?: string,
+        family?: string,
+        genus?: string,
+        classe?: string,
+        order?: string,
+        startDate?: string,
+        endDate?: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/files/filters/{deployment_id}',
+            path: {
+                'deployment_id': deploymentId,
+            },
+            query: {
+                'species': species,
+                'family': family,
+                'genus': genus,
+                'classe': classe,
+                'order': order,
+                'start_date': startDate,
+                'end_date': endDate,
+            },
             errors: {
                 404: `Not found`,
                 422: `Validation Error`,
@@ -254,6 +300,43 @@ export class FilesService {
             errors: {
                 404: `Not found`,
                 422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Delete File
+     * @param fileId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteFileFilesDeleteFileIdDelete(
+        fileId: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/files/delete/{file_id}',
+            path: {
+                'file_id': fileId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Get Metadata
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getMetadataFilesMiniometadataGet(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/files/miniometadata',
+            errors: {
+                404: `Not found`,
             },
         });
     }

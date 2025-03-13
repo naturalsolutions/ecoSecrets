@@ -3,12 +3,12 @@ import { capitalize, Grid } from "@mui/material";
 import AnnotationImageDisplay from "./AnnotationImageDisplay";
 import AnnotationGalleryDisplay from "./AnnotationGalleryDisplay";
 import AnnotationImageNavigation from "./AnnotationImageNavigation";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 
 export default function AnnotationImage() {
   const { t } = useTranslation();
-  const { image } = useMainContext();
+  const { image } = useFilesContext();
   const { gridView } = useAnnotationContext();
 
   return (

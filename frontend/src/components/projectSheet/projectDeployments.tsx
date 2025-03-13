@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import {
   Alert,
   AlertTitle,
+  Box,
   Paper,
   Stack,
   Link,
@@ -20,6 +21,7 @@ import { useEffect, useState } from "react";
 import ProjectDeploymentDeleteModale from "./projectDeploymentsDeleteModale";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useTranslation } from "react-i18next";
+import Filters from "./Filters";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -39,179 +41,129 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const ProjectDeployments = () => {
   const { t } = useTranslation();
-  const { projectSheetData, sites, devices } = useMainContext();
+  const { projectSheetData } = useMainContext();
+  const [deployments, setDeployments] = useState(projectSheetData.deployments);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
 
-  const [sortType, setSortType] = useState<"asc" | "desc" | undefined>("asc"); // État pour suivre le type de tri (ascendant ou descendant)
-  const [sortBy, setSortBy] = useState("name"); // État pour suivre la colonne par laquelle trier
-
-  useEffect(() => {
-    if (sortBy === "name") {
-      sortByName(projectSheetData.deployments, sortType);
-    } else {
-      sortByDate(projectSheetData.deployments, sortType);
+  const sortData = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
+
+    const sortedData = [...deployments].sort((a, b) => {
+      const valueA = a[key];
+      const valueB = b[key];
+
+      if (valueA === null && valueB !== null)
+        return direction === "asc" ? 1 : -1;
+      if (valueA !== null && valueB === null)
+        return direction === "asc" ? -1 : 1;
+      if (valueA === null && valueB === null) return 0;
+
+      if (key.includes("date")) {
+        return direction === "asc"
+          ? new Date(valueA).getTime() - new Date(valueB).getTime()
+          : new Date(valueB).getTime() - new Date(valueA).getTime();
+      }
+
+      return direction === "asc"
+        ? valueA.toString().localeCompare(valueB.toString())
+        : valueB.toString().localeCompare(valueA.toString());
+    });
+
+    setDeployments(sortedData);
+    setSortConfig({ key, direction });
+  };
+
+  const [filterValues, setFilterValues] = useState({
+    name: null,
+    start_date: null,
+    end_date: null,
+    site: null,
+    device: null,
   });
 
-  const allSorts = (property, data, sortType) => {
-    if (property === "name") {
-      sortByName(projectSheetData.deployments, sortType);
-    } else if (property === "start_date") {
-      console.log(property);
-      sortByDate(projectSheetData.deployments, sortType);
-    } else if (property === "end_date") {
-      sortByEndDate(projectSheetData.deployments, sortType);
-    } else if (property === "sites") {
-      sortBySites(projectSheetData.deployments, sortType);
-    }
+  const handleFilterChange = (filters) => {
+    setFilterValues(filters);
   };
 
-  const handleSort = (property) => {
-    if (sortBy === property) {
-      const newSortType = sortType === "asc" ? "desc" : "asc";
-      setSortType(newSortType);
-      allSorts(property, projectSheetData.deployments, newSortType);
-    } else {
-      const newSortType = "asc";
-      setSortType(newSortType);
-      allSorts(property, projectSheetData.deployments, newSortType);
-    }
+  const filterData = (data, filters) => {
+    return data.filter((item) => {
+      const itemStartDate = new Date(item.start_date);
+      const filterStartDate = filters.start_date
+        ? new Date(filters.start_date)
+        : null;
+      const filterEndDate = filters.end_date
+        ? new Date(filters.end_date)
+        : null;
 
-    setSortBy(property);
-  };
+      const isWithinDateRange =
+        (!filterStartDate || itemStartDate >= filterStartDate) &&
+        (!filterEndDate || itemStartDate <= filterEndDate);
 
-  const sortByName = (data, sortType) => {
-    return data.sort((a, b) => {
-      if (sortType === "desc") {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
-      } else {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        return nameA > nameB ? -1 : nameA < nameB ? 1 : 0;
-      }
+      const isSiteMatch = !filters.site || item.site_id === filters.site;
+      const isDeviceMatch =
+        !filters.device || item.device_id === filters.device;
+
+      const isNameMatch = !filters.name || item.id === filters.name;
+
+      return isWithinDateRange && isSiteMatch && isDeviceMatch && isNameMatch;
     });
   };
 
-  const sortByDate = (data, sortType) => {
-    if (sortType === "desc") {
-      return data.sort((a, b) => {
-        const dateA = new Date(a.start_date);
-        const dateB = new Date(b.start_date);
-        return dateA.getTime() - dateB.getTime();
-      });
-    } else {
-      return data.sort((a, b) => {
-        const dateA = new Date(a.start_date);
-        const dateB = new Date(b.start_date);
-        return dateB.getTime() - dateA.getTime();
-      });
-    }
-  };
-
-  const sortByEndDate = (data, sortType) => {
-    if (sortType === "desc") {
-      return data.sort((a, b) => {
-        const dateA = new Date(a.end_date);
-        const dateB = new Date(b.end_date);
-        return dateA.getTime() - dateB.getTime();
-      });
-    } else {
-      return data.sort((a, b) => {
-        const dateA = new Date(a.end_date);
-        const dateB = new Date(b.end_date);
-        return dateB.getTime() - dateA.getTime();
-      });
-    }
-  };
-
-  const sortBySites = (data, sortType) => {
-    return data.sort((a, b) => {
-      let siteA = sites?.find((element) => element.id == a.site_id);
-      let siteB = sites?.find((element) => element.id == b.site_id);
-      const nameA = siteA.name.toUpperCase();
-      const nameB = siteB.name.toUpperCase();
-
-      if (sortType === "desc") {
-        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
-      } else {
-        return nameA > nameB ? -1 : nameA < nameB ? 1 : 0;
-      }
-    });
-  };
-  const getSite = (index) => {
-    let site = sites?.find((element) => element.id == index);
-    return (
-      <Link component={RouterLink} to={`/sites/${site?.id}`}>
-        {site?.name}
-      </Link>
-    );
-  };
-
-  const getDevices = (index) => {
-    let device = devices?.find((element) => element.id == index);
-    return (
-      <Link component={RouterLink} to={`/devices/${device?.id}`}>
-        {device?.name}
-      </Link>
-    );
-  };
+  useEffect(() => {
+    const data = filterData(projectSheetData.deployments, filterValues);
+    setDeployments(data);
+  }, [filterValues, projectSheetData]);
 
   return projectSheetData.deployments.length !== 0 ? (
-    <Stack spacing={2} justifyContent="center">
+    <Stack spacing={0} justifyContent="center">
+      <Box sx={{ display: "flex", width: "100%" }}>
+        <Filters
+          list={projectSheetData.deployments}
+          onFilterChange={handleFilterChange}
+        />
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ backgroundColor: "#CCDFD9" }}>
             <TableRow>
-              <StyledTableCell align="center">
-                <TableSortLabel
-                  active={sortBy === "name"}
-                  direction={sortType}
-                  onClick={() => handleSort("name")}
-                >
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
+                <TableSortLabel onClick={() => sortData("name")}>
                   {capitalize(t("main.name"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
-                <TableSortLabel
-                  active={sortBy === "start_date"}
-                  direction={sortType}
-                  onClick={() => handleSort("start_date")}
-                >
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
+                <TableSortLabel onClick={() => sortData("start_date")}>
                   {capitalize(t("projects.start_date"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
-                <TableSortLabel
-                  active={sortBy === "end_date"}
-                  direction={sortType}
-                  onClick={() => handleSort("end_date")}
-                >
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
+                <TableSortLabel onClick={() => sortData("end_date")}>
                   {capitalize(t("projects.end_date"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
-                <TableSortLabel
-                  active={sortBy === "sites"}
-                  direction={sortType}
-                  onClick={() => handleSort("sites")}
-                >
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
+                <TableSortLabel onClick={() => sortData("site_name")}>
                   {capitalize(t("projects.site_name"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
-                {capitalize(t("projects.device_name"))}
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
+                <TableSortLabel onClick={() => sortData("device_name")}>
+                  {capitalize(t("projects.device_name"))}
+                </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("projects.import_media"))}
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("deployments.delete"))}
               </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {projectSheetData.deployments.map((row, k) => (
+            {deployments.map((row, k) => (
               <StyledTableRow key={row.name}>
                 <StyledTableCell align="center">
                   {
@@ -234,10 +186,18 @@ const ProjectDeployments = () => {
                     : null}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {getSite(row.site_id)}
+                  {
+                    <Link component={RouterLink} to={`/sites/${row.site_id}`}>
+                      {row.site_name}
+                    </Link>
+                  }
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {getDevices(row.device_id)}
+                  {
+                    <Link component={RouterLink} to={`/sites/${row.device_id}`}>
+                      {row.device_name}
+                    </Link>
+                  }
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   <Link

@@ -2,10 +2,10 @@ import { capitalize } from "@mui/material";
 import { t } from "i18next";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { Annotation, FilesService } from "../client";
 import { useMainContext } from "./mainContext";
-
+import { useFilesContext } from "./filesContext";
 
 export const AnnotationContext = createContext({} as any);
 
@@ -14,20 +14,18 @@ export const useAnnotationContext = () => useContext(AnnotationContext);
 export function AnnotationContextProvider({ children }) {
 
     let params = useParams();
-    const {
-        projects,
-        setCurrentDeployment,
-        currentImage, setCurrentImage,
-        files,
-        updateListFile,
-        setCurrentProject,
-        image
-    } = useMainContext();
 
+    const { projects, setCurrentDeployment, setCurrentProject } = 
+    useMainContext();
+    const { image, updateListFile, currentImage, setCurrentImage, files } =
+    useFilesContext();
     const [observations, setObservations] = useState<Annotation[]>([]);
+    const [date, setDate] = useState<Date | null>(null);
     const [annotated, setAnnotated] = useState<undefined | boolean>(undefined);
     const [treated, setTreated] = useState<undefined | boolean>(undefined);
-    const [isMinimalObservation, setIsMinimalObservation] = useState(observations?.length == 0);
+    const [isMinimalObservation, setIsMinimalObservation] = useState(
+      observations?.length == 0
+    );
     const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
     const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState({state: false, text: ""});
     const [gridView, setGridView] = useState(0); // 0: unique media, 1: grid
@@ -135,8 +133,13 @@ export function AnnotationContextProvider({ children }) {
             group_observations_id_to_individualize: unselectedGroupedObservation
         };
 
+        const dateFormatted = date instanceof Date ? date : new Date(date!);
+        
         FilesService
-            .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, annotationData)
+            .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
+              date: dateFormatted?.toISOString().slice(0, -1),
+              annotations: annotationData,
+            })
             .then(res => {
                 updateListFile();
                 updateConfirmedSave(false);
@@ -240,6 +243,7 @@ export function AnnotationContextProvider({ children }) {
             if (!gridView) {
                 image() && setObservations(image().annotations);
                 image() && setTreated(image().treated);
+                image() && setDate(image().date);
             }
         })();
     }, [files, currentImage]);
@@ -269,21 +273,6 @@ export function AnnotationContextProvider({ children }) {
         setAnnotated(result)
     }, [handleCheckChange]);
     
-    useEffect(() => {
-        if (gridView) {
-            setIdGroup(uuidv4());
-        };
-        if (!gridView) {
-            setIdGroup("");
-        };
-        setSelectedMedias([]);
-        observationTemplate.id_group = idGroup;
-    }, [gridView]);
-
-    useEffect(() => {
-        setUnselectedGroupedObservation(modifiedObservationGroup.map((observation: Annotation) => observation.id));
-    }, [modifiedObservationGroup]);
-
     return(
         <AnnotationContext.Provider 
             value={{
@@ -293,14 +282,6 @@ export function AnnotationContextProvider({ children }) {
                 isMinimalObservation, setIsMinimalObservation,
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
-                gridView, setGridView,
-                selectedMedias, setSelectedMedias,
-                openAnnotationGroupModale, setOpenAnnotationGroupModale,
-                annotationButtonDisabled, setAnnotationButtonDisabled,
-                confirmedSave, setConfirmedSave, updateConfirmedSave,
-                modifiedObservationGroup, setModifiedObservationGroup,
-                selectedGroupedObservation, setSelectedGroupedObservation,
-                unselectedGroupedObservation, setUnselectedGroupedObservation,
 
                 handleCloseSaveErrorDialog,
                 updateUrl,

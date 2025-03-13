@@ -83,6 +83,21 @@ build_frontend_production:
   tags:
     - NSCICDDOCKER
 
+build_nomenclapi_production:
+  stage: build
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build --target production -t ${CI_REGISTRY_IMAGE}:nomenclapi-latest ./nomenclapi
+    - docker push ${CI_REGISTRY_IMAGE}:nomenclapi-latest
+  only:
+    refs:
+      - dev
+    changes:
+      - nomenclapi/**/*
+      - .gitlab-ci.yml
+  tags:
+    - NSCICDDOCKER
+
 build_keycloak:
   stage: build
   image:

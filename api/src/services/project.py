@@ -1,15 +1,19 @@
 # Service projet
 from datetime import datetime
+from http.client import HTTPException
 from typing import List
 
 from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
+from src.connectors import s3
+from src.models.deployment import DeploymentForProjectSheet, Deployments
+from src.models.device import Devices
 from src.models.file import Files
 from src.models.project import ProjectBase, Projects
+from src.models.site import Sites
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
-from src.connectors import s3
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
@@ -22,14 +26,11 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100):
         .all()
     )
 
+
 def get_projects_length(db: Session, skip: int = 0, limit: int = 100):
-    return len(
-        db.query(Projects)
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
-    
+    return len(db.query(Projects).offset(skip).limit(limit).all())
+
+
 def get_project(db: Session, project_id: int):
     return db.query(Projects).filter(Projects.id == project_id).first()
 
@@ -64,6 +65,7 @@ def update_project(db: Session, project: ProjectBase, id: int):
     db.refresh(db_project)
     return db_project
 
+
 def update_project_image(db: Session, file_name: str, project_id: int):
     db_project = db.query(Projects).filter(Projects.id == project_id).first()
     db_project.image = file_name
@@ -71,12 +73,14 @@ def update_project_image(db: Session, file_name: str, project_id: int):
     db.refresh(db_project)
     return db_project
 
+
 def delete_image_project_id(db: Session, id: int):
     db_project = db.query(Projects).filter(Projects.id == id).first()
     db_project.image = ""
     db.commit()
     db.refresh(db_project)
     return db_project
+
 
 def delete_project(db: Session, id: int):
     db_project = db.query(Projects).filter(Projects.id == id).first()
@@ -101,22 +105,44 @@ def annotation_percentage_project(nb_media: int, nb_treated_media: int):
 
 
 def get_informations(db: Session, id: int):
-    project = (
+    result = (
         db.query(Projects)
+        .options(
+            joinedload(Projects.deployments)
+            .options(
+                joinedload(Deployments.files),
+                joinedload(Deployments.sites).load_only(Sites.id, Sites.name),
+            )
+            .joinedload(Deployments.devices)
+            .load_only(Devices.id, Devices.name)
+        )
         .filter(Projects.id == id)
-        .options(joinedload("deployments").options(joinedload("files")))
-        .first()
     )
+    rows = result.all()
+    if not rows:
+        raise HTTPException(status_code=404, detail="Project not found")
+    project = rows[0]
+    project_data = project.dict()
     media_number = 0
     nb_treated_media = 0
-    deploys = []
+    deploys = [
+        DeploymentForProjectSheet(
+            id=dep.id,
+            name=dep.name,
+            start_date=dep.start_date,
+            end_date=dep.end_date,
+            site_id=dep.site_id,
+            site_name=dep.sites.name,
+            device_id=dep.device_id,
+            device_name=dep.devices.name,
+        )
+        for dep in project.deployments
+    ]
     for d in project.deployments:
         media_number += len(d.files)
-        deploys.append(d.dict())
         nb_treated_media += number_treated_media(d.files)
     project_data = project.dict()
     project_data["deployments"] = deploys
-
     annotation_percentage = annotation_percentage_project(media_number, nb_treated_media)
     project_data["stats"] = {
         "media_number": media_number,
@@ -144,10 +170,10 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         media_number = 0
         nb_treated_media = 0
         if project.image != None:
-           url = s3.get_url(project.image)
-        else :
+            url = s3.get_url(project.image)
+        else:
             url = project.image
-        
+
         for deployment in project.deployments:
             if deployment.site_id not in unique_site:
                 unique_site.append(deployment.site_id)

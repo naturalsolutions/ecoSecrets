@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { Grid, Typography, Stack, TextField, MenuItem, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, capitalize } from "@mui/material";
+import { Grid, Typography, Stack, TextField, MenuItem, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, capitalize, Tooltip } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -72,14 +72,19 @@ export default function ProjectModal(props) {
             {props.page == 'home' ?
                 <ButtonValidate content={ `${capitalize(t("main.new"))} ${t("projects.project")}` } validate={ handleClickOpen } startIcon="add" />
                 :
-                <IconButton 
-                    onClick={handleClickOpen} 
-                    aria-label="menu" 
-                    color="primary"
-                    sx={{ mr: 2 }}
+                <Tooltip
+                    title={t("main.new_object", { object: t("projects.project") })}
+                    arrow
                 >
-                    <AddCircleIcon />
-                </IconButton>
+                    <IconButton 
+                        onClick={handleClickOpen} 
+                        aria-label="menu" 
+                        color="primary"
+                        sx={{ mr: 2 }}
+                    >
+                        <AddCircleIcon />
+                    </IconButton>
+                </Tooltip>
             }
 
             <Dialog open={open} onClose={handleClose}>

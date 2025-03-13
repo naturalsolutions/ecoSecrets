@@ -1,11 +1,12 @@
 import Masonry from "@mui/lab/Masonry";
-import { useMainContext } from "../contexts/mainContext";
 import { Box, capitalize, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import GalleryItem from "./GalleryItem";
+import MediaFilters from "./Filters";
+import { useFilesContext } from "../../contexts/filesContext";
 
 export default function MediaGallery() {
-  const { files } = useMainContext();
+  const { files } = useFilesContext();
   const { t } = useTranslation();
 
   return (
@@ -19,10 +20,15 @@ export default function MediaGallery() {
       <Typography variant="h6" sx={{ mb: 2 }}>
         {capitalize(t("deployments.deploy_gallery"))}
       </Typography>
+      <MediaFilters />
       <Masonry columns={6} spacing={2}>
-        {files?.map((item, index) => (
-          <GalleryItem item={item} index={index} />
-        ))}
+        {files.length > 0 ? (
+          files.map((item, index) => (
+            <GalleryItem key={item.id} item={item} index={index} />
+          ))
+        ) : (
+          <p>{t("main.no_data")}</p>
+        )}
       </Masonry>
     </Box>
   );

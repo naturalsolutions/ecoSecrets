@@ -1,13 +1,23 @@
-import { capitalize, Checkbox, FormControlLabel } from "@mui/material";
+import {
+  capitalize,
+  FormControlLabel,
+  Switch,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import WarningIcon from "@mui/icons-material/Warning";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
-import { Annotation } from "../../client";
-import { FC } from "react";
+import { Annotation, FilesService } from "../../client";
+import { FC, useState } from "react";
+import ConfirmDialog from "../common/confirmDialog";
+import { useFilesContext } from "../../contexts/filesContext";
 
 interface ObservationTabProps {
     valueTab: number;
@@ -20,22 +30,54 @@ const ObservationTab: FC<ObservationTabProps> = ({
     index
 }) => {
     const { t } = useTranslation();
-    
-    const { 
-        observations,
-        annotated,
-        treated,
-        checked,
-        handleCheckChange,
-        gridView,
-    } = useAnnotationContext();
+    const [open, setOpen] = useState(false);
+    const { observations, annotated, treated, checked, handleCheckChange, gridView, next } = useAnnotationContext();
+    const { currentImage, updateListFile } = useFilesContext();
+
+    const save = () => {
+      FilesService.deleteFileFilesDeleteFileIdDelete(currentImage).then((res) => {
+        updateListFile();
+        setOpen(false);
+        next();
+      }).catch((err) => console.error("Erreur:", err));
+    };
 
     return(
         <TabPanel 
             valueTab={ valueTab } 
             index={ index }
         >
+
+
             <span className="info-annotation-ctn">
+                <Tooltip title={t("annotations.delete")} arrow>
+                    <IconButton
+                        aria-label="reset"
+                        size="large"
+                        color="secondary"
+                        sx={{
+                          border: "1px solid",
+                          borderColor: "secondary",
+                          borderRadius: "5px",
+                          padding: "8px",
+                        }}
+                        onClick={() => setOpen(true)}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+                <ConfirmDialog
+                    open={open}
+                    title={t("annotations.delete") as string}
+                    message={t("annotations.delete_desc") as string}
+                    icon={WarningIcon}
+                    iconColor="warning.main"
+                    color="warning"
+                    onClose={() => setOpen(false)}
+                    onConfirm={() => {
+                        save();
+                    }}
+                />
                 { !gridView && ( treated ?
                     <ButtonStatus 
                         icon={ <CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} /> } 

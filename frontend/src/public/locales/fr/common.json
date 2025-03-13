@@ -12,15 +12,16 @@
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
     "unknown_image": "image inconnue",
-    "delete": "Supprimer un média du deploiement.",
-    "delete_desc": "Etes vous sûr de vouloir supprimer ce média ?",
+    "delete": "supprimer le média du deploiement.",
+    "delete_desc": "etes vous sûr de vouloir supprimer ce média ?",
     "modal_title": "modification d'observations initialement créées à partir de groupes d'annotation",
     "modal_content": "sélectionner les observations qui doivent se répercuter à tous les médias du groupe d'annotation :",
     "modal_note": "attention : Si une observation n'est pas sélectionnée, elle ne sera plus liée à celle des autres médias."
   },
   "medias": {
     "media": "média",
-    "medias": "médias"
+    "medias": "médias",
+    "date_time_field": "date et heure du média"
   },
   "deployments": {
     "annotation": "annotation",
@@ -108,7 +109,9 @@
     "zero": "aucun",
     "project_name": "nom du projet",
     "deployment_name":"nom du déploiement",
-    "account": "Mon compte"
+    "account": "mon compte",
+    "new_object": "créer un nouveau {{object}}",
+    "no_data": "pas de données disponibles"
   },
   "observations": {
     "new": "nouvelle observation",
@@ -161,11 +164,11 @@
   },
   "taxon": {
     "behaviour": "comportement",
-    "biological_state": "stade biologique",
+    "biological_state": "état biologique",
     "classe": "classe",
     "family": "famille",
     "genus": "genre",
-    "life_stage": "stade de vie",
+    "life_stage": "stade biologique",
     "number": "nombre d'individus",
     "order": "ordre",
     "sex": "sexe",

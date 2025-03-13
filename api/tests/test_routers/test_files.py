@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from fastapi import status
 
@@ -18,27 +19,52 @@ def test_upload_files(client, deployment, pillow_image, admin_headers):
     assert response.status_code == status.HTTP_200_OK
 
 
+def test_get_deployment_files(client, deployment, admin_headers):
+    url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+def test_get_deployment_files_with_filters(client, deployment, admin_headers):
+    url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
+    filters = {
+        "taxonomy_filters": {},
+        "date_ranges": {
+            "start_date": datetime(2024, 1, 1, 0, 0, 0),
+            "end_date": datetime(2024, 2, 1, 0, 0, 0),
+        },
+    }
+    response = client.get(url, params=filters, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
+
+
 def test_update_annotations(client, file_object, db, admin_headers):
     url = app.url_path_for("update_annotations", file_id=file_object.id)
-
-    annotations = [
-        {
-            "id": "string",
-            "id_annotation": "string",
-            "id_group": "string",
-            "classe": "string",
-            "family": "string",
-            "genus": "string",
-            "order": "string",
-            "species": "string",
-            "number": 1,
-            "biological_state": "string",
-            "life_stage": "string",
-            "sex": "string",
-            "behaviour": "string",
-            "comments": "string",
+    annotations = {
+        "date": "2025-02-20T05:00:42.000",
+        "annotations": {
+            "annotations": [
+                {
+                    "id": "38271843-b18e-4c46-817f-cb6fa8f5f5b6",
+                    "id_annotation": "581831",
+                    "id_group": "1289635-b62n-5g63-914d-po3df1a6d3g9",
+                    "classe": "Elasmobranchii",
+                    "order": "Lamniformes",
+                    "family": "Alopiidae",
+                    "genus": "Alopias",
+                    "species": "Alopias superciliousus",
+                    "life_stage": "",
+                    "biological_state": "",
+                    "comments": "",
+                    "behaviour": "",
+                    "sex": "",
+                    "number": 1,
+                }
+            ],
         }
-    ]
+    }
 
     response = client.patch(url, json=annotations, headers=admin_headers)
 
@@ -49,7 +75,8 @@ def test_update_annotations(client, file_object, db, admin_headers):
     db.expire_all()  ## Prevent SQLAlchemy from caching
 
     current_file = get_file(db=db, file_id=file_object.id)
-    assert current_file.annotations == annotations
+    assert current_file.annotations == annotations["annotations"]
+    assert current_file.date == datetime.fromisoformat(annotations["date"])
 
 
 def test_get_files(client, file_object, admin_headers):
@@ -62,6 +89,13 @@ def test_get_files(client, file_object, admin_headers):
     content = response.json()
 
     # assert file_object.json() in content
+
+
+def test_get_length_deployment_files(client, deployment, admin_headers):
+    url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
 
 
 def test_display_file(client, db, file_object, admin_headers):
