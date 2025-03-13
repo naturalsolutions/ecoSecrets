@@ -1,7 +1,7 @@
 import {
   capitalize,
+  Checkbox,
   FormControlLabel,
-  Switch,
   IconButton,
   Tooltip,
 } from "@mui/material";
@@ -47,8 +47,6 @@ const ObservationTab: FC<ObservationTabProps> = ({
             valueTab={ valueTab } 
             index={ index }
         >
-
-
             <span className="info-annotation-ctn">
                 <Tooltip title={t("annotations.delete")} arrow>
                     <IconButton

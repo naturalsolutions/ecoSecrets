@@ -37,16 +37,16 @@ const MetadataTab: FC<MetadataTabProps> = ({
                         text={ item.name }
                     >
                         <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
-                          <DateTimePicker
-                            label={capitalize(t("medias.date_time_field"))}
-                            value={date}
-                            onChange={(newValue) => setDate(newValue)}
-                            ampm={false}
-                            inputFormat="yyyy/MM/dd HH:mm:ss"
-                            renderInput={(params) => (
-                              <TextField {...params} sx={{ width: "220px" }} />
-                            )}
-                          />
+                            <DateTimePicker
+                                label={capitalize(t("medias.date_time_field"))}
+                                value={date}
+                                onChange={(newValue) => setDate(newValue)}
+                                ampm={false}
+                                inputFormat="yyyy/MM/dd HH:mm:ss"
+                                renderInput={(params) => (
+                                    <TextField {...params} sx={{ width: "220px" }} />
+                                )}
+                            />
                         </LocalizationProvider>
                     </NestedList>
             ))) :
