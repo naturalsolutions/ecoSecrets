@@ -72,7 +72,7 @@ services:
 
   nomenclapi:
     <<: *project_defaults
-    image: nomenclapi:dev
+    image: ${TAXAPI_IMAGE:-registry.gitlab.com/natural-solutions/geonature/nomenclapi:nomenclapi-latest}
     container_name: nomenclapi
     build:
       context: ../nomenclapi
