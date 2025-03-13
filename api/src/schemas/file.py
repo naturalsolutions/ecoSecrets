@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from typing import List, Optional, Union
 
@@ -29,10 +28,11 @@ class AnnotationData(BaseModel):
     annotations: List[Annotation]
     id_group: Optional[str]
     group_observations_id_to_update: Optional[List[str]] = []
-    group_observations_id_to_individualize: Optional[List[str]] = [] # need to be separated to distinguish from ungrouped observation
+    group_observations_id_to_individualize: Optional[
+        List[str]
+    ] = []  # need to be separated to distinguish from ungrouped observation
 
 
 class FileData(BaseModel):
     annotation_data: Optional[AnnotationData]
     metadata_data: Optional[MetaData]
-
