@@ -31,7 +31,7 @@ def init_db():
         session.commit()
 
         for curent_file in files.get_files(db=session):
-            files.delete_file(db=session, id=curent_file.id)
+            files.delete_file(db=session, file_id=curent_file.id)
 
         for curent_deployment in deployment.get_deployments(db=session):
             deployment.delete_deployment(db=session, id=curent_deployment.id)
