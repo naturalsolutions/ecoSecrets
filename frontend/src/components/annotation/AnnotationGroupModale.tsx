@@ -1,33 +1,38 @@
-import { Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, IconButton, Stack, Typography } from "@mui/material";
+import { capitalize, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, IconButton, Stack, Typography } from "@mui/material";
 import { getFinestTaxonomicLevel } from "../utils/annotation_utils";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import ButtonValidate from "../common/buttonValidate";
 import { useAnnotationContext } from "../../contexts/annotationContext";
+import { useTranslation } from "react-i18next";
 
 const AnnotationGroupModale = () => {
+    
+    const { t } = useTranslation();
 
-    const { openAnnotationGroupModale, setOpenAnnotationGroupModale, saveandnext, setConfirmedSave, modifiedObservationGroup } = useAnnotationContext();
-
-    let selectedGroupedObservation: string[] = [];
-    let unselectedGroupedObservation: string[] = modifiedObservationGroup.map(observation => observation.id);
+    const { openAnnotationGroupModale, setOpenAnnotationGroupModale, updateConfirmedSave, modifiedObservationGroup, setModifiedObservationGroup, selectedGroupedObservation, setSelectedGroupedObservation, unselectedGroupedObservation, setUnselectedGroupedObservation } = useAnnotationContext();
 
     const handleCheckChange = (e, id: string) => {
+        let tmpSelectedGroupedObservation = selectedGroupedObservation;
+        let tmpUnselectedGroupedObservation = unselectedGroupedObservation;
+        
         if (e.target.checked) {
-            selectedGroupedObservation.push(id);
-            unselectedGroupedObservation.forEach((obsId, index) => {
+            tmpSelectedGroupedObservation.push(id);
+            tmpUnselectedGroupedObservation.forEach((obsId, index) => {
                 if (obsId === id) {
-                    unselectedGroupedObservation.splice(index, 1)
+                    tmpUnselectedGroupedObservation.splice(index, 1)
                 }
             });
         };
         if (!e.target.checked) {
-            unselectedGroupedObservation.push(id);
-            selectedGroupedObservation.forEach((obsId, index) => {
+            tmpUnselectedGroupedObservation.push(id);
+            tmpSelectedGroupedObservation.forEach((obsId, index) => {
                 if (obsId === id) {
-                    selectedGroupedObservation.splice(index, 1)
+                    tmpSelectedGroupedObservation.splice(index, 1)
                 }
             });
         };
+        setSelectedGroupedObservation(tmpSelectedGroupedObservation);
+        setUnselectedGroupedObservation(tmpUnselectedGroupedObservation);
     };
 
     const handleCloseAnnotationGroupModale = () => {
@@ -35,10 +40,9 @@ const AnnotationGroupModale = () => {
     };
 
     const validate = () => {
+        updateConfirmedSave(true);
+        setModifiedObservationGroup([]);
         handleCloseAnnotationGroupModale();
-        setConfirmedSave(true);
-        modifiedObservationGroup([]);
-        saveandnext();
     };
 
 
@@ -55,7 +59,7 @@ const AnnotationGroupModale = () => {
 
             <DialogTitle>
                     <Typography variant="h6">
-                        Modification d'observations initialement créées à partir de groupes d'annotation
+                        {capitalize(t("annotations.modal_title"))}
                     </Typography>
             </DialogTitle>
                 
@@ -65,7 +69,7 @@ const AnnotationGroupModale = () => {
                 <Stack
                     direction="column"
                 >
-                    Sélectionner les observations qui doivent se répercuter à tous les médias du groupe d'annotation :
+                    {capitalize(t("annotations.modal_content"))}
                     {modifiedObservationGroup.map((item) => 
                         <FormControlLabel
                             id={ `checkbox-${item.id}-control` }
@@ -78,7 +82,7 @@ const AnnotationGroupModale = () => {
                             label={ `${ getFinestTaxonomicLevel(item) } (${ item.number })`}
                         />
                     )}
-                    Attention : Si une observation n'est pas sélectionnée, elle ne sera plus liée à celle des autres médias.
+                    {capitalize(t("annotations.modal_note"))}
                 </Stack>
             </DialogContent>
 
