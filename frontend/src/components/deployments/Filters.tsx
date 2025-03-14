@@ -5,6 +5,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import InputTaxo from "./TaxonomicInputs";
 import DateFilter from "../common/DateRangePicker";
 import { useFilesContext } from "../../contexts/filesContext";
+import GridSwitcher from "../annotation/GridSwitcher";
 
 const MediaFilters = () => {
   const { filters, setFilters } = useFilesContext();
@@ -39,10 +40,12 @@ const MediaFilters = () => {
         marginBottom: 3,
       }}
     >
+      <GridSwitcher />
+
       <Grid
         container
         direction="row"
-        spacing={2}
+        spacing={1}
         alignItems="center"
         sx={{ width: "100%", flexWrap: "wrap" }}
       >

@@ -15,22 +15,17 @@ const GridSwitcher = () => {
             setObservations(image().annotations)
         };
         if(!gridView) {
-            setGridView(1)
+            setGridView(1);
             setObservations([]);
         };
     }; 
 
     return(
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-        >
-            <PhotoIcon />
+        <>
+            <PhotoIcon color={ gridView ? "secondary" : "primary" } fontSize="small"/>
             <Switch checked={ gridView } onClick={ handleAnnotationSwitcher } />
-            <GridViewIcon fontSize="large" />
-        </Grid>
+            <GridViewIcon fontSize="small" color={ gridView ? "primary" : "secondary"  } />
+        </>
     )
 };
 
