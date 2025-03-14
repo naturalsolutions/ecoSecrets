@@ -3,7 +3,6 @@ import AnnotationForm from "./AnnotationForm";
 import AnnotationSaveError from "./AnnotationSaveError";
 import "../../css/annotation.css";
 import AnnotationImage from "./AnnotationImage";
-import GridSwitcher from "./GridSwitcher";
 import AnnotationGroupModale from "./AnnotationGroupModale";
 
 const LayoutAnnotationContainer = styled("div")({
@@ -37,8 +36,7 @@ const LayoutAnnotationForm = styled("div")(({ theme }) => ({
 const AnnotationMain = () => {
   return (
     <LayoutAnnotationContainer className="page">
-      <GridSwitcher />
-      
+  
       <LayoutAnnotationImage>
         <AnnotationImage />
       </LayoutAnnotationImage>
