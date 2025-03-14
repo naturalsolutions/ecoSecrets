@@ -1,5 +1,5 @@
 
-import { Grid, Switch } from "@mui/material";
+import { Switch } from "@mui/material";
 import PhotoIcon from '@mui/icons-material/Photo';
 import GridViewIcon from '@mui/icons-material/GridView';
 import { useAnnotationContext } from "../../contexts/annotationContext";
