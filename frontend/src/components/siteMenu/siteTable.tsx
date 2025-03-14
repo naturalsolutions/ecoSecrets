@@ -122,10 +122,10 @@ const SitesTable = () => {
                 {capitalize(t("main.name"))}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {capitalize(t("sites.latitude"))}
+                {capitalize(t("sites.longitude"))}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {capitalize(t("sites.longitude"))}
+                {capitalize(t("sites.latitude"))}
               </StyledTableCell>
               <StyledTableCell align="center">
                 {capitalize(t("main.delete"))}
@@ -143,10 +143,10 @@ const SitesTable = () => {
                     </Link>
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.latitude}
+                    {row.longitude}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.longitude}
+                    {row.latitude}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <IconButton onClick={handleClickOpen}>
