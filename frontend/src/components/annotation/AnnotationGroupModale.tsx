@@ -70,7 +70,7 @@ const AnnotationGroupModale = () => {
                     direction="column"
                 >
                     {capitalize(t("annotations.modal_content"))}
-                    {modifiedObservationGroup.map((item) => 
+                    {modifiedObservationGroup?.map((item) => 
                         <FormControlLabel
                             id={ `checkbox-${item.id}-control` }
                             control={

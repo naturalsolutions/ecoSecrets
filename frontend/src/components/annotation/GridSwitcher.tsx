@@ -3,10 +3,10 @@ import { Switch } from "@mui/material";
 import PhotoIcon from '@mui/icons-material/Photo';
 import GridViewIcon from '@mui/icons-material/GridView';
 import { useAnnotationContext } from "../../contexts/annotationContext";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 
 const GridSwitcher = () => {
-    const { image } = useMainContext();
+    const { image } = useFilesContext();
     const { gridView, setGridView, setObservations } = useAnnotationContext(); 
 
     const handleAnnotationSwitcher = () => {
