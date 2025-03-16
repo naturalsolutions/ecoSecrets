@@ -27,6 +27,7 @@ export type { Devices } from './models/Devices';
 export type { Files } from './models/Files';
 export type { FirstUntreated } from './models/FirstUntreated';
 export type { HTTPValidationError } from './models/HTTPValidationError';
+export type { MetadataData } from './models/MetadataData';
 export type { NewDeploymentWithTemplateSequence } from './models/NewDeploymentWithTemplateSequence';
 export type { ProjectBase } from './models/ProjectBase';
 export type { ProjectSheet } from './models/ProjectSheet';

@@ -28,9 +28,13 @@ class AnnotationData(BaseModel):
     ] = []  # need to be separated to distinguish from ungrouped observation
 
 
-class UpdateFile(BaseModel):
+class MetadataData(BaseModel):
     date: Optional[str] = None
-    annotations: AnnotationData
+
+
+class UpdateFile(BaseModel):
+    metadata: Optional[MetadataData]
+    annotations: Optional[AnnotationData]
 
 
 class FilterResult(BaseModel):

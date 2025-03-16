@@ -97,62 +97,67 @@ def create_file_device(db: Session, file: CreateDeviceFile):
 
 def update_annotations(db: Session, file_id: int, data: AnnotationData):
     db_file = get_file(db=db, file_id=file_id)
-    if db_file is None:
-        raise HTTPException(
-            status_code=404,
-            detail="No file found",
-        )
+    if data.annotations:
+        if db_file is None:
+            raise HTTPException(
+                status_code=404,
+                detail="No file found",
+            )
 
-    annotation = [d.dict() for d in data.annotations.annotations]
+        annotation = [d.dict() for d in data.annotations.annotations]
 
-    if data.annotations.id_group:
-        if annotation:
-            db_file.annotations = db_file.annotations + annotation
-        if not annotation:
+        if data.annotations.id_group:
+            if annotation:
+                db_file.annotations = db_file.annotations + annotation
+            if not annotation:
+                db_file.annotations = annotation
+
+        if not data.annotations.id_group:
+            # processing of grouped observations that become individualized
+            if data.annotations.group_observations_id_to_individualize:
+                for observation in annotation:
+                    if observation["id"] in data.annotations.group_observations_id_to_individualize:
+                        observation["id"] = str(uuid_pkg.uuid4())
+                        observation["id_group"] = ""
+
+            # update annotation for the current image displayed
             db_file.annotations = annotation
+            
+            # update date for the current image displayed
+            if data.date:
+                data.date = datetime.fromisoformat(data.date)
+                db_file.date = data.date
 
-    if not data.annotations.id_group:
-        # processing of grouped observations that become individualized
-        if data.annotations.group_observations_id_to_individualize:
-            for observation in annotation:
-                if observation["id"] in data.annotations.group_observations_id_to_individualize:
-                    observation["id"] = str(uuid_pkg.uuid4())
-                    observation["id_group"] = ""
+        if not data.annotations.id_group:
+            # update the observations of the group's media
+            db_files = get_files(db=db)
+            for file in db_files:
+                file_annotation = file.annotations
+                for observation in file_annotation:
+                    if observation["id"] in data.annotations.group_observations_id_to_update:
+                        new = None
+                        for item in annotation:
+                            if item["id"] == observation["id"]:
+                                new = item
+                                break
 
-        # update annotation for the current image displayed
-        db_file.annotations = annotation
-        
-        # update date for the current image displayed
-        if data.date:
-            data.date = datetime.fromisoformat(data.date)
-            db_file.date = data.date
+                        observation["id_annotation"] = new["id_annotation"]
+                        observation["id_group"] = new["id_group"]
+                        observation["classe"] = new["classe"]
+                        observation["family"] = new["family"]
+                        observation["genus"] = new["genus"]
+                        observation["order"] = new["order"]
+                        observation["species"] = new["species"]
+                        observation["number"] = new["number"]
+                        observation["life_stage"] = new["life_stage"]
+                        observation["biological_state"] = new["biological_state"]
+                        observation["behaviour"] = new["behaviour"]
+                        observation["sex"] = new["sex"]
+                    file.annotations = file_annotation
 
-    if not data.annotations.id_group:
-        # update the observations of the group's media
-        db_files = get_files(db=db)
-        for file in db_files:
-            file_annotation = file.annotations
-            for observation in file_annotation:
-                if observation["id"] in data.annotations.group_observations_id_to_update:
-                    new = None
-                    for item in annotation:
-                        if item["id"] == observation["id"]:
-                            new = item
-                            break
-
-                    observation["id_annotation"] = new["id_annotation"]
-                    observation["id_group"] = new["id_group"]
-                    observation["classe"] = new["classe"]
-                    observation["family"] = new["family"]
-                    observation["genus"] = new["genus"]
-                    observation["order"] = new["order"]
-                    observation["species"] = new["species"]
-                    observation["number"] = new["number"]
-                    observation["life_stage"] = new["life_stage"]
-                    observation["biological_state"] = new["biological_state"]
-                    observation["behaviour"] = new["behaviour"]
-                    observation["sex"] = new["sex"]
-                file.annotations = file_annotation
+    if data.metadata:
+        db_file.date = data.metadata.date
+    
     db_file.treated = True
     db.commit()
     db.refresh(db_file)

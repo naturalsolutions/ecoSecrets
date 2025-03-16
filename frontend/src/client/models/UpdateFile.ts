@@ -3,9 +3,10 @@
 /* eslint-disable */
 
 import type { AnnotationData } from './AnnotationData';
+import type { MetadataData } from './MetadataData';
 
 export type UpdateFile = {
-    date?: string;
-    annotations: AnnotationData;
+    metadata?: MetadataData;
+    annotations?: AnnotationData;
 };
 
