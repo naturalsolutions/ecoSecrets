@@ -3,7 +3,7 @@ import { t } from "i18next";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { Annotation, FilesService } from "../client";
+import { Annotation, FilesService, MetadataData } from "../client";
 import { useMainContext } from "./mainContext";
 import { useFilesContext } from "./filesContext";
 
@@ -20,7 +20,7 @@ export function AnnotationContextProvider({ children }) {
     const { image, updateListFile, currentImage, setCurrentImage, files } =
     useFilesContext();
     const [observations, setObservations] = useState<Annotation[]>([]);
-    const [date, setDate] = useState<Date | null>(null);
+    const [metadata, setMetadata] = useState<MetadataData>();
     const [annotated, setAnnotated] = useState<undefined | boolean>(undefined);
     const [treated, setTreated] = useState<undefined | boolean>(undefined);
     const [isMinimalObservation, setIsMinimalObservation] = useState(
@@ -108,7 +108,7 @@ export function AnnotationContextProvider({ children }) {
         if(gridView && selectedMedias.length > 0) {
             selectedMedias.map((item) => {
                 FilesService
-                .updateAnnotationsFilesAnnotationFileIdPatch(item.id, { annotations:  observations, id_group: idGroup } )
+                .updateAnnotationsFilesAnnotationFileIdPatch(item.id, { annotations: { annotations:  observations, id_group: idGroup }} )
                 .then(res => {
                     updateListFile();
                 })
@@ -132,12 +132,9 @@ export function AnnotationContextProvider({ children }) {
             group_observations_id_to_update: selectedGroupedObservation, 
             group_observations_id_to_individualize: unselectedGroupedObservation
         };
-
-        const dateFormatted = date instanceof Date ? date : new Date(date!);
         
         FilesService
             .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
-              date: dateFormatted?.toISOString().slice(0, -1),
               annotations: annotationData,
             })
             .then(res => {
@@ -243,7 +240,7 @@ export function AnnotationContextProvider({ children }) {
             if (!gridView) {
                 image() && setObservations(image().annotations);
                 image() && setTreated(image().treated);
-                image() && setDate(image().date);
+                image() && setMetadata({ ...metadata, date: image().date });
             }
         })();
     }, [files, currentImage]);
@@ -282,7 +279,15 @@ export function AnnotationContextProvider({ children }) {
                 isMinimalObservation, setIsMinimalObservation,
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
-
+                gridView, setGridView,
+                selectedMedias, setSelectedMedias,
+                openAnnotationGroupModale, setOpenAnnotationGroupModale,
+                annotationButtonDisabled, setAnnotationButtonDisabled,
+                confirmedSave, setConfirmedSave, updateConfirmedSave,
+                modifiedObservationGroup, setModifiedObservationGroup,
+                selectedGroupedObservation, setSelectedGroupedObservation,
+                unselectedGroupedObservation, setUnselectedGroupedObservation,
+                metadata, setMetadata, 
                 handleCloseSaveErrorDialog,
                 updateUrl,
                 previous,
