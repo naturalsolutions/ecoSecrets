@@ -12,7 +12,7 @@
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
     "unknown_image": "image inconnue",
-    "delete": "supprimer le média du deploiement.",
+    "delete": "supprimer le média du deploiement",
     "delete_desc": "etes vous sûr de vouloir supprimer ce média ?",
     "modal_title": "modification d'observations initialement créées à partir de groupes d'annotation",
     "modal_content": "sélectionner les observations qui doivent se répercuter à tous les médias du groupe d'annotation :",
