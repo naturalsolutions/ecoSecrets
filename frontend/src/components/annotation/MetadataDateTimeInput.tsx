@@ -10,7 +10,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { FilesService } from "../../client";
-import { format } from 'date-fns';
+import frLocale from "date-fns/locale/fr";
 
 
 const MetadataDateTimeInput = () => {
