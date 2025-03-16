@@ -28,19 +28,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-# @router.get("/", response_model=List[schemas.File])
-# def read_files(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-#     users = crud.get_files(db, skip=skip, limit=limit)
-#     return files
-
-
-# @router.get("/{file_id}", response_model=schemas.File)
-# def read_file(file_id: int, db: Session = Depends(get_db)):
-#     db_file = crud.get_file(db, file_id=file_id)
-#     if db_file is None:
-#         raise HTTPException(status_code=404, detail="File not found")
-#     return db_file
-
 
 @router.get("/")
 def get_files(db: Session = Depends(get_db)):
