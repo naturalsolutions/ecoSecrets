@@ -122,11 +122,6 @@ def update_annotations(db: Session, file_id: int, data: AnnotationData):
 
             # update annotation for the current image displayed
             db_file.annotations = annotation
-            
-            # update date for the current image displayed
-            if data.date:
-                data.date = datetime.fromisoformat(data.date)
-                db_file.date = data.date
 
         if not data.annotations.id_group:
             # update the observations of the group's media
