@@ -131,7 +131,6 @@ export function AnnotationContextProvider({ children }) {
             group_observations_id_to_update: selectedGroupedObservation, 
             group_observations_id_to_individualize: unselectedGroupedObservation
         };
-        
         FilesService
             .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
               annotations: annotationData,
@@ -276,6 +275,7 @@ export function AnnotationContextProvider({ children }) {
         };
         if (!gridView) {
             setIdGroup("");
+            setModifiedObservationGroup([]);
         };
         setSelectedMedias([]);
         observationTemplate.id_group = idGroup;
