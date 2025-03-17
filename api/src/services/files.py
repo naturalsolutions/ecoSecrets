@@ -97,13 +97,13 @@ def create_file_device(db: Session, file: CreateDeviceFile):
 
 def update_annotations(db: Session, file_id: int, data: UpdateFile):
     db_file = get_file(db=db, file_id=file_id)
-    if data.annotations:
-        if db_file is None:
-            raise HTTPException(
-                status_code=404,
-                detail="No file found",
-            )
+    if db_file is None:
+        raise HTTPException(
+            status_code=404,
+            detail="No file found",
+        )
 
+    if data.annotations:
         annotation = [d.dict() for d in data.annotations.annotations]
 
         if data.annotations.id_group:
