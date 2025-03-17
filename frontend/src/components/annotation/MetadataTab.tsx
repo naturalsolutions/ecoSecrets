@@ -3,6 +3,7 @@ import TabPanel from "../tabPanel";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import NestedList from "../common/collapsableButton";
 import MetadataDateTimeInput from "./MetadataDateTimeInput";
+import { useFilesContext } from "../../contexts/filesContext";
 
 interface MetadataTabProps {
     valueTab: number;
@@ -13,8 +14,8 @@ const MetadataTab: FC<MetadataTabProps> = ({
     valueTab,
     index
 }) => {
-    const { selectedMedias } = useAnnotationContext();
-    const { gridView } = useAnnotationContext();
+    const { selectedMedias, metadata, gridView } = useAnnotationContext();
+    const { currentImage } = useFilesContext();
 
     return(
         
@@ -25,10 +26,10 @@ const MetadataTab: FC<MetadataTabProps> = ({
             { gridView ? 
                 (selectedMedias.map((item) => (
                     <NestedList text={ item.name } >
-                        <MetadataDateTimeInput />
+                        <MetadataDateTimeInput id={item.id} date={item.date} />
                     </NestedList>
             ))) :
-                <MetadataDateTimeInput />
+                <MetadataDateTimeInput id={currentImage} date={metadata?.date} />
             }
         </TabPanel >
     )

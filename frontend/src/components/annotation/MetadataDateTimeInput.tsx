@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, capitalize, IconButton } from "@mui/material";
-import { useAnnotationContext } from "../../contexts/annotationContext";
 import { useFilesContext } from "../../contexts/filesContext";
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -12,25 +11,29 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { FilesService } from "../../client";
 import frLocale from "date-fns/locale/fr";
 
+interface MetadataDateTimeInputProps {
+    id: string;
+    date: Date | null;
+};
 
-const MetadataDateTimeInput = () => {
+const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
+    props
+) => {
 
     const { t } = useTranslation();
-    const { currentImage, updateListFile } = useFilesContext();
-    const { metadata, setMetadata } = useAnnotationContext();
-    
-    const initialDate = metadata.date;
+    const { updateListFile } = useFilesContext();
+    const [date, setDate] = useState<Date | null>(props.date);
 
     const [toSave, setToSave] = useState<boolean>(false);
 
     const update = (value: Date | null) => {
-        setMetadata({...metadata, date: value});
+        setDate(value);
         setToSave(true);
     };
 
     const save = () => {
         FilesService
-        .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, { metadata: { date: metadata.date }} )
+        .updateAnnotationsFilesAnnotationFileIdPatch(props.id, { metadata: { date: date?.toISOString() }} )
         .then(res => {
             setToSave(false);
             updateListFile();
@@ -42,7 +45,7 @@ const MetadataDateTimeInput = () => {
     };
 
     const cancel = () => {
-        setMetadata(initialDate);
+        setDate(props.date);
         setToSave(false);
     };
 
@@ -58,7 +61,7 @@ const MetadataDateTimeInput = () => {
             <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
                 <DateTimePicker
                     label={capitalize(t("medias.date_time_field"))}
-                    value={metadata.date}
+                    value={props.date}
                     onChange={(newValue) => update(newValue)}
                     ampm={false}
                     inputFormat="dd/MM/yyyy HH:mm:ss"
