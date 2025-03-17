@@ -14,21 +14,19 @@ export default function AnnotationImage() {
   return (
     <>
       {image() ? (
-        <Grid
-          container
-          direction="column"
-          className="pageContainer"
-          sx={{ overflow: "auto" }}
-        >
-          { gridView ? (
-            <AnnotationGalleryDisplay />
-          ) : (
-            <Grid>
-              <AnnotationImageDisplay />
-              <AnnotationImageNavigation />
-            </Grid>
-          )}
-        </Grid>
+        gridView ? (
+          <AnnotationGalleryDisplay />
+        ) : (
+          <Grid
+            container
+            direction="column"
+            className="pageContainer"
+            sx={{ overflow: "auto" }}
+          >
+            <AnnotationImageDisplay />
+            <AnnotationImageNavigation />
+          </Grid>
+        )
       ) : (
         <p>{capitalize(t("annotations.unknown_image"))}</p>
       )}
