@@ -61,7 +61,7 @@ def get_deployment_files_with_filters(
     return res
 
 
-def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
+def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 10000):
     return (
         db.query(Files)
         .filter(Files.deployment_id == id)
@@ -96,7 +96,7 @@ def create_file_device(db: Session, file: CreateDeviceFile):
 
 
 def update_annotations(db: Session, file_id: int, data: UpdateFile):
-    db_file = get_file(db=db, file_id=file_id)
+    db_file = get_file(db=db, file_id=file_id) 
     if db_file is None:
         raise HTTPException(
             status_code=404,
@@ -124,7 +124,7 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
             db_file.annotations = annotation
 
             # update the observations of the group's media
-            db_files = get_files(db=db)
+            db_files = get_deployment_files(db=db, id=data.deployment_id)
             for file in db_files:
                 file_annotation = file.annotations
                 for observation in file_annotation:

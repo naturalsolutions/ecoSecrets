@@ -35,6 +35,7 @@ class MetadataData(BaseModel):
 class UpdateFile(BaseModel):
     metadata: Optional[MetadataData]
     annotations: Optional[AnnotationData]
+    deployment_id: int
 
 
 class FilterResult(BaseModel):

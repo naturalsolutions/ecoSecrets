@@ -10,6 +10,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import frLocale from "date-fns/locale/fr";
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useMainContext } from "../../contexts/mainContext";
 
 interface MetadataDateTimeInputProps {
     id: string;
@@ -21,6 +22,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
 ) => {
 
     const { t } = useTranslation();
+    const { currentDeployment } = useMainContext();
     const { currentImage, files, updateListFile } = useFilesContext();
     const [date, setDate] = useState<Date | null>(props.date);
     const [toSave, setToSave] = useState<boolean>(false);
@@ -32,7 +34,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
 
     const save = () => {
         FilesService
-        .updateAnnotationsFilesAnnotationFileIdPatch(props.id, { metadata: { date: date?.toISOString() }} )
+        .updateAnnotationsFilesAnnotationFileIdPatch(props.id, { metadata: { date: date?.toISOString() }, deployment_id: currentDeployment} )
         .then(res => {
             setToSave(false);
             updateListFile();
