@@ -95,7 +95,7 @@ def create_file_device(db: Session, file: CreateDeviceFile):
     return db_file
 
 
-def update_annotations(db: Session, file_id: int, data: AnnotationData):
+def update_annotations(db: Session, file_id: int, data: UpdateFile):
     db_file = get_file(db=db, file_id=file_id)
     if data.annotations:
         if db_file is None:
@@ -123,7 +123,6 @@ def update_annotations(db: Session, file_id: int, data: AnnotationData):
             # update annotation for the current image displayed
             db_file.annotations = annotation
 
-        if not data.annotations.id_group:
             # update the observations of the group's media
             db_files = get_files(db=db)
             for file in db_files:
