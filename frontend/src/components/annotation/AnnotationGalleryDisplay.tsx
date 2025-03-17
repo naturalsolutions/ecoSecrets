@@ -1,5 +1,5 @@
 import { IconButton, ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 import { useState } from "react";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ButtonGoAnnotation from "../common/ButtonGoAnnotation";
@@ -14,7 +14,7 @@ const AnnotationGalleryDisplay = () => {
     display: "block",
     width: "100%",
   };
-  const { files } = useMainContext();
+  const { files } = useFilesContext();
   const { selectedMedias, setSelectedMedias } = useAnnotationContext();
   
   const [hoveredMedia, setHoveredMedia] = useState<string>();
