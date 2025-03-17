@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Box, capitalize, IconButton } from "@mui/material";
+import { Box, capitalize, IconButton, Tooltip } from "@mui/material";
 import { useFilesContext } from "../../contexts/filesContext";
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -71,19 +71,23 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
                 />
             </LocalizationProvider>
             {toSave && ( <>
-                <IconButton
-                    onClick={ save }
-                    sx={{ mr: 0, color: "primary.main" }}
-                >
-                    <SaveIcon/>
-                </IconButton>
+                <Tooltip title={capitalize(t("main.save"))} arrow>
+                    <IconButton
+                        onClick={ save }
+                        sx={{ mr: 0, color: "primary.main" }}
+                    >
+                        <SaveIcon/>
+                    </IconButton>
+                </Tooltip>
 
-                <IconButton
-                    onClick={ cancel }
-                    sx={{ mr: 0, color: "secondary.main" }}
-                >
-                    <CancelIcon/>
-                </IconButton>
+                <Tooltip title={capitalize(t("main.cancel"))} arrow>
+                    <IconButton
+                        onClick={ cancel }
+                        sx={{ mr: 0, color: "secondary.main" }}
+                    >
+                        <CancelIcon/>
+                    </IconButton>
+                </Tooltip>
             </>)
             }                    
         </Box>
