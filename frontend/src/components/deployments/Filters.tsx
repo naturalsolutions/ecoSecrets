@@ -8,7 +8,7 @@ import { useFilesContext } from "../../contexts/filesContext";
 import GridSwitcher from "../annotation/GridSwitcher";
 
 const MediaFilters = () => {
-  const { filters, setFilters } = useFilesContext();
+  const { filters, setFilters, currentImage } = useFilesContext();
   const [reset, setReset] = useState<boolean>(false);
 
   const updateFilters = (dateRange: {
@@ -40,7 +40,8 @@ const MediaFilters = () => {
         marginBottom: 3,
       }}
     >
-      <GridSwitcher />
+
+      {currentImage && <GridSwitcher />}
 
       <Grid
         container
