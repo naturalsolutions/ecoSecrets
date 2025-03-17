@@ -50,9 +50,6 @@ const AnnotationImageNavigation = () => {
                     <FastForwardIcon fontSize="large" />
                 </IconButton>
 
-                {/* <IconButton >
-                    <FullscreenIcon fontSize="large" />
-                </IconButton> */}
             </Grid>
         </div>
     );

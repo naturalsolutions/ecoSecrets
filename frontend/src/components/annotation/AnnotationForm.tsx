@@ -25,13 +25,6 @@ export default function AnnotationForm() {
             spacing={2}
             className="stackAnnotations"
         >
-            {/* <Typography 
-                component="span" 
-                variant="h3"
-            >
-                { capitalize(t("annotations.annotation")) }
-            </Typography> */}
-
             <Tabs
                 value={ tabValue }
                 aria-label="basic tabs example"
