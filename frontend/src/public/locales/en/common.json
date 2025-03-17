@@ -16,7 +16,8 @@
     "delete_desc": "are you sure you want to delete this media?",
     "modal_title": "modification of observations originally created from annotation groups",
     "modal_content": "select the observations that should apply to all media in the annotation group:",
-    "modal_note": "note: If an observation is not selected, it will no longer be linked to those of other media."
+    "modal_note": "note: If an observation is not selected, it will no longer be linked to those of other media.",
+    "see": "see media"
   },
   "medias": {
     "media": "media file",

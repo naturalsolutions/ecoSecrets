@@ -16,7 +16,8 @@
     "delete_desc": "etes vous sûr de vouloir supprimer ce média ?",
     "modal_title": "modification d'observations initialement créées à partir de groupes d'annotation",
     "modal_content": "sélectionner les observations qui doivent se répercuter à tous les médias du groupe d'annotation :",
-    "modal_note": "attention : Si une observation n'est pas sélectionnée, elle ne sera plus liée à celle des autres médias."
+    "modal_note": "attention : Si une observation n'est pas sélectionnée, elle ne sera plus liée à celle des autres médias.",
+    "see": "voir média"
   },
   "medias": {
     "media": "média",
