@@ -61,7 +61,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
             <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
                 <DateTimePicker
                     label={capitalize(t("medias.date_time_field"))}
-                    value={props.date}
+                    value={date}
                     onChange={(newValue) => update(newValue)}
                     ampm={false}
                     inputFormat="dd/MM/yyyy HH:mm:ss"
