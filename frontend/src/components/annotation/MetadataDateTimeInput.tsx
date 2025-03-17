@@ -1,15 +1,15 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, capitalize, IconButton, Tooltip } from "@mui/material";
+import { FilesService } from "../../client";
 import { useFilesContext } from "../../contexts/filesContext";
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
+import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { FilesService } from "../../client";
 import frLocale from "date-fns/locale/fr";
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 interface MetadataDateTimeInputProps {
     id: string;
@@ -21,9 +21,8 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
 ) => {
 
     const { t } = useTranslation();
-    const { updateListFile } = useFilesContext();
+    const { currentImage, files, updateListFile } = useFilesContext();
     const [date, setDate] = useState<Date | null>(props.date);
-
     const [toSave, setToSave] = useState<boolean>(false);
 
     const update = (value: Date | null) => {
@@ -45,9 +44,13 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
     };
 
     const cancel = () => {
-        setDate(props.date);
         setToSave(false);
+        setDate(props.date);
     };
+
+    useEffect(() => {
+        setDate(files.find(item => item.id === props.id).date);
+    }, [files, currentImage]);
 
     return(
         <Box
@@ -64,7 +67,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
                     value={date}
                     onChange={(newValue) => update(newValue)}
                     ampm={false}
-                    inputFormat="dd/MM/yyyy HH:mm:ss"
+                    inputFormat="yyyy/MM/dd HH:mm:ss"
                     renderInput={(params) => (
                         <TextField {...params} sx={{ width: "300px" }} />
                     )}
