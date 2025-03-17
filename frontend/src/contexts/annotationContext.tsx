@@ -240,7 +240,7 @@ export function AnnotationContextProvider({ children }) {
             if (!gridView) {
                 image() && setObservations(image().annotations);
                 image() && setTreated(image().treated);
-                image() && setMetadata({ ...metadata, date: image().date });
+                image() && setMetadata({ date: image().date });
             }
         })();
     }, [files, currentImage]);

@@ -16,22 +16,24 @@ import frLocale from "date-fns/locale/fr";
 const MetadataDateTimeInput = () => {
 
     const { t } = useTranslation();
-    const { currentImage } = useFilesContext();
-    const { metadata } = useAnnotationContext();
+    const { currentImage, updateListFile } = useFilesContext();
+    const { metadata, setMetadata } = useAnnotationContext();
+    
+    const initialDate = metadata.date;
 
-    const [dateInput, setDateInput] = useState<Date | null>(metadata.date);
     const [toSave, setToSave] = useState<boolean>(false);
 
     const update = (value: Date | null) => {
-        setDateInput(value);
+        setMetadata({...metadata, date: value});
         setToSave(true);
     };
 
     const save = () => {
         FilesService
-        .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, { metadata: { date: dateInput?.toISOString() }} )
+        .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, { metadata: { date: metadata.date }} )
         .then(res => {
             setToSave(false);
+            updateListFile();
         })
         .catch((err) => {
             console.log("Error during metadata saving.");
@@ -40,7 +42,7 @@ const MetadataDateTimeInput = () => {
     };
 
     const cancel = () => {
-        setDateInput(metadata.date);
+        setMetadata(initialDate);
         setToSave(false);
     };
 
@@ -56,7 +58,7 @@ const MetadataDateTimeInput = () => {
             <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
                 <DateTimePicker
                     label={capitalize(t("medias.date_time_field"))}
-                    value={dateInput}
+                    value={metadata.date}
                     onChange={(newValue) => update(newValue)}
                     ampm={false}
                     inputFormat="dd/MM/yyyy HH:mm:ss"
