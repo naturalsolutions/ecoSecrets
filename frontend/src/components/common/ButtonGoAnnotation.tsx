@@ -1,7 +1,6 @@
 import { capitalize, IconButton, Tooltip } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate, useParams } from "react-router-dom";
-import { useMainContext } from "../../contexts/mainContext";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { useFilesContext } from "../../contexts/filesContext";
 import { t } from "i18next";
