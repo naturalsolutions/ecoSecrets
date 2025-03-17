@@ -91,7 +91,6 @@ export function AnnotationContextProvider({ children }) {
             // The unselected observations will only be modified for the current media,
             // and the observation will be individualized for this media, separate from the group.
             if(!confirmedSave) {
-                console.log("Pas de confirmation de sauvegarde")
                 if(modifiedObservationGroup.length > 0) {
                     setOpenAnnotationGroupModale(true);
                 };
@@ -270,6 +269,21 @@ export function AnnotationContextProvider({ children }) {
         setAnnotated(result)
     }, [handleCheckChange]);
     
+    useEffect(() => {
+        if (gridView) {
+            setIdGroup(uuidv4());
+        };
+        if (!gridView) {
+            setIdGroup("");
+        };
+        setSelectedMedias([]);
+        observationTemplate.id_group = idGroup;
+    }, [gridView]);
+
+    useEffect(() => {
+        setUnselectedGroupedObservation(modifiedObservationGroup.map((observation: Annotation) => observation.id));
+    }, [modifiedObservationGroup]);
+
     return(
         <AnnotationContext.Provider 
             value={{
