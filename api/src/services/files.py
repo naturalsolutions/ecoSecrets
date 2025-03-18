@@ -6,12 +6,13 @@ from typing import List
 
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
+from sqlalchemy.orm.attributes import flag_modified
 from sqlmodel import Session
 
 from src.config import settings
 from src.connectors import s3
-from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
-from src.schemas.file import AnnotationData, FilterParams, UpdateFile
+from src.models.file import CreateDeviceFile, CreateFiles, Files
+from src.schemas.file import FilterParams, UpdateFile
 
 # import schemas.schemas
 from src.utils import file_as_bytes
@@ -122,18 +123,16 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
             # update annotation for the current image displayed
             db_file.annotations = annotation
 
+        if not data.annotations.id_group:
             # update the observations of the group's media
             db_files = get_deployment_files(db=db, id=data.deployment_id)
-            for file in db_files:
+            for file in db_files:          
+
+                
                 file_annotation = file.annotations
                 for observation in file_annotation:
-                    if observation["id"] in data.annotations.group_observations_id_to_update:
-                        new = None
-                        for item in annotation:
-                            if item["id"] == observation["id"]:
-                                new = item
-                                break
-
+                    new = next((item for item in annotation if item["id"] == observation["id"]), None)
+                    if (new):
                         observation["id_annotation"] = new["id_annotation"]
                         observation["id_group"] = new["id_group"]
                         observation["classe"] = new["classe"]
@@ -146,7 +145,9 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
                         observation["biological_state"] = new["biological_state"]
                         observation["behaviour"] = new["behaviour"]
                         observation["sex"] = new["sex"]
-                    file.annotations = file_annotation
+                        
+                        file.annotations = file_annotation
+                        flag_modified(file, "annotations")
 
     if data.metadata:
         db_file.date = datetime.fromisoformat(data.metadata.date.replace("Z", "+00:00"))
