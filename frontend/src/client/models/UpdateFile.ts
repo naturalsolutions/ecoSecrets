@@ -2,10 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Annotation } from './Annotation';
+import type { AnnotationData } from './AnnotationData';
+import type { MetadataData } from './MetadataData';
 
 export type UpdateFile = {
-    date?: string;
-    annotations: Array<Annotation>;
+    metadata?: MetadataData;
+    annotations?: AnnotationData;
+    deployment_id: number;
 };
 

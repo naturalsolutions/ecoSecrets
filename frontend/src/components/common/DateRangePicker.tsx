@@ -10,26 +10,28 @@ export interface DateRange {
   end_date: Date | null;
 }
 
-interface DateRangeFilterProps {
+interface DateRangeProps {
   onChange: (dateRange: DateRange) => void;
-  reset: boolean;
+  reset?: boolean;
+  initValues?: DateRange;
 }
-const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
+const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
   const { t } = useTranslation();
-  const [dateRange, setDateRange] = useState<DateRange>({
+  const defaultValues = {
     start_date: null,
     end_date: null,
-  });
+  };
+  const [dateRange, setDateRange] = useState<DateRange>(
+    initValues ? initValues : defaultValues
+  );
 
-  const handleFilter = (key, value) => {
+  const handleChange = (key, value) => {
     setDateRange({ ...dateRange, [key]: value });
   };
 
   const onReset = () => {
-    setDateRange({
-      start_date: null,
-      end_date: null,
-    });
+    setDateRange(defaultValues);
+    onChange(defaultValues);
   };
 
   useEffect(() => {
@@ -53,10 +55,10 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
         <DateTimePicker
           label={capitalize(t("projects.start_date"))}
           value={dateRange.start_date}
-          onChange={(date) => handleFilter("start_date", date)}
+          onChange={(date) => handleChange("start_date", date)}
           onClose={onClose}
           onError={(error) => console.log("Erreur de saisie :", error)}
-          inputFormat="yyyy/MM/dd HH:mm:ss"
+          inputFormat="dd/MM/yyyy HH:mm:ss"
           ampm={false}
           renderInput={(params) => (
             <TextField {...params} size="small" sx={{ width: "215px" }} />
@@ -66,9 +68,9 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
         <DateTimePicker
           label={capitalize(t("projects.end_date"))}
           value={dateRange.end_date}
-          onChange={(date) => handleFilter("end_date", date)}
+          onChange={(date) => handleChange("end_date", date)}
           onClose={onClose}
-          inputFormat="yyyy/MM/dd HH:mm:ss"
+          inputFormat="dd/MM/yyyy HH:mm:ss"
           ampm={false}
           renderInput={(params) => (
             <TextField {...params} size="small" sx={{ width: "215px" }} />
@@ -79,4 +81,4 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onChange, reset }) => {
   );
 };
 
-export default DateRangeFilters;
+export default DateRange;

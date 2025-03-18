@@ -20,9 +20,23 @@ class File(SQLModel):
     url: str
 
 
-class UpdateFile(BaseModel):
-    date: Optional[str] = None
+class AnnotationData(BaseModel):
     annotations: List[Annotation]
+    id_group: Optional[str]
+    group_observations_id_to_update: Optional[List[str]] = []
+    group_observations_id_to_individualize: Optional[List[str]] = (
+        []
+    )  # need to be separated to distinguish from ungrouped observation
+
+
+class MetadataData(BaseModel):
+    date: Optional[str] = None
+
+
+class UpdateFile(BaseModel):
+    metadata: Optional[MetadataData]
+    annotations: Optional[AnnotationData]
+    deployment_id: int
 
 
 class FilterResult(BaseModel):

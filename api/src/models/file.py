@@ -1,8 +1,8 @@
 import uuid as uuid_pkg
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, List, Optional
 
-from pydantic import AnyHttpUrl, root_validator
+from pydantic import AnyHttpUrl
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Column, Field, Relationship, SQLModel
 
@@ -54,12 +54,14 @@ class CreateDeviceFile(BaseFiles):
     device_id: int
 
 
-class ReadFiles(BaseFiles):
-    id: uuid_pkg.UUID
+class ReadFiles(Files):
     url: Optional[AnyHttpUrl] = ""
 
-    @root_validator
-    def gen_url(cls, values):  # pylint: disable=no-self-argument,no-self-use
-        filename = f"{values['hash']}.{values['ext']}"
-        values["url"] = get_url(filename)
-        return values
+    class Config:
+        json_encoders = {
+            datetime: lambda v: (
+                v.strftime("%Y-%m-%dT%H:%M:%SZ")
+                if v.tzinfo and v.tzinfo.utcoffset(v) == timedelta(0)
+                else v.isoformat()
+            )
+        }

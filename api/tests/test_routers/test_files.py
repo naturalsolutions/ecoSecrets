@@ -44,23 +44,26 @@ def test_update_annotations(client, file_object, db, admin_headers):
     url = app.url_path_for("update_annotations", file_id=file_object.id)
     annotations = {
         "date": "2025-02-20T05:00:42.000",
-        "annotations": [
-            {
-                "id": "38271843-b18e-4c46-817f-cb6fa8f5f5b6",
-                "id_annotation": "581831",
-                "classe": "Elasmobranchii",
-                "order": "Lamniformes",
-                "family": "Alopiidae",
-                "genus": "Alopias",
-                "species": "Alopias superciliousus",
-                "life_stage": "",
-                "biological_state": "",
-                "comments": "",
-                "behaviour": "",
-                "sex": "",
-                "number": 1,
-            }
-        ],
+        "annotations": {
+            "annotations": [
+                {
+                    "id": "38271843-b18e-4c46-817f-cb6fa8f5f5b6",
+                    "id_annotation": "581831",
+                    "id_group": "1289635-b62n-5g63-914d-po3df1a6d3g9",
+                    "classe": "Elasmobranchii",
+                    "order": "Lamniformes",
+                    "family": "Alopiidae",
+                    "genus": "Alopias",
+                    "species": "Alopias superciliousus",
+                    "life_stage": "",
+                    "biological_state": "",
+                    "comments": "",
+                    "behaviour": "",
+                    "sex": "",
+                    "number": 1,
+                }
+            ],
+        },
     }
 
     response = client.patch(url, json=annotations, headers=admin_headers)

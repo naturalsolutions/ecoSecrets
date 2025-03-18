@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { DeploymentsService } from "../../client";
 import { FilesService } from "../../client";
 import { DeploymentForDeviceSheet } from "../../types/Deployments";
+import AlertUnavailable from "../common/AlertUnavailable";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -130,9 +131,7 @@ const DeviceSheet = () => {
           {capitalize(t("devices.history"))}
         </Typography>
         {historyDeployment.length === 0 ? (
-          <Alert severity="info">
-            {capitalize(t("devices.historic_message"))}
-          </Alert>
+          <AlertUnavailable />
         ) : (
           <TableContainer component={Paper}>
             <Table

@@ -6,15 +6,15 @@ from typing import List
 
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
+from sqlalchemy.orm.attributes import flag_modified
 from sqlmodel import Session
 
 from src.config import settings
 from src.connectors import s3
-from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
+from src.models.file import CreateDeviceFile, CreateFiles, Files
 from src.schemas.file import FilterParams, UpdateFile
 
 # import schemas.schemas
-from src.schemas.schemas import Annotation
 from src.utils import file_as_bytes
 
 
@@ -62,7 +62,7 @@ def get_deployment_files_with_filters(
     return res
 
 
-def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
+def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 10000):
     return (
         db.query(Files)
         .filter(Files.deployment_id == id)
@@ -102,13 +102,56 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
             status_code=404,
             detail="No file found",
         )
-    # update des annotations
-    db_file.annotations = [d.dict() for d in data.annotations]
-    # update de la date
-    if data.date:
-        data.date = datetime.fromisoformat(data.date)
-        db_file.date = data.date
-    # update du statut de traitement du média
+
+    if data.annotations:
+        annotation = [d.dict() for d in data.annotations.annotations]
+
+        if data.annotations.id_group:
+            if annotation:
+                db_file.annotations = db_file.annotations + annotation
+            if not annotation:
+                db_file.annotations = annotation
+
+        if not data.annotations.id_group:
+            # processing of grouped observations that become individualized
+            if data.annotations.group_observations_id_to_individualize:
+                for observation in annotation:
+                    if observation["id"] in data.annotations.group_observations_id_to_individualize:
+                        observation["id"] = str(uuid_pkg.uuid4())
+                        observation["id_group"] = ""
+
+            # update annotation for the current image displayed
+            db_file.annotations = annotation
+
+        if not data.annotations.id_group:
+            # update the observations of the group's media
+            db_files = get_deployment_files(db=db, id=data.deployment_id)
+            for file in db_files:
+                file_annotation = file.annotations
+                for observation in file_annotation:
+                    new = next(
+                        (item for item in annotation if item["id"] == observation["id"]), None
+                    )
+                    if new:
+                        observation["id_annotation"] = new["id_annotation"]
+                        observation["id_group"] = new["id_group"]
+                        observation["classe"] = new["classe"]
+                        observation["family"] = new["family"]
+                        observation["genus"] = new["genus"]
+                        observation["order"] = new["order"]
+                        observation["species"] = new["species"]
+                        observation["number"] = new["number"]
+                        observation["life_stage"] = new["life_stage"]
+                        observation["biological_state"] = new["biological_state"]
+                        observation["behaviour"] = new["behaviour"]
+                        observation["sex"] = new["sex"]
+
+                        file.annotations = file_annotation
+                        flag_modified(file, "annotations")
+
+    if data.metadata:
+        db_file.date = datetime.fromisoformat(data.metadata.date.replace("Z", "+00:00"))
+
     db_file.treated = True
     db.commit()
     db.refresh(db_file)

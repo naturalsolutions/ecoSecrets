@@ -135,18 +135,6 @@ const SiteForm = () => {
               <Grid item lg={6} md={6} xs={12}>
                 <TextField
                   disabled={!modified}
-                  label={capitalize(t("sites.longitude"))}
-                  name="longitude"
-                  inputProps={{ type: "number" }}
-                  value={siteData.longitude}
-                  fullWidth
-                  variant="filled"
-                  onChange={(e) => handleFormChange("longitude", e)}
-                />
-              </Grid>
-              <Grid item lg={6} md={6} xs={12}>
-                <TextField
-                  disabled={!modified}
                   label={capitalize(t("sites.latitude"))}
                   name="latitude"
                   inputProps={{ type: "number" }}
@@ -154,6 +142,18 @@ const SiteForm = () => {
                   fullWidth
                   variant="filled"
                   onChange={(e) => handleFormChange("latitude", e)}
+                />
+              </Grid>
+              <Grid item lg={6} md={6} xs={12}>
+                <TextField
+                  disabled={!modified}
+                  label={capitalize(t("sites.longitude"))}
+                  name="longitude"
+                  inputProps={{ type: "number" }}
+                  value={siteData.longitude}
+                  fullWidth
+                  variant="filled"
+                  onChange={(e) => handleFormChange("longitude", e)}
                 />
               </Grid>
               <Grid item lg={12} md={12} xs={12}>

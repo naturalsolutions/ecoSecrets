@@ -22,12 +22,15 @@ const ThumbnailProjectComponent = ({
       ProjectsService.fetchProjectThumbnailProjectsFetchProjectThumbnailProjectIdGet(
         projectSheetData?.id
       ).then((res) => {
-        setThumbnail(res[0].url);
-        fetch(res[0].url).then((r) => {
-          if (r.status != 200) {
-            setThumbnail(null);
-          }
-        });
+        setThumbnail(null);
+        if(res && res.length > 0) {
+          setThumbnail(res[0].url);
+          fetch(res[0].url).then((r) => {
+            if (r.status != 200) {
+              setThumbnail(null);
+            }
+          });
+        }
       });
     }
   }, [projectSheetData]);

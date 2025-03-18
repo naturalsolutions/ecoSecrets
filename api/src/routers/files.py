@@ -16,7 +16,7 @@ from sqlmodel import Session, select
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import CreateFiles, Files
+from src.models.file import CreateFiles, Files, ReadFiles
 from src.schemas.file import FilterParams, UpdateFile
 from src.services import dependencies, deployment, device, files, project, site
 from src.utils import check_mime, file_as_bytes
@@ -27,19 +27,6 @@ router = APIRouter(
     # dependencies=[Depends(get_token_header)],
     responses={404: {"description": "Not found"}},
 )
-
-# @router.get("/", response_model=List[schemas.File])
-# def read_files(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-#     users = crud.get_files(db, skip=skip, limit=limit)
-#     return files
-
-
-# @router.get("/{file_id}", response_model=schemas.File)
-# def read_file(file_id: int, db: Session = Depends(get_db)):
-#     db_file = crud.get_file(db, file_id=file_id)
-#     if db_file is None:
-#         raise HTTPException(status_code=404, detail="File not found")
-#     return db_file
 
 
 @router.get("/")
@@ -59,7 +46,7 @@ def update_annotations(file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = D
     return files.update_annotations(db, file_id=file_id, data=data)
 
 
-@router.get("/filters/{deployment_id}")
+@router.get("/filters/{deployment_id}", response_model=List[ReadFiles])
 def get_files_with_filters(
     deployment_id: int, filters_params: FilterParams = Depends(), db: Session = Depends(get_db)
 ):
