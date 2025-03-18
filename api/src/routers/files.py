@@ -16,7 +16,7 @@ from sqlmodel import Session, select
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import CreateFiles, Files
+from src.models.file import CreateFiles, Files, ReadFiles
 from src.schemas.file import FilterParams, UpdateFile
 from src.services import dependencies, deployment, device, files, project, site
 from src.utils import check_mime, file_as_bytes
@@ -42,13 +42,11 @@ def get_files(db: Session = Depends(get_db)):
 
 
 @router.patch("/annotation/{file_id}", response_model=Files)
-def update_annotations(
-    file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)
-):
+def update_annotations(file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)):
     return files.update_annotations(db, file_id=file_id, data=data)
 
 
-@router.get("/filters/{deployment_id}")
+@router.get("/filters/{deployment_id}", response_model=List[ReadFiles])
 def get_files_with_filters(
     deployment_id: int, filters_params: FilterParams = Depends(), db: Session = Depends(get_db)
 ):

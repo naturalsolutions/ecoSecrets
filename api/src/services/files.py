@@ -86,7 +86,6 @@ def create_file(db: Session, file: CreateFiles):
     return db_file
 
 
-
 def create_file_device(db: Session, file: CreateDeviceFile):
     db_file = CreateDeviceFile(**file.dict(), annotations=[])
     db.add(db_file)
@@ -150,8 +149,8 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
                     file.annotations = file_annotation
 
     if data.metadata:
-        db_file.date = data.metadata.date
-    
+        db_file.date = datetime.fromisoformat(data.metadata.date.replace("Z", "+00:00"))
+
     db_file.treated = True
     db.commit()
     db.refresh(db_file)
