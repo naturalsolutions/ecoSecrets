@@ -174,5 +174,8 @@
     "order": "ordre",
     "sex": "sexe",
     "species": "espèce"
+  },
+  "filters": {
+    "refresh": "réinitialiser les filtres"
   }
 }
