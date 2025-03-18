@@ -63,7 +63,7 @@ def test_update_annotations(client, file_object, db, admin_headers):
                     "number": 1,
                 }
             ],
-        }
+        },
     }
 
     response = client.patch(url, json=annotations, headers=admin_headers)
