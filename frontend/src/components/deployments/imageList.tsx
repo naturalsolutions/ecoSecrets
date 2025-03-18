@@ -16,13 +16,14 @@ import { FilesService } from "../../client";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useTranslation } from "react-i18next";
 import ButtonsYesNo from "../common/buttonsYesNo";
+import { useFilesContext } from "../../contexts/filesContext";
 
 const ImageList: FC<{}> = () => {
   const { t } = useTranslation();
   const [files, setFiles] = useState<any[]>([]);
   const [loader, setLoader] = useState<boolean>(false);
-  const { projects, updateListFile, setCurrentDeployment, deploymentData } =
-    useMainContext();
+  const { projects, setCurrentDeployment, deploymentData } = useMainContext();
+  const { updateListFile } = useFilesContext();
   let params = useParams();
 
   useEffect(() => {
@@ -31,21 +32,27 @@ const ImageList: FC<{}> = () => {
     })();
   }, [projects]);
 
-  const save = () => {
-    if (files.length > 0) {
-      setLoader(true);
-    }
+  const save = async () => {
+    if (files.length === 0) return;
 
-    for (const file of files) {
-      FilesService.uploadFileFilesUploadDeploymentIdPost(
-        Number(params.deploymentId),
-        { file }
-      ).then((res) => {
-        updateListFile();
-        setLoader(false);
-      });
+    setLoader(true);
+
+    try {
+      await Promise.all(
+        files.map((file) =>
+          FilesService.uploadFileFilesUploadDeploymentIdPost(
+            Number(params.deploymentId),
+            { file }
+          )
+        )
+      );
+      updateListFile();
+    } catch (error) {
+      console.error("Upload failed:", error);
+    } finally {
+      setLoader(false);
+      clear();
     }
-    clear();
   };
 
   const clear = () => {
@@ -72,7 +79,7 @@ const ImageList: FC<{}> = () => {
           <Typography variant="h6" sx={{ mb: 2 }}>
             {capitalize(t("projects.import_media"))}
           </Typography>
-          <Dropzone onDrop={loadFile} multiple maxFiles={10}>
+          <Dropzone onDrop={loadFile} multiple maxFiles={100}>
             {({ getRootProps, getInputProps }) => (
               <section id="dropzone">
                 <div {...getRootProps()}>
