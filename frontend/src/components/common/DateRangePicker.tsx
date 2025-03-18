@@ -58,7 +58,7 @@ const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
           onChange={(date) => handleChange("start_date", date)}
           onClose={onClose}
           onError={(error) => console.log("Erreur de saisie :", error)}
-          inputFormat="yyyy/MM/dd HH:mm:ss"
+          inputFormat="dd/MM/yyyy HH:mm:ss"
           ampm={false}
           renderInput={(params) => (
             <TextField {...params} size="small" sx={{ width: "215px" }} />
@@ -70,7 +70,7 @@ const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
           value={dateRange.end_date}
           onChange={(date) => handleChange("end_date", date)}
           onClose={onClose}
-          inputFormat="yyyy/MM/dd HH:mm:ss"
+          inputFormat="dd/MM/yyyy HH:mm:ss"
           ampm={false}
           renderInput={(params) => (
             <TextField {...params} size="small" sx={{ width: "215px" }} />
