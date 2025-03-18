@@ -48,7 +48,7 @@ export default function ConfirmDialog({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>
+      <DialogTitle sx={{ typography: "h6" }}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           {/* Icône et titre */}
           <Box
@@ -58,7 +58,7 @@ export default function ConfirmDialog({
             flexGrow={1}
           >
             <Icon sx={{ mr: 1, color: iconColor }} />
-            <Typography variant="h6">{title}</Typography>
+            {title}
           </Box>
           {/* Bouton de fermeture */}
           <IconButton onClick={onClose} sx={{ ml: "auto" }}>

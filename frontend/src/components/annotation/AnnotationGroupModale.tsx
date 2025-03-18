@@ -57,10 +57,8 @@ const AnnotationGroupModale = () => {
                 </IconButton>
             </Stack>
 
-            <DialogTitle>
-                    <Typography variant="h6">
+            <DialogTitle sx={{ typography: "h6" }}>
                         {capitalize(t("annotations.modal_title"))}
-                    </Typography>
             </DialogTitle>
                 
             <Divider />
@@ -70,8 +68,9 @@ const AnnotationGroupModale = () => {
                     direction="column"
                 >
                     {capitalize(t("annotations.modal_content"))}
-                    {modifiedObservationGroup?.map((item) => 
+                    {modifiedObservationGroup?.map((item, index) => 
                         <FormControlLabel
+                            key={ index }
                             id={ `checkbox-${item.id}-control` }
                             control={
                                 <Checkbox

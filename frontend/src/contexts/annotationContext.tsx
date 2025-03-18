@@ -15,7 +15,7 @@ export function AnnotationContextProvider({ children }) {
 
     let params = useParams();
 
-    const { projects, setCurrentDeployment, setCurrentProject } = 
+    const { projects, currentDeployment, setCurrentDeployment, setCurrentProject } = 
     useMainContext();
     const { image, updateListFile, currentImage, setCurrentImage, files } =
     useFilesContext();
@@ -84,7 +84,7 @@ export function AnnotationContextProvider({ children }) {
         }
     };
 
-    const save = (selectedGroupedObservation: string[] = [], unselectedGroupedObservation: string[] = []) => {
+    const save = () => {
         if (!gridView) {
             // Some modified observations are related to a group.
             // The user must select the ones whose values will be applied to all members of the group.
@@ -107,7 +107,7 @@ export function AnnotationContextProvider({ children }) {
         if(gridView && selectedMedias.length > 0) {
             selectedMedias.map((item) => {
                 FilesService
-                .updateAnnotationsFilesAnnotationFileIdPatch(item.id, { annotations: { annotations:  observations, id_group: idGroup }} )
+                .updateAnnotationsFilesAnnotationFileIdPatch(item.id, { annotations: { annotations:  observations, id_group: idGroup }, deployment_id: currentDeployment} )
                 .then(res => {
                     updateListFile();
                 })
@@ -131,10 +131,10 @@ export function AnnotationContextProvider({ children }) {
             group_observations_id_to_update: selectedGroupedObservation, 
             group_observations_id_to_individualize: unselectedGroupedObservation
         };
-        
         FilesService
             .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
               annotations: annotationData,
+              deployment_id: currentDeployment
             })
             .then(res => {
                 updateListFile();
@@ -148,7 +148,7 @@ export function AnnotationContextProvider({ children }) {
 
     const saveandnext = () => {
         if (isMinimalObservation) {
-            save(selectedGroupedObservation, unselectedGroupedObservation);
+            save();
             if (!gridView && confirmedSave) {
                 next();
             };
@@ -275,6 +275,7 @@ export function AnnotationContextProvider({ children }) {
         };
         if (!gridView) {
             setIdGroup("");
+            setModifiedObservationGroup([]);
         };
         setSelectedMedias([]);
         observationTemplate.id_group = idGroup;
