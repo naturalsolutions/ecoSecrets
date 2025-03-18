@@ -5,6 +5,7 @@ Revises: 7f9fbde02f83
 Create Date: 2025-03-18 11:13:25.540993
 
 """
+
 import sqlalchemy as sa
 import sqlmodel
 
@@ -17,7 +18,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade() :
+def upgrade():
     op.execute(
         """
             ALTER TABLE files 
