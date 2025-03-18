@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Grid, IconButton } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { Box, Grid, IconButton, Tooltip, capitalize } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 
 import InputTaxo from "./TaxonomicInputs";
@@ -8,6 +9,7 @@ import { useFilesContext } from "../../contexts/filesContext";
 import GridSwitcher from "../annotation/GridSwitcher";
 
 const MediaFilters = () => {
+  const { t } = useTranslation();
   const { filters, setFilters, currentImage } = useFilesContext();
   const [reset, setReset] = useState<boolean>(false);
 
@@ -65,20 +67,22 @@ const MediaFilters = () => {
         <InputTaxo rank="genus" reset={reset} />
         <InputTaxo rank="species" reset={reset} />
         <Grid item>
-          <IconButton
-            aria-label="reset"
-            size="large"
-            color="secondary"
-            sx={{
-              border: "1px solid",
-              borderColor: "secondary",
-              borderRadius: "5px",
-              padding: "8px",
-            }}
-            onClick={resetFilters}
-          >
-            <RefreshIcon />
-          </IconButton>
+          <Tooltip title={capitalize(t("filters.refresh"))} arrow>
+            <IconButton
+              aria-label="reset"
+              size="large"
+              color="secondary"
+              sx={{
+                border: "1px solid",
+                borderColor: "secondary",
+                borderRadius: "5px",
+                padding: "8px",
+              }}
+              onClick={resetFilters}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
         </Grid>
       </Grid>
     </Box>
