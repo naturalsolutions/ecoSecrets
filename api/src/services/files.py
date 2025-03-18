@@ -96,7 +96,7 @@ def create_file_device(db: Session, file: CreateDeviceFile):
 
 
 def update_annotations(db: Session, file_id: int, data: UpdateFile):
-    db_file = get_file(db=db, file_id=file_id) 
+    db_file = get_file(db=db, file_id=file_id)
     if db_file is None:
         raise HTTPException(
             status_code=404,
@@ -126,13 +126,13 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
         if not data.annotations.id_group:
             # update the observations of the group's media
             db_files = get_deployment_files(db=db, id=data.deployment_id)
-            for file in db_files:          
-
-                
+            for file in db_files:
                 file_annotation = file.annotations
                 for observation in file_annotation:
-                    new = next((item for item in annotation if item["id"] == observation["id"]), None)
-                    if (new):
+                    new = next(
+                        (item for item in annotation if item["id"] == observation["id"]), None
+                    )
+                    if new:
                         observation["id_annotation"] = new["id_annotation"]
                         observation["id_group"] = new["id_group"]
                         observation["classe"] = new["classe"]
@@ -145,7 +145,7 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
                         observation["biological_state"] = new["biological_state"]
                         observation["behaviour"] = new["behaviour"]
                         observation["sex"] = new["sex"]
-                        
+
                         file.annotations = file_annotation
                         flag_modified(file, "annotations")
 

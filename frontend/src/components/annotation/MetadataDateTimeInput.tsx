@@ -69,7 +69,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
                     value={date}
                     onChange={(newValue) => update(newValue)}
                     ampm={false}
-                    inputFormat="yyyy/MM/dd HH:mm:ss"
+                    inputFormat="dd/MM/yyyy HH:mm:ss"
                     renderInput={(params) => (
                         <TextField {...params} sx={{ width: "300px" }} />
                     )}
