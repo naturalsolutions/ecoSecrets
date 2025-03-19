@@ -66,7 +66,7 @@ def test_update_annotations(client, file_object, deployment, db, admin_headers):
                 }
             ],
         },
-        "deployment_id": deployment.id
+        "deployment_id": deployment.id,
     }
 
     response = client.patch(url, json=data, headers=admin_headers)
