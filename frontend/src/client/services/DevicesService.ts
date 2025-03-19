@@ -152,4 +152,26 @@ export class DevicesService {
         });
     }
 
+    /**
+     * Fetch Device Thumbnail
+     * @param deviceId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
+        deviceId: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/devices/fetch_device_thumbnail/{device_id}',
+            path: {
+                'device_id': deviceId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
 }

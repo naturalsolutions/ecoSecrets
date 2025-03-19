@@ -3,6 +3,7 @@ import AnnotationForm from "./AnnotationForm";
 import AnnotationSaveError from "./AnnotationSaveError";
 import "../../css/annotation.css";
 import AnnotationImage from "./AnnotationImage";
+import AnnotationGroupModale from "./AnnotationGroupModale";
 
 const LayoutAnnotationContainer = styled("div")({
   flexGrow: 1,
@@ -35,6 +36,7 @@ const LayoutAnnotationForm = styled("div")(({ theme }) => ({
 const AnnotationMain = () => {
   return (
     <LayoutAnnotationContainer className="page">
+  
       <LayoutAnnotationImage>
         <AnnotationImage />
       </LayoutAnnotationImage>
@@ -44,6 +46,8 @@ const AnnotationMain = () => {
       </LayoutAnnotationForm>
 
       <AnnotationSaveError />
+
+      <AnnotationGroupModale />
     </LayoutAnnotationContainer>
   );
 };

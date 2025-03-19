@@ -8,6 +8,7 @@ export type Sites = {
     longitude: number;
     habitat?: string;
     description?: string;
+    image?: string;
     id?: number;
 };
 

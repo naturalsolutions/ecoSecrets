@@ -86,10 +86,8 @@ export default function DeviceModal() {
           alignItems="center"
           spacing={2}
         >
-          <DialogTitle>
-            <Typography variant="h6">
+          <DialogTitle sx={{ typography: "h6" }}>
               {`${capitalize(t("main.new"))} ${t("devices.device")}`}
-            </Typography>
           </DialogTitle>
           <IconButton onClick={handleClose}>
             <ClearTwoToneIcon />
