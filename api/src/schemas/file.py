@@ -24,9 +24,7 @@ class AnnotationData(BaseModel):
     annotations: List[Annotation]
     id_group: Optional[str]
     group_observations_id_to_update: Optional[List[str]] = []
-    group_observations_id_to_individualize: Optional[List[str]] = (
-        []
-    )  # need to be separated to distinguish from ungrouped observation
+    group_observations_id_to_individualize: Optional[List[str]] = []
 
 
 class MetadataData(BaseModel):

@@ -87,7 +87,7 @@ build_nomenclapi_production:
   stage: build
   script:
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
-    - docker build --target production -t ${CI_REGISTRY_IMAGE}:nomenclapi-latest ./nomenclapi
+    - docker build -t ${CI_REGISTRY_IMAGE}:nomenclapi-latest ./nomenclapi
     - docker push ${CI_REGISTRY_IMAGE}:nomenclapi-latest
   only:
     refs:
@@ -103,7 +103,7 @@ build_keycloak:
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint: [""]
-  script:  
+  script:
     - /kaniko/executor --context "${CI_PROJECT_DIR}/keycloak" --dockerfile "${CI_PROJECT_DIR}/keycloak/Dockerfile" --destination "${CI_REGISTRY_IMAGE}:keycloak-${CI_COMMIT_REF_NAME}"
   tags:
     - NSCICDK8S
@@ -111,7 +111,7 @@ build_keycloak:
     - if: '$CI_COMMIT_REF_NAME =~ /^(main|dev)$/ && $CI_PIPELINE_SOURCE == "push"'
       changes:
         - keycloak/**/*
-    - if: '$build_keycloak'
+    - if: "$build_keycloak"
 
 test_api:
   stage: test
@@ -131,12 +131,12 @@ test_api:
 
 deploy_api:
   stage: deploy
-  image: 
+  image:
     name: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure:latest
   script:
     - cd /home/ansible
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
-    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature
     - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=api
   only:
     refs:
@@ -156,7 +156,7 @@ deploy_frontend:
   script:
     - cd /home/ansible
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
-    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature
     - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy_one -e service=frontend
   only:
     refs:
@@ -176,7 +176,7 @@ deploy_all:
   script:
     - cd /home/ansible
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-annotation jwt=$CI_JOB_JWT)"
-    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature 
+    - ansible-playbook playbooks/generate-ssh-key.yml --connection=local -e ssh_client_signer_role=geonature
     - ansible-playbook -i inventory.py playbooks/infra.yml -t deploy
   only:
     variables:
