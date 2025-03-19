@@ -1,8 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { Alert, Stack, Typography, capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -26,7 +24,6 @@ import { useTranslation } from "react-i18next";
 import { DeploymentsService } from "../../client";
 import { FilesService } from "../../client";
 import { DeploymentForDeviceSheet } from "../../types/Deployments";
-import AlertUnavailable from "../common/AlertUnavailable";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -131,7 +128,9 @@ const DeviceSheet = () => {
           {capitalize(t("devices.history"))}
         </Typography>
         {historyDeployment.length === 0 ? (
-          <AlertUnavailable />
+          <Alert severity="info">
+            {capitalize(t("devices.historic_message"))}
+          </Alert>
         ) : (
           <TableContainer component={Paper}>
             <Table
