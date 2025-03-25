@@ -67,7 +67,6 @@ interface AuthContextProviderProps {
  * @param props
  */
 const AuthContextProvider = (props: AuthContextProviderProps) => {
-
   // Create the local state in which we will keep track if a user is authenticated
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
   // Local state that will contain the users name once it is loaded
@@ -85,10 +84,10 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
         );
         // If the authentication was not successfull the user is send back to the Keycloak login form
         if (!isAuthenticatedResponse) {
-          keycloak.login();
+          keycloak.logout();
         }
         // If we get here the user is authenticated and we can update the state accordingly
-        OpenAPI.TOKEN = keycloak.token
+        OpenAPI.TOKEN = keycloak.token;
         setAuthenticated(isAuthenticatedResponse);
       } catch (err) {
         setAuthenticated(false);
@@ -97,6 +96,23 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
     }
 
     initializeKeycloak();
+  }, []);
+
+  useEffect(() => {
+    const refreshTokenInterval = setInterval(async () => {
+      if (keycloak.authenticated) {
+        try {
+          const refreshed = await keycloak.updateToken(30);
+          if (refreshed) {
+            OpenAPI.TOKEN = keycloak.token;
+          }
+        } catch (error) {
+          keycloak.logout();
+        }
+      }
+    }, 60000);
+
+    return () => clearInterval(refreshTokenInterval);
   }, []);
 
   // This effect loads the users profile in order to extract the username
@@ -119,7 +135,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
 
     // Only load the profile if a user is authenticated
     if (isAuthenticated) {
-      OpenAPI.TOKEN = keycloak.token
+      OpenAPI.TOKEN = keycloak.token;
       loadProfile();
     }
   }, [isAuthenticated]);
