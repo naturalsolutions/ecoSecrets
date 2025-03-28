@@ -149,10 +149,11 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
                         file.annotations = file_annotation
                         flag_modified(file, "annotations")
 
+        db_file.treated = True
+
     if data.metadata:
         db_file.date = datetime.fromisoformat(data.metadata.date.replace("Z", "+00:00"))
 
-    db_file.treated = True
     db.commit()
     db.refresh(db_file)
     return db_file
