@@ -44,7 +44,7 @@ def test_update_annotations(client, file_object, deployment, db, admin_headers):
     url = app.url_path_for("update_annotations", file_id=file_object.id)
     data = {
         "metadata": {
-            "date": "2025-02-20T05:00:42Z",
+            "date": "2025-02-20T05:00:42",
         },
         "annotations": {
             "annotations": [
@@ -78,9 +78,8 @@ def test_update_annotations(client, file_object, deployment, db, admin_headers):
     db.expire_all()  ## Prevent SQLAlchemy from caching
 
     current_file = get_file(db=db, file_id=file_object.id)
+    assert current_file.date == datetime.fromisoformat(data["metadata"]["date"])
     assert current_file.annotations == data["annotations"]["annotations"]
-    formatted_date = current_file.date.strftime("%Y-%m-%dT%H:%M:%SZ")
-    assert formatted_date == data["metadata"]["date"]
 
 
 def test_get_files(client, file_object, admin_headers):
