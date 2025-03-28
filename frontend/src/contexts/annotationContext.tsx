@@ -138,7 +138,6 @@ export function AnnotationContextProvider({ children }) {
             })
             .then(res => {
                 updateListFile();
-                updateConfirmedSave(false);
             })
             .catch((err) => {
                 console.log("Error during annotation saving.");

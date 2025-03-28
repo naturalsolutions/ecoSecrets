@@ -123,7 +123,6 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
             # update annotation for the current image displayed
             db_file.annotations = annotation
 
-        if not data.annotations.id_group:
             # update the observations of the group's media
             db_files = get_deployment_files(db=db, id=data.deployment_id)
             for file in db_files:
@@ -149,10 +148,11 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
                         file.annotations = file_annotation
                         flag_modified(file, "annotations")
 
+        db_file.treated = True
+
     if data.metadata:
         db_file.date = datetime.fromisoformat(data.metadata.date.replace("Z", "+00:00"))
 
-    db_file.treated = True
     db.commit()
     db.refresh(db_file)
     return db_file
