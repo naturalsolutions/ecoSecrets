@@ -37,7 +37,6 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (
         .updateAnnotationsFilesAnnotationFileIdPatch(props.id, { metadata: { date: date?.toISOString() }, deployment_id: currentDeployment} )
         .then(res => {
             setToSave(false);
-            updateListFile();
         })
         .catch((err) => {
             console.log("Error during metadata saving.");
