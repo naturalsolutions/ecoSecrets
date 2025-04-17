@@ -123,7 +123,6 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
             # update annotation for the current image displayed
             db_file.annotations = annotation
 
-        if not data.annotations.id_group:
             # update the observations of the group's media
             db_files = get_deployment_files(db=db, id=data.deployment_id)
             for file in db_files:
