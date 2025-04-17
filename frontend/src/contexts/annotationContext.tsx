@@ -73,6 +73,7 @@ export function AnnotationContextProvider({ children }) {
                 updateUrl(files[ind + 1].id);
             }
         });
+        setIsMinimalObservation(true);
     };
 
     const lastOrFirstImage = (indice) => {
@@ -140,7 +141,6 @@ export function AnnotationContextProvider({ children }) {
             })
             .then(res => {
                 updateListFile();
-                updateConfirmedSave(false);
             })
             .catch((err) => {
                 console.log("Error during annotation saving.");
@@ -221,7 +221,7 @@ export function AnnotationContextProvider({ children }) {
 
                 if (ob["id_group"] && params !== "comments" && !modifiedObservationGroup.map(observation => observation.id).includes(id)) {
                     setModifiedObservationGroup([...modifiedObservationGroup, ob])
-                    setConfirmedSave(false);
+                    updateConfirmedSave(false);
                 };
             }
         })
@@ -303,7 +303,7 @@ export function AnnotationContextProvider({ children }) {
                 selectedMedias, setSelectedMedias,
                 openAnnotationGroupModale, setOpenAnnotationGroupModale,
                 annotationButtonDisabled, setAnnotationButtonDisabled,
-                confirmedSave, setConfirmedSave, updateConfirmedSave,
+                confirmedSave, updateConfirmedSave,
                 modifiedObservationGroup, setModifiedObservationGroup,
                 selectedGroupedObservation, setSelectedGroupedObservation,
                 unselectedGroupedObservation, setUnselectedGroupedObservation,
