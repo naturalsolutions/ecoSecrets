@@ -97,6 +97,9 @@ export function AnnotationContextProvider({ children }) {
                 if(modifiedObservationGroup.length > 0) {
                     setOpenAnnotationGroupModale(true);
                 };
+                if(modifiedObservationGroup.length == 0) {
+                    updateConfirmedSave(true);
+                };
             };
 
             // None of the modified observations are related to a group,
