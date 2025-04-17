@@ -1,7 +1,7 @@
 import { Divider, Stack, Tab, Tabs, Typography, capitalize, Checkbox } from "@mui/material";
 import AnnotationButtons from "./AnnotationButtons";
 import MetadataTab from "./MetadataTab";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import ObservationTab from "./ObservationTab";
 import { useAnnotationContext } from "../../contexts/annotationContext";
@@ -9,9 +9,7 @@ import { useAnnotationContext } from "../../contexts/annotationContext";
 
 export default function AnnotationForm() {
     const { t } = useTranslation();
-    const { setAnnotationButtonDisabled } = useAnnotationContext();
-
-    const [tabValue, setTabValue] = useState(0);
+    const { setAnnotationButtonDisabled, tabValue, setTabValue } = useAnnotationContext();
     const handleTabChange = (event: SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
         setAnnotationButtonDisabled(newValue);

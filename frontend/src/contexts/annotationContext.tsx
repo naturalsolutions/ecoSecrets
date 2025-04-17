@@ -32,6 +32,8 @@ export function AnnotationContextProvider({ children }) {
     const [selectedMedias, setSelectedMedias] = useState<any[]>([]);
     const [annotationButtonDisabled, setAnnotationButtonDisabled] = useState(false);
 
+    const [tabValue, setTabValue] = useState(0);
+    
     const [idGroup, setIdGroup] = useState<string>("");
     const [modifiedObservationGroup, setModifiedObservationGroup] = useState<Annotation[]>([]);
     const [openAnnotationGroupModale, setOpenAnnotationGroupModale] = useState(false);
@@ -71,6 +73,7 @@ export function AnnotationContextProvider({ children }) {
                 updateUrl(files[ind + 1].id);
             }
         });
+        setIsMinimalObservation(true);
     };
 
     const lastOrFirstImage = (indice) => {
@@ -218,7 +221,7 @@ export function AnnotationContextProvider({ children }) {
 
                 if (ob["id_group"] && params !== "comments" && !modifiedObservationGroup.map(observation => observation.id).includes(id)) {
                     setModifiedObservationGroup([...modifiedObservationGroup, ob])
-                    setConfirmedSave(false);
+                    updateConfirmedSave(false);
                 };
             }
         })
@@ -236,9 +239,11 @@ export function AnnotationContextProvider({ children }) {
     useEffect(() => {
         (async () => {
             if (!gridView) {
-                image() && setObservations(image().annotations);
-                image() && setTreated(image().treated);
-                image() && setMetadata({ date: image().date });
+                if(tabValue == 0) {
+                    image() && setObservations(image().annotations);
+                    image() && setTreated(image().treated);
+                    image() && setMetadata({ date: image().date });
+                }
             }
         })();
     }, [files, currentImage]);
@@ -293,11 +298,12 @@ export function AnnotationContextProvider({ children }) {
                 isMinimalObservation, setIsMinimalObservation,
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
+                tabValue, setTabValue,
                 gridView, setGridView,
                 selectedMedias, setSelectedMedias,
                 openAnnotationGroupModale, setOpenAnnotationGroupModale,
                 annotationButtonDisabled, setAnnotationButtonDisabled,
-                confirmedSave, setConfirmedSave, updateConfirmedSave,
+                confirmedSave, updateConfirmedSave,
                 modifiedObservationGroup, setModifiedObservationGroup,
                 selectedGroupedObservation, setSelectedGroupedObservation,
                 unselectedGroupedObservation, setUnselectedGroupedObservation,
