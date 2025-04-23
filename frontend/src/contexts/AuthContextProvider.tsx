@@ -99,6 +99,24 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
     initializeKeycloak();
   }, []);
 
+  useEffect(() => {
+    const refreshTokenInterval = setInterval(async () => {
+      if (keycloak.authenticated) {
+        try {
+          const refreshed = await keycloak.updateToken(30);
+          if (refreshed) {
+            OpenAPI.TOKEN = keycloak.token;
+          }
+        } catch (error) {
+          keycloak.logout();
+        }
+      }
+    }, 60000);
+
+    return () => clearInterval(refreshTokenInterval);
+  }, []);
+
+
   // This effect loads the users profile in order to extract the username
   useEffect(() => {
     /**
