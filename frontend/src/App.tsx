@@ -18,9 +18,8 @@ import SiteMenuPage from "./pages/siteMenu";
 import SiteSheetPage from "./pages/siteSheet";
 import SnackContextProvider from "./contexts/snackContext";
 import { AuthContext } from "./contexts/AuthContextProvider";
-import { useContext } from "react";
+import { useContext} from "react";
 import FilesContextProvider from "./contexts/filesContext";
-;
 
 // Env var processed by nginx
 OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
@@ -28,10 +27,8 @@ OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
 function App() {
   const authContext = useContext(AuthContext);
 
-  if (!authContext.isAuthenticated) {
-    return <LinearProgress color="primary" />;
-  } else {
-    return (
+  return (
+    authContext.keycloakReady && authContext.isAuthenticated ? (
       <MainContextProvider>
         <FilesContextProvider>
           <SnackContextProvider>
@@ -39,43 +36,19 @@ function App() {
               <I18nextProvider i18n={i18n}>
                 <BrowserRouter>
                   <Routes>
-                    <Route path="/" element={<Main />}></Route>
-                    {/* <Route path="/project/:projectId" element={<Project />}></Route> */}
-                    <Route
-                      path="/project/:projectId"
-                      element={<ProjectSheet />}
-                    ></Route>
-                    <Route path="/sites/" element={<SiteMenuPage />}></Route>
-                    <Route path="/devices/" element={<DeviceMenuPage />}></Route>
-                    <Route
-                      path="/devices/:deviceId"
-                      element={<DeviceSheetPage />}
-                    ></Route>
-                    <Route
-                      path="/sites/:siteId"
-                      element={<SiteSheetPage />}
-                    ></Route>
-                    <Route
-                      path="deployment/:deploymentId"
-                      element={<Deployment />}
-                    ></Route>
-                    <Route
-                      path="/project/:projectId/deployment/:deploymentId/details"
-                      element={<DeploymentSheet number={0} />}
-                    ></Route>
-                    <Route
-                      path="/project/:projectId/deployment/:deploymentId/medias"
-                      element={<DeploymentSheet number={1} />}
-                    ></Route>
-                    <Route
-                      path="/project/:projectId/deployment/:deploymentId/medias/:imageId"
-                      element={<Annotation />}
-                    ></Route>
-                    <Route
-                      path="/project/:projectId/deployment/:deploymentId/details/:imageId"
-                      element={<Annotation />}
-                    ></Route>
-                    <Route path="*" element={<Main />}></Route>
+                    <Route path="/" element={<Main />} />
+                    {/* <Route path="/project/:projectId" element={<Project />} /> */}
+                    <Route path="/project/:projectId" element={<ProjectSheet />} />
+                    <Route path="/sites/" element={<SiteMenuPage />} />
+                    <Route path="/devices/" element={<DeviceMenuPage />} />
+                    <Route path="/devices/:deviceId" element={<DeviceSheetPage />} />
+                    <Route path="/sites/:siteId" element={<SiteSheetPage />} />
+                    <Route path="deployment/:deploymentId" element={<Deployment />} />
+                    <Route path="/project/:projectId/deployment/:deploymentId/details" element={<DeploymentSheet number={0} />} />
+                    <Route path="/project/:projectId/deployment/:deploymentId/medias" element={<DeploymentSheet number={1} />} />
+                    <Route path="/project/:projectId/deployment/:deploymentId/medias/:imageId" element={<Annotation />} />
+                    <Route path="/project/:projectId/deployment/:deploymentId/details/:imageId" element={<Annotation />} />
+                    <Route path="*" element={<Main />} />
                   </Routes>
                 </BrowserRouter>
               </I18nextProvider>
@@ -83,8 +56,8 @@ function App() {
           </SnackContextProvider>
         </FilesContextProvider>
       </MainContextProvider>
-    );
-  }
+    ) : <LinearProgress color="primary" />
+  );
 }
 
 export default App;
