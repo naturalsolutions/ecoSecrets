@@ -193,7 +193,7 @@ export function AnnotationContextProvider({ children }) {
                     setModifiedObservationGroup([...modifiedObservationGroup, ob])
                 };
             }
-        })
+        });
         setObservations(tmp_obs);
         setStatus("being processed");
     };
@@ -209,11 +209,10 @@ export function AnnotationContextProvider({ children }) {
     useEffect(() => {
         (async () => {
             if (!gridView) {
-                if(tabValue == 0) {
-                    image() && setObservations(image().annotations);
-                    image() && setStatus(image().treated ? "processed" : "not processed");
-                    image() && setMetadata({ date: image().date });
-                }
+                let data = image().annotations?.map(item => ({ ...item }))
+                image() && setObservations(data);
+                image() && setStatus(image().treated ? "processed" : "not processed");
+                image() && setMetadata({ date: image().date });
             }
         })();
     }, [files, currentImage]);
@@ -221,9 +220,7 @@ export function AnnotationContextProvider({ children }) {
     useEffect(() => {
         (async () => {
             setChecked(observations?.length === 0);
-            
         })();
-
     }, [observations]);
     
     useEffect(() => {

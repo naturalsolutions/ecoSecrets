@@ -7,12 +7,14 @@ import { useFilesContext } from "../../contexts/filesContext";
 
 const GridSwitcher = () => {
     const { image } = useFilesContext();
-    const { gridView, setGridView, setObservations } = useAnnotationContext(); 
+    const { gridView, setGridView, setObservations, setStatus } = useAnnotationContext(); 
 
     const handleAnnotationSwitcher = () => {
         if(gridView) {
+            let data = image().annotations?.map(item => ({ ...item }))
             setGridView(0);
-            setObservations(image().annotations)
+            setObservations(data);
+            setStatus(image().treated ? "processed" : "not processed");
         };
         if(!gridView) {
             setGridView(1);
