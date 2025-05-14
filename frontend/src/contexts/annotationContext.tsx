@@ -143,8 +143,8 @@ export function AnnotationContextProvider({ children }) {
 
     const handleAddObservation = () => {
         if (isMinimalObservation) {
-            observationTemplate.id = uuidv4();
-            setObservations([...observations, {...observationTemplate, id_group: idGroup}]);
+            const newObs = { ...observationTemplate, id: uuidv4(), id_group: idGroup };
+            setObservations([...observations, newObs]);
         };
         if (checked) {
             setChecked(false);
@@ -163,16 +163,19 @@ export function AnnotationContextProvider({ children }) {
     };
 
     const handleCheckChange = () => {
-        if (!checked) {
+        const newChecked = !checked;
+
+        setChecked(newChecked);
+        setStatus("being processed");
+
+        if (newChecked) {
             setObservations([]);
             setIsMinimalObservation(true);
         };
-        if (checked) {
-            setObservations([...observations, observationTemplate]);
+        if (!newChecked) {
+            setObservations([{ ...observationTemplate, id: uuidv4(), id_group: idGroup }]);
             setIsMinimalObservation(false);
         };
-        setChecked(!checked);
-        setStatus("being processed");
     };
 
     const handleFormChange = (id: string, params: string, value: string) => {
@@ -209,19 +212,14 @@ export function AnnotationContextProvider({ children }) {
     useEffect(() => {
         (async () => {
             if (!gridView) {
-                let data = image().annotations?.map(item => ({ ...item }))
+                let data = image().annotations?.map(item => ({ ...item }));
                 image() && setObservations(data);
                 image() && setStatus(image().treated ? "processed" : "not processed");
+                image() && setChecked(image().treated ? false : true);
                 image() && setMetadata({ date: image().date });
             }
         })();
     }, [files, currentImage]);
-
-    useEffect(() => {
-        (async () => {
-            setChecked(observations?.length === 0);
-        })();
-    }, [observations]);
     
     useEffect(() => {
         if (gridView) {
