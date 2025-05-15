@@ -215,7 +215,7 @@ export function AnnotationContextProvider({ children }) {
                 let data = image().annotations?.map(item => ({ ...item }));
                 image() && setObservations(data);
                 image() && setStatus(image().treated ? "processed" : "not processed");
-                image() && setChecked(image().treated ? false : true);
+                image() && setChecked(data?.length === 0);
                 image() && setMetadata({ date: image().date });
             }
         })();
