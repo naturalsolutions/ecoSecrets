@@ -1,15 +1,22 @@
-import { capitalize, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, IconButton, Stack, Typography } from "@mui/material";
+import { capitalize, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, IconButton, Stack } from "@mui/material";
 import { getFinestTaxonomicLevel } from "../utils/annotation_utils";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import ButtonValidate from "../common/buttonValidate";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { useTranslation } from "react-i18next";
+import { useFilesContext } from "../../contexts/filesContext";
+import { useMainContext } from "../../contexts/mainContext";
+import { FilesService } from "../../client";
 
 const AnnotationGroupModale = () => {
-    
+
     const { t } = useTranslation();
 
-    const { openAnnotationGroupModale, setOpenAnnotationGroupModale, updateConfirmedSave, modifiedObservationGroup, setModifiedObservationGroup, selectedGroupedObservation, setSelectedGroupedObservation, unselectedGroupedObservation, setUnselectedGroupedObservation } = useAnnotationContext();
+    const { currentDeployment } = useMainContext();
+
+    const { updateListFile, currentImage } = useFilesContext();
+
+    const { openAnnotationGroupModale, setOpenAnnotationGroupModale, observations, idGroup, selectedGroupedObservation, unselectedGroupedObservation, setSelectedGroupedObservation, setUnselectedGroupedObservation, modifiedObservationGroup,setModifiedObservationGroup, next } = useAnnotationContext();
 
     const handleCheckChange = (e, id: string) => {
         let tmpSelectedGroupedObservation = selectedGroupedObservation;
@@ -40,9 +47,30 @@ const AnnotationGroupModale = () => {
     };
 
     const validate = () => {
-        updateConfirmedSave(true);
+        let annotationData = {
+            annotations: observations,
+            id_group: idGroup,
+            group_observations_id_to_update: selectedGroupedObservation, 
+            group_observations_id_to_individualize: unselectedGroupedObservation
+        };
+
+        FilesService
+            .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
+              annotations: annotationData,
+              deployment_id: currentDeployment
+            })
+            .then(res => {
+                updateListFile();
+                next();
+            })
+            .catch((err) => {
+                console.log("Error during annotation saving.");
+                console.log(err);
+            });
+
         setModifiedObservationGroup([]);
         handleCloseAnnotationGroupModale();
+        next();
     };
 
 
