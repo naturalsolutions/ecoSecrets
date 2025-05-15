@@ -214,13 +214,13 @@ export function AnnotationContextProvider({ children }) {
             if (!gridView) {
                 let data = image().annotations?.map(item => ({ ...item }));
                 image() && setObservations(data);
-                image() && setStatus(image().treated ? "processed" : "not processed");
                 image() && setChecked(data?.length === 0);
+                image() && setStatus(image().treated ? "processed" : "not processed");
                 image() && setMetadata({ date: image().date });
             }
         })();
-    }, [files, currentImage]);
-    
+    }, [files, currentImage, gridView]);
+
     useEffect(() => {
         if (gridView) {
             setIdGroup(uuidv4());
