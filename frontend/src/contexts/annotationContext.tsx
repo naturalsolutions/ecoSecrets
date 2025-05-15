@@ -159,6 +159,7 @@ export function AnnotationContextProvider({ children }) {
         i !== -1 && tmp_obs.splice(i, 1);
         i !== -1 && setObservations(tmp_obs);
         i === observations.length - 1 && setIsMinimalObservation(true);
+        setChecked(tmp_obs?.length === 0);
         setStatus("being processed");
     };
 
