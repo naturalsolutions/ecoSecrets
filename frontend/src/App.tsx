@@ -2,7 +2,7 @@ import "./App.css";
 import Main from "./pages/main";
 import Deployment from "./pages/deployment";
 import Annotation from "./pages/annotation";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";
 import DeploymentSheet from "./pages/deploymentSheet";
@@ -58,6 +58,12 @@ function App() {
                     <Route
                       path="deployment/:deploymentId"
                       element={<Deployment />}
+                    ></Route>
+                    <Route
+                      path="/project/:projectId/deployment/:deploymentId"
+                      element={
+                        <Navigate replace to="details" />
+                      }
                     ></Route>
                     <Route
                       path="/project/:projectId/deployment/:deploymentId/details"
