@@ -88,9 +88,17 @@ const ProjectDeployments = () => {
     setFilterValues(filters);
   };
 
+  const stripTime = (date) =>
+    new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
   const filterData = (data, filters) => {
     return data.filter((item) => {
       const itemStartDate = new Date(item.start_date);
+
+      const itemEndDate = item.end_date
+        ? new Date(item.end_date)
+        : itemStartDate;
+
       const filterStartDate = filters.start_date
         ? new Date(filters.start_date)
         : null;
@@ -99,13 +107,13 @@ const ProjectDeployments = () => {
         : null;
 
       const isWithinDateRange =
-        (!filterStartDate || itemStartDate >= filterStartDate) &&
-        (!filterEndDate || itemStartDate <= filterEndDate);
+        (!filterStartDate ||
+          stripTime(itemStartDate) >= stripTime(filterStartDate)) &&
+        (!filterEndDate || stripTime(itemEndDate) <= stripTime(filterEndDate));
 
       const isSiteMatch = !filters.site || item.site_id === filters.site;
       const isDeviceMatch =
         !filters.device || item.device_id === filters.device;
-
       const isNameMatch = !filters.name || item.id === filters.name;
 
       return isWithinDateRange && isSiteMatch && isDeviceMatch && isNameMatch;
