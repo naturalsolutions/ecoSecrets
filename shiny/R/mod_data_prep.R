@@ -20,18 +20,13 @@ mod_data_prep_server <- function(id) {
       df <- dplyr::filter(df, project == input$project_select, site == input$site_select, deployment == input$deployment_select)
       
       if (isTRUE(input$empty_select)) {
-        df <- dplyr::filter(df, species != "")
+        df <- dplyr::filter(df, classe != "")
       }
-      
-      if (isTRUE(input$undetermined_select)) {
-        df <- dplyr::filter(df, species != "indéterminé")
-      }
+
       if (isTRUE(input$human_select)) {
         df <- dplyr::filter(df, species != "Homo sapiens")
       }
-      if (isTRUE(input$vehicle_select)) {
-        df <- dplyr::filter(df, species != "véhicule")
-      }
+
       return(df)
     })
     return(data)
