@@ -21,7 +21,7 @@ ui <- fluidPage(
   # Main panel
   fluidRow(
     column(
-      width = 3,
+      width = 4,
       # Left menu
       tabsetPanel(
         id = "side_tabs",
@@ -29,7 +29,7 @@ ui <- fluidPage(
         tabPanel("Données",
                  mod_data_prep_ui("data_prep")
         ),
-        tabPanel("Export",
+        tabPanel("Paramétrages",
                  mod_display_params_ui("display_params")
         )
       )
@@ -37,7 +37,7 @@ ui <- fluidPage(
     
     # Data visualisation
     column(
-      width = 9,
+      width = 8,
       uiOutput("dynamic_module_ui")
     )
   )

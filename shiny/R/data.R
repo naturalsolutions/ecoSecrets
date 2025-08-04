@@ -1,0 +1,1 @@
+dataset <- read.csv2("R/data/data.csv")
