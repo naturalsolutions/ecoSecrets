@@ -3,9 +3,10 @@ ui <- fluidPage(
   tabsetPanel(
     id = "main_tabs",
     selected = "monitoring",
-    tabPanel("Suivi photo", value="monitoring"),
-    tabPanel("Espèces", value="species"),
-    tabPanel("Communautés", value="community")
+    tabPanel("Suivi photographique", value="monitoring"),
+    tabPanel("Composition communautés", value="community"),
+    tabPanel("Présence espèces", value="species"),
+    
   ),
   
   # Select to choose the analyse
