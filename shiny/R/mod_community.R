@@ -11,7 +11,7 @@ mod_community_server <- function(id, selected_analysis, data, params) {
       req(selected_analysis(),data(), params())
       df <- data()
       if (selected_analysis() == "community XXX") {
-        barplot_compo_com(df)
+        barplot_compo_com(df, periode = params()$time_select, pourcent = params()$show_abundance, stack = params()$show_group)
       } else if (selected_analysis() == "community YYY") {
         barplot(table(cut(df$value, 5)), main = "Barplot", col = "yellow")
       }
