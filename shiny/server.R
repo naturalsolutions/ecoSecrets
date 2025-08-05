@@ -11,9 +11,9 @@ server <- function(input, output, session) {
   # dynamic update of selectInput options
   observeEvent(input$main_tabs, {
     choices <- switch(input$main_tabs,
-                      "monitoring" = c("monitoring XXX", "monitoring YYY"),
+                      "monitoring" = c("Historique d'échantillonnage", "monitoring YYY"),
                       "species" = c("species XXX", "species YYY"),
-                      "community" = c("community XXX", "community YYY"),
+                      "community" = c("Abondance", "Indice de diversité"),
                       character(0))
     updateSelectInput(session, "main_select",
                       choices = choices,
@@ -45,11 +45,13 @@ server <- function(input, output, session) {
     } else if (input$main_tabs == "species") {
       mod_species_server("dynamic_module",
                          selected_analysis = selected_analysis,
-                         data = data)
+                         data = data,
+                         params = params)
     } else if (input$main_tabs == "community") {
       mod_community_server("dynamic_module",
                            selected_analysis = selected_analysis,
-                           data = data)
+                           data = data,
+                           params = params)
     }
   })
 }
