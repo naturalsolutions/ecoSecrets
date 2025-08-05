@@ -3,9 +3,10 @@ library(lubridate)
 library(data.table)
 
 sample_historic <- function(df,
-                            start_date = "01/01/2024",
-                            end_date = "31/12/2024",
-                            species = "Vulpes vulpes") {
+                            start_date,
+                            end_date,
+                            display = TRUE,
+                            species = NULL) {
   
   # Conversion des dates
   start_date <- as.Date(start_date, format = "%d/%m/%Y")
@@ -45,7 +46,7 @@ sample_historic <- function(df,
     theme(axis.text.y = element_text(size = 8))
   
   # Ajouter les observations en rouge si espèce présente
-  if (!is.null(species) && "species" %in% names(df)) {
+  if (display) {
     observations <- df %>%
       filter(species %in% !!species) %>%
       mutate(jour = as.Date(date)) %>%
