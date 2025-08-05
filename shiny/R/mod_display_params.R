@@ -21,7 +21,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
           # radioButtons(ns("color"), "Couleur du plot :", choices = c("skyblue", "lightpink", "lightgreen"))
         )
       } else if (analysis_type() == "community") {
-        if (selected_analysis() == "community XXX"){
+        if (selected_analysis() == "Abondance"){
           tagList(
             dateRangeInput("period_select", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
             selectInput(ns("time_select"), "Choisir la résolution temporelle :", choices = c("year", "month", "week", "day"), selected = "month"),
@@ -31,7 +31,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
             checkboxInput(ns("show_group"), "affichage groupé/empilé", TRUE)
           )
         }
-        else if (selected_analysis() == "community YYY"){
+        else if (selected_analysis() == "Indice de diversité"){
           tagList(
             dateRangeInput("period_select", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
             selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
@@ -46,7 +46,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
       req(analysis_type(), selected_analysis())
       
       if (analysis_type() == "monitoring") {
-        if (selected_analysis() == "monitoring XXX") {
+        if (selected_analysis() == "Historique d'échantillonnage") {
           list(
             species_select = input$species_select,
             show_observation = input$show_observation
@@ -60,7 +60,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
       } 
       
       else if (analysis_type() == "community") {
-        if (selected_analysis() == "community XXX") {
+        if (selected_analysis() == "Abondance") {
           list(
             time_select = input$time_select,
             taxon_select = input$taxon_select,
@@ -70,7 +70,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
             end_date = input$period_select[2]
           )
         }
-       else if (selected_analysis() == "community YYY"){
+       else if (selected_analysis() == "Indice de diversité"){
          list(
            start_date = input$period_select[1],
            end_date = input$period_select[2],
