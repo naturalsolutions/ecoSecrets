@@ -15,23 +15,32 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
       
       if (analysis_type() == "monitoring") {
         tagList(
+          dateRangeInput(ns("var_date"), "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
           checkboxInput(ns("show_observation"), "Afficher les observations", TRUE),
           selectInput(ns("species_select"), "Choisir une espèce :", choices = unique(dataset$species)),
-          radioButtons(ns("color"), "Couleur du plot :", choices = c("skyblue", "lightpink", "lightgreen"))
+          # radioButtons(ns("color"), "Couleur du plot :", choices = c("skyblue", "lightpink", "lightgreen"))
         )
-      } else {
-        NULL
+      } else if (analysis_type() == "community") {
+        tagList(
+          dateRangeInput("var_date", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
+          selectInput(ns("time_select"), "Choisir la résolution temporelle :", choices = c("year", "month", "week", "day")),
+          selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "Species")),
+          numericInput(ns("var_interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5),
+          checkboxInput(ns("show_abundance"), "Abondance relative/absolue", TRUE),
+          checkboxInput(ns("show_group"), "affichage groupé/empilé", TRUE)
+        )
       }
     })
     
     # expose reactive list, i.e. param values, for analysis/visu modules
     params <- reactive({
-      req(analysis_type())
+      req(analysis_type(), selected_analysis())
       
       if (analysis_type() == "monitoring") {
         if (selected_analysis() == "monitoring XXX") {
           list(
-            color = input$color %||% "skyblue"
+            species_select = input$species_select,
+            show_observation = input$show_observation
           )
         }
         else if (selected_analysis() == "monitoring YYY") {
@@ -39,9 +48,20 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
             show_deployment = input$show_monitoring %||% TRUE
           )
         }
-      } else if (analysis_type() == "species") {
-        list()
-      } else if (analysis_type() == "community") {
+      } 
+      
+      else if (analysis_type() == "community") {
+        if (selected_analysis() == "community XXX") {
+          list(
+            time_select = input$time_select,
+            # taxon_select = input$taxon_select,
+            show_abundance = input$show_abundance,
+            show_group = input$show_group
+          )
+        }
+      }
+      
+      else if (analysis_type() == "species") {
         list()
       } else {
         list()
