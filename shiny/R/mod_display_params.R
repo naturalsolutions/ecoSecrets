@@ -15,9 +15,10 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
       
       if (analysis_type() == "monitoring") {
         tagList(
-          dateRangeInput(ns("var_date"), "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
+          dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
           checkboxInput(ns("show_observation"), "Afficher les observations", TRUE),
           selectInput(ns("species_select"), "Choisir une espèce :", choices = unique(dataset$species)),
+          numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5)
           # radioButtons(ns("color"), "Couleur du plot :", choices = c("skyblue", "lightpink", "lightgreen"))
         )
       } else if (analysis_type() == "community") {
@@ -26,7 +27,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
             dateRangeInput("period_select", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
             selectInput(ns("time_select"), "Choisir la résolution temporelle :", choices = c("year", "month", "week", "day"), selected = "month"),
             selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
-            numericInput(ns("var_interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5),
+            numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5),
             checkboxInput(ns("show_abundance"), "Abondance relative/absolue", TRUE),
             checkboxInput(ns("show_group"), "affichage groupé/empilé", TRUE)
           )
@@ -49,7 +50,10 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
         if (selected_analysis() == "Historique d'échantillonnage") {
           list(
             species_select = input$species_select,
-            show_observation = input$show_observation
+            show_observation = input$show_observation,
+            start_date = input$period_select[1],
+            end_date = input$period_select[2],
+            interval_ind = input$interval_ind
           )
         }
         else if (selected_analysis() == "monitoring YYY") {
