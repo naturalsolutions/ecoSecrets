@@ -21,14 +21,23 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
           # radioButtons(ns("color"), "Couleur du plot :", choices = c("skyblue", "lightpink", "lightgreen"))
         )
       } else if (analysis_type() == "community") {
-        tagList(
-          dateRangeInput("var_date", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
-          selectInput(ns("time_select"), "Choisir la résolution temporelle :", choices = c("year", "month", "week", "day")),
-          selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "Species")),
-          numericInput(ns("var_interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5),
-          checkboxInput(ns("show_abundance"), "Abondance relative/absolue", TRUE),
-          checkboxInput(ns("show_group"), "affichage groupé/empilé", TRUE)
-        )
+        if (selected_analysis() == "community XXX"){
+          tagList(
+            dateRangeInput("period_select", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
+            selectInput(ns("time_select"), "Choisir la résolution temporelle :", choices = c("year", "month", "week", "day"), selected = "month"),
+            selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
+            numericInput(ns("var_interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5),
+            checkboxInput(ns("show_abundance"), "Abondance relative/absolue", TRUE),
+            checkboxInput(ns("show_group"), "affichage groupé/empilé", TRUE)
+          )
+        }
+        else if (selected_analysis() == "community YYY"){
+          tagList(
+            dateRangeInput("period_select", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
+            selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
+            selectInput(ns("index_select"), "Choisir l'indice de richesse :", choices = c("shannon", "simpson"), selected = "shannon")
+          )
+        }
       }
     })
     
@@ -54,9 +63,19 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
         if (selected_analysis() == "community XXX") {
           list(
             time_select = input$time_select,
-            # taxon_select = input$taxon_select,
+            taxon_select = input$taxon_select,
             show_abundance = input$show_abundance,
-            show_group = input$show_group
+            show_group = input$show_group,
+            start_date = input$period_select[1],
+            end_date = input$period_select[2]
+          )
+        }
+       else if (selected_analysis() == "community YYY"){
+         list(
+           start_date = input$period_select[1],
+           end_date = input$period_select[2],
+           taxon_select = input$taxon_select,
+           index_select = input$index_select
           )
         }
       }

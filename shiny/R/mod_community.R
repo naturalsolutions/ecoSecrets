@@ -11,9 +11,9 @@ mod_community_server <- function(id, selected_analysis, data, params) {
       req(selected_analysis(),data(), params())
       df <- data()
       if (selected_analysis() == "community XXX") {
-        barplot_compo_com(df, periode = params()$time_select, pourcent = params()$show_abundance, stack = params()$show_group)
+        barplot_compo_com(df, start_date = params()$start_date, end_date = params()$end_date, taxon = params()$taxon_select, periode = params()$time_select, pourcent = params()$show_abundance, stack = params()$show_group)
       } else if (selected_analysis() == "community YYY") {
-        barplot(table(cut(df$value, 5)), main = "Barplot", col = "yellow")
+        richness_index(df, taxon = params()$taxon_select, richness_index = params()$index_select)
       }
     })
   })
