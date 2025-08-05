@@ -1,7 +1,7 @@
 library(shiny)
 library(dplyr)
 library(readr)
-
+library(tidyr)
 
 source("server.R")
 source("ui.R")
@@ -18,7 +18,9 @@ source("R/mod_community.R")
 
 # source("R/utils/sample_historic.R")
 source("R/sample_historic.R")
-
+source("R/barplot_compo_com.R")
+source("R/richness_index.R")
+source("R/sampling_numbers.R")
 
 
 shinyApp(ui, server)
