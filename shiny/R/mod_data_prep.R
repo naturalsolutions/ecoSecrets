@@ -2,7 +2,7 @@ mod_data_prep_ui <- function(id) {
   ns <- NS(id)
   tagList(
     selectInput(ns("project_select"), "Choix du projet :", choices = unique(dataset$project), selected = "ecopont"),
-    selectInput(ns("site_select"), "Choix du site :", choices = NULL),
+    selectInput(ns("site_select"), "Choix du site :", choices = NULL, multiple = TRUE),
     selectInput(ns("deployment_select"), "Choix du déploiement :", choices = NULL),
     checkboxInput(ns("empty_select"),"Retirer les élements vides", value = FALSE),
     checkboxInput(ns("human_select"),"Retirer les humains", value = FALSE)
@@ -24,7 +24,7 @@ mod_data_prep_server <- function(id) {
         pull(site) %>%
         unique()
       
-      updateSelectInput(session, "site_select", choices = sites, selected = sites[1])
+      updateSelectInput(session, "site_select", choices = c("",sites), selected = NULL)
     })
       
     observeEvent ({
