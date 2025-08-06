@@ -12,8 +12,8 @@ server <- function(input, output, session) {
   observeEvent(input$main_tabs, {
     choices <- switch(input$main_tabs,
                       "monitoring" = c("Historique d'échantillonnage", "monitoring YYY"),
-                      "species" = c("species XXX", "species YYY"),
                       "community" = c("Abondance", "Indice de diversité"),
+                      "species" = c("species XXX", "species YYY"),
                       "activity" = c("Activity XXX", "Activity YYY"),
                       character(0))
     updateSelectInput(session, "main_select",
@@ -29,8 +29,8 @@ server <- function(input, output, session) {
       div(id = "module_container",
           switch(input$main_tabs,
                  "monitoring" = mod_monitoring_ui("dynamic_module"),
-                 "species" = mod_species_ui("dynamic_module"),
                  "community" = mod_community_ui("dynamic_module"),
+                 "species" = mod_species_ui("dynamic_module"),
                  "activity" = mod_activity_ui("dynamic_module")
           )
       )
@@ -44,17 +44,17 @@ server <- function(input, output, session) {
                             selected_analysis = selected_analysis,
                             data = data,
                             params = params)
-    } else if (input$main_tabs == "species") {
-      mod_species_server("dynamic_module",
-                         selected_analysis = selected_analysis,
-                         data = data,
-                         params = params)
     } else if (input$main_tabs == "community") {
       mod_community_server("dynamic_module",
                            selected_analysis = selected_analysis,
                            data = data,
                            params = params)
-    } else if (input$main_tabs == "activity") {
+    } else if (input$main_tabs == "species") {
+      mod_species_server("dynamic_module",
+                         selected_analysis = selected_analysis,
+                         data = data,
+                         params = params)
+    }  else if (input$main_tabs == "activity") {
       mod_activity_server("dynamic_module",
                            selected_analysis = selected_analysis,
                            data = data,
