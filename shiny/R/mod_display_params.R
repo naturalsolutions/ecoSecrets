@@ -24,7 +24,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
       } else if (analysis_type() == "community") {
         if (selected_analysis() == "Abondance"){
           tagList(
-            dateRangeInput("period_select", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
+            dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
             selectInput(ns("time_select"), "Choisir la résolution temporelle :", choices = c("year", "month", "week", "day"), selected = "month"),
             selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
             numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5),
@@ -34,11 +34,16 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
         }
         else if (selected_analysis() == "Indice de diversité"){
           tagList(
-            dateRangeInput("period_select", "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
+            dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
             selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
             selectInput(ns("index_select"), "Choisir l'indice de richesse :", choices = c("shannon", "simpson"), selected = "shannon")
           )
         }
+      } else if (analysis_type() == "community") {
+        tagList(
+          dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = "2023-01-18", end = "2024-12-31", startview = "month"),
+          selectizeInput(ns("species_select"), "Choisir une espèce :", choices = unique(dataset$species), selected = unique(dataset$species), multiple = TRUE),
+          numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :",value = 0, min=1, max=300, step=5))
       }
     })
     
@@ -85,7 +90,12 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis) {
       }
       
       else if (analysis_type() == "species") {
-        list()
+        list(
+          start_date = input$period_select[1],
+          end_date = input$period_select[2],
+          species = input$species_select,
+          interval_ind = input$interval_ind
+        )
       } else {
         list()
       }
