@@ -14,6 +14,7 @@ server <- function(input, output, session) {
                       "monitoring" = c("Historique d'échantillonnage", "monitoring YYY"),
                       "species" = c("species XXX", "species YYY"),
                       "community" = c("Abondance", "Indice de diversité"),
+                      "activity" = c("Activity XXX", "Activity YYY"),
                       character(0))
     updateSelectInput(session, "main_select",
                       choices = choices,
@@ -29,7 +30,8 @@ server <- function(input, output, session) {
           switch(input$main_tabs,
                  "monitoring" = mod_monitoring_ui("dynamic_module"),
                  "species" = mod_species_ui("dynamic_module"),
-                 "community" = mod_community_ui("dynamic_module")
+                 "community" = mod_community_ui("dynamic_module"),
+                 "activity" = mod_activity_ui("dynamic_module")
           )
       )
     )
@@ -49,6 +51,11 @@ server <- function(input, output, session) {
                          params = params)
     } else if (input$main_tabs == "community") {
       mod_community_server("dynamic_module",
+                           selected_analysis = selected_analysis,
+                           data = data,
+                           params = params)
+    } else if (input$main_tabs == "activity") {
+      mod_activity_server("dynamic_module",
                            selected_analysis = selected_analysis,
                            data = data,
                            params = params)

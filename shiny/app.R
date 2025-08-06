@@ -15,6 +15,7 @@ source("R/mod_display_params.R")
 source("R/mod_monitoring.R")
 source("R/mod_species.R")
 source("R/mod_community.R")
+source("R/mod_activity.R")
 
 # source("R/utils/sample_historic.R")
 source("R/sample_historic.R")
