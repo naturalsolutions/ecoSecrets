@@ -22,6 +22,7 @@ source("R/sample_historic.R")
 source("R/barplot_compo_com.R")
 source("R/richness_index.R")
 source("R/sampling_numbers.R")
-
+source("R/detection_rate.R")
+source("R/plot_EP_species.R")
 
 shinyApp(ui, server)
