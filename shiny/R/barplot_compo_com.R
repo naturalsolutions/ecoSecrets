@@ -2,65 +2,59 @@ library(ggplot2)
 library(dplyr)
 library(lubridate)
 
-barplot_compo_com <- function(df, start_date = "18/01/2023", end_date = "31/12/2023", taxon = "genus", periode = "month", pourcent = FALSE, stack = TRUE) {
+barplot_compo_com <- function(df, start_date = NULL, end_date = NULL, taxon = "genus", periode = "month", pourcent = FALSE, stack = TRUE, show_by = "project") {
   taxon <- sym(taxon)
+  show_by <- sym(show_by)
   
+  # filter date
   if (!is.null(start_date)) {
     start_date <- as.Date(start_date, format = "%d/%m/%Y")
+    df <- df %>% filter(date >= start_date)
   }
   if (!is.null(end_date)) {
     end_date <- as.Date(end_date, format = "%d/%m/%Y")
-  }
-  
-  if (!is.null(start_date) & !is.null(end_date)) {
-    df <- df %>% filter(date >= start_date, date <= end_date)
-  } else if (!is.null(start_date)) {
-    df <- df %>% filter(date >= start_date)
-  } else if (!is.null(end_date)) {
     df <- df %>% filter(date <= end_date)
   }
   
-  df <- df %>%
-    mutate(date = as.Date(date),
-           date_floor = floor_date(date, unit = periode)) %>%
-    group_by(date_floor, !!taxon) %>%
-    summarise(total_estime = sum(number, na.rm = TRUE), .groups = "drop")
-  
-  # Choix du type de position : empilé ou côte à côte
-  position_type <- ifelse(stack, "stack", "dodge")
+  # compute total abundance
+  df <- dataset %>%
+    mutate(date_floor = floor_date(date, unit = periode)) %>%
+    group_by(date_floor, !!show_by, !!taxon) %>%
+    summarise(total = sum(number, na.rm = TRUE), .groups = "drop")
   
   # Fonction utilitaire pour mettre une majuscule au début
   ucfirst <- function(s) {
     paste0(toupper(substring(s, 1, 1)), substring(s, 2))
   }
   
+  # compute relative abundance if needed
   if (pourcent) {
     df <- df %>%
-      group_by(date_floor) %>%
-      mutate(pourcent = total_estime / sum(total_estime) * 100) %>%
+      group_by(date_floor, !!show_by) %>%
+      mutate(total = total / sum(total) * 100) %>%
       ungroup()
-    
-    ggplot(df, aes(x = date_floor, y = pourcent, fill = !!taxon)) +
-      geom_bar(stat = "identity", position = position_type) +
-      labs(
-        title = paste("Relative abundance per", periode, "(in %)"),
-        x = ucfirst(periode),
-        y = "Percentage",
-        fill = "Species"
-      ) +
-      theme_minimal() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
-    
-  } else {
-    ggplot(df, aes(x = date_floor, y = total_estime, fill = !!taxon)) +
-      geom_bar(stat = "identity", position = position_type) +
-      labs(
-        title = paste("Absolute abundance per", periode),
-        x = ucfirst(periode),
-        y = "Estimated number",
-        fill = "Spieces"
-      ) +
-      theme_minimal() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
+  
+  # plot
+  title = paste("Relative abundance per", periode, "(in %)")
+  x = ucfirst(periode)
+  y = "Percentage"
+  fill = "Taxon"
+  
+  if (pourcent) {
+    title = paste("Absolute abundance per", periode)
+    y = "Estimated number"
+  }
+  
+  ggplot(df, aes(x = date_floor, y = total, fill = !!taxon)) +
+      geom_bar(stat = "identity", position = position_type) +
+      labs(
+      title = title,
+      x = x,
+      y = y,
+      fill = fill
+      ) +
+      theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    facet_wrap(vars(!!show_by))
 }
