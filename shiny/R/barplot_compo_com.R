@@ -17,7 +17,7 @@ barplot_compo_com <- function(df, start_date = NULL, end_date = NULL, taxon = "g
   }
   
   # compute total abundance
-  df <- dataset %>%
+  df <- df %>%
     mutate(date_floor = floor_date(date, unit = periode)) %>%
     group_by(date_floor, !!show_by, !!taxon) %>%
     summarise(total = sum(number, na.rm = TRUE), .groups = "drop")
