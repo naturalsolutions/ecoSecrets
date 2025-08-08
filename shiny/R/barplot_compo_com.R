@@ -2,7 +2,7 @@ library(ggplot2)
 library(dplyr)
 library(lubridate)
 
-barplot_compo_com <- function(df, start_date = NULL, end_date = NULL, taxon = "genus", periode = "month", pourcent = FALSE, stack = TRUE, show_by = "project") {
+barplot_compo_com <- function(df, start_date = NULL, end_date = NULL, taxon = "genus", periode = "month", pourcent = FALSE, position_type = "stack", show_by = "project") {
   taxon <- sym(taxon)
   show_by <- sym(show_by)
   
