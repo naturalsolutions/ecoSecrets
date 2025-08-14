@@ -1,8 +1,8 @@
 import uuid as uuid_pkg
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, List, Optional
 
-from pydantic import AnyHttpUrl, root_validator
+from pydantic import AnyHttpUrl
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Column, Field, Relationship, SQLModel
 
@@ -17,7 +17,8 @@ class BaseFiles(SQLModel):
     name: str
     extension: str
     bucket: str
-    date: datetime
+    import_date: datetime
+    date: Optional[datetime]
 
     @property
     def minio_filename(self):
@@ -35,11 +36,12 @@ class Files(BaseFiles, table=True):
     )
     hash: str = Field(index=True)
     name: str = Field(index=True)
-    date: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    import_date: Optional[datetime] = Field(default_factory=datetime.utcnow)
     megadetector_id: Optional[int] = Field(foreign_key="megadetector.id")
     deepfaune_id: Optional[int] = Field(foreign_key="deepfaune.id")
     deployment_id: int = Field(foreign_key="deployments.id")
     treated: bool = Field(default=False)
+    date: Optional[datetime]
     annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default=[])
     deployment: "Deployments" = Relationship(back_populates="files")
 
@@ -48,12 +50,18 @@ class CreateFiles(BaseFiles):
     deployment_id: int
 
 
-class ReadFiles(BaseFiles):
-    id: uuid_pkg.UUID
+class CreateDeviceFile(BaseFiles):
+    device_id: int
+
+
+class ReadFiles(Files):
     url: Optional[AnyHttpUrl] = ""
 
-    @root_validator
-    def gen_url(cls, values):  # pylint: disable=no-self-argument,no-self-use
-        filename = f"{values['hash']}.{values['ext']}"
-        values["url"] = get_url(filename)
-        return values
+    class Config:
+        json_encoders = {
+            datetime: lambda v: (
+                v.strftime("%Y-%m-%dT%H:%M:%SZ")
+                if v.tzinfo and v.tzinfo.utcoffset(v) == timedelta(0)
+                else v.isoformat()
+            )
+        }

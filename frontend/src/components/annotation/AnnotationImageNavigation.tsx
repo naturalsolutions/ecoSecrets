@@ -1,5 +1,5 @@
 import { Grid, IconButton, Typography } from "@mui/material";
-import { useMainContext } from "../../contexts/mainContext";
+import { useFilesContext } from "../../contexts/filesContext";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -9,7 +9,7 @@ import FastRewindIcon from '@mui/icons-material/FastRewind';
 
 const AnnotationImageNavigation = () => {
 
-    const { files, currentImage } = useMainContext();
+    const { files, currentImage } = useFilesContext();
     const { previous, lastOrFirstImage, next } = useAnnotationContext();
 
     const imageIndex = () => {
@@ -24,16 +24,6 @@ const AnnotationImageNavigation = () => {
                 justifyContent="center"
                 alignItems="center"
             >
-                {/* <IconButton>
-                    <PhotoIcon />
-                </IconButton>
-
-                <Switch />
-                
-                <IconButton>
-                    <GridViewIcon fontSize="large" />
-                </IconButton> */}
-
                 <IconButton onClick={() => lastOrFirstImage("first")}>
                     <FastRewindIcon fontSize="large" />
                 </IconButton>
@@ -60,9 +50,6 @@ const AnnotationImageNavigation = () => {
                     <FastForwardIcon fontSize="large" />
                 </IconButton>
 
-                {/* <IconButton >
-                    <FullscreenIcon fontSize="large" />
-                </IconButton> */}
             </Grid>
         </div>
     );

@@ -113,18 +113,6 @@ export default function SiteModale(props) {
             <Grid item lg={6} md={6}>
               <TextField
                 required
-                label={capitalize(t("sites.longitude"))}
-                id="longitude"
-                inputProps={{ type: "number" }}
-                value={site.longitude}
-                fullWidth
-                variant="filled"
-                onChange={(e) => handleFormChange("longitude", e)}
-              />
-            </Grid>
-            <Grid item lg={6} md={6}>
-              <TextField
-                required
                 label={capitalize(t("sites.latitude"))}
                 name="latitude"
                 id="latitude"
@@ -133,6 +121,18 @@ export default function SiteModale(props) {
                 fullWidth
                 variant="filled"
                 onChange={(e) => handleFormChange("latitude", e)}
+              />
+            </Grid>
+            <Grid item lg={6} md={6}>
+              <TextField
+                required
+                label={capitalize(t("sites.longitude"))}
+                id="longitude"
+                inputProps={{ type: "number" }}
+                value={site.longitude}
+                fullWidth
+                variant="filled"
+                onChange={(e) => handleFormChange("longitude", e)}
               />
             </Grid>
           </Grid>

@@ -1,13 +1,18 @@
-import { capitalize, FormControlLabel, Switch } from "@mui/material";
+import {
+  capitalize,
+  Checkbox,
+  FormControlLabel
+} from "@mui/material";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { Annotation } from "../../client";
 import { FC } from "react";
+import ButtonDeleteMedia from "./ButtonDeleteMedia";
 
 interface ObservationTabProps {
     valueTab: number;
@@ -20,14 +25,7 @@ const ObservationTab: FC<ObservationTabProps> = ({
     index
 }) => {
     const { t } = useTranslation();
-    
-    const { 
-        observations,
-        annotated,
-        treated,
-        checked,
-        handleCheckChange,
-    } = useAnnotationContext();
+    const { observations, status, checked, handleCheckChange, gridView } = useAnnotationContext();
 
     return(
         <TabPanel 
@@ -35,38 +33,42 @@ const ObservationTab: FC<ObservationTabProps> = ({
             index={ index }
         >
             <span className="info-annotation-ctn">
-            { treated ?
-                <ButtonStatus 
-                    icon={ <CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} /> } 
-                    title={ capitalize(t("annotations.media_processed_manually")) } 
-                    stylClassButton="valid" 
-                /> : (
-                annotated ?
-                <ButtonStatus 
-                    icon={ <HelpRoundedIcon sx={{ color: "#FF9800" }} /> } 
-                    title={ capitalize(t("observations.not_saved")) } 
-                    stylClassButton="info" 
-                /> :
-                <ButtonStatus 
-                    icon={ <HelpRoundedIcon sx={{ color: "#F44336" }} /> } 
-                    title={ capitalize(t("annotations.media_not_processed")) } 
-                    stylClassButton="warning" 
-                />
-            )}
+                { !gridView && <ButtonDeleteMedia /> }
+                { !gridView && status === "processed" && 
+                    <ButtonStatus 
+                        icon={ <CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} /> } 
+                        title={ capitalize(t("annotations.media_processed_manually")) } 
+                        stylClassButton="valid" 
+                    />
+                }
+                { !gridView && status === "being processed" && 
+                    <ButtonStatus 
+                        icon={ <HelpRoundedIcon sx={{ color: "#FF9800" }} /> } 
+                        title={ capitalize(t("observations.not_saved")) } 
+                        stylClassButton="info" 
+                    />
+                }
+                { !gridView && status === "not processed" && 
+                    <ButtonStatus 
+                        icon={ <HelpRoundedIcon sx={{ color: "#F44336" }} /> } 
+                        title={ capitalize(t("annotations.media_not_processed")) } 
+                        stylClassButton="warning" 
+                    />
+                }
             <FormControlLabel
-                id="switch-empty-control"
+                id="checkbox-empty-control"
                 control={
-                <Switch
-                    id="switch-empty"
-                    checked={ checked }
-                    onChange={ handleCheckChange }
-                />
+                    <Checkbox
+                        id="checkbox-empty"
+                        checked={ checked }
+                        onChange={ handleCheckChange }
+                    />
                 }
                 label={ capitalize(t("annotations.empty_media")) }
             />
             </span>
 
-            {observations?.map((observation: Annotation, index: number) => (
+            {!checked && observations?.map((observation: Annotation, index: number) => (
                 <ObservationForm 
                     key={ observation.id }
                     index={ index + 1 }

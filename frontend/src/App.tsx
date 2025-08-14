@@ -2,7 +2,7 @@ import "./App.css";
 import Main from "./pages/main";
 import Deployment from "./pages/deployment";
 import Annotation from "./pages/annotation";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";
 import DeploymentSheet from "./pages/deploymentSheet";
@@ -19,9 +19,8 @@ import SiteSheetPage from "./pages/siteSheet";
 import SnackContextProvider from "./contexts/snackContext";
 import { AuthContext } from "./contexts/AuthContextProvider";
 import { useContext } from "react";
-// import { SnackbarContext } from "./contexts/snackContext";
-// import { Snack } from "./client/models/Snack";
-// import { useState } from "react";
+import FilesContextProvider from "./contexts/filesContext";
+;
 
 // Env var processed by nginx
 OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
@@ -34,53 +33,61 @@ function App() {
   } else {
     return (
       <MainContextProvider>
-        <SnackContextProvider>
-          <ThemeProvider theme={theme}>
-            <I18nextProvider i18n={i18n}>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Main />}></Route>
-                  {/* <Route path="/project/:projectId" element={<Project />}></Route> */}
-                  <Route
-                    path="/project/:projectId"
-                    element={<ProjectSheet />}
-                  ></Route>
-                  <Route path="/sites/" element={<SiteMenuPage />}></Route>
-                  <Route path="/devices/" element={<DeviceMenuPage />}></Route>
-                  <Route
-                    path="/devices/:deviceId"
-                    element={<DeviceSheetPage />}
-                  ></Route>
-                  <Route
-                    path="/sites/:siteId"
-                    element={<SiteSheetPage />}
-                  ></Route>
-                  <Route
-                    path="deployment/:deploymentId"
-                    element={<Deployment />}
-                  ></Route>
-                  <Route
-                    path="/project/:projectId/deployment/:deploymentId/details"
-                    element={<DeploymentSheet number={0} />}
-                  ></Route>
-                  <Route
-                    path="/project/:projectId/deployment/:deploymentId/medias"
-                    element={<DeploymentSheet number={1} />}
-                  ></Route>
-                  <Route
-                    path="/project/:projectId/deployment/:deploymentId/medias/:imageId"
-                    element={<Annotation />}
-                  ></Route>
-                  <Route
-                    path="/project/:projectId/deployment/:deploymentId/details/:imageId"
-                    element={<Annotation />}
-                  ></Route>
-                  <Route path="*" element={<Main />}></Route>
-                </Routes>
-              </BrowserRouter>
-            </I18nextProvider>
-          </ThemeProvider>
-        </SnackContextProvider>
+        <FilesContextProvider>
+          <SnackContextProvider>
+            <ThemeProvider theme={theme}>
+              <I18nextProvider i18n={i18n}>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Main />}></Route>
+                    {/* <Route path="/project/:projectId" element={<Project />}></Route> */}
+                    <Route
+                      path="/project/:projectId"
+                      element={<ProjectSheet />}
+                    ></Route>
+                    <Route path="/sites/" element={<SiteMenuPage />}></Route>
+                    <Route path="/devices/" element={<DeviceMenuPage />}></Route>
+                    <Route
+                      path="/devices/:deviceId"
+                      element={<DeviceSheetPage />}
+                    ></Route>
+                    <Route
+                      path="/sites/:siteId"
+                      element={<SiteSheetPage />}
+                    ></Route>
+                    <Route
+                      path="deployment/:deploymentId"
+                      element={<Deployment />}
+                    ></Route>
+                    <Route
+                      path="/project/:projectId/deployment/:deploymentId"
+                      element={
+                        <Navigate replace to="details" />
+                      }
+                    ></Route>
+                    <Route
+                      path="/project/:projectId/deployment/:deploymentId/details"
+                      element={<DeploymentSheet number={0} />}
+                    ></Route>
+                    <Route
+                      path="/project/:projectId/deployment/:deploymentId/medias"
+                      element={<DeploymentSheet number={1} />}
+                    ></Route>
+                    <Route
+                      path="/project/:projectId/deployment/:deploymentId/medias/:imageId"
+                      element={<Annotation />}
+                    ></Route>
+                    <Route
+                      path="/project/:projectId/deployment/:deploymentId/details/:imageId"
+                      element={<Annotation />}
+                    ></Route>
+                    <Route path="*" element={<Main />}></Route>
+                  </Routes>
+                </BrowserRouter>
+              </I18nextProvider>
+            </ThemeProvider>
+          </SnackContextProvider>
+        </FilesContextProvider>
       </MainContextProvider>
     );
   }
