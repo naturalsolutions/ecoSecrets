@@ -6,7 +6,7 @@ server <- function(input, output, session) {
   
   #
   data <- mod_data_prep_server("data_prep")
-  params <- mod_display_params_server("display_params", analysis_type, selected_analysis)
+  params <- mod_display_params_server("display_params", analysis_type, selected_analysis, data)
   
   # dynamic update of selectInput options
   observeEvent(input$main_tabs, {
@@ -25,16 +25,29 @@ server <- function(input, output, session) {
   # active module ui
   output$dynamic_module_ui <- renderUI({
     ns <- NS("dynamic_module")
-    tagList(
+    
+    if (input$main_tabs == "monitoring") {
+      tagList(
+        div(id = "module_container",
+            fluidRow(
+              column(4, div(class="small-block", textOutput(ns("nb_EP")))),
+              column(4, div(class="small-block", textOutput(ns("nb_trap_days_estimated")))),
+              column(4, div(class="small-block", textOutput(ns("nb_trap_days_real")))),
+            fluidRow(
+              # Grand bloc en dessous qui prend tout l'espace restant
+              column(12,div(class="large-block", plotOutput(ns("plot")))))
+            )
+        )
+      )
+    } else {
       div(id = "module_container",
           switch(input$main_tabs,
-                 "monitoring" = mod_monitoring_ui("dynamic_module"),
                  "community" = mod_community_ui("dynamic_module"),
                  "species" = mod_species_ui("dynamic_module"),
                  "activity" = mod_activity_ui("dynamic_module")
           )
       )
-    )
+    }
   })
   
   # active module ui server
