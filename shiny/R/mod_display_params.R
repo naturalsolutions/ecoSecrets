@@ -14,9 +14,9 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
       
       if (analysis_type() == "monitoring") {
         tagList(
-          dateRangeInput(ns("period_select"), "Choisir une période d'étude :", startview = "month"),
-          checkboxInput(ns("show_observation"), "Afficher les observations", TRUE),
-          selectInput(ns("species_select"), "Choisir une espèce :", choices = unique(dataset$species)),
+          dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
+          checkboxInput(ns("show_observation"), "Afficher les observations", FALSE),
+          selectInput(ns("species_select"), "Choisir une espèce :", choices = unique(dataset$species), selected = NULL),
           numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5)
         )
       } else if (analysis_type() == "community") {
@@ -24,7 +24,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
           tagList(
             dateRangeInput(ns("daterange"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE)),
             selectInput(ns("time_select"), "Résolution temporelle :", choices = c("Année" = "year", "Mois" = "month", "Semaine" = "week", "Jour" = "day"), selected = "month"),
-            selectInput(ns("taxon_select"), "Résolution taxonomique :", choices = c("Classe" = "class", "Ordre" = "order", "Famille" = "family", "Genre" = "genus", "Espèce" = "species"), selected = "genus"),
+            selectInput(ns("taxon_select"), "Résolution taxonomique :", choices = c("Classe" = "class", "Ordre" = "order", "Famille" = "family", "Genre" = "genus", "Espèce" = "species"), selected = "species"),
             numericInput(ns("interval_ind"), "Intervalle d'indépendance (min) :", value = 0, min = 1, max = 300, step = 5),
             shinyWidgets::switchInput(ns("show_abundance"), label = "Abondance", onLabel = "Relative", offLabel = "Absolue", value = TRUE),
             shinyWidgets::switchInput(ns("show_group"), label = "Affichage", onLabel = "Empilé", offLabel = "Groupé", value = TRUE),
@@ -48,16 +48,17 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
     
     # Reactive values
     params <- reactive({
+      df <- data()
       req(analysis_type(), selected_analysis())
       
       if (analysis_type() == "monitoring") {
         if (selected_analysis() == "Historique d'échantillonnage") {
           list(
-            species_select = input$species_select,
-            show_observation = input$show_observation,
-            start_date = input$period_select[1],
-            end_date = input$period_select[2],
-            interval_ind = input$interval_ind
+            species_select = input$species_select %||% NULL,
+            show_observation = input$show_observation %||% FALSE,
+            start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
+            end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
+            interval_ind = input$interval_ind %||% 1
           )
         } else if (selected_analysis() == "monitoring YYY") {
           list(
@@ -67,35 +68,35 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
       } else if (analysis_type() == "community") {
         if (selected_analysis() == "Abondance") {
           list(
-            time_select = input$time_select,
-            taxon_select = input$taxon_select,
-            show_abundance = input$show_abundance,
-            show_group = ifelse(input$show_group, "stack", "dodge"),
-            start_date = input$daterange[1],
-            end_date = input$daterange[2],
-            show_by = input$show_by
+            time_select = input$time_select  %||% "month",
+            taxon_select = input$taxon_select %||% "species",
+            show_abundance = input$show_abundance %||% TRUE,
+            show_group = if (isTRUE(input$show_group %||% TRUE)) "stack" else "dodge",
+            start_date = input$daterange[1] %||% min(as.Date(df$date), na.rm = TRUE),
+            end_date = input$daterange[2] %||% max(as.Date(df$date), na.rm = TRUE),
+            show_by = input$show_by %||% "project"
           )
         } else if (selected_analysis() == "Indice de diversité") {
           list(
-            start_date = input$period_select[1],
-            end_date = input$period_select[2],
-            taxon_select = input$taxon_select,
-            index_select = input$index_select
+            start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
+            end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
+            taxon_select = input$taxon_select %||% "genus",
+            index_select = input$index_select %||% "shannon"
           )
         }
       } else if (analysis_type() == "species") {
         if (selected_analysis() == "species XXX") {
           list(
-            start_date = input$period_select[1],
-            end_date = input$period_select[2],
+            start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
+            end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
             species = input$species_select,
-            interval_ind = input$interval_ind
+            interval_ind = input$interval_ind %||% 1
           )
         }
         else if (selected_analysis() == "species YYY") {
           list(
-            start_date = input$period_select[1],
-            end_date = input$period_select[2],
+            start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
+            end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
             taxon_select = input$taxon_select,
             index_select = input$index_select
           )
