@@ -2,8 +2,18 @@ mod_data_prep_ui <- function(id) {
   ns <- NS(id)
   tagList(
     selectInput(ns("project_select"), "Choix du projet :", choices = sort(unique(dataset$project)), selected = "ecopont"),
-    selectInput(ns("site_select"), "Choix du site :", choices = NULL, selected = NULL, multiple = TRUE),
-    selectInput(ns("deployment_select"), "Choix du déploiement :", choices = NULL, selected = NULL, multiple = TRUE),
+    pickerInput(ns("site_select"), "Choisir un site :", choices = NULL, selected = NULL, multiple = TRUE, options = pickerOptions(
+      actionsBox = TRUE,
+      noneSelectedText = "Aucun site sélectionné",
+      selectedTextFormat = "count > 1",
+      countSelectedText = "{0} sites sélectionnés"
+    )),
+    pickerInput(ns("deployment_select"), "Choisir un déploiement :", choices = NULL, selected = NULL, multiple = TRUE, options = pickerOptions(
+      actionsBox = TRUE,
+      noneSelectedText = "Aucun déploiement sélectionné",
+      selectedTextFormat = "count > 1",
+      countSelectedText = "{0} déploiements sélectionnés"
+    )),
     checkboxInput(ns("empty_select"),"Retirer les élements vides", value = FALSE),
     checkboxInput(ns("human_select"),"Retirer les humains", value = FALSE)
     )
@@ -26,8 +36,8 @@ mod_data_prep_server <- function(id) {
           pull(deployment) %>%
           unique()
         
-        updateSelectInput(session, "site_select", choices = sort(sites), selected = NULL)
-        updateSelectInput(session,"deployment_select", choices = sort(deployments), selected = NULL)
+        shinyWidgets::updatePickerInput(session, "site_select", choices = sort(sites), selected = NULL)
+        shinyWidgets::updatePickerInput(session,"deployment_select", choices = sort(deployments), selected = NULL)
       })
         
       observeEvent (input$site_select, {
@@ -43,7 +53,7 @@ mod_data_prep_server <- function(id) {
             pull(deployment) %>%
             unique()
         }
-        updateSelectInput(session,"deployment_select", choices = c("",sort(deployments)), selected = input$deployment_select)
+        shinyWidgets::updatePickerInput(session,"deployment_select", choices = sort(deployments), selected = input$deployment_select)
       }, ignoreNULL = FALSE)
       
       observeEvent (input$deployment_select, {
@@ -60,7 +70,7 @@ mod_data_prep_server <- function(id) {
             unique()
         }
         
-        updateSelectInput(session, "site_select", choices = c("", sort(sites)), selected = input$site_select)
+        shinyWidgets::updatePickerInput(session, "site_select", choices = sort(sites), selected = input$site_select)
       }, ignoreNULL = FALSE)
       
       data <- reactive({
