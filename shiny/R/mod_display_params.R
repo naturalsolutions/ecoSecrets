@@ -69,7 +69,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
             end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
             interval_ind = input$interval_ind %||% 1
           )
-        } else if (selected_analysis() == "monitoring YYY") {
+        } else if (selected_analysis() == "Effort d'échantillonnage") {
           list(
             show_deployment = input$show_monitoring %||% TRUE
           )
@@ -94,7 +94,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
           )
         }
       } else if (analysis_type() == "species") {
-        if (selected_analysis() == "species XXX") {
+        if (selected_analysis() == "Taux de détection") {
           list(
             start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
             end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),

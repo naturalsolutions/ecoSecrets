@@ -15,7 +15,7 @@ mod_monitoring_server <- function(id, selected_analysis, data, params) {
       df <- data()
       if (selected_analysis() == "Historique d'échantillonnage") {
         sample_historic(df, start_date = params()$start_date, end_date = params()$end_date, display = params()$show_observation, species = params()$species_select)
-      } else if (selected_analysis() == "monitoring YYY") {
+      } else if (selected_analysis() == "Effort d'échantillonnage") {
         boxplot(df$number, main = "Boxplot", col = "lightgreen")
       }
     })

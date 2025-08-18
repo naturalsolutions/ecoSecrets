@@ -10,7 +10,7 @@ mod_species_server <- function(id, selected_analysis, data, params) {
     output$plot <- renderPlot({
       req(selected_analysis(), data(), params())
       df <- data()
-      if (selected_analysis() == "species XXX") {
+      if (selected_analysis() == "Taux de détection") {
         detection_rate(df, selected_species = params()$species_select, 
                        start_date = params()$start_date, 
                        end_date = params()$end_date, 
