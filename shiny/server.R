@@ -11,10 +11,10 @@ server <- function(input, output, session) {
   # dynamic update of selectInput options
   observeEvent(input$main_tabs, {
     choices <- switch(input$main_tabs,
-                      "monitoring" = c("Historique d'échantillonnage", "monitoring YYY"),
+                      "monitoring" = c("Historique d'échantillonnage", "Effort d'échantillonnage"),
                       "community" = c("Abondance", "Indice de diversité"),
-                      "species" = c("species XXX", "species YYY"),
-                      "activity" = c("Activity XXX", "Activity YYY"),
+                      "species" = c("Taux de détection", "species YYY"),
+                      "activity" = c("Modèle d'activité", "Activity YYY"),
                       character(0))
     updateSelectInput(session, "main_select",
                       choices = choices,
