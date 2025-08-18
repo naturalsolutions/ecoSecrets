@@ -4,7 +4,7 @@ ui <- fluidPage(
     id = "main_tabs",
     selected = "monitoring",
     tabPanel("Suivi photographique", value="monitoring"),
-    tabPanel("Composition communautés", value="community"),
+    tabPanel("Structure communautés", value="community"),
     tabPanel("Présence espèces", value="species"),
     tabPanel("Activité & Comportement", value="activity"),
     
