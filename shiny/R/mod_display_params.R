@@ -52,6 +52,12 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
           numericInput(ns("interval_ind"), "Intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5),
           radioButtons(ns("show_by"), "Affichage par :", choices = c("Projet" = "project", "Site" = "site", "Déploiement" = "deployment"), selected = "project")
         )
+      } else if (analysis_type() == "activity") {
+        tagList(
+          dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
+          selectInput(ns("species1_select"), "Espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species))[2]),
+          selectInput(ns("species2_select"), "Espèce :", choices = sort(unique(data()$species)), selected = NULL)
+        )
       }
     })
     
@@ -112,6 +118,13 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
           )
         }
         
+      } else if (analysis_type() == "activity") {
+        list(
+          start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
+          end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
+          species1_select = input$species1_select%||% sort(unique(data()$species))[2],
+          species2_select = input$species2_select %||% NULL
+        )
       }
     })
     
