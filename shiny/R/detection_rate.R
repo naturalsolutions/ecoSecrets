@@ -2,7 +2,8 @@ library(dplyr)
 library(lubridate)
 
 
-detection_rate <- function(df, species = NULL, start_date, end_date, interval_ind =5) {
+detection_rate <- function(df, selected_species, start_date, end_date, interval_ind =5, show_by="project") {
+  show_by <- sym(show_by)
   
   # Prétraitement des dates
   df <- df %>%
@@ -10,8 +11,8 @@ detection_rate <- function(df, species = NULL, start_date, end_date, interval_in
     filter(date >= start_date, date <= end_date)
   
   # Filtrage optionnel par espèce
-  if (!is.null(species)) {
-    df <- df %>% filter(species %in% species)
+  if (!is.null(selected_species)) {
+    df <- df %>% filter(species %in% selected_species)
   }
   
   # Si aucune ligne après filtrage
@@ -45,22 +46,21 @@ detection_rate <- function(df, species = NULL, start_date, end_date, interval_in
       ungroup()
     
     # Nombre total d'événements indépendants
-    n_events <- df_indep %>%
-      distinct(deployment, event_id) %>%
-      nrow()
+    n_events_df <- df_indep %>%
+      distinct(deployment, event_id, !!show_by) %>%
+      group_by(!!show_by) %>%
+      summarise(n_events=n()) %>%
+      ungroup()
     
     # Nombre de jours-trap actifs
     trap_days <- as.numeric(difftime(end_date, start_date, units = "days")) + 1
-
-    rate <- n_events / trap_days
     
-    # Ajouter au tableau des résultats
-    results <- rbind(results, data.frame(
-      espece = sp,
-      n_events = n_events,
+    n_events_df <- n_events_df %>%
+      mutate(espece = sp,
       trap_days = trap_days,
-      detection_rate = round(rate, 4)
-    ))
+      detection_rate = round(n_events/trap_days, 4))
+    
+    results <- rbind(results, n_events_df)
   }
   
   # Création du graphique
@@ -69,7 +69,8 @@ detection_rate <- function(df, species = NULL, start_date, end_date, interval_in
     labs(title = "Taux de détection par espèce",
          x = "Taux de détection",
          y = "Espèce") +
-    theme_minimal()
+    theme_minimal() +
+    facet_wrap(vars(!!show_by))
   
   print(plot)
 }
