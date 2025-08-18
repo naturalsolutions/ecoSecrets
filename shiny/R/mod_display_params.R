@@ -43,7 +43,12 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
       } else if (analysis_type() == "species") {
         tagList(
           dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
-          selectInput(ns("species_select"), "Choisir une espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species)), multiple = TRUE),
+          pickerInput(ns("species_select"), "Choisir une espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species)), multiple = TRUE, options = pickerOptions(
+            actionsBox = TRUE,
+            noneSelectedText = "Aucune espèce sélectionnée",
+            selectedTextFormat = "count > 1",
+            countSelectedText = "{0} espèces sélectionnées"
+          )),
           numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5),
           radioButtons(ns("show_by"), "Affichage par :", choices = c("Projet" = "project", "Site" = "site", "Déploiement" = "deployment"), selected = "project")
         )
