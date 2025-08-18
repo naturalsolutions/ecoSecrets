@@ -16,7 +16,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
         tagList(
           dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
           checkboxInput(ns("show_observation"), "Afficher les observations", FALSE),
-          selectInput(ns("species_select"), "Choisir une espèce :", choices = unique(dataset$species), selected = NULL),
+          selectInput(ns("species_select"), "Choisir une espèce :", choices = sort(unique(data()$species)), selected = NULL),
           numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5)
         )
         
@@ -43,7 +43,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
       } else if (analysis_type() == "species") {
         tagList(
           dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
-          selectizeInput(ns("species_select"), "Choisir une espèce :", choices = unique(dataset$species), selected = unique(dataset$species), multiple = TRUE),
+          selectInput(ns("species_select"), "Choisir une espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species)), multiple = TRUE),
           numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5),
           radioButtons(ns("show_by"), "Affichage par :", choices = c("Projet" = "project", "Site" = "site", "Déploiement" = "deployment"), selected = "project")
         )
@@ -93,7 +93,7 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
           list(
             start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
             end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
-            species = input$species_select,
+            species_select = input$species_select,
             interval_ind = input$interval_ind %||% 1,
             show_by = input$show_by %||% "project"
           )
