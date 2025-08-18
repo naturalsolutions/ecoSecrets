@@ -47,8 +47,6 @@ nb_trap_days_estimated <- function(df, start_date, end_date) {
   
   # Calcul de la différence de jours
   diff <- as.numeric(difftime(max(df$date, na.rm = TRUE), min(df$date, na.rm = TRUE), units = "days")) + 1
-  
-  print(diff)
 }
 
 #================== JOURS REELS ====================================
