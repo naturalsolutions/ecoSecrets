@@ -1,7 +1,7 @@
 mod_data_prep_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    selectInput(ns("project_select"), "Choix du projet :", choices = unique(dataset$project), selected = "ecopont"),
+    selectInput(ns("project_select"), "Choix du projet :", choices = sort(unique(dataset$project)), selected = "ecopont"),
     selectInput(ns("site_select"), "Choix du site :", choices = NULL, selected = NULL, multiple = TRUE),
     selectInput(ns("deployment_select"), "Choix du déploiement :", choices = NULL, selected = NULL, multiple = TRUE),
     checkboxInput(ns("empty_select"),"Retirer les élements vides", value = FALSE),
