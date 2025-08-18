@@ -26,8 +26,8 @@ mod_data_prep_server <- function(id) {
           pull(deployment) %>%
           unique()
         
-        updateSelectInput(session, "site_select", choices = sites, selected = NULL)
-        updateSelectInput(session,"deployment_select", choices = deployments, selected = NULL)
+        updateSelectInput(session, "site_select", choices = sort(sites), selected = NULL)
+        updateSelectInput(session,"deployment_select", choices = sort(deployments), selected = NULL)
       })
         
       observeEvent (input$site_select, {
@@ -43,7 +43,7 @@ mod_data_prep_server <- function(id) {
             pull(deployment) %>%
             unique()
         }
-        updateSelectInput(session,"deployment_select", choices = c("",deployments), selected = input$deployment_select)
+        updateSelectInput(session,"deployment_select", choices = c("",sort(deployments)), selected = input$deployment_select)
       }, ignoreNULL = FALSE)
       
       observeEvent (input$deployment_select, {
@@ -60,7 +60,7 @@ mod_data_prep_server <- function(id) {
             unique()
         }
         
-        updateSelectInput(session, "site_select", choices = c("", sites), selected = input$site_select)
+        updateSelectInput(session, "site_select", choices = c("", sort(sites)), selected = input$site_select)
       }, ignoreNULL = FALSE)
       
       data <- reactive({
