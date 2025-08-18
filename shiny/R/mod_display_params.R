@@ -14,10 +14,10 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
       
       if (analysis_type() == "monitoring") {
         tagList(
-          dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
+          dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
           checkboxInput(ns("show_observation"), "Afficher les observations", FALSE),
-          selectInput(ns("species_select"), "Choisir une espèce :", choices = sort(unique(data()$species)), selected = NULL),
-          numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5)
+          selectInput(ns("species_select"), "Espèce :", choices = sort(unique(data()$species)), selected = NULL),
+          numericInput(ns("interval_ind"), "Intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5)
         )
         
       } else if (analysis_type() == "community") {
@@ -34,22 +34,22 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
           
         } else if (selected_analysis() == "Indice de diversité") {
           tagList(
-            dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
-            selectInput(ns("taxon_select"), "Choisir la résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
-            selectInput(ns("index_select"), "Choisir l'indice de richesse :", choices = c("shannon", "simpson"), selected = "shannon")
+            dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
+            selectInput(ns("taxon_select"), "Résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
+            selectInput(ns("index_select"), "Indice de richesse :", choices = c("shannon", "simpson"), selected = "shannon")
           )
         }
         
       } else if (analysis_type() == "species") {
         tagList(
-          dateRangeInput(ns("period_select"), "Choisir une période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
-          pickerInput(ns("species_select"), "Choisir une espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species)), multiple = TRUE, options = pickerOptions(
+          dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
+          pickerInput(ns("species_select"), "Espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species)), multiple = TRUE, options = pickerOptions(
             actionsBox = TRUE,
             noneSelectedText = "Aucune espèce sélectionnée",
             selectedTextFormat = "count > 1",
             countSelectedText = "{0} espèces sélectionnées"
           )),
-          numericInput(ns("interval_ind"), "Choisir un intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5),
+          numericInput(ns("interval_ind"), "Intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5),
           radioButtons(ns("show_by"), "Affichage par :", choices = c("Projet" = "project", "Site" = "site", "Déploiement" = "deployment"), selected = "project")
         )
       }
