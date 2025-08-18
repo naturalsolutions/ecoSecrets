@@ -2,11 +2,7 @@ library(tidyverse)
 library(lubridate)
 library(data.table)
 
-sample_historic <- function(df,
-                            start_date,
-                            end_date,
-                            display = TRUE,
-                            species = NULL) {
+sample_historic <- function(df, start_date, end_date, display = FALSE, species = NULL) {
   
   # Conversion des dates
   start_date <- as.Date(start_date, format = "%d/%m/%Y")
