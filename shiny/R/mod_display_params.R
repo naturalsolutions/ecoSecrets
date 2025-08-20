@@ -16,11 +16,12 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
         tagList(
           dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
           checkboxInput(ns("show_observation"), "Afficher les observations", FALSE),
-          selectInput(ns("species_select"), "Espèce :", choices = sort(unique(data()$species)), selected = NULL),
+          uiOutput(ns("species_ui")),
           numericInput(ns("interval_ind"), "Intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5)
         )
-        
-      } else if (analysis_type() == "community") {
+      } 
+      
+      else if (analysis_type() == "community") {
         if (selected_analysis() == "Abondance") {
           tagList(
             dateRangeInput(ns("daterange"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE)),
@@ -63,6 +64,12 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
       }
     })
     
+    output$species_ui <- renderUI({
+      req(input$show_observation)
+      selectInput(ns("species_select"), "Espèce :",
+                  choices = sort(unique(data()$species)), selected = NULL)
+    })
+    
     # Reactive values
     params <- reactive({
       df <- data()
@@ -71,11 +78,11 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
       if (analysis_type() == "monitoring") {
         if (selected_analysis() == "Historique d'échantillonnage") {
           list(
-            species_select = input$species_select %||% NULL,
             show_observation = input$show_observation %||% FALSE,
             start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
             end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
-            interval_ind = input$interval_ind %||% 1
+            interval_ind = input$interval_ind %||% 1,
+            species_select = input$species_select %||% NULL
           )
         } else if (selected_analysis() == "Effort d'échantillonnage") {
           list(
