@@ -19,27 +19,33 @@ mod_monitoring_server <- function(id, selected_analysis, data, params) {
         boxplot(df$number, main = "Boxplot", col = "lightgreen")
       }
     })
-    output$nb_EP <- renderText({
+    output$nb_EP <- renderUI({
       req(selected_analysis(), data(), params())
       df <- data()
       if (selected_analysis() == "Historique d'échantillonnage"){
-        nb_EP(df, params()$interval_ind)
+        HTML(paste0('<div style="text-align:center;">',
+                    "<b>", nb_EP(df, params()$interval_ind), "</b> <br> évènements photographiques", 
+                    '</div>'))
       }
     })
     
-    output$nb_trap_days_estimated <- renderText({
+    output$nb_trap_days_estimated <- renderUI({
       req(selected_analysis(), data(), params())
       df <- data()
       if (selected_analysis() == "Historique d'échantillonnage"){
-        nb_trap_days_estimated(df, start_date = params()$start_date, end_date = params()$end_date)
+        HTML(paste0('<div style="text-align:center;">',
+                    "<b>", nb_trap_days_estimated(df, start_date = params()$start_date, end_date = params()$end_date), "</b> <br> jours échantillonnés théoriques", 
+                    '</div>'))
       }
     })
     
-    output$nb_trap_days_real <- renderText({
+    output$nb_trap_days_real <- renderUI({
       req(selected_analysis(), data(), params())
       df <- data()
       if (selected_analysis() == "Historique d'échantillonnage"){
-        nb_trap_days_real(df, start_date = params()$start_date, end_date = params()$end_date)
+        HTML(paste0('<div style="text-align:center;">',
+                    "<b>", nb_trap_days_real(df, start_date = params()$start_date, end_date = params()$end_date), "</b> <br> jours échantillonnés réels", 
+                    '</div>'))
       }
     })
   })

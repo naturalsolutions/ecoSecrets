@@ -7,6 +7,7 @@ server <- function(input, output, session) {
   #
   data <- mod_data_prep_server("data_prep")
   params <- mod_display_params_server("display_params", analysis_type, selected_analysis, data)
+  export <- mod_export_server("export")
   
   # dynamic update of selectInput options
   observeEvent(input$main_tabs, {
@@ -14,7 +15,7 @@ server <- function(input, output, session) {
                       "monitoring" = c("Historique d'échantillonnage", "Effort d'échantillonnage"),
                       "community" = c("Abondance", "Indice de diversité"),
                       "species" = c("Taux de détection", "species YYY"),
-                      "activity" = c("Modèle d'activité", "Activity YYY"),
+                      "activity" = c("Modèle d'activité"),
                       character(0))
     updateSelectInput(session, "main_select",
                       choices = choices,
@@ -30,9 +31,9 @@ server <- function(input, output, session) {
       tagList(
         div(id = "module_container",
             fluidRow(
-              column(4, div(class="small-block", textOutput(ns("nb_EP")))),
-              column(4, div(class="small-block", textOutput(ns("nb_trap_days_estimated")))),
-              column(4, div(class="small-block", textOutput(ns("nb_trap_days_real")))),
+              column(4, div(class="small-block", uiOutput(ns("nb_EP")))),
+              column(4, div(class="small-block", uiOutput(ns("nb_trap_days_estimated")))),
+              column(4, div(class="small-block", uiOutput(ns("nb_trap_days_real")))),
             fluidRow(
               # Grand bloc en dessous qui prend tout l'espace restant
               column(12,div(class="large-block", plotOutput(ns("plot")))))
