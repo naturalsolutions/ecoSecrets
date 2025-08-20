@@ -2,7 +2,7 @@ library(tidyverse)
 library(lubridate)
 library(data.table)
 
-sample_historic <- function(df, start_date, end_date, display = FALSE, species = NULL) {
+sample_historic <- function(df, start_date, end_date, display, species, title, label_x, label_y) {
   
   # Conversion des dates
   start_date <- as.Date(start_date, format = "%d/%m/%Y")
@@ -35,8 +35,8 @@ sample_historic <- function(df, start_date, end_date, display = FALSE, species =
     geom_segment(aes(x = start, xend = end, yend = deployment),
                  size = 5, color = "grey") +
     labs(
-      caption = paste0("Historique d'échantillonnage des déploiements (espèce : ", species, ")"),
-      x = "Temps", y = "Déploiements")+
+      caption = title,
+      x = label_x, y = label_y)+
     theme_minimal() +
     theme(axis.text.y = element_text(size = 8)) +
     theme(

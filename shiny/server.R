@@ -57,7 +57,8 @@ server <- function(input, output, session) {
       mod_monitoring_server("dynamic_module",
                             selected_analysis = selected_analysis,
                             data = data,
-                            params = params)
+                            params = params,
+                            export = export)
     } else if (input$main_tabs == "community") {
       mod_community_server("dynamic_module",
                            selected_analysis = selected_analysis,
