@@ -20,14 +20,15 @@ nb_EP <- function(df, interval_ind=5) {
 
 #================== NOMBRE EVENEMENT PHOTOGRAPHIQUE PAR ESPECE =============================
 
-nb_EP_par_espece <- function(df, interval_ind = 5) {
+nb_EP_par_espece <- function(df, interval_ind, show_by) {
+  show_by <- sym(show_by)
   df %>%
     mutate(
       species = ifelse(is.na(species) | species == "", "Indéterminé", species)
     ) %>%
-    filter(!is.na(date)) %>%  # On garde quand même des dates valides
+    filter(!is.na(date)) %>%
     arrange(species, date) %>%
-    group_by(species) %>%
+    group_by(species, !!show_by) %>%
     filter(n() > 0) %>%
     mutate(
       temps_ecoule = as.numeric(difftime(date, lag(date), units = "mins")),
