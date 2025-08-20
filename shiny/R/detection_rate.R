@@ -10,7 +10,7 @@ detection_rate <- function(df, selected_species, start_date, end_date, interval_
     mutate(date = as.Date(date)) %>%
     filter(date >= start_date, date <= end_date)
   
-  # Filtrage optionnel par espèce
+  # Filtrage par espèce
   if (!is.null(selected_species)) {
     df <- df %>% filter(species %in% selected_species)
   }
