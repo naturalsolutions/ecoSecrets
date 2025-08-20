@@ -2,6 +2,7 @@ library(shiny)
 library(dplyr)
 library(readr)
 library(tidyr)
+library(shinyWidgets)
 
 source("server.R")
 source("ui.R")
