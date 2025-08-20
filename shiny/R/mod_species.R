@@ -16,10 +16,10 @@ mod_species_server <- function(id, selected_analysis, data, params) {
                        end_date = params()$end_date, 
                        interval_ind = params()$interval_ind, show_by = params()$show_by)
       } else if (selected_analysis() == "species YYY") {
-        plot_EP_species(df, species= params()$species_select, 
+        plot_EP_species(df, selected_species= params()$species_select, 
                         start_date = params()$start_date, 
                         end_date = params()$end_date, 
-                        interval_ind = params()$interval_ind)
+                        interval_ind = params()$interval_ind, show_by = params()$show_by)
       }
     })
   })

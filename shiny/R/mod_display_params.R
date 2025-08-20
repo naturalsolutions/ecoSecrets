@@ -35,23 +35,25 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
         } else if (selected_analysis() == "Indice de diversité") {
           tagList(
             dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
+            selectInput(ns("time_select"), "Résolution temporelle :", choices = c("Année" = "year", "Mois" = "month", "Semaine" = "week", "Jour" = "day"), selected = "month"),
             selectInput(ns("taxon_select"), "Résolution taxonomique :", choices = c("class", "order", "genus", "family", "species"), selected = "genus"),
-            selectInput(ns("index_select"), "Indice de richesse :", choices = c("shannon", "simpson"), selected = "shannon")
+            selectInput(ns("index_select"), "Indice de richesse :", choices = c("shannon", "simpson"), selected = "shannon"),
+            radioButtons(ns("show_by"), "Affichage par :", choices = c("Projet" = "project", "Site" = "site", "Déploiement" = "deployment"), selected = "project")
           )
         }
         
       } else if (analysis_type() == "species") {
-        tagList(
-          dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
-          pickerInput(ns("species_select"), "Espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species)), multiple = TRUE, options = pickerOptions(
-            actionsBox = TRUE,
-            noneSelectedText = "Aucune espèce sélectionnée",
-            selectedTextFormat = "count > 1",
-            countSelectedText = "{0} espèces sélectionnées"
-          )),
-          numericInput(ns("interval_ind"), "Intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5),
-          radioButtons(ns("show_by"), "Affichage par :", choices = c("Projet" = "project", "Site" = "site", "Déploiement" = "deployment"), selected = "project")
-        )
+          tagList(
+            dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
+            pickerInput(ns("species_select"), "Espèce :", choices = sort(unique(data()$species)), selected = sort(unique(data()$species)), multiple = TRUE, options = pickerOptions(
+              actionsBox = TRUE,
+              noneSelectedText = "Aucune espèce sélectionnée",
+              selectedTextFormat = "count > 1",
+              countSelectedText = "{0} espèces sélectionnées"
+            )),
+            numericInput(ns("interval_ind"), "Intervalle d'indépendance :", value = 0, min = 1, max = 300, step = 5),
+            radioButtons(ns("show_by"), "Affichage par :", choices = c("Projet" = "project", "Site" = "site", "Déploiement" = "deployment"), selected = "project")
+          )
       } else if (analysis_type() == "activity") {
         tagList(
           dateRangeInput(ns("period_select"), "Période d'étude :", start = min(as.Date(data()$date), na.rm = TRUE), end = max(as.Date(data()$date), na.rm = TRUE), startview = "month"),
@@ -96,7 +98,9 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
             start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
             end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
             taxon_select = input$taxon_select %||% "genus",
-            index_select = input$index_select %||% "shannon"
+            time_select = input$time_select  %||% "month",
+            index_select = input$index_select %||% "shannon",
+            show_by = input$show_by %||% "project"
           )
         }
       } else if (analysis_type() == "species") {
@@ -113,8 +117,9 @@ mod_display_params_server <- function(id, analysis_type, selected_analysis, data
           list(
             start_date = input$period_select[1] %||% min(as.Date(df$date), na.rm = TRUE),
             end_date = input$period_select[2] %||% max(as.Date(df$date), na.rm = TRUE),
-            taxon_select = input$taxon_select,
-            index_select = input$index_select
+            species_select = input$species_select,
+            interval_ind = input$interval_ind %||% 1,
+            show_by = input$show_by %||% "project"
           )
         }
         
