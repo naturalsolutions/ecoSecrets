@@ -35,11 +35,13 @@ sample_historic <- function(df, start_date, end_date, display = FALSE, species =
     geom_segment(aes(x = start, xend = end, yend = deployment),
                  size = 5, color = "grey") +
     labs(
-      title = paste0("Périodes d'activité des pièges (espèce : ", species, ")"),
-      x = "Date", y = "Déploiement"
-    ) +
+      caption = paste0("Historique d'échantillonnage des déploiements (espèce : ", species, ")"),
+      x = "Temps", y = "Déploiements")+
     theme_minimal() +
-    theme(axis.text.y = element_text(size = 8))
+    theme(axis.text.y = element_text(size = 8)) +
+    theme(
+      plot.caption = element_text(hjust = 0.5, face = "bold", size = 14, margin = margin(t = 15))
+    )  
   
   # Ajouter les observations en rouge si espèce présente
   if (display) {

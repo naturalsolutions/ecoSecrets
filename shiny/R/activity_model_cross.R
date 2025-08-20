@@ -25,9 +25,12 @@ activity_model_cross <- function(df, species1, species2 = NULL) {
       geom_segment(data = data1$df_points,
                    aes(x = heure, xend = heure, y = 0, yend = 0.005, color = species),
                    alpha = 0.5) +
-      labs(title = paste("Densité d'activité -", species1),
+      labs(caption = paste("Modèle d'activité -", species1),
            x = "Heure", y = "Densité", color = "Espèce") +
-      theme_minimal()
+      theme_minimal() +
+      theme(
+        plot.caption = element_text(hjust = 0.5, face = "bold", size = 14, margin = margin(t = 15))
+      )  
     
   } else {
     # Cas 2 : comparaison entre deux espèces
@@ -61,8 +64,11 @@ activity_model_cross <- function(df, species1, species2 = NULL) {
       geom_segment(data = points_all,
                    aes(x = heure, xend = heure, y = 0, yend = 0.005, color = species),
                    alpha = 0.5) +
-      labs(title = paste("Densité d'activité commune -", species1, "et", species2),
+      labs(caption = paste("Densité d'activité commune -", species1, "et", species2),
            x = "Heure", y = "Densité", color = "Espèce") +
-      theme_minimal()
+      theme_minimal() +
+      theme(
+        plot.caption = element_text(hjust = 0.5, face = "bold", size = 14, margin = margin(t = 15))
+      )  
   }
 }

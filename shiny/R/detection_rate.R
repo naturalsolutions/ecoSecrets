@@ -66,10 +66,13 @@ detection_rate <- function(df, selected_species, start_date, end_date, interval_
   # Création du graphique
   plot <- ggplot(results, aes(x = detection_rate, y = reorder(espece, detection_rate))) +
     geom_point(color = "steelblue", size = 3) +
-    labs(title = "Taux de détection par espèce",
+    labs(caption = "Taux de détection par espèce",
          x = "Taux de détection",
-         y = "Espèce") +
+         y = "Taxon") +
     theme_minimal() +
+    theme(
+      plot.caption = element_text(hjust = 0.5, face = "bold", size = 14, margin = margin(t = 15))
+    ) +
     facet_wrap(vars(!!show_by))
   
   print(plot)
