@@ -5,7 +5,7 @@ library(ggplot2)
 
 source("R/calc_activity.R")
 
-activity_model_cross <- function(df, species1, species2 = NULL) {
+activity_model_cross <- function(df, species1, species2 = NULL, title, label_x, label_y) {
   
   # Calcul activité pour espèce 1
   data1 <- calc_activity(df, selected_species = species1)
@@ -25,8 +25,8 @@ activity_model_cross <- function(df, species1, species2 = NULL) {
       geom_segment(data = data1$df_points,
                    aes(x = heure, xend = heure, y = 0, yend = 0.005, color = species),
                    alpha = 0.5) +
-      labs(caption = paste("Modèle d'activité -", species1),
-           x = "Heure", y = "Densité", color = "Espèce") +
+      labs(caption = paste(title, species1),
+           x = label_x, y = label_y, color = "Espèce") +
       theme_minimal() +
       theme(
         plot.caption = element_text(hjust = 0.5, face = "bold", size = 14, margin = margin(t = 15))
@@ -64,8 +64,8 @@ activity_model_cross <- function(df, species1, species2 = NULL) {
       geom_segment(data = points_all,
                    aes(x = heure, xend = heure, y = 0, yend = 0.005, color = species),
                    alpha = 0.5) +
-      labs(caption = paste("Densité d'activité commune -", species1, "et", species2),
-           x = "Heure", y = "Densité", color = "Espèce") +
+      labs(caption = paste(title, species1, "et", species2),
+           x = label_x, y = label_y, color = "Espèce") +
       theme_minimal() +
       theme(
         plot.caption = element_text(hjust = 0.5, face = "bold", size = 14, margin = margin(t = 15))

@@ -38,7 +38,13 @@ mod_export_server <- function(id, analysis_type, selected_analysis) {
             textInput(ns("label_y"), label="Légende axe y", value= "Espèces")
           )
         }
-      } 
+      } else if (analysis_type() == "activity") {
+        list(
+          textInput(ns("title"), label="Titre", value="Modèle d'activité - "),
+          textInput(ns("label_x"), label="Légende axe x", value= "Heures"),
+          textInput(ns("label_y"), label="Légende axe y", value= "Densité d'activité")
+        )
+      }
     })
     
     export <- reactive({
@@ -72,6 +78,12 @@ mod_export_server <- function(id, analysis_type, selected_analysis) {
             label_y = input$label_y
           )
         }
+      } else if (analysis_type() == "activity"){
+        list(
+          title = input$title,
+          label_x = input$label_x,
+          label_y = input$label_y
+        )
       }
     })
     return(export)

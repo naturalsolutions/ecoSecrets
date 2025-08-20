@@ -7,7 +7,7 @@ server <- function(input, output, session) {
   #
   data <- mod_data_prep_server("data_prep")
   params <- mod_display_params_server("display_params", analysis_type, selected_analysis, data)
-  export <- mod_export_server("export")
+  export <- mod_export_server("export", analysis_type, selected_analysis)
   
   # dynamic update of selectInput options
   observeEvent(input$main_tabs, {
@@ -68,12 +68,14 @@ server <- function(input, output, session) {
       mod_species_server("dynamic_module",
                          selected_analysis = selected_analysis,
                          data = data,
-                         params = params)
+                         params = params,
+                         export = export)
     }  else if (input$main_tabs == "activity") {
       mod_activity_server("dynamic_module",
                            selected_analysis = selected_analysis,
                            data = data,
-                           params = params)
+                           params = params, 
+                           export = export)
     }
   })
 }
