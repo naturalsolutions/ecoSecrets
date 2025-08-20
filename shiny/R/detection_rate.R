@@ -2,7 +2,7 @@ library(dplyr)
 library(lubridate)
 
 
-detection_rate <- function(df, selected_species, start_date, end_date, interval_ind =5, show_by="project") {
+detection_rate <- function(df, selected_species, start_date, end_date, interval_ind =5, show_by="project", title, label_x, label_y) {
   show_by <- sym(show_by)
   
   # Prétraitement des dates
@@ -66,9 +66,9 @@ detection_rate <- function(df, selected_species, start_date, end_date, interval_
   # Création du graphique
   plot <- ggplot(results, aes(x = detection_rate, y = reorder(espece, detection_rate))) +
     geom_point(color = "steelblue", size = 3) +
-    labs(caption = "Taux de détection par espèce",
-         x = "Taux de détection",
-         y = "Taxon") +
+    labs(caption = title,
+         x = label_x,
+         y = label_y) +
     theme_minimal() +
     theme(
       plot.caption = element_text(hjust = 0.5, face = "bold", size = 14, margin = margin(t = 15))

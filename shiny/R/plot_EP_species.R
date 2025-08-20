@@ -2,7 +2,7 @@ library(ggplot2)
 
 source("R/sampling_numbers.R")
 
-plot_EP_species <- function (df, selected_species, start_date, end_date, interval_ind, show_by){
+plot_EP_species <- function (df, selected_species, start_date, end_date, interval_ind, show_by, title, label_x, label_y){
 
   # Prétraitement des dates
   df <- df %>%
@@ -21,9 +21,9 @@ plot_EP_species <- function (df, selected_species, start_date, end_date, interva
   plot <- ggplot(df, aes(x = nb_evenements, y = reorder(species, nb_evenements))) +
     geom_point(color = "steelblue", size = 3) +
     labs(
-      caption = "Nombre d'évènements photographiques par espèce",
-      x = "Espèce",
-      y = "Nombre d'évènements photographiques"
+      caption = title,
+      x = label_x,
+      y = label_y
     ) +
     theme_minimal() +
     theme(
