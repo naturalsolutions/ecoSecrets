@@ -3,7 +3,8 @@ library(dplyr)
 library(lubridate)
 source("R/translate.R")
 
-barplot_compo_com <- function(df, start_date = NULL, end_date = NULL, taxon = "genus", periode = "month", pourcent = FALSE, position_type = "stack", show_by = "project") {
+barplot_compo_com <- function(df, start_date = NULL, end_date = NULL, taxon = "genus", periode, pourcent, position_type = "stack", show_by = "project",
+                              title, label_x, label_y) {
   taxon <- sym(taxon)
   show_by <- sym(show_by)
   
@@ -40,23 +41,23 @@ barplot_compo_com <- function(df, start_date = NULL, end_date = NULL, taxon = "g
   
   # plot
   if (pourcent) {
-    title = paste("Abondance relative par", periode_fr, "(%)")
-    y = "Pourcentage"
+    title_plot = paste(title, "relative par", periode_fr, "(%)")
+    y_plot = label_y
   } else {
-    title = paste("Abondance absolue par", periode_fr)
-    y = "Nombre estimé"
+    title_plot = paste(title, "absolue par", periode_fr)
+    y_plot = label_y
   }
   
-  x = ucfirst(periode_fr)
-  fill = "Taxon"
+  x_plot = ucfirst(periode_fr)
+ 
   
   ggplot(df, aes(x = date_floor, y = total, fill = !!taxon)) +
     geom_bar(stat = "identity", position = position_type) +
     labs(
-      caption = title,
-      x = x,
-      y = y,
-      fill = fill
+      caption = title_plot,
+      x = x_plot,
+      y = y_plot,
+      fill = "Taxon"
     ) +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
