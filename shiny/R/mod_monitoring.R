@@ -14,7 +14,7 @@ mod_monitoring_server <- function(id, selected_analysis, data, params, export) {
       req(selected_analysis(), data(), params(), export())
       df <- data()
       if (selected_analysis() == "Historique d'échantillonnage") {
-        sample_historic(df, start_date = params()$start_date, end_date = params()$end_date, display = params()$show_observation, species = params()$species_select, title= export()$title, label_x=export()$label_x, label_y = export()$label_y)
+        sample_historic(df, start_date = params()$start_date, end_date = params()$end_date, display = params()$show_observation, species = params()$species_select, title= export()$title_hist, label_x=export()$labelx_hist, label_y = export()$labely_hist)
       } else if (selected_analysis() == "Effort d'échantillonnage") {
         boxplot(df$number, main = "Boxplot", col = "lightgreen")
       }
