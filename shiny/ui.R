@@ -32,6 +32,9 @@ ui <- fluidPage(
         ),
         tabPanel("Paramétrages",
                  mod_display_params_ui("display_params")
+        ),
+        tabPanel("Export",
+                 mod_export_ui("export")
         )
       )
     ),
