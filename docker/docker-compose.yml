@@ -166,7 +166,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO:-PathPrefix(`/miniobucket`)}
 
-shiny:
+  shiny:
     <<: *project_defaults
     image: ${SHINY_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:shiny-dev}
     build:

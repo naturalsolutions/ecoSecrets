@@ -20,6 +20,7 @@ import SnackContextProvider from "./contexts/snackContext";
 import { AuthContext } from "./contexts/AuthContextProvider";
 import { useContext } from "react";
 import FilesContextProvider from "./contexts/filesContext";
+import Test from "./pages/test";
 ;
 
 // Env var processed by nginx
@@ -81,6 +82,7 @@ function App() {
                       path="/project/:projectId/deployment/:deploymentId/details/:imageId"
                       element={<Annotation />}
                     ></Route>
+                    <Route path="/test/" element={<Test />}></Route>
                     <Route path="*" element={<Main />}></Route>
                   </Routes>
                 </BrowserRouter>
