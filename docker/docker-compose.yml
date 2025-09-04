@@ -85,7 +85,7 @@ services:
       - traefik.http.routers.nomenclapi.entrypoints=web
       - traefik.http.routers.nomenclapi.middlewares=api-stripprefix
       - traefik.http.middlewares.nomenclapi-stripprefix.stripprefix.prefixes=${NOMENCLAPI_ROOT_PATH:-/nomenclapi}
-  
+
   frontend:
     <<: *project_defaults
     image: ${FRONTEND_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
@@ -103,7 +103,7 @@ services:
       start_period: 60s
     labels:
       - traefik.enable=true
-      - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND:-PathPrefix(`/`)}
+      - traefik.http.routers.frontend.rule=${TRAEFIK_ROUTER_RULE_FRONTEND:-PathPrefix(`/ddd`)}
       - traefik.http.routers.frontend.entrypoints=web
     environment:
       - REACT_APP_KEYCLOAK_CLIENT_URL=${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
@@ -165,6 +165,22 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO:-PathPrefix(`/miniobucket`)}
+
+shiny:
+    <<: *project_defaults
+    image: ${SHINY_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:shiny-dev}
+    build:
+      context: ../shiny
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.shiny.entrypoints=web
+      - traefik.http.routers.shiny.priority=1000
+      - traefik.http.services.shiny.loadbalancer.server.port=8180
+      - traefik.http.routers.shiny.rule=PathPrefix(`/shiny`)
+      - traefik.http.routers.shiny.entrypoints=web
+      - traefik.http.middlewares.strip-shiny.stripPrefix.prefixes=/shiny
+      - traefik.http.routers.shiny.middlewares=strip-shiny@docker
+
 
 volumes:
   db_data:

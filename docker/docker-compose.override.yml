@@ -69,3 +69,9 @@ services:
       - "8133:8000"
     volumes:
       - ../docs:/docs
+
+  shiny:
+    volumes:
+      - ../shiny/R/data/data.csv:/home/app/R/data/data.csv
+    ports:
+      - 8180:8180
