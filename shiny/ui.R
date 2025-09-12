@@ -1,16 +1,15 @@
 ui <- fluidPage(
-  # Tabs to select analyse type
+  # Tabs to select analysis type
   tabsetPanel(
     id = "main_tabs",
     selected = "monitoring",
     tabPanel("Suivi photographique", value="monitoring"),
     tabPanel("Structure communautés", value="community"),
     tabPanel("Présence espèces", value="species"),
-    tabPanel("Activité & Comportement", value="activity"),
-    
+    tabPanel("Activité & Comportement", value="activity")
   ),
-  
-  # Select to choose the analyse
+
+  # Select to choose the analysis
   fluidRow(
     column(3),
     column(6, align = "center",
@@ -18,7 +17,7 @@ ui <- fluidPage(
     ),
     column(3)
   ),
-  
+
   # Main panel
   fluidRow(
     column(
@@ -38,10 +37,11 @@ ui <- fluidPage(
         )
       )
     ),
-    
-    # Data visualisation
+
+    # Data visualization
     column(
       width = 8,
+      uiOutput("data_warning"), # Add warning for no data
       uiOutput("dynamic_module_ui")
     )
   )
