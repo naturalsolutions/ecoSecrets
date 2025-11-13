@@ -7,7 +7,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-FILE_URL = "https://inpn.mnhn.fr/docs-web/docs/download/421876"
+FILE_URL = "https://github.com/naturalsolutions/ecoSecrets/raw/refs/heads/dev/nomenclapi/nomenclatures_SINP_mai2023.zip"
 FILENAMES = {
     "sex": "sexeValue_100523.xlsx",
     "life_stage": "stadeBiologiqueValue_100523.xlsx",
