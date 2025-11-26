@@ -6,8 +6,8 @@ from typing import List
 
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
-from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import aliased
+from sqlalchemy.orm.attributes import flag_modified
 from sqlmodel import Session
 
 from src.config import settings
@@ -162,13 +162,7 @@ def delete_file(db: Session, file_id: str):
     f = aliased(Files)
     f2 = aliased(Files)
 
-    db_files = (
-        db.query(f2)
-          .select_from(f)
-          .join(f2, f.hash == f2.hash)
-          .filter(f.id == file_id)
-          .all()
-    )
+    db_files = db.query(f2).select_from(f).join(f2, f.hash == f2.hash).filter(f.id == file_id).all()
 
     if not db_files:
         raise ValueError("File not found")
