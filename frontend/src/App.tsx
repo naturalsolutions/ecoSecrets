@@ -28,10 +28,8 @@ OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
 function App() {
   const authContext = useContext(AuthContext);
 
-  if (!authContext.isAuthenticated) {
-    return <LinearProgress color="primary" />;
-  } else {
-    return (
+  return (
+    authContext.keycloakReady && authContext.isAuthenticated ? (
       <MainContextProvider>
         <FilesContextProvider>
           <SnackContextProvider>
@@ -89,8 +87,8 @@ function App() {
           </SnackContextProvider>
         </FilesContextProvider>
       </MainContextProvider>
-    );
-  }
+   ) : <LinearProgress color="primary" />
+  );
 }
 
 export default App;
