@@ -20,7 +20,6 @@ import SnackContextProvider from "./contexts/snackContext";
 import { AuthContext } from "./contexts/AuthContextProvider";
 import { useContext } from "react";
 import FilesContextProvider from "./contexts/filesContext";
-;
 
 // Env var processed by nginx
 OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
