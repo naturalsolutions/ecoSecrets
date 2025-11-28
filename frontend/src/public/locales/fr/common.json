@@ -1,8 +1,9 @@
 {
   "annotations": {
     "annotation": "annotation",
-    "cannot_save": "enregistrement des annotations impossibles pour cette image",
-    "cannot_save_species": "vous ne pouvez pas sauvegarder : toutes les observations doivent à minima renseigner une espèce et le nombre d'individus associé. S'il vous plaît, corrigez les informations.",
+    "cannot_save": "enregistrement impossible",
+    "cannot_save_species": "toutes les observations doivent obligatoirement comporter au moins un taxon ainsi que le nombre d'individus associé. Merci de bien vouloir corriger les informations.",
+    "cannot_save_no_media_selected": "aucun média n'a été sélectionné pour l'enregistrement des observations.",
     "continue": "continuer l'annotation",
     "empty_media": "média vide",
     "fix_my_data": "je corrige mes données",
@@ -10,11 +11,18 @@
     "media_not_processed": "média non traité",
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
-    "unknown_image": "image inconnue"
+    "unknown_image": "image inconnue",
+    "delete": "supprimer le média du deploiement",
+    "delete_desc": "Ce média sera supprimé de l'ensemble des déploiements où il a été importé. Etes vous sûr de vouloir supprimer ce média ?",
+    "modal_title": "modification d'observations initialement créées à partir de groupes d'annotation",
+    "modal_content": "sélectionner les observations qui doivent se répercuter à tous les médias du groupe d'annotation :",
+    "modal_note": "attention : Si une observation n'est pas sélectionnée, elle ne sera plus liée à celle des autres médias.",
+    "see": "voir média"
   },
   "medias": {
     "media": "média",
-    "medias": "médias"
+    "medias": "médias",
+    "date_time_field": "date et heure du média"
   },
   "deployments": {
     "annotation": "annotation",
@@ -27,7 +35,7 @@
     "deploy_gallery": "Galerie du déploiement",
     "deployment": "déploiement",
     "deployments": "déploiements",
-    "drop_files": "glissez/déposez ou cliquez pour importer 10 fichiers maximum",
+    "drop_files": "glissez/déposez ou cliquez pour importer 100 fichiers maximum",
     "features": "caractéristique",
     "frequency": "fréquence",
     "hanging": "support d'accroche",
@@ -57,7 +65,8 @@
     "status": "statut",
     "stock": "stock",
     "warning": "pas de fiche pour ce dispositif",
-    "warning_msg": "vous n'avez pas de pièges photographiques enregistrés"
+    "warning_msg": "vous n'avez pas de pièges photographiques enregistrés",
+    "historic_message": "Ce dispositif n'a jamais été déployé"
   },
   "languageSelector": {
     "en": "English",
@@ -98,7 +107,12 @@
     "unavailable": "désolé, cette fonctionnalité n'est pas encore disponible !",
     "warning": "attention",
     "yes": "oui",
-    "zero": "aucun"
+    "zero": "aucun",
+    "project_name": "nom du projet",
+    "deployment_name":"nom du déploiement",
+    "account": "mon compte",
+    "new_object": "créer un nouveau {{object}}",
+    "no_data": "pas de données disponibles"
   },
   "observations": {
     "new": "nouvelle observation",
@@ -111,7 +125,7 @@
     "add_member": "ajouter un membre",
     "administrators": "administrateurs",
     "alert": "attention !",
-    "alert_msg": "vous n'avez pas de déploiements déclarés pour ce projet.",
+    "alert_msg": "vous n'avez pas de déploiements déclarés pour ce projet. Veuillez en créer un pour importer des médias",
     "annotators": "annotateurs",
     "change_on_project": "modification du projet",
     "community_study": "etude de communauté",
@@ -151,7 +165,7 @@
   },
   "taxon": {
     "behaviour": "comportement",
-    "biological_state": "stade biologique",
+    "biological_state": "état biologique",
     "classe": "classe",
     "family": "famille",
     "genus": "genre",
@@ -160,5 +174,8 @@
     "order": "ordre",
     "sex": "sexe",
     "species": "espèce"
+  },
+  "filters": {
+    "refresh": "réinitialiser les filtres"
   }
 }
