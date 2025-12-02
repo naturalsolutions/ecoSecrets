@@ -3,12 +3,13 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import CommonEN from "./public/locales/en/common.json";
 import CommonFR from "./public/locales/fr/common.json";
+import CommonCS from "./public/locales/cs/common.json";
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
-    preload: ["en", "fr"],
+    preload: ["en", "fr", "cs"],
     fallbackLng: "fr",
     ns: ["common"],
     nsSeparator: ".",
@@ -19,6 +20,9 @@ i18n
       },
       fr: {
         common: CommonFR,
+      },
+       cs: {
+        common: CommonCS,
       },
     },
     interpolation: {

@@ -70,7 +70,8 @@
   },
   "languageSelector": {
     "en": "English",
-    "fr": "Français"
+    "fr": "Français",
+    "cs": "Czech"
   },
   "header": {
     "user_doc": "User documentation"
