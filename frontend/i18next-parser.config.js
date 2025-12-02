@@ -1,3 +1,4 @@
+import { languages } from "../i18n";
 module.exports = {
     createOldCatalogs: false,
     // Save the \_old files
@@ -21,7 +22,7 @@ module.exports = {
     // lineEnding: 'auto',
     // Control the line ending. See options at https://github.com/ryanve/eol
 
-    locales: ['en', 'fr', 'cs'],
+    locales: languages,
     // An array of the locales in your applications
     
     output: './src/public/locales/$LOCALE/common.json',
