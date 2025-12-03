@@ -69,9 +69,9 @@
     "historic_message": "Toto zařízení nemá žádné rozmístění."
   },
   "languageSelector": {
-    "en": "Angličtina",
-    "fr": "Francouzština",
-    "cs": "Čeština"
+    "en": "English (Angličtina)",
+    "fr": "Français (Francouzština)",
+    "cs": "Čeština (Čeština)"
   },
   "header": {
     "user_doc": "Uživatelská dokumentace"
