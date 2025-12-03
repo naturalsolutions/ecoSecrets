@@ -1,23 +1,21 @@
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { languages } from "../i18n";
 
-import {
-  FormControl,
-  Select,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { FormControl, Select, MenuItem, Typography } from "@mui/material";
 
 const LanguageSelector: FC = () => {
   const { i18n, t } = useTranslation();
-  const [language, setLanguage] = useState(i18n.language.split('-')[0]);
+  const [currentLanguage, setCurrentLanguage] = useState(
+    i18n.language.split("-")[0]
+  );
 
   useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+    i18n.changeLanguage(currentLanguage);
+  }, [currentLanguage]);
 
   const hanleLangChange = (lang) => {
-    setLanguage(lang);
+    setCurrentLanguage(lang);
   };
 
   return (
@@ -32,9 +30,9 @@ const LanguageSelector: FC = () => {
       }}
     >
       <Select
-        value={language}
+        value={currentLanguage}
         displayEmpty
-        label={language}
+        label={currentLanguage}
         onChange={(e) => hanleLangChange(e.target.value)}
         renderValue={(value) => (
           <Typography color="white" sx={{ mr: 2, textTransform: "uppercase" }}>
@@ -42,8 +40,11 @@ const LanguageSelector: FC = () => {
           </Typography>
         )}
       >
-        <MenuItem value="en">{t("languageSelector.en")}</MenuItem>
-        <MenuItem value="fr">{t("languageSelector.fr")}</MenuItem>
+        {languages.map((lng) => (
+          <MenuItem key={lng} value={lng}>
+            {t(`languageSelector.${lng}`)}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
