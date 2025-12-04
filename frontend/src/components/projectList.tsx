@@ -54,7 +54,7 @@ const ProjectList = () => {
         </div>
       </Box>
 
-      <Grid container direction="row" spacing={2}>
+      <Grid container direction="row"  size={12} spacing={2}>
         {projectsStats &&
           projectsStats.map((s, k) => (
             <Grid size={{ lg: 3, md: 6, sm: 6, xs: 12 }} key={k}>
@@ -62,16 +62,18 @@ const ProjectList = () => {
             </Grid>
           ))}
       </Grid>
-      {projectsStats && (
-        <TablePagination
-          rowsPerPageOptions={[4]}
-          component="div"
-          count={projectLength}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-        />
-      )}
+      <Grid alignItems="center" justifyContent="center" container size={12}>
+        {projectsStats && (
+          <TablePagination
+            rowsPerPageOptions={[4]}
+            component="div"
+            count={projectLength}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+          />
+        )}
+      </Grid>
     </Grid>
   );
 };

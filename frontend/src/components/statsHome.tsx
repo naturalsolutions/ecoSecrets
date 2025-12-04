@@ -1,7 +1,6 @@
 import {
   Button,
   Grid,
-  ListItemSecondaryAction,
   Typography,
 } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
@@ -51,7 +50,7 @@ const StatsHome = () => {
 
   return (
     <Grid container>
-      <Grid size={{ xs: 12}}>
+      <Grid size={12}>
         <Typography variant="h4" gutterBottom>
           {capitalize(t("main.stats"))}
         </Typography>
@@ -62,10 +61,11 @@ const StatsHome = () => {
         direction="row"
         justifyContent="center"
         alignItems="center"
+        size={12}
       >
         {globalStats &&
           Object.entries(globalStats).map(([key, value]) => (
-            <Grid size={{ lg: 3, xs: 6 }} key={key}>
+            <Grid size={3} key={key}>
               <Grid
                 container
                 direction="column"
