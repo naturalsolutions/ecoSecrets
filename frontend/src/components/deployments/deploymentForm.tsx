@@ -26,6 +26,7 @@ import { capitalize } from "@mui/material";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
 import ThumbnailDeploymentComponent from "../ThumbnailDeploymentComponent";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const DeploymentForm = (props) => {
   const {
@@ -303,12 +304,10 @@ const DeploymentForm = (props) => {
 
           <Grid container spacing={2}>
             {(isEditable || props.isNewDeployment) && (
-              <Grid container direction="row" spacing={2} sx={{ px: 2 }}>
+              <Grid container direction='row' size={12} spacing={2} sx={{ alignItems: 'center' }}>
                 <Grid
-                  size={{ 
-                    lg: props.isNewDeployment ? 6 : 3,
+                  size={{
                     md: props.isNewDeployment ? 6 : 3, 
-                    sm: 12,
                     xs: 12 
                   }}
                 >
@@ -401,14 +400,12 @@ const DeploymentForm = (props) => {
 
             <Grid
               size={{ 
-                lg: props.isNewDeployment ? 6 : 3,
-                md: props.isNewDeployment ? 6 : 3, 
-                sm: 12,
+                md: props.isNewDeployment ? 6 : 3,
                 xs: 12 
               }}
             >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
+                <DatePicker
                   label={capitalize(t("projects.start_date"))}
                   format="dd/MM/yyyy"
                   value={
@@ -417,15 +414,14 @@ const DeploymentForm = (props) => {
                     : null
                   }
                   onChange={(date) => handleDateChange("start_date", date)}
-                  renderInput={(params) => (
-                    <TextField
-                      size="small"
-                      variant="filled"
-                      fullWidth
-                      required
-                      {...params}
-                    />
-                  )}
+                  slotProps={{
+                    textField: {
+                      size: "small",
+                      variant: "filled",
+                      fullWidth: true,
+                      required: true,
+                    },
+                  }}
                   disabled={!props.isNewDeployment && !isEditable}
                 />
               </LocalizationProvider>
@@ -433,26 +429,24 @@ const DeploymentForm = (props) => {
 
             <Grid
               size={{ 
-                lg: props.isNewDeployment ? 6 : 3,
                 md: props.isNewDeployment ? 6 : 3, 
-                sm: 12,
                 xs: 12 
               }}
             >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
+                <DatePicker
                   label={capitalize(t("projects.end_date"))}
                   format="dd/MM/yyyy"
-                  value={tmpDeploymentData?.end_date || null}
+                  value={tmpDeploymentData?.end_date ? new Date(tmpDeploymentData?.end_date) : null}
                   onChange={(date) => handleDateChange("end_date", date)}
-                  renderInput={(params) => (
-                    <TextField
-                      size="small"
-                      variant="filled"
-                      fullWidth
-                      {...params}
-                    />
-                  )}
+                  slotProps={{
+                    textField: {
+                      size: "small",
+                      variant: "filled",
+                      fullWidth: true,
+                      required: false,
+                    },
+                  }}
                   disabled={!props.isNewDeployment && !isEditable}
                 />
               </LocalizationProvider>
