@@ -85,11 +85,11 @@ const ImageList: FC<{}> = () => {
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
                   <Grid container direction="column" alignItems="center">
-                    <Grid item>
+                    <Grid>
                       <CameraAltIcon fontSize="large" />
                     </Grid>
-                    <Grid item>{dropZoneDisplayText()}</Grid>
-                    <Grid item>{loader && <CircularProgress />}</Grid>
+                    <Grid>{dropZoneDisplayText()}</Grid>
+                    <Grid>{loader && <CircularProgress />}</Grid>
                   </Grid>
                 </div>
               </section>

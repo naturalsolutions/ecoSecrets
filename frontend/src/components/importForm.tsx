@@ -182,7 +182,7 @@ const ImportForm = (
 
                 <Grid container justifyContent="center" spacing={1}>
                     {props.files.map((file) => (
-                        <Grid item>
+                        <Grid>
                             <Chip 
                                 label={file.name}
                                 variant="outlined" 

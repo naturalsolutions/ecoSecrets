@@ -131,20 +131,28 @@ const Filters = (props) => {
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
-          inputFormat="dd/MM/yyyy"
+          format="dd/MM/yyyy"
           label={capitalize(t("projects.start_date"))}
           value={start_date}
           onChange={(newValue) => setStartDate(newValue)}
-          renderInput={(params) => <TextField {...params} variant="outlined" />}
+          slotProps={{
+            textField: {
+              variant: "outlined",
+            },
+          }}
         />
       </LocalizationProvider>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
-          inputFormat="dd/MM/yyyy"
+          format="dd/MM/yyyy"
           label={capitalize(t("projects.end_date"))}
           value={end_date}
           onChange={(newValue) => setEndDate(newValue)}
-          renderInput={(params) => <TextField {...params} variant="outlined" />}
+          slotProps={{
+            textField: {
+              variant: "outlined",
+            },
+          }}
         />
       </LocalizationProvider>
       <Autocomplete

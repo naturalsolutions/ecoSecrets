@@ -149,7 +149,7 @@ const TaxonomicInput: FC<TaxonomicInputProps> = (
     };
 
     return(
-        <Grid item lg={6} xs={12}>
+        <Grid size={{ lg: 6, xs: 12 }}>
             <Autocomplete
                 id={ props.rank }
                 freeSolo

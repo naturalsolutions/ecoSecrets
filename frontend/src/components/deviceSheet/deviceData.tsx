@@ -42,10 +42,10 @@ export default function DeviceData() {
           alignItems="center"
           spacing={2}
         >
-          <Grid item>
+          <Grid>
             <CameraAltIcon fontSize="large" color="secondary" />
           </Grid>
-          <Grid item>
+          <Grid>
             <Typography color="secondary" variant="h3">
               {deviceData.nb_images}
             </Typography>

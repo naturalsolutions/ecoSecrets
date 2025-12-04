@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import frLocale from "date-fns/locale/fr";
+import { fr } from 'date-fns/locale';
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useMainContext } from "../../contexts/mainContext";
@@ -29,6 +29,14 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
     setDate(value);
     setToSave(true);
   };
+
+  const InputMaskAdapter = (props) => (
+    <InputMask
+      mask="99/99/9999 99:99:99"
+      maskChar="_"
+      {...props}
+    />
+  );
 
   const save = () => {
     FilesService.updateAnnotationsFilesAnnotationFileIdPatch(props.id, {
@@ -65,35 +73,24 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
     >
       <LocalizationProvider
         dateAdapter={AdapterDateFns}
-        adapterLocale={frLocale}
+        adapterLocale={fr}
       >
         <DateTimePicker
           label={capitalize(t("medias.date_time_field"))}
           value={date}
           onChange={(newValue) => update(newValue)}
           ampm={false}
-          inputFormat="dd/MM/yyyy HH:mm:ss"
+          format="dd/MM/yyyy HH:mm:ss"
           onError={(error) => {
             if (error) console.log("Erreur de saisie start_date :", error);
           }}
-          renderInput={(params) => {
-            const inputProps = params.inputProps || {};
-            return (
-              <InputMask
-                mask="99/99/9999 99:99:99"
-                value={inputProps.value}
-                onChange={inputProps.onChange}
-                maskChar="_"
-              >
-                {(maskedInputProps) => (
-                  <TextField
-                    {...params}
-                    {...maskedInputProps}
-                    sx={{ width: "300px" }}
-                  />
-                )}
-              </InputMask>
-            );
+          slotProps={{
+            textField: {
+              sx: { width: "300px" },
+              InputProps: {
+                inputComponent: InputMaskAdapter as any,
+              },
+            },
           }}
         />
       </LocalizationProvider>

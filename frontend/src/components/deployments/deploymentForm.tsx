@@ -288,7 +288,7 @@ const DeploymentForm = (props) => {
             spacing={2}
           >
             <ThumbnailDeploymentComponent />
-            <Grid item lg={6} container width={500} height={300}>
+            <Grid size={{ lg: 6, xs: 12 }} sx={{ width: 500, height: 300 }}>
               <Map position={position} zoom={3} />
             </Grid>
           </Grid>
@@ -305,11 +305,12 @@ const DeploymentForm = (props) => {
             {(isEditable || props.isNewDeployment) && (
               <Grid container direction="row" spacing={2} sx={{ px: 2 }}>
                 <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={props.isNewDeployment ? 6 : 3}
-                  lg={props.isNewDeployment ? 6 : 3}
+                  size={{ 
+                    lg: props.isNewDeployment ? 6 : 3,
+                    md: props.isNewDeployment ? 6 : 3, 
+                    sm: 12,
+                    xs: 12 
+                  }}
                 >
                   <TextField
                     id="name"
@@ -324,7 +325,7 @@ const DeploymentForm = (props) => {
                   />
                 </Grid>
                 {isEditable && !props.isNewDeployment && (
-                  <Grid item xs={12} sm={12} md={3} lg={3}>
+                  <Grid size={{ lg: 3, md: 3, sm: 12, xs: 12 }}>
                     <SiteModale page="deploymentPage" />
                   </Grid>
                 )}
@@ -332,11 +333,12 @@ const DeploymentForm = (props) => {
             )}
 
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <TextField
                 id="site_id"
@@ -364,11 +366,12 @@ const DeploymentForm = (props) => {
               </TextField>
             </Grid>
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <TextField
                 id="device_id"
@@ -397,17 +400,22 @@ const DeploymentForm = (props) => {
             </Grid>
 
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
                   label={capitalize(t("projects.start_date"))}
-                  inputFormat="dd/MM/yyyy"
-                  value={tmpDeploymentData?.start_date || null}
+                  format="dd/MM/yyyy"
+                  value={
+                    tmpDeploymentData?.start_date
+                    ? new Date(tmpDeploymentData?.start_date) 
+                    : null
+                  }
                   onChange={(date) => handleDateChange("start_date", date)}
                   renderInput={(params) => (
                     <TextField
@@ -424,16 +432,17 @@ const DeploymentForm = (props) => {
             </Grid>
 
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
                   label={capitalize(t("projects.end_date"))}
-                  inputFormat="dd/MM/yyyy"
+                  format="dd/MM/yyyy"
                   value={tmpDeploymentData?.end_date || null}
                   onChange={(date) => handleDateChange("end_date", date)}
                   renderInput={(params) => (
@@ -450,11 +459,12 @@ const DeploymentForm = (props) => {
             </Grid>
 
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <TextField
                 id="support"
@@ -471,11 +481,12 @@ const DeploymentForm = (props) => {
             </Grid>
 
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <TextField
                 id="feature"
@@ -492,11 +503,12 @@ const DeploymentForm = (props) => {
             </Grid>
 
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <TextField
                 id="height"
@@ -522,13 +534,14 @@ const DeploymentForm = (props) => {
                 disabled={!props.isNewDeployment && !isEditable}
               />
             </Grid>
-
+            
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={props.isNewDeployment ? 6 : 3}
-              lg={props.isNewDeployment ? 6 : 3}
+              size={{ 
+                lg: props.isNewDeployment ? 6 : 3,
+                md: props.isNewDeployment ? 6 : 3, 
+                sm: 12,
+                xs: 12 
+              }}
             >
               <TextField
                 id="bait"
@@ -552,11 +565,12 @@ const DeploymentForm = (props) => {
           spacing={2}
         >
           <Grid
-            item
-            xs={12}
-            sm={12}
-            md={props.isNewDeployment ? 12 : 6}
-            lg={props.isNewDeployment ? 12 : 6}
+            size={{ 
+              lg: props.isNewDeployment ? 12 : 6,
+              md: props.isNewDeployment ? 12 : 6, 
+              sm: 12,
+              xs: 12 
+            }}
           >
             <Paper elevation={8} sx={{ px: 2, py: 2 }}>
               <Typography variant="body1">
@@ -564,7 +578,7 @@ const DeploymentForm = (props) => {
               </Typography>
 
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <FormControlLabel
                     control={<Switch checked={automatic.isAutomatic} />}
                     onChange={(e) => handleCheckChange("automatic")}
@@ -573,7 +587,7 @@ const DeploymentForm = (props) => {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     label={`${capitalize(t("deployments.img_nb"))}`}
                     value={Number(automatic.imageNumber) || ""}
@@ -596,7 +610,7 @@ const DeploymentForm = (props) => {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     label={`${capitalize(t("deployments.frequency"))}`}
                     value={Number(automatic.frequency) || ""}
@@ -624,11 +638,12 @@ const DeploymentForm = (props) => {
           </Grid>
 
           <Grid
-            item
-            xs={12}
-            sm={12}
-            md={props.isNewDeployment ? 12 : 6}
-            lg={props.isNewDeployment ? 12 : 6}
+            size={{ 
+              lg: props.isNewDeployment ? 12 : 6,
+              md: props.isNewDeployment ? 12 : 6, 
+              sm: 12, 
+              xs: 12,
+            }}
           >
             <Paper elevation={8} sx={{ px: 2, py: 2 }}>
               <Typography variant="body1">
@@ -636,7 +651,7 @@ const DeploymentForm = (props) => {
               </Typography>
 
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <FormControlLabel
                     control={<Switch checked={trigger.isTrigger} />}
                     onChange={() => handleCheckChange("trigger")}
@@ -644,7 +659,7 @@ const DeploymentForm = (props) => {
                     disabled={!props.isNewDeployment && !isEditable}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     label={`${capitalize(t("deployments.img_nb"))}`}
                     value={Number(trigger.imageNumber) || ""}
@@ -665,7 +680,7 @@ const DeploymentForm = (props) => {
                     }
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     label={`${capitalize(t("deployments.frequency"))}`}
                     value={Number(trigger.frequency) || ""}

@@ -37,7 +37,7 @@ const TraitInput = (
     }, []);
 
     return(
-        <Grid item lg={6} xs={12}>
+        <Grid size={{ lg: 6, xs: 12 }}>
             <TextField
                 type={ props.type }
                 select

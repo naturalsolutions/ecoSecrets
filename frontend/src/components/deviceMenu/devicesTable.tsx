@@ -122,10 +122,8 @@ const DevicesTable = () => {
       <Grid container justifyContent="center" alignItems="center">
         <Grid
           container
-          item
           justifyContent="center"
-          height={400}
-          width={1000}
+          sx={{ height: 400, width: 1000 }}
           spacing={1}
           style={{ backgroundColor: "#D9D9D9" }}
         >

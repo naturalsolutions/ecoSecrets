@@ -23,11 +23,8 @@ export const MainLayout = ({
       justifyContent="center"
     >
       <Grid
-        item
+        size={{ lg: 11, md: 11, xs: 12}}
         sx={{ height: "100%", display: "flex", flexDirection: "column" }}
-        xs={12}
-        md={11}
-        lg={11}
       >
         {Navigation}
         {Main}

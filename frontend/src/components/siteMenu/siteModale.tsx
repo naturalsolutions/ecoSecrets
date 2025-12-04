@@ -98,7 +98,7 @@ export default function SiteModale(props) {
         <Divider />
         <DialogContent>
           <Grid container spacing={3}>
-            <Grid item lg={12} md={12} xs={12}>
+            <Grid size={{ lg: 12, md: 12, xs: 12 }}>
               <TextField
                 required
                 id="name"
@@ -110,7 +110,7 @@ export default function SiteModale(props) {
                 variant="filled"
               />
             </Grid>
-            <Grid item lg={6} md={6}>
+            <Grid size={{ lg: 6, md: 6, xs: 12 }}>
               <TextField
                 required
                 label={capitalize(t("sites.latitude"))}
@@ -123,7 +123,7 @@ export default function SiteModale(props) {
                 onChange={(e) => handleFormChange("latitude", e)}
               />
             </Grid>
-            <Grid item lg={6} md={6}>
+            <Grid size={{ lg: 6, md: 6, xs: 12 }}>
               <TextField
                 required
                 label={capitalize(t("sites.longitude"))}

@@ -100,10 +100,8 @@ const SitesTable = () => {
       <Grid container justifyContent="center" alignItems="center">
         <Grid
           container
-          item
           justifyContent="center"
-          height={400}
-          width={1200}
+          sx={{ height: 400, width: 1200 }}
           spacing={1}
           style={{ backgroundColor: "#D9D9D9" }}
         >

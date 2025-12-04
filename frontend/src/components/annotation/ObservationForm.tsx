@@ -1,4 +1,4 @@
-import { Grid, IconButton, Stack, TextField, Typography, capitalize } from "@mui/material";
+import { IconButton, Stack, TextField, Typography, capitalize, Grid } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { request as __request } from '../../client/core/request';
 import { useTranslation } from "react-i18next";
@@ -67,13 +67,13 @@ const ObservationForm: FC<ObservationFormProps> = ({
                     observation={ observation }
                 />
                 
-                <Grid item lg={6} xs={12}>
+                <Grid size={{ lg: 6, xs: 12 }}>
                     <TextField
                         name="number"
                         label={ capitalize(t("taxon.number")) }
                         size="small"
                         variant="filled"
-                        inputProps={{ type: "number" }}
+                        // inputProps={{ type: "number" }}
                         value={ observation.number }
                         onChange={
                             (e) => handleFormChange(observation.id, "number", e.target.value)
@@ -102,7 +102,7 @@ const ObservationForm: FC<ObservationFormProps> = ({
                         type="life_stage" 
                         observation={ observation }
                     />
-                    <Grid item lg={12} xs={12}>
+                    <Grid size={{ lg: 12, xs: 12 }}>
                         <TextField
                             id="comments"
                             name="comments"

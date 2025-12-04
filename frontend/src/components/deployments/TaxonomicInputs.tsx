@@ -170,7 +170,7 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
   }
 
   return (
-    <Grid item xs={12} sm={6} md={2} lg={1.7}>
+    <Grid size={{ lg: 1.7, md: 2, sm: 6, xs: 12 }}>
       <Autocomplete
         id={rank}
         freeSolo

@@ -51,7 +51,7 @@ const StatsHome = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12}}>
         <Typography variant="h4" gutterBottom>
           {capitalize(t("main.stats"))}
         </Typography>
@@ -65,7 +65,7 @@ const StatsHome = () => {
       >
         {globalStats &&
           Object.entries(globalStats).map(([key, value]) => (
-            <Grid item lg={3} xs={6} key={key}>
+            <Grid size={{ lg: 3, xs: 6 }} key={key}>
               <Grid
                 container
                 direction="column"
@@ -79,14 +79,14 @@ const StatsHome = () => {
                   alignItems="baseline"
                   spacing={2}
                 >
-                  <Grid item>{graphicStats[key].icon}</Grid>
-                  <Grid item>
+                  <Grid>{graphicStats[key].icon}</Grid>
+                  <Grid>
                     <Typography color="secondary" variant="h2">
                       {JSON.stringify(value)}
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid item>
+                <Grid>
                   <Button
                     variant="outlined"
                     component={Link}
@@ -105,5 +105,67 @@ const StatsHome = () => {
       </Grid>
     </Grid>
   );
+
+  // return (
+  //   <Grid container 
+  //     sx={{
+  //       justifyContent: "space-between",
+  //       alignItems: "center",
+  //     }}
+  //   >
+  //     <Grid size={12}>
+  //       <Typography variant="h4" gutterBottom>
+  //         {capitalize(t("main.stats"))}
+  //       </Typography>
+  //     </Grid>
+
+  //     <Grid
+  //       container
+  //       direction="row"
+  //       justifyContent="center"
+  //       alignItems="center"
+  //     >
+  //       {globalStats &&
+  //         Object.entries(globalStats).map(([key, value]) => (
+  //           <Grid size={{ lg: 3, xs: 6 }} key={key}>
+  //             <Grid
+  //               container
+  //               direction="column"
+  //               justifyContent="space-evenly"
+  //               alignItems="center"
+  //             >
+  //               <Grid
+  //                 container
+  //                 direction="row"
+  //                 justifyContent="center"
+  //                 alignItems="baseline"
+  //                 spacing={2}
+  //               >
+  //                 <Grid>{graphicStats[key].icon}</Grid>
+  //                 <Grid>
+  //                   <Typography color="secondary" variant="h2">
+  //                     {JSON.stringify(value)}
+  //                   </Typography>
+  //                 </Grid>
+  //               </Grid>
+  //               <Grid>
+  //                 <Button
+  //                   variant="outlined"
+  //                   component={Link}
+  //                   to={graphicStats[key].url}
+  //                   color={
+  //                     graphicStats[key].clickable ? "primary" : "secondary"
+  //                   }
+  //                   disabled={!graphicStats[key].clickable}
+  //                 >
+  //                   {graphicStats[key].buttonLabel}
+  //                 </Button>
+  //               </Grid>
+  //             </Grid>
+  //           </Grid>
+  //         ))}
+  //     </Grid>
+  //   </Grid>
+  // );
 };
 export default StatsHome;

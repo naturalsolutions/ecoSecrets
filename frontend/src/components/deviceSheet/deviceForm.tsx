@@ -81,14 +81,11 @@ const DeviceForm = () => {
         container
         justifyContent="center"
         alignItems="center"
-        lg={2}
-        md={6}
-        xs={12}
-        sm={12}
+        size={{ lg: 2, md: 6, xs: 12, sm: 12 }}
       >
         <ThumbnailDeviceComponent />
       </Grid>
-      <Grid lg={10} md={6} justifyContent="flex-end" alignItems="center">
+      <Grid size={{ lg: 10, md: 6 }} justifyContent="flex-end" alignItems="center">
         <Collapse in={success}>
           <Alert
             severity="success"
@@ -113,7 +110,7 @@ const DeviceForm = () => {
           <Stack direction="row">
             <Grid container spacing={3}>
               {modified ? (
-                <Grid item lg={12} md={12} xs={12}>
+                <Grid size={{ lg: 12, md: 12, xs: 12 }}>
                   <TextField
                     required
                     id="name"
@@ -128,7 +125,7 @@ const DeviceForm = () => {
               ) : (
                 <></>
               )}
-              <Grid item lg={2.4} md={4} xs={6}>
+              <Grid size={{ lg: 2.4, md: 4, xs: 6 }}>
                 <TextField
                   disabled={!modified}
                   label={capitalize(t("devices.model"))}
@@ -138,23 +135,29 @@ const DeviceForm = () => {
                   onChange={(e) => handleFormChange("model", e)}
                 />
               </Grid>
-              <Grid item lg={2.4} md={4} xs={6}>
+              <Grid size={{ lg: 2.4, md: 4, xs: 6 }}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     disabled={!modified}
-                    inputFormat="dd/MM/yyyy"
+                    format="dd/MM/yyyy"
                     label={capitalize(t("devices.purchase_date"))}
-                    value={deviceData?.purchase_date || null}
+                    value={
+                      deviceData?.purchase_date 
+                      ? new Date(deviceData?.purchase_date) 
+                      : null
+                    }
                     onChange={(purchaseDate) => {
                       handleChangeDate("purchase_date", purchaseDate);
                     }}
-                    renderInput={(params) => (
-                      <TextField {...params} variant="filled" />
-                    )}
+                    slotProps={{
+                      textField: {
+                        variant: "filled",
+                      },
+                    }}
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid item lg={2.4} md={4} xs={6}>
+              <Grid size={{ lg: 2.4, md: 4, xs: 6 }}>
                 <TextField
                   disabled={!modified}
                   label={`${capitalize(t("devices.price"))} (€)`}
@@ -167,7 +170,7 @@ const DeviceForm = () => {
                   onChange={(e) => handleFormChange("price", e)}
                 />
               </Grid>
-              <Grid item lg={2.4} md={4} xs={6}>
+              <Grid size={{ lg: 2.4, md: 4, xs: 6 }}>
                 <TextField
                   disabled={!modified}
                   label={`${capitalize(t("devices.detection_area"))} (m)`}
@@ -179,7 +182,7 @@ const DeviceForm = () => {
                   onChange={(e) => handleFormChange("detection_area", e)}
                 />
               </Grid>
-              <Grid item lg={2.4} md={4} xs={6}>
+              <Grid size={{ lg: 2.4, md: 4, xs: 6 }}>
                 <TextField
                   disabled={!modified}
                   label={`${capitalize(t("devices.operating_life"))} (h)`}
@@ -191,7 +194,7 @@ const DeviceForm = () => {
                   onChange={(e) => handleFormChange("operating_life", e)}
                 />
               </Grid>
-              <Grid item lg={12} md={12} xs={12}>
+              <Grid size={{ lg: 12, md: 12, xs: 12 }}>
                 <TextField
                   id="description"
                   name="description"

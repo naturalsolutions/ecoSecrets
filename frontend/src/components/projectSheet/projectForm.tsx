@@ -131,7 +131,7 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
           <Stack direction="row" spacing={15}>
             <Grid container spacing={3}>
               {modified ? (
-                <Grid item lg={12} xs={12}>
+                <Grid size={{ lg: 12, xs: 12 }}>
                   <TextField
                     id="name"
                     name="name"
@@ -147,41 +147,45 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
                 <></>
               )}
 
-              <Grid item lg={3} xs={12} className="datePicker">
+              <Grid size={{ lg: 3, xs: 12 }} className="datePicker">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     disabled={!modified}
-                    inputFormat="dd/MM/yyyy"
+                    format="dd/MM/yyyy"
                     label={capitalize(t("projects.start_date"))}
                     value={startDate}
                     onChange={(startDate) => {
                       setStartDate(startDate);
                       handleChangeDate("start_date", startDate);
                     }}
-                    renderInput={(params) => (
-                      <TextField {...params} variant="filled" />
-                    )}
+                    slotProps={{
+                      textField: {
+                        variant: "filled",
+                      },
+                    }}
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid item lg={3} xs={12} className="datePicker">
+              <Grid size={{ lg: 3, xs: 12 }} className="datePicker">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     disabled={!modified}
-                    inputFormat="dd/MM/yyyy"
+                    format="dd/MM/yyyy"
                     label={capitalize(t("projects.end_date"))}
                     value={endDate}
                     onChange={(endDate) => {
                       setEndDate(endDate);
                       handleChangeDate("end_date", endDate);
                     }}
-                    renderInput={(params) => (
-                      <TextField {...params} variant="filled" />
-                    )}
+                    slotProps={{
+                      textField: {
+                        variant: "filled",
+                      },
+                    }}
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid item lg={12} xs={12}>
+              <Grid size={{ lg: 12, xs: 12 }}>
                 <TextField
                   id="protocol"
                   name="protocol"

@@ -106,9 +106,9 @@ export default function ProjectModal(props) {
                 <Divider />
                 <DialogContent>
                     <Grid container spacing={3}>
-                        <Grid item lg={12}>
+                        <Grid size={{ lg: 6 }}>
                         </Grid>
-                        <Grid item lg={12} xs={12}>
+                        <Grid size={{ lg: 6, xs: 12 }}>
                             <TextField
                                 id="name"
                                 name="name"
@@ -120,35 +120,39 @@ export default function ProjectModal(props) {
                                 variant="filled"
                             />
                         </Grid>
-                        <Grid item lg={6}>
+                        <Grid size={{ lg: 6 }}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    inputFormat="dd/MM/yyyy"
+                                    format="dd/MM/yyyy"
                                     label={capitalize(t("projects.start_date"))}
                                     value={startDate}
                                     onChange={(startDate) => {
                                         setStartDate(startDate);
                                         handleChangeDate("start_date", startDate);
                                     }}
-                                    renderInput={(params) => <TextField {...params} variant="filled" />}
+                                    slotProps={{
+                                        textField: { variant: "filled" },
+                                    }}
                                 />
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item lg={6}>
+                        <Grid size={{ lg: 6 }}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    inputFormat="dd/MM/yyyy"
+                                    format="dd/MM/yyyy"
                                     label={capitalize(t("projects.end_date"))}
                                     value={endDate}
                                     onChange={(endDate) => {
                                         setEndDate(endDate);
                                         handleChangeDate("end_date", endDate);
                                     }}
-                                    renderInput={(params) => <TextField {...params} variant="filled" />}
+                                    slotProps={{
+                                        textField: { variant: "filled" },
+                                    }}
                                 />
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item lg={12} xs={12}>
+                        <Grid size={{ lg: 12, xs: 12 }}>
                             <TextField
                                 id="protocol"
                                 name="protocol"

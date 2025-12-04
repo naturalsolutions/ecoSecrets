@@ -52,7 +52,7 @@ const HeadBar = () => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item>
+          <Grid>
             <Link to={`/`} style={{ textDecoration: "none" }}>
               <img
                 src={

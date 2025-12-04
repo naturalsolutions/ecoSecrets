@@ -57,7 +57,7 @@ const ProjectList = () => {
       <Grid container direction="row" spacing={2}>
         {projectsStats &&
           projectsStats.map((s, k) => (
-            <Grid item xs={12} sm={6} md={6} lg={3} key={k}>
+            <Grid size={{ lg: 3, md: 6, sm: 6, xs: 12 }} key={k}>
               <ProjectCard selectedProject={s} />
             </Grid>
           ))}
