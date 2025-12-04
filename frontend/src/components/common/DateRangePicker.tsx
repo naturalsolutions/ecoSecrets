@@ -1,9 +1,8 @@
 import { useState, useEffect, FC, useRef } from "react";
-import { Box, TextField, capitalize } from "@mui/material";
+import { Box, capitalize } from "@mui/material";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { fr } from "date-fns/locale/fr";
-// import frLocale from "date-fns/locale/fr";
 import InputMask from "react-input-mask";
 import { useTranslation } from "react-i18next";
 
