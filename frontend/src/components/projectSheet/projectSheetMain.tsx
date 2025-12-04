@@ -82,13 +82,18 @@ const ProjectSheet = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="transparent">
           <Toolbar variant="dense">
-            <Grid container>
+            <Grid 
+              container
+              direction="row" 
+              sx={{ justifyContent: 'space-between', alignItems: 'center', flexGrow: 1 }}
+            >
               <Typography variant="h6" component="div" sx={{ mr: 1 }}>
                 {projectSheetData.name}
               </Typography>
             </Grid>
 
             <ProjectModal />
+            
             <Tooltip title={capitalize(t("projects.import_media"))} arrow>
               <IconButton
                 aria-label="menu"
@@ -98,6 +103,7 @@ const ProjectSheet = () => {
                 <CloudUploadIcon />
               </IconButton>
             </Tooltip>
+            
             <ImportModale
               open={openImport}
               close={closeImportModale}

@@ -16,6 +16,8 @@ const SiteMenu = () => {
                     <Toolbar variant="dense">
                         <Grid
                             container
+                            direction="row" 
+                            sx={{ justifyContent: 'space-between', alignItems: 'center', flexGrow: 1 }}
                         >
                             <Typography variant="h6" component="div" sx={{ mr: 1 }}>
                                 {capitalize(t('sites.title'))}
