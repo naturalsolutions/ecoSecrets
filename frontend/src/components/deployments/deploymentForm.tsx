@@ -74,7 +74,7 @@ const DeploymentForm = (props) => {
     imageNumber: 0,
     frequency: 0,
   });
-  const [position, setPostition] = useState({ lat: 0, lng: 0, name: "" });
+  const [position, setPosition] = useState({ lat: 0, lng: 0, name: "" });
 
   useEffect(() => {
     setCurrentProject(Number(params.projectId));
@@ -118,10 +118,10 @@ const DeploymentForm = (props) => {
         let pos = sites.find(
           (element) => element.id == deploymentData?.site_id
         );
-        await setPostition({
-          lat: pos.latitude,
-          lng: pos.longitude,
-          name: pos.name,
+        await setPosition({
+          lat: pos?.latitude,
+          lng: pos?.longitude,
+          name: pos?.name,
         });
       })();
     }
