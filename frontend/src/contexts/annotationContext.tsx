@@ -214,15 +214,19 @@ export function AnnotationContextProvider({ children }) {
         (async () => {
             if (!gridView) {
                 if(tabValue === 0) {
-                    let data = image().annotations?.map(item => ({ ...item }));
-                    image() && setObservations(data);
-                    image() && setChecked(data?.length === 0);
-                    image() && setStatus(image().treated ? "processed" : "not processed");
-                    image() && setMetadata({ date: image().date });
+                    const img = image();
+                    const data = img?.annotations?.map(item => ({ ...item })) ?? [];
+
+                    if (img) {
+                        img && setObservations(data);
+                        img && setChecked(data?.length === 0);
+                        img && setStatus(img.treated ? "processed" : "not processed");
+                        img && setMetadata({ date: img.date });
+                    }
                 }
             }
         })();
-    }, [files, currentImage, gridView]);
+    }, [files, currentImage, gridView, tabValue]);
 
     useEffect(() => {
         if (gridView) {
