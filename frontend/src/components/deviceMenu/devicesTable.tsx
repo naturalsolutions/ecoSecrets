@@ -2,7 +2,6 @@ import {
   Alert,
   AlertTitle,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -22,7 +21,6 @@ import {
   Typography,
   capitalize,
   Grid,
-  TableSortLabel,
 } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
@@ -56,7 +54,6 @@ const DevicesTable = () => {
     updateDeviceMenu,
     updateSites,
     devices,
-    updateDevices,
   } = useMainContext();
   const [position, setPosition] = useState<any>([]);
   const [page, setPage] = useState<number>(0);

@@ -3,7 +3,6 @@ import ThumbnailComponent from "./ThumbnailComponent";
 import { useMainContext } from "../contexts/mainContext";
 import {
   FilesService,
-  ProjectWithDeployment,
   ProjectsService,
 } from "../client";
 
@@ -13,7 +12,7 @@ const ThumbnailProjectComponent = ({
   setFile,
   file,
 }) => {
-  const { projectSheetData, updateProjects, updateProjectSheetData } =
+  const { projectSheetData, updateProjectSheetData } =
     useMainContext();
   const [thumbnail, setThumbnail] = useState(null);
 

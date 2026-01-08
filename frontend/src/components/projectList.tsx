@@ -12,7 +12,7 @@ const ProjectList = () => {
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(0);
   const [projectLength, setProjectLength] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const rowsPerPage = 4;
 
   useEffect(() => {
     const skip = page * rowsPerPage;

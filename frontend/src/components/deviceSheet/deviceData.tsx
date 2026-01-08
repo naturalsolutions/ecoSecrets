@@ -3,15 +3,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useMainContext } from "../../contexts/mainContext";
-import { useState } from "react";
-import { DeviceMenu } from "../../client";
 import ForestIcon from "@mui/icons-material/Forest";
 import { useTranslation } from "react-i18next";
 import ButtonDisplay from "../common/buttonDisplay";
 
 export default function DeviceData() {
   const { device } = useMainContext();
-  const [deviceData, setDeviceData] = useState<DeviceMenu>(device());
+  const deviceData = device();
   const { t } = useTranslation();
 
   return (

@@ -1,6 +1,5 @@
 import { IconButton, Stack, TextField, Typography, capitalize, Grid } from "@mui/material";
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
-import { request as __request } from '../../client/core/request';
 import { useTranslation } from "react-i18next";
 import TaxonomicInput from "./TaxonomicInput";
 import { useAnnotationContext } from "../../contexts/annotationContext";

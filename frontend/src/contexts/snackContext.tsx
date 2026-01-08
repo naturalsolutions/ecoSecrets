@@ -1,4 +1,3 @@
-import { VerticalAlignBottom } from "@mui/icons-material";
 import { Alert, Snackbar } from "@mui/material";
 import React, { createContext, FC, useContext, useState } from "react";
 import { Snack } from "../components/common/snack";

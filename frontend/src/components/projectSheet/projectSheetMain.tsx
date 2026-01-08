@@ -34,7 +34,6 @@ const ProjectSheet = () => {
   const [position, setPostition] = useState<any>([]);
   const [modifyState, setModifyState] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
-  const [thumbnail, setThumbnail] = useState<any>(null);
 
   const handleOpenNewDeployment = () => {
     setOpenNewDeployment(true);
@@ -130,8 +129,6 @@ const ProjectSheet = () => {
         <Grid size={{ lg: 10, xs: 12 }}>
           <ProjectForm
             setModifyState={setModifyState}
-            file={file}
-            setThumbnail={setThumbnail}
           />
         </Grid>
       </Stack>

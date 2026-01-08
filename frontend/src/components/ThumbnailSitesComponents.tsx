@@ -4,7 +4,7 @@ import { FilesService, Sites, SitesService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
 
 const ThumbnailSitesComponent = () => {
-  const { sites, site } = useMainContext();
+  const { site } = useMainContext();
   const [file, setFile] = useState<any>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [modifyState, setModifyState] = useState<boolean>(false);

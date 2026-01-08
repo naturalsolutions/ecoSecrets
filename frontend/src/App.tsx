@@ -7,7 +7,6 @@ import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";
 import DeploymentSheet from "./pages/deploymentSheet";
 import DeviceMenuPage from "./pages/deviceMenu";
-import DeviceSheet from "./components/deviceSheet/deviceSheetMain";
 import DeviceSheetPage from "./pages/deviceSheet";
 import { theme } from "./theme";
 import { LinearProgress, ThemeProvider } from "@mui/material";

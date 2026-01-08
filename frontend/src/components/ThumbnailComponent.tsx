@@ -1,4 +1,4 @@
-import { Grid, capitalize, Stack } from "@mui/material";
+import { capitalize, Stack } from "@mui/material";
 import DropzoneComponent from "./dropzoneComponent";
 import ButtonsYesNo from "./common/buttonsYesNo";
 import { useRef, Dispatch } from "react";

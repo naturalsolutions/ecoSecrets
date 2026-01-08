@@ -5,7 +5,7 @@ import { useMainContext } from "../contexts/mainContext";
 import ThumbnailComponent from "./ThumbnailComponent";
 
 const ThumbnailDeviceComponent = () => {
-  const { device, updateDeviceMenu } = useMainContext();
+  const { device } = useMainContext();
   const [thumbnail, setThumbnail] = useState<any>(null);
   const [modifyState, setModifyState] = useState<boolean>(false);
   const [deviceData, setDeviceData] = useState<Devices>(device());

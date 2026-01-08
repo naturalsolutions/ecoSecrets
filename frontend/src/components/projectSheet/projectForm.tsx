@@ -25,9 +25,8 @@ import { useTranslation } from "react-i18next";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
 import ButtonCancel from "../common/buttonCancel";
-import { useState } from "react";
 
-const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
+const ProjectForm = ({ setModifyState }) => {
   const { t } = useTranslation();
   const { projectSheetData, updateProjectSheetData } = useMainContext();
   const [projectData, setProjectData] =

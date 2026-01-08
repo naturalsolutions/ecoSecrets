@@ -1,5 +1,4 @@
 import { Box, Grid } from "@mui/material";
-import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 
 type MainLayoutProps = {
   Header?: JSX.Element;

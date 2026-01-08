@@ -5,7 +5,6 @@ import { useMainContext } from "../contexts/mainContext";
 import { DeploymentForProjectSheet, ProjectsService, ProjectWithDeployment } from "../client";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import ButtonInteract from "./common/buttonInteract";
 
 
 const ImportForm = (

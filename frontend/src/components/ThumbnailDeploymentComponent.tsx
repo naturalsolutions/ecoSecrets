@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import ThumbnailComponent from "./ThumbnailComponent";
 import { DeploymentsService, FilesService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
-import { useParams } from "react-router-dom";
 
 const ThumbnailDeploymentComponent = () => {
-  const { deploymentData, updateDeploymentData } = useMainContext();
+  const { deploymentData } = useMainContext();
 
   const [file, setFile] = useState<any>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);

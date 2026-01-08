@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Box, capitalize, IconButton, Tooltip } from "@mui/material";
 import { FilesService } from "../../client";
 import { useFilesContext } from "../../contexts/filesContext";
-import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";

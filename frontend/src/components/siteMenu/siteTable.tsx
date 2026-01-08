@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertTitle,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -32,8 +31,6 @@ import Map from "../Map";
 import { Grid } from "@mui/material";
 import ButtonValidate from "../common/buttonValidate";
 import ButtonCancel from "../common/buttonCancel";
-import ThumbnailComponent from "../ThumbnailDeviceComponent";
-import { Sites, SitesService } from "../../client";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -59,8 +56,6 @@ const SitesTable = () => {
   const [position, setPostition] = useState<any>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sitesLength, setSitesLength] = useState<number>(0);
-  const [allSites, setAllSites] = useState<Sites[]>();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -68,12 +63,6 @@ const SitesTable = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    SitesService.lengthSitesSitesLengthGet().then((res) => {
-      setSitesLength(res);
-    });
-  }, []);
 
   useEffect(() => {
     sites.map((data, k) => {

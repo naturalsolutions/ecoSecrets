@@ -1,4 +1,4 @@
-import { Divider, Stack, Tab, Tabs, Typography, capitalize, Checkbox } from "@mui/material";
+import { Divider, Stack, Tab, Tabs, capitalize } from "@mui/material";
 import AnnotationButtons from "./AnnotationButtons";
 import MetadataTab from "./MetadataTab";
 import { SyntheticEvent } from "react";

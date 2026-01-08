@@ -1,6 +1,6 @@
 import { Breadcrumbs, capitalize, Stack } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import BreadcrumbElement from "./breadcrumbElement";
 import { useTranslation } from "react-i18next";
