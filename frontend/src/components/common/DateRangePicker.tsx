@@ -6,15 +6,15 @@ import { fr } from "date-fns/locale/fr";
 import InputMask from "react-input-mask";
 import { useTranslation } from "react-i18next";
 
-export interface DateRange {
+export interface DateRangeValues {
   start_date: Date | null;
   end_date: Date | null;
 }
 
 interface DateRangeProps {
-  onChange: (dateRange: DateRange) => void;
+  onChange: (dateRange: DateRangeValues) => void;
   reset?: boolean;
-  initValues?: DateRange;
+  initValues?: DateRangeValues;
 }
 const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
     start_date: null,
     end_date: null,
   };
-  const [dateRange, setDateRange] = useState<DateRange>(
+  const [dateRange, setDateRange] = useState<DateRangeValues>(
     initValues ? initValues : defaultValues
   );
   const isResetting = useRef(false);
