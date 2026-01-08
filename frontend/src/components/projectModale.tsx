@@ -69,7 +69,7 @@ export default function ProjectModal(props) {
     return (
         <Grid>
 
-            {props.page == 'home' ?
+            {props.page === 'home' ?
                 <ButtonValidate content={ `${capitalize(t("main.new"))} ${t("projects.project")}` } validate={ handleClickOpen } startIcon="add" />
                 :
                 <Tooltip

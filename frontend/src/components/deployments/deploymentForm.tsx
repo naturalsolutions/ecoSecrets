@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useMainContext } from "../../contexts/mainContext";
 import { useParams } from "react-router-dom";
@@ -87,7 +86,7 @@ const DeploymentForm = (props) => {
 
       if (deploymentData && deploymentData.template_sequences?.length > 0) {
         let dataAutomatic = deploymentData.template_sequences.find(
-          (t) => t.mode == "automatic"
+          (t) => t.mode === "automatic"
         );
         dataAutomatic &&
           setAutomatic({
@@ -97,7 +96,7 @@ const DeploymentForm = (props) => {
           });
 
         let dataTrigger = deploymentData.template_sequences.find(
-          (t) => t.mode == "trigger"
+          (t) => t.mode === "trigger"
         );
         dataTrigger &&
           setTrigger({
@@ -116,7 +115,7 @@ const DeploymentForm = (props) => {
     if (!props.isNewDeployment) {
       (async () => {
         let pos = sites.find(
-          (element) => element.id == deploymentData?.site_id
+          (element) => element.id === deploymentData?.site_id
         );
         await setPosition({
           lat: pos?.latitude,
@@ -161,8 +160,8 @@ const DeploymentForm = (props) => {
     if (automatic.isAutomatic) {
       autoTemplate = autoTemplates.find(
         (t) =>
-          t.number_images == automatic.imageNumber &&
-          t.frequency == automatic.frequency
+          t.number_images === automatic.imageNumber &&
+          t.frequency === automatic.frequency
       );
 
       if (autoTemplate === undefined) {
@@ -180,8 +179,8 @@ const DeploymentForm = (props) => {
     if (trigger.isTrigger) {
       triggerTemplate = triggerTemplates.find(
         (t) =>
-          t.number_images == trigger.imageNumber &&
-          t.frequency == trigger.frequency
+          t.number_images === trigger.imageNumber &&
+          t.frequency === trigger.frequency
       );
 
       if (triggerTemplate === undefined) {

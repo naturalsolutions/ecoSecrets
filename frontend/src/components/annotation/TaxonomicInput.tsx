@@ -156,7 +156,7 @@ const TaxonomicInput: FC<TaxonomicInputProps> = (
                 disableClearable
                 loading={ load }
                 value={ 
-                    props.observation[props.rank] == undefined 
+                    props.observation[props.rank] === undefined 
                     ? " " 
                     : props.observation[props.rank] 
                 }

@@ -63,7 +63,7 @@ export default function SiteModale(props) {
 
   return (
     <Grid>
-      {props.page == "deploymentPage" ? (
+      {props.page === "deploymentPage" ? (
         <ButtonValidate
           content={capitalize(t("sites.new"))}
           validate={() => onclick()}

@@ -25,7 +25,7 @@ const ThumbnailProjectComponent = ({
         if(res && res.length > 0) {
           setThumbnail(res[0].url);
           fetch(res[0].url).then((r) => {
-            if (r.status != 200) {
+            if (r.status !== 200) {
               setThumbnail(null);
             }
           });

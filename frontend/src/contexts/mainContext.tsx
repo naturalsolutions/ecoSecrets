@@ -172,7 +172,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       DeploymentsService.readDeploymentsWithTemplateSequenceDeploymentsTemplateSequenceGet()
         .then((deploymentsData) => {
           setDeploymentData(
-            deploymentsData.find((d) => d.id == currentDeployment)
+            deploymentsData.find((d) => d.id === currentDeployment)
           );
         })
         .catch((err) => {

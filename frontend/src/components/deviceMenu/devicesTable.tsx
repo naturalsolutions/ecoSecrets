@@ -63,8 +63,8 @@ const DevicesTable = () => {
       deviceMenu.map((element) => {
         projects.forEach((project) => {
           project.deployments.map((elem) => {
-            if (element.id == elem.device_id && element.status === "Déployé") {
-              let pos = sites.find((site) => site.id == elem.site_id);
+            if (element.id === elem.device_id && element.status === "Déployé") {
+              let pos = sites.find((site) => site.id === elem.site_id);
 
               setPosition((position) => [
                 ...position,

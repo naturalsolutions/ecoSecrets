@@ -16,7 +16,7 @@ export default function DeviceData() {
     <Stack direction="row" justifyContent="space-evenly">
       <Stack alignItems="center" justifyContent="center">
         <Typography color="secondary" gutterBottom variant="h3" component="div">
-          {deviceData.status == "Déployé" ? (
+          {deviceData.status === "Déployé" ? (
             <ForestIcon
               fontSize="large"
               sx={{ display: { color: "secondary" } }}

@@ -176,7 +176,7 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
         freeSolo
         disableClearable
         loading={load}
-        value={filters[rank] == undefined ? "" : filters[rank]}
+        value={filters[rank] === undefined ? "" : filters[rank]}
         onChange={(_, newValue) => {
           onChange(newValue);
         }}

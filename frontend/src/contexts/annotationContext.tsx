@@ -23,7 +23,7 @@ export function AnnotationContextProvider({ children }) {
     const [metadata, setMetadata] = useState<MetadataData>();
     const [status, setStatus] = useState<undefined | string>(undefined);
     const [isMinimalObservation, setIsMinimalObservation] = useState(
-      observations?.length == 0
+      observations?.length === 0
     );
     const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
     const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState({state: false, text: ""});
@@ -76,11 +76,11 @@ export function AnnotationContextProvider({ children }) {
     };
 
     const lastOrFirstImage = (indice) => {
-        if (indice == 'first') {
+        if (indice === 'first') {
             setCurrentImage(files[0].id);
             updateUrl(files[0].id);
         }
-        if (indice == 'last') {
+        if (indice === 'last') {
             setCurrentImage(files[files.length - 1].id);
             updateUrl(files[files.length - 1].id);
         }
@@ -91,7 +91,7 @@ export function AnnotationContextProvider({ children }) {
             if(modifiedObservationGroup.length > 0) {
                 setOpenAnnotationGroupModale(true);
             };
-            if(modifiedObservationGroup.length == 0) {
+            if(modifiedObservationGroup.length === 0) {
                 FilesService
                 .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, { annotations: { annotations:  observations, id_group: idGroup }, deployment_id: currentDeployment} )
                 .then(res => {
@@ -213,7 +213,7 @@ export function AnnotationContextProvider({ children }) {
     useEffect(() => {
         (async () => {
             if (!gridView) {
-                if(tabValue == 0) {
+                if(tabValue === 0) {
                     let data = image().annotations?.map(item => ({ ...item }));
                     image() && setObservations(data);
                     image() && setChecked(data?.length === 0);
