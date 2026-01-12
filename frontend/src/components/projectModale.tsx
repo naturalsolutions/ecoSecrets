@@ -108,7 +108,7 @@ export default function ProjectModal(props) {
                     <Grid container spacing={3}>
                         <Grid size={{ lg: 6 }}>
                         </Grid>
-                        <Grid size={{ lg: 6, xs: 12 }}>
+                        <Grid size={{ xs: 12 }}>
                             <TextField
                                 id="name"
                                 name="name"
