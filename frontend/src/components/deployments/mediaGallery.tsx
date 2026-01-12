@@ -27,7 +27,7 @@ export default function MediaGallery() {
             <GalleryItem key={item.id} item={item} index={index} />
           ))
         ) : (
-          <p>{t("main.no_data")}</p>
+          <p>{capitalize(t("main.no_data"))}</p>
         )}
       </Masonry>
     </Box>

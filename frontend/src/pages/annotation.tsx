@@ -12,7 +12,7 @@ import { useFilesContext } from "../contexts/filesContext";
 function Annotation() {
   let params = useParams();
   const navigate = useNavigate();
-  const { files, isLoaded, currentImage } = useFilesContext();
+  const { files, isLoaded, currentImage, setCurrentImage } = useFilesContext();
   const currentProject = params.projectId;
   const currentDeployment = params.deploymentId;
 
@@ -30,6 +30,8 @@ function Annotation() {
         currentDeployment
       )}/medias`;
 
+      setCurrentImage(null);
+      
       if (window.location.pathname !== url) {
         navigate(url, { replace: true });
       }
