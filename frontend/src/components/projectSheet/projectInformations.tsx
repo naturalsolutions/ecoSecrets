@@ -1,4 +1,4 @@
-import { Stack, Typography, CircularProgress, capitalize } from "@mui/material";
+import { Stack, Typography, capitalize } from "@mui/material";
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { useMainContext } from "../../contexts/mainContext";
 import GoAnnotation from "../goAnnotation";
@@ -27,7 +27,6 @@ const ProjectInformations = () => {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    {/* <CircularProgress color='secondary' variant='determinate' value={projectSheetData.stats.annotation_percentage}/> */}
                     <Typography color='secondary' gutterBottom variant="h3" component="div" >
                         {projectSheetData.stats.annotation_percentage} %
                     </Typography>

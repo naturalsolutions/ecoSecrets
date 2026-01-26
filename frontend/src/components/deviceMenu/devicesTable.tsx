@@ -2,7 +2,6 @@ import {
   Alert,
   AlertTitle,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -22,7 +21,6 @@ import {
   Typography,
   capitalize,
   Grid,
-  TableSortLabel,
 } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
@@ -56,7 +54,6 @@ const DevicesTable = () => {
     updateDeviceMenu,
     updateSites,
     devices,
-    updateDevices,
   } = useMainContext();
   const [position, setPosition] = useState<any>([]);
   const [page, setPage] = useState<number>(0);
@@ -66,8 +63,8 @@ const DevicesTable = () => {
       deviceMenu.map((element) => {
         projects.forEach((project) => {
           project.deployments.map((elem) => {
-            if (element.id == elem.device_id && element.status === "Déployé") {
-              let pos = sites.find((site) => site.id == elem.site_id);
+            if (element.id === elem.device_id && element.status === "Déployé") {
+              let pos = sites.find((site) => site.id === elem.site_id);
 
               setPosition((position) => [
                 ...position,
@@ -122,10 +119,8 @@ const DevicesTable = () => {
       <Grid container justifyContent="center" alignItems="center">
         <Grid
           container
-          item
           justifyContent="center"
-          height={400}
-          width={1000}
+          sx={{ height: 400, width: 1000 }}
           spacing={1}
           style={{ backgroundColor: "#D9D9D9" }}
         >

@@ -105,7 +105,11 @@ const DeviceSheet = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="transparent">
           <Toolbar variant="dense">
-            <Grid container>
+            <Grid 
+              container
+              direction="row" 
+              sx={{ justifyContent: 'space-between', alignItems: 'center', flexGrow: 1 }}
+            >
               <Typography variant="h6" component="div" sx={{ mr: 1 }}>
                 {device().name}
               </Typography>

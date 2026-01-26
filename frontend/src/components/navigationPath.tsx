@@ -1,6 +1,6 @@
 import { Breadcrumbs, capitalize, Stack } from "@mui/material";
 import { useMainContext } from "../contexts/mainContext";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import BreadcrumbElement from "./breadcrumbElement";
 import { useTranslation } from "react-i18next";
@@ -166,11 +166,11 @@ const NavigationPath: FC<{}> = () => {
       return [homeBreadcrumb(), devicesBreadcrumb(), deviceBreadcrumb(true)];
     } else if (site()) {
       return [homeBreadcrumb(), sitesBreadcrumb(), siteBreadcrumb(true)];
-    } else if (location.pathname == "/devices/") {
+    } else if (location.pathname === "/devices/") {
       return [homeBreadcrumb(), devicesBreadcrumb(true)];
-    } else if (location.pathname == "/sites/") {
+    } else if (location.pathname === "/sites/") {
       return [homeBreadcrumb(), sitesBreadcrumb(true)];
-    } else if (location.pathname == "/") {
+    } else if (location.pathname === "/") {
       return [homeBreadcrumb(true)];
     } else {
       return [homeBreadcrumb(true)];

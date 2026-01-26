@@ -24,8 +24,6 @@ import { useState } from "react";
 import GoAnnotation from "./goAnnotation";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
-import { useMainContext } from "../contexts/mainContext";
-import { ProjectWithDeployment, ProjectsService } from "../client";
 
 const testStatus = (status) => {
   if (status === "Terminé") {
@@ -67,13 +65,8 @@ const testStatus = (status) => {
 const IconStyle = { verticalAlign: "middle", minWidth: "40px" };
 
 const ProjectCard = (props) => {
-  const { projects } = useMainContext();
   const { t } = useTranslation();
   const [openImport, setOpenImport] = useState(false);
-
-  const project = (): ProjectWithDeployment => {
-    return projects.find((p) => p.id == props.selectedProject.id);
-  };
 
   const openImportModale = (id: number) => {
     setOpenImport(true);

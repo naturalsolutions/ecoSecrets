@@ -4,7 +4,7 @@ import { FilesService, Sites, SitesService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
 
 const ThumbnailSitesComponent = () => {
-  const { sites, site } = useMainContext();
+  const { site } = useMainContext();
   const [file, setFile] = useState<any>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [modifyState, setModifyState] = useState<boolean>(false);
@@ -21,7 +21,7 @@ const ThumbnailSitesComponent = () => {
           if(res && res.length > 0) {
             setThumbnail(res[0].url);
             fetch(res[0].url).then((r) => {
-              if (r.status != 200) {
+              if (r.status !== 200) {
                 setThumbnail(null);
               }
             });

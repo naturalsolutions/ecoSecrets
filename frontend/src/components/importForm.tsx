@@ -5,7 +5,6 @@ import { useMainContext } from "../contexts/mainContext";
 import { DeploymentForProjectSheet, ProjectsService, ProjectWithDeployment } from "../client";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import ButtonInteract from "./common/buttonInteract";
 
 
 const ImportForm = (
@@ -182,7 +181,7 @@ const ImportForm = (
 
                 <Grid container justifyContent="center" spacing={1}>
                     {props.files.map((file) => (
-                        <Grid item>
+                        <Grid>
                             <Chip 
                                 label={file.name}
                                 variant="outlined" 

@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import ThumbnailComponent from "./ThumbnailComponent";
 import { DeploymentsService, FilesService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
-import { useParams } from "react-router-dom";
 
 const ThumbnailDeploymentComponent = () => {
-  const { deploymentData, updateDeploymentData } = useMainContext();
+  const { deploymentData } = useMainContext();
 
   const [file, setFile] = useState<any>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
@@ -21,7 +20,7 @@ const ThumbnailDeploymentComponent = () => {
         if(res && res.length > 0) {
           setThumbnail(res[0].url);
           fetch(res[0].url).then((r) => {
-            if (r.status != 200) {
+            if (r.status !== 200) {
               setThumbnail(null);
             }
           });

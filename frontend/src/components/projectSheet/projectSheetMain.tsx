@@ -34,7 +34,6 @@ const ProjectSheet = () => {
   const [position, setPostition] = useState<any>([]);
   const [modifyState, setModifyState] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
-  const [thumbnail, setThumbnail] = useState<any>(null);
 
   const handleOpenNewDeployment = () => {
     setOpenNewDeployment(true);
@@ -82,13 +81,18 @@ const ProjectSheet = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="transparent">
           <Toolbar variant="dense">
-            <Grid container>
+            <Grid 
+              container
+              direction="row" 
+              sx={{ justifyContent: 'space-between', alignItems: 'center', flexGrow: 1 }}
+            >
               <Typography variant="h6" component="div" sx={{ mr: 1 }}>
                 {projectSheetData.name}
               </Typography>
             </Grid>
 
             <ProjectModal />
+            
             <Tooltip title={capitalize(t("projects.import_media"))} arrow>
               <IconButton
                 aria-label="menu"
@@ -98,6 +102,7 @@ const ProjectSheet = () => {
                 <CloudUploadIcon />
               </IconButton>
             </Tooltip>
+            
             <ImportModale
               open={openImport}
               close={closeImportModale}
@@ -108,11 +113,12 @@ const ProjectSheet = () => {
       </Box>
 
       <ProjectInformations />
+      
       <Typography variant="h4" color="#000000" component="div">
         {capitalize(t("projects.sheet"))}
       </Typography>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <Grid item lg={2} xs={12}>
+        <Grid size={{ lg: 6, xs: 12 }}>
           <ThumbnailProjectComponent
             modifyState={modifyState}
             setModifyState={setModifyState}
@@ -120,11 +126,9 @@ const ProjectSheet = () => {
             file={file}
           />
         </Grid>
-        <Grid item lg={10} xs={12}>
+        <Grid size={{ lg: 10, xs: 12 }}>
           <ProjectForm
             setModifyState={setModifyState}
-            file={file}
-            setThumbnail={setThumbnail}
           />
         </Grid>
       </Stack>
@@ -157,12 +161,10 @@ const ProjectSheet = () => {
           <Grid container justifyContent="center" alignItems="center">
             <Grid
               container
-              item
+              size={{ lg: 12, xs: 12 }}
               justifyContent="center"
-              height={400}
-              width={1000}
+              sx={{ height: 400, width: 1000, backgroundColor: "#D9D9D9" }}
               spacing={1}
-              style={{ backgroundColor: "#D9D9D9" }}
             >
               <Map position={position} zoom={2} />
             </Grid>

@@ -12,7 +12,7 @@ const ProjectList = () => {
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(0);
   const [projectLength, setProjectLength] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const rowsPerPage = 4;
 
   useEffect(() => {
     const skip = page * rowsPerPage;
@@ -54,24 +54,26 @@ const ProjectList = () => {
         </div>
       </Box>
 
-      <Grid container direction="row" spacing={2}>
+      <Grid container direction="row"  size={12} spacing={2}>
         {projectsStats &&
           projectsStats.map((s, k) => (
-            <Grid item xs={12} sm={6} md={6} lg={3} key={k}>
+            <Grid size={{ lg: 3, md: 6, sm: 6, xs: 12 }} key={k}>
               <ProjectCard selectedProject={s} />
             </Grid>
           ))}
       </Grid>
-      {projectsStats && (
-        <TablePagination
-          rowsPerPageOptions={[4]}
-          component="div"
-          count={projectLength}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-        />
-      )}
+      <Grid alignItems="center" justifyContent="center" container size={12}>
+        {projectsStats && (
+          <TablePagination
+            rowsPerPageOptions={[4]}
+            component="div"
+            count={projectLength}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+          />
+        )}
+      </Grid>
     </Grid>
   );
 };

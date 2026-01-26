@@ -3,7 +3,6 @@ import ThumbnailComponent from "./ThumbnailComponent";
 import { useMainContext } from "../contexts/mainContext";
 import {
   FilesService,
-  ProjectWithDeployment,
   ProjectsService,
 } from "../client";
 
@@ -13,7 +12,7 @@ const ThumbnailProjectComponent = ({
   setFile,
   file,
 }) => {
-  const { projectSheetData, updateProjects, updateProjectSheetData } =
+  const { projectSheetData, updateProjectSheetData } =
     useMainContext();
   const [thumbnail, setThumbnail] = useState(null);
 
@@ -26,7 +25,7 @@ const ThumbnailProjectComponent = ({
         if(res && res.length > 0) {
           setThumbnail(res[0].url);
           fetch(res[0].url).then((r) => {
-            if (r.status != 200) {
+            if (r.status !== 200) {
               setThumbnail(null);
             }
           });
