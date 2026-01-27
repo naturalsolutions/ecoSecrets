@@ -11,6 +11,13 @@ interface Filters {
   start_date: Date | null;
   end_date: Date | null;
 }
+
+interface Pagination {
+  totalFiles: number;
+  currentPage: number;
+  totalPages: number;
+}
+
 export interface FilesContextProps {
   name?: string;
   children?: any;
@@ -21,6 +28,7 @@ export const useFilesContext = () => useContext(FilesContext);
 
 const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
   const { currentDeployment, updateDeploymentData } = useMainContext();
+  const [paginationFiles, setPaginationFiles] = useState<Pagination>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [files, setFiles] = useState<any[]>([]);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
@@ -38,11 +46,13 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
     return files.find((f) => f.id === currentImage);
   };
 
-  const updateListFile = () => {
+  const updateListFile = (skip = 0, limit = 100) => {
     setIsLoaded(false);
     currentDeployment &&
       FilesService.getFilesWithFiltersFilesFiltersDeploymentIdGet(
         currentDeployment,
+        skip,
+        limit,
         filters?.species,
         filters?.family,
         filters?.genus,
@@ -52,8 +62,12 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
         filters?.end_date?.toISOString().slice(0, -1)
       )
         .then((files) => {
-          setFiles(files);
-          setIsLoaded(true);
+          setFiles(files["data"]);
+          setPaginationFiles({
+            currentPage: files["current_page"],
+            totalFiles: files["total_items"],
+            totalPages: files["total_pages"],
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -78,6 +92,8 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
         setCurrentImage,
         image,
         isLoaded,
+        paginationFiles,
+        setPaginationFiles,
       }}
     >
       {children}

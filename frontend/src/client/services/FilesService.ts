@@ -62,6 +62,8 @@ export class FilesService {
     /**
      * Get Files With Filters
      * @param deploymentId
+     * @param skip
+     * @param limit
      * @param species
      * @param family
      * @param genus
@@ -74,6 +76,8 @@ export class FilesService {
      */
     public static getFilesWithFiltersFilesFiltersDeploymentIdGet(
         deploymentId: number,
+        skip?: number,
+        limit: number = 100,
         species?: string,
         family?: string,
         genus?: string,
@@ -89,6 +93,8 @@ export class FilesService {
                 'deployment_id': deploymentId,
             },
             query: {
+                'skip': skip,
+                'limit': limit,
                 'species': species,
                 'family': family,
                 'genus': genus,
