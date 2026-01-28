@@ -50,7 +50,7 @@ def get_deployment_files_with_filters(
         query = query.filter(Files.date >= start_date)
     elif end_date:
         query = query.filter(Files.date <= end_date)
-    
+
     total_items = query.count()
 
     query = query.order_by(Files.name).offset(skip).limit(limit)
@@ -66,7 +66,7 @@ def get_deployment_files_with_filters(
         "data": res,
         "total_items": total_items,
         "current_page": (skip // limit) + 1,
-        "total_pages": (total_items + limit - 1) // limit
+        "total_pages": (total_items + limit - 1) // limit,
     }
 
 

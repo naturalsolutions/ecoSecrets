@@ -48,7 +48,8 @@ def update_annotations(file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = D
 
 @router.get("/filters/{deployment_id}")
 def get_files_with_filters(
-    deployment_id: int, filters_params: FilterParams = Depends(),
+    deployment_id: int,
+    filters_params: FilterParams = Depends(),
     db: Session = Depends(get_db),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, le=100),
