@@ -31,6 +31,7 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
   const [paginationFiles, setPaginationFiles] = useState<Pagination>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [files, setFiles] = useState<any[]>([]);
+  const imagePerPage = 24;
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>({
     species: "",
@@ -46,33 +47,57 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
     return files.find((f) => f.id === currentImage);
   };
 
-  const updateListFile = (skip = 0, limit = 100) => {
-    setIsLoaded(false);
-    currentDeployment &&
-      FilesService.getFilesWithFiltersFilesFiltersDeploymentIdGet(
-        currentDeployment,
-        skip,
-        limit,
-        filters?.species,
-        filters?.family,
-        filters?.genus,
-        filters?.classe,
-        filters?.order,
-        filters?.start_date?.toISOString().slice(0, -1),
-        filters?.end_date?.toISOString().slice(0, -1)
-      )
-        .then((files) => {
-          setFiles(files["data"]);
-          setPaginationFiles({
-            currentPage: files["current_page"],
-            totalFiles: files["total_items"],
-            totalPages: files["total_pages"],
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+  const updateUrl = (projectId, deploymentId, id) => {
+    const url = new URL(window.location.toString());
+    url.pathname = `/project/${Number(projectId)}/deployment/${Number(
+      deploymentId
+    )}/medias/${id}`;
+    window.history.pushState({}, "", url);
   };
+
+
+  const updateListFile = (
+    skip: number = 0,
+    options: { idx?: number, projectId?: any, deploymentId?: any} = {}
+  ): Promise<void> => {
+    
+    const { idx, projectId, deploymentId } = options;
+    setIsLoaded(false);
+
+    if (!currentDeployment) return Promise.resolve();
+
+    return FilesService.getFilesWithFiltersFilesFiltersDeploymentIdGet(
+      currentDeployment,
+      skip,
+      imagePerPage,
+      filters?.species,
+      filters?.family,
+      filters?.genus,
+      filters?.classe,
+      filters?.order,
+      filters?.start_date?.toISOString().slice(0, -1),
+      filters?.end_date?.toISOString().slice(0, -1)
+    )
+      .then((files) => {
+        setIsLoaded(true);
+        setFiles(files.data);
+        setPaginationFiles({
+          currentPage: files.current_page,
+          totalFiles: files.total_items,
+          totalPages: files.total_pages,
+        });
+        if (idx !== undefined) {
+          const minIdx = Math.min(idx, files["data"].length - 1);
+          const currentImageId = files["data"][minIdx].id;
+          setCurrentImage(currentImageId);
+          updateUrl(projectId ,deploymentId, currentImageId);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
 
   useEffect(() => {
     (async () => {
@@ -94,6 +119,7 @@ const FilesContextProvider: FC<FilesContextProps> = ({ children }) => {
         isLoaded,
         paginationFiles,
         setPaginationFiles,
+        imagePerPage
       }}
     >
       {children}

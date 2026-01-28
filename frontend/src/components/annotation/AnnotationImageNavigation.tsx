@@ -9,7 +9,7 @@ import FastRewindIcon from '@mui/icons-material/FastRewind';
 
 const AnnotationImageNavigation = () => {
 
-    const { files, currentImage } = useFilesContext();
+    const { files, currentImage, paginationFiles, imagePerPage } = useFilesContext();
     const { previous, lastOrFirstImage, next } = useAnnotationContext();
 
     const imageIndex = () => {
@@ -38,7 +38,7 @@ const AnnotationImageNavigation = () => {
                         variant="h6" 
                         style={{ backgroundColor: "#f5f5f5" }}
                     >
-                        { imageIndex() + " | " + files.length }
+                        { imageIndex()+ (paginationFiles.currentPage -1 )*imagePerPage + " | " + paginationFiles.totalFiles }
                     </Typography>
                 </IconButton>
 

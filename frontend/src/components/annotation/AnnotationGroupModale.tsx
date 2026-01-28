@@ -14,7 +14,7 @@ const AnnotationGroupModale = () => {
 
     const { currentDeployment } = useMainContext();
 
-    const { updateListFile, currentImage } = useFilesContext();
+    const { updateListFile, currentImage, paginationFiles,imagePerPage } = useFilesContext();
 
     const { openAnnotationGroupModale, setOpenAnnotationGroupModale, observations, idGroup, selectedGroupedObservation, unselectedGroupedObservation, setSelectedGroupedObservation, setUnselectedGroupedObservation, modifiedObservationGroup,setModifiedObservationGroup, next } = useAnnotationContext();
 
@@ -60,7 +60,7 @@ const AnnotationGroupModale = () => {
               deployment_id: currentDeployment
             })
             .then(res => {
-                updateListFile();
+                updateListFile((paginationFiles.currentPage -1) *imagePerPage);
                 next();
             })
             .catch((err) => {
