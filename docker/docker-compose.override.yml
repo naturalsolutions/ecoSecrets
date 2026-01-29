@@ -8,8 +8,8 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
     ports:
-      - ${TRAEFIK_PORT-8889}:80
-      - ${TRAEFIK_DASHBOARD_PORT-8890}:8080
+      - ${TRAEFIK_PORT:-8889}:80
+      - ${TRAEFIK_DASHBOARD_PORT:-8890}:8080
 
   api:
     build:
@@ -21,6 +21,14 @@ services:
     ports:
       - "3654:8000"
     command: "./entrypoint.sh uvicorn --host 0.0.0.0 --reload src.main:app"
+
+  taxapi:
+    ports:
+      - "5666:5666"
+
+  nomenclapi:
+    ports:
+      - "5777:5777"
 
   frontend:
     build:

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { Grid, Typography, Stack, TextField, MenuItem, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, capitalize } from "@mui/material";
+import { Grid, Typography, Stack, TextField, Divider, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, capitalize, Tooltip } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -15,13 +15,11 @@ import ButtonValidate from "./common/buttonValidate";
 
 export default function ProjectModal(props) {
     const { t } = useTranslation()
-    const { updateProjects, setCurrentProject, updateProjectSheetData } = useMainContext();
+    const { updateProjects } = useMainContext();
     const [open, setOpen] = useState(false);
-    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: ''});
+    const [projectData, setProjectData] = useState<ProjectBase>({ name: '', protocol: '', creation_date: '' });
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
-    const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
-    const species = ["Loup", "Coccinelle", "Ours", "Chamois", "Chevreuil", "Cerf", "Marmotte", "Renard", "Aigle"];
 
 
     const { setSnack } = useSnackContext();
@@ -47,7 +45,7 @@ export default function ProjectModal(props) {
 
     const handleClose = () => {
         setOpen(false);
-        setProjectData({ name: '', protocol: '', creation_date: '', acquisition_framework: '', targeted_species: ''});
+        setProjectData({ name: '', protocol: '', creation_date: '' });
         setStartDate(null);
         setEndDate(null);
     };
@@ -71,17 +69,22 @@ export default function ProjectModal(props) {
     return (
         <Grid>
 
-            {props.page == 'home' ?
+            {props.page === 'home' ?
                 <ButtonValidate content={ `${capitalize(t("main.new"))} ${t("projects.project")}` } validate={ handleClickOpen } startIcon="add" />
                 :
-                <IconButton 
-                    onClick={handleClickOpen} 
-                    aria-label="menu" 
-                    color="primary"
-                    sx={{ mr: 2 }}
+                <Tooltip
+                    title={t("main.new_object", { object: t("projects.project") })}
+                    arrow
                 >
-                    <AddCircleIcon />
-                </IconButton>
+                    <IconButton 
+                        onClick={handleClickOpen} 
+                        aria-label="menu" 
+                        color="primary"
+                        sx={{ mr: 2 }}
+                    >
+                        <AddCircleIcon />
+                    </IconButton>
+                </Tooltip>
             }
 
             <Dialog open={open} onClose={handleClose}>
@@ -103,9 +106,9 @@ export default function ProjectModal(props) {
                 <Divider />
                 <DialogContent>
                     <Grid container spacing={3}>
-                        <Grid item lg={12}>
+                        <Grid size={{ lg: 6 }}>
                         </Grid>
-                        <Grid item lg={12} xs={12}>
+                        <Grid size={{ xs: 12 }}>
                             <TextField
                                 id="name"
                                 name="name"
@@ -117,70 +120,39 @@ export default function ProjectModal(props) {
                                 variant="filled"
                             />
                         </Grid>
-                        <Grid item lg={6} md={6} xs={12}>
-                            <TextField
-                                select
-                                label={capitalize(t("projects.acquisition_framework"))}
-                                variant="filled"
-                                value={projectData.acquisition_framework}
-                                fullWidth
-                                onChange={(e) => handleFormChange("acquisition_framework", e)}
-                            >
-                                {protocoles.map((item) => (
-                                    <MenuItem key={item} value={item}>
-                                        {item}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                        <Grid item lg={6} md={6} xs={12}>
-                            <TextField
-                                label={capitalize(t("projects.target_specie"))}
-                                id="targetedSpecies"
-                                select
-                                value={projectData.targeted_species}
-                                fullWidth
-                                variant="filled"
-                                onChange={(e) => handleFormChange("targeted_species", e)}
-
-                            >
-                                {species.map((item) => (
-                                    <MenuItem key={item} value={item}>
-                                        {item}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-
-                        <Grid item lg={6}>
+                        <Grid size={{ lg: 6 }}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    inputFormat="dd/MM/yyyy"
+                                    format="dd/MM/yyyy"
                                     label={capitalize(t("projects.start_date"))}
                                     value={startDate}
                                     onChange={(startDate) => {
                                         setStartDate(startDate);
                                         handleChangeDate("start_date", startDate);
                                     }}
-                                    renderInput={(params) => <TextField {...params} variant="filled" />}
+                                    slotProps={{
+                                        textField: { variant: "filled" },
+                                    }}
                                 />
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item lg={6}>
+                        <Grid size={{ lg: 6 }}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    inputFormat="dd/MM/yyyy"
+                                    format="dd/MM/yyyy"
                                     label={capitalize(t("projects.end_date"))}
                                     value={endDate}
                                     onChange={(endDate) => {
                                         setEndDate(endDate);
                                         handleChangeDate("end_date", endDate);
                                     }}
-                                    renderInput={(params) => <TextField {...params} variant="filled" />}
+                                    slotProps={{
+                                        textField: { variant: "filled" },
+                                    }}
                                 />
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item lg={12} xs={12}>
+                        <Grid size={{ lg: 12, xs: 12 }}>
                             <TextField
                                 id="protocol"
                                 name="protocol"

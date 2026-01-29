@@ -5,16 +5,14 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { capitalize } from '@mui/material';
-import { useTranslation } from "react-i18next";
 
 
 type NestedListProps = {
-    children: React.ReactNode; // 👈️ type children
+    children: React.ReactNode;
+    text: string;
 };
 export default function NestedList(props: NestedListProps) {
     const [open, setOpen] = React.useState(false);
-    const { t } = useTranslation()
     const handleClick = () => {
         setOpen(!open);
     };
@@ -24,12 +22,13 @@ export default function NestedList(props: NestedListProps) {
             sx={{ width: '100%', bgcolor: 'background.paper' }}
             aria-labelledby="nested-list-subheader"
         >
-            <ListItemButton onClick={handleClick}>
-                <ListItemText primary={capitalize(t("annotations.further_information"))} />
+            <ListItemButton onClick={ handleClick }>
+                <ListItemText primary={ props.text } />
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                <>{props.children}</>
+            
+            <Collapse in={ open } timeout="auto" unmountOnExit>
+                { props.children }
             </Collapse>
         </List>
     );

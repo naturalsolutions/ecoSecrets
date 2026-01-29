@@ -1,0 +1,62 @@
+import { useEffect, useState } from "react";
+import ThumbnailComponent from "./ThumbnailComponent";
+import { DeploymentsService, FilesService } from "../client";
+import { useMainContext } from "../contexts/mainContext";
+
+const ThumbnailDeploymentComponent = () => {
+  const { deploymentData } = useMainContext();
+
+  const [file, setFile] = useState<any>(null);
+  const [thumbnail, setThumbnail] = useState<string | null>(null);
+  const [modifyState, setModifyState] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(deploymentData);
+    if (deploymentData) {
+      DeploymentsService.fetchDeploymentThumbnailDeploymentsFetchDeploymentThumbnailDeploymentIdGet(
+        deploymentData.id
+      ).then((res) => {
+        setThumbnail(null);
+        if(res && res.length > 0) {
+          setThumbnail(res[0].url);
+          fetch(res[0].url).then((r) => {
+            if (r.status !== 200) {
+              setThumbnail(null);
+            }
+          });
+        }
+      });
+    }
+  }, [deploymentData]);
+
+  const saveThumbnail = async () => {
+    if (deploymentData) {
+      FilesService.uploadFilesFilesUploadDeploymentDeploymentIdPost(
+        deploymentData?.id,
+        { file }
+      ).then((res) => {
+        DeploymentsService.fetchDeploymentThumbnailDeploymentsFetchDeploymentThumbnailDeploymentIdGet(
+          deploymentData?.id
+        ).then((res) => {
+          setThumbnail(res[0].url);
+        });
+      });
+    }
+
+    setModifyState(false);
+  };
+
+  return (
+    <ThumbnailComponent
+      text="deployment"
+      saveThumbnail={saveThumbnail}
+      file={file}
+      setFile={setFile}
+      thumbnail={thumbnail}
+      modifyState={modifyState}
+      setModifyState={setModifyState}
+    />
+  );
+};
+
+export default ThumbnailDeploymentComponent;

@@ -1,4 +1,4 @@
-import { Stack, Typography, CircularProgress, capitalize } from "@mui/material";
+import { Stack, Typography, capitalize } from "@mui/material";
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import { useMainContext } from "../../contexts/mainContext";
 import GoAnnotation from "../goAnnotation";
@@ -21,13 +21,12 @@ const ProjectInformations = () => {
                         <PhotoLibraryIcon sx={{display: {color: "#BCAAA4"}}} style={{verticalAlign:"middle", minWidth: '40px'}}/>
                         {projectSheetData.stats.media_number}
                     </Typography>
-                    <ButtonDisplay content={ capitalize(t("main.show_media")) } />
+                    <ButtonDisplay content={ capitalize(t("devices.nb_media")) } />
                 </Stack>
                 <Stack
                     alignItems="center"
                     justifyContent="center"
                 >
-                    {/* <CircularProgress color='secondary' variant='determinate' value={projectSheetData.stats.annotation_percentage}/> */}
                     <Typography color='secondary' gutterBottom variant="h3" component="div" >
                         {projectSheetData.stats.annotation_percentage} %
                     </Typography>

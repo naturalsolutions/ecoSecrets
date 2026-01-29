@@ -57,6 +57,31 @@ export class SitesService {
     }
 
     /**
+     * Length Sites
+     * @param skip
+     * @param limit
+     * @returns number Successful Response
+     * @throws ApiError
+     */
+    public static lengthSitesSitesLengthGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<number> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/sites/length',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Read Site
      * @param siteId
      * @returns Sites Successful Response
@@ -116,6 +141,28 @@ export class SitesService {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/sites/{site_id}',
+            path: {
+                'site_id': siteId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Fetch Site Thumbnail
+     * @param siteId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static fetchSiteThumbnailSitesFetchSiteThumbnailSiteIdGet(
+        siteId: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/sites/fetch_site_thumbnail/{site_id}',
             path: {
                 'site_id': siteId,
             },

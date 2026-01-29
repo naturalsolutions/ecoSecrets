@@ -38,75 +38,93 @@ const HeadBar = () => {
     handleClose();
   };
 
+  function toAccountKeycloack(): void {
+    window.open('/auth/realms/geonature-annotation/account/#/personal-info', '_blank');
+  }
+
   return (
     <AppBar position="static" sx={{ paddingTop: 2, paddingBottom: 1 }}>
       <Toolbar variant="dense">
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
-          <Grid item>
-            <Link to={`/`} style={{ textDecoration: "none" }}>
-              <img
-                src={process.env.PUBLIC_URL + "/assets/geocam-logo-dark.png"}
-                width="135"
-                height="30"
-              />
-            </Link>
+        <Grid container direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', flexGrow: 1 }}>
+
+          <Grid size={6}>
+            <Grid 
+              container 
+              spacing={2} 
+              alignItems="center" 
+              justifyContent="flex-start"
+            >
+              <Grid>
+                <Link to={`/`} style={{ textDecoration: "none" }}>
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/ecosecrets_logo_full_light.svg"
+                    }
+                    width="135"
+                    height="30"
+                  />
+                </Link>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
-        >
-          <Button
-            variant="contained"
-            color="secondary"
-            href="https://natural-solutions.gitlab.io/geonature/annotation/user/start/"
-            target="_blank"
-            sx={{ mr: 4 }}
-          >
-            {`${capitalize(t("header.user_doc"))}`}
-          </Button>
-          <IconButton
-            onClick={openImportModale}
-            sx={{ mr: 4, display: { color: "white" } }}
-          >
-            <CloudUploadIcon />
-          </IconButton>
 
-          <ImportModale open={openImport} close={closeImportModale} />
+          <Grid size={6}>
+            <Grid 
+              container 
+              spacing={0} 
+              alignItems="center" 
+              justifyContent="flex-end"
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                href="https://natural-solutions.gitlab.io/geonature/annotation/user/start/"
+                target="_blank"
+                sx={{ mr: 4 }}
+              >
+                {`${capitalize(t("header.user_doc"))}`}
+              </Button>
 
-          <ImportModale open={openImport} close={closeImportModale} />
+              <IconButton
+                onClick={openImportModale}
+                sx={{ mr: 4, display: { color: "white" } }}
+              >
+                <CloudUploadIcon />
+              </IconButton>
 
-          <LanguageSelector />
+              <ImportModale open={openImport} close={closeImportModale} />
 
-          <IconButton
-            aria-label="menu"
-            sx={{ mr: 2, display: { color: "white" } }}
-            onClick={handleClick}
-          >
-            <AccountCircleIcon />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuItem onClick={handleLogout}>
-              {capitalize(t("main.logout"))}
-            </MenuItem>
-          </Menu>
+              <ImportModale open={openImport} close={closeImportModale} />
+
+              <LanguageSelector />
+
+              <IconButton
+                aria-label="menu"
+                sx={{ mr: 2, display: { color: "white" } }}
+                onClick={handleClick}
+              >
+                <AccountCircleIcon />
+              </IconButton>
+
+              <Menu
+                id="basic-menu"
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={toAccountKeycloack}>
+                  {capitalize(t("main.account"))}
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  {capitalize(t("main.logout"))}
+                </MenuItem>
+              </Menu>
+            </Grid>
+          </Grid>
         </Grid>
       </Toolbar>
     </AppBar>

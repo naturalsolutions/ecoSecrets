@@ -1,0 +1,51 @@
+import { Divider, Stack, Tab, Tabs, capitalize } from "@mui/material";
+import AnnotationButtons from "./AnnotationButtons";
+import MetadataTab from "./MetadataTab";
+import { SyntheticEvent } from "react";
+import { useTranslation } from "react-i18next";
+import ObservationTab from "./ObservationTab";
+import { useAnnotationContext } from "../../contexts/annotationContext";
+
+
+export default function AnnotationForm() {
+    const { t } = useTranslation();
+    const { setAnnotationButtonDisabled, tabValue, setTabValue } = useAnnotationContext();
+    const handleTabChange = (event: SyntheticEvent, newValue: number) => {
+        setTabValue(newValue);
+        setAnnotationButtonDisabled(newValue);
+    };
+    
+    return(
+        <Stack
+            direction="column"
+            justifyContent="space-between"
+            alignItems="stretch"
+            spacing={2}
+            className="stackAnnotations"
+        >
+            <Tabs
+                value={ tabValue }
+                aria-label="basic tabs example"
+                variant="fullWidth"
+                onChange={ handleTabChange }
+            >
+                <Tab label={ capitalize(t("observations.observations_maybe_plural")) } />
+                <Tab label={ capitalize(t("annotations.metadata")) } />
+            </Tabs>
+
+            <ObservationTab
+                valueTab={ tabValue } 
+                index={ 0 }
+            />
+
+            <MetadataTab 
+                valueTab={ tabValue } 
+                index={ 1 } 
+            /> 
+            
+            <Divider />
+            
+            <AnnotationButtons />
+        </Stack >
+    )
+};

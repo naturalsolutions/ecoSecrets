@@ -183,15 +183,50 @@ export class ProjectsService {
 
     /**
      * Get Stats Projects
+     * @param skip
+     * @param limit
      * @returns StatsProject Successful Response
      * @throws ApiError
      */
-    public static getStatsProjectsProjectsStatsProjectsGet(): CancelablePromise<Array<StatsProject>> {
+    public static getStatsProjectsProjectsStatsProjectsGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<Array<StatsProject>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/stats_projects/',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
             errors: {
                 404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Length Projects
+     * @param skip
+     * @param limit
+     * @returns number Successful Response
+     * @throws ApiError
+     */
+    public static lengthProjectsProjectsLengthGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<number> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/length/',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
             },
         });
     }
@@ -231,6 +266,28 @@ export class ProjectsService {
             method: 'GET',
             url: '/projects/next_annotation/',
             query: {
+                'project_id': projectId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Fetch Project Thumbnail
+     * @param projectId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static fetchProjectThumbnailProjectsFetchProjectThumbnailProjectIdGet(
+        projectId: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/fetch_project_thumbnail/{project_id}',
+            path: {
                 'project_id': projectId,
             },
             errors: {
