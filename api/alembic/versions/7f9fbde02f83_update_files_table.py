@@ -16,33 +16,25 @@ depends_on = None
 
 
 def upgrade():
-    op.execute(
-        """
+    op.execute("""
             ALTER TABLE files 
             RENAME COLUMN date TO import_date
-         """
-    )
+         """)
 
-    op.execute(
-        """
+    op.execute("""
             ALTER TABLE files
             ADD COLUMN date TIMESTAMP
-        """
-    )
+        """)
 
 
 def downgrade():
-    op.execute(
-        """
+    op.execute("""
             ALTER TABLE files
             DROP COLUMN date TIMESTAMP
     
-         """
-    )
+         """)
 
-    op.execute(
-        """
+    op.execute("""
             ALTER TABLE files 
             RENAME COLUMN import_date TO date;      
-         """
-    )
+         """)
