@@ -132,16 +132,21 @@ services:
     build:
       context: ../keycloak
     command: start-dev --import-realm
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-annotation}?currentSchema=${KC_DB_SCHEMA:-keycloak}
+      KC_DB_USERNAME: ${DB_USER:-dbuser}
+      KC_DB_PASSWORD: ${DB_PASSWORD:-dbpassword}
+      KC_HOSTNAME_STRICT: "false"
+    depends_on:
+      db:
+        condition: service_healthy
     healthcheck:
-      # https://github.com/keycloak/keycloak/issues/17273#issuecomment-1693549331
       test: cat /proc/net/tcp | grep '00000000:1F90 00000000:0000' || exit 1
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 80s
-    depends_on:
-      db:
-        condition: service_healthy
     labels:
       - traefik.enable=true
       - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK:-PathPrefix(`/auth`)}
