@@ -16,7 +16,7 @@ def get_deployments(db: Session, skip: int = 0, limit: int = 100):
 
 
 def get_deployments_files(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(Deployments).options(joinedload("files")).offset(skip).limit(limit).all()
+    return db.query(Deployments).options(joinedload(Deployments.files)).offset(skip).limit(limit).all()
 
 
 def get_deployment(db: Session, deployment_id: int):
@@ -103,7 +103,7 @@ def get_project_deployments(db: Session, id: int):
     return (
         db.query(Deployments)
         .filter(Deployments.project_id == id)
-        .options(joinedload("files"))
+        .options(joinedload(Deployments.files))
         .order_by(Deployments.start_date)
         .all()
     )

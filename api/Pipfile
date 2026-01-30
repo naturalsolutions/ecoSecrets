@@ -4,21 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "*"
-uvicorn = "*"
-sqlalchemy = ">=1.4.17,<=1.4.35"
+fastapi = ">=0.103,<0.110"
+uvicorn = ">=0.27,<0.30"
 python-multipart = "*"
 psycopg2-binary = "*"
 boto3 = "*"
 unipath = "*"
-sqlmodel = "*"
+sqlalchemy = "*"
+sqlmodel = ">=0.0.14"
 sqlalchemy-utils = "*"
 exif = "*"
 pillow = "*"
-alembic = "*"
-pydantic = {extras = ["dotenv"], version = "*"}
+alembic = ">=1.13,<2.0"
+pydantic = {extras = ["dotenv"], version = ">=1.10.13,<2.0"}
 python-magic = "*"
-fastapi-keycloak = "*"
+fastapi-keycloak = "==1.0.10"
+starlette = ">=0.27,<0.28"
 
 [dev-packages]
 httpx = ">=0.23.0"
@@ -28,7 +29,7 @@ black = "*"
 pytest-cov = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.11"
 
 [scripts]
 start = "uvicorn src.main:app --reload --host 0.0.0.0"
