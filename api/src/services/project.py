@@ -15,19 +15,20 @@ from src.models.site import Sites
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
 
+
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
     return (
         db.query(Projects)
         .options(
-            joinedload(Projects.deployments)  # on passe l'attribut de classe
-            .joinedload(Deployments.files)    # idem pour le niveau suivant
+            joinedload(Projects.deployments).joinedload(  # on passe l'attribut de classe
+                Deployments.files
+            )  # idem pour le niveau suivant
         )
         .order_by(Projects.creation_date.desc())
         .offset(skip)
         .limit(limit)
         .all()
     )
-
 
 
 def get_projects_length(db: Session, skip: int = 0, limit: int = 100):
