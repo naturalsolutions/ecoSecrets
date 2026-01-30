@@ -10,7 +10,6 @@ import sqlalchemy as sa
 import sqlmodel
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 
-
 from alembic import op
 
 # revision identifiers, used by Alembic.
