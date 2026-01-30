@@ -8,8 +8,7 @@ Create Date: 2022-09-20 07:39:04.764590
 
 import sqlalchemy as sa
 import sqlmodel
-from sqlalchemy.dialects import postgresql
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 
 
 from alembic import op
@@ -193,7 +192,7 @@ def upgrade() -> None:
     op.create_index(op.f("ix_deployments_id"), "deployments", ["id"], unique=False)
     op.create_table(
         "files",
-        sa.Column("annotations", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
+        sa.Column("annotations", JSONB(astext_type=sa.Text()), nullable=True),
         sa.Column("hash", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("extension", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
