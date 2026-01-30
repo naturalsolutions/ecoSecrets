@@ -8,7 +8,7 @@ Create Date: 2022-09-20 07:39:04.764590
 
 import sqlalchemy as sa
 import sqlmodel
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 
 
 from alembic import op
