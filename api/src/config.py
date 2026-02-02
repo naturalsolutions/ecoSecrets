@@ -21,10 +21,7 @@ class Settings(BaseSettings):
     MINIO_ROOT_PASSWORD: str = "password"
     MINIO_BUCKET_NAME: str = "bucket"
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        case_sensitive = True
-    )
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 
 settings = Settings()

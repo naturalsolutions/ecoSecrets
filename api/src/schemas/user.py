@@ -15,6 +15,4 @@ class User(UserBase):
     is_active: bool
     # items: List[Item] = []
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}

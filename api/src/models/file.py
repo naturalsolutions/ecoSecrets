@@ -19,7 +19,7 @@ class BaseFiles(SQLModel):
     bucket: str
     import_date: datetime
     date: Optional[datetime] = None
-    
+
     model_config = ConfigDict(
         from_attributes=True,
         arbitrary_types_allowed=True,
@@ -64,6 +64,6 @@ class CreateDeviceFile(BaseFiles):
 
 class ReadFiles(BaseFiles):
     id: uuid_pkg.UUID
-    annotations: Optional[List[dict]]=[]
-    treated: Optional[bool]= None
+    annotations: Optional[List[dict]] = []
+    treated: Optional[bool] = None
     url: Optional[AnyHttpUrl] = ""

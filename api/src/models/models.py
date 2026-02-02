@@ -8,11 +8,10 @@ from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 if TYPE_CHECKING:  # pragma: no cover
     from .deployment import Deployments
 
+
 class ORMModelConfig:
-    model_config = model_config = ConfigDict(
-        from_attributes=True,
-        arbitrary_types_allowed=True
-    )
+    model_config = model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
+
 
 class Users(ORMModelConfig, SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
@@ -62,11 +61,13 @@ class TemplateSequence(SQLModel, table=True):
         back_populates="template_sequences", link_model=DeploymentTemplateSequenceCorrespondance
     )
 
+
 class TemplateSequenceRead(BaseModel):
     id: int
     mode: str
     frequency: int
     number_images: int
+
 
 class ExifKeyModel(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)

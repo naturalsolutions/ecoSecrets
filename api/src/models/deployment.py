@@ -4,7 +4,12 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 from src.models.file import Files, ReadFiles
-from src.models.models import DeploymentTemplateSequenceCorrespondance, ORMModelConfig, TemplateSequence, TemplateSequenceRead
+from src.models.models import (
+    DeploymentTemplateSequenceCorrespondance,
+    ORMModelConfig,
+    TemplateSequence,
+    TemplateSequenceRead,
+)
 
 if TYPE_CHECKING:  # pragma: no cover
     from .device import Devices
@@ -38,16 +43,13 @@ class Deployments(DeploymentBase, table=True):
         sa_relationship_kwargs={"lazy": "raise", "order_by": "Files.name"},
     )
     sites: Optional["Sites"] = Relationship(
-        back_populates="deployments",
-        sa_relationship_kwargs={"lazy": "raise"}
+        back_populates="deployments", sa_relationship_kwargs={"lazy": "raise"}
     )
     devices: Optional["Devices"] = Relationship(
-        back_populates="deployments",
-        sa_relationship_kwargs={"lazy": "raise"}
+        back_populates="deployments", sa_relationship_kwargs={"lazy": "raise"}
     )
     template_sequences: Optional[List["TemplateSequence"]] = Relationship(
-        back_populates="deployments",
-        link_model=DeploymentTemplateSequenceCorrespondance
+        back_populates="deployments", link_model=DeploymentTemplateSequenceCorrespondance
     )
 
 

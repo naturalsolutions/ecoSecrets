@@ -5,7 +5,12 @@ from pydantic import field_validator
 from src.models.models import ORMModelConfig
 from sqlmodel import Field, Relationship, SQLModel
 
-from src.models.deployment import DeploymentForProjectSheet, Deployments, DeploymentWithFile, ReadDeployment
+from src.models.deployment import (
+    DeploymentForProjectSheet,
+    Deployments,
+    DeploymentWithFile,
+    ReadDeployment,
+)
 from src.schemas.schemas import DataProject
 
 if TYPE_CHECKING:  # pragma: no cover
