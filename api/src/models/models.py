@@ -2,7 +2,6 @@ import uuid as uuid_pkg
 from typing import TYPE_CHECKING, List, Optional
 
 from pydantic import BaseModel, ConfigDict
-
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:  # pragma: no cover

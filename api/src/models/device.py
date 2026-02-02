@@ -2,9 +2,9 @@ from datetime import date
 from typing import TYPE_CHECKING, List, Optional
 
 from pydantic import ConfigDict
+from sqlmodel import Field, Relationship, SQLModel
 
 from src.models.models import ORMModelConfig
-from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from .deployment import Deployments

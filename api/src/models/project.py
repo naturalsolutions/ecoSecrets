@@ -2,7 +2,6 @@ from datetime import date
 from typing import TYPE_CHECKING, List, Optional
 
 from pydantic import field_validator
-from src.models.models import ORMModelConfig
 from sqlmodel import Field, Relationship, SQLModel
 
 from src.models.deployment import (
@@ -11,6 +10,7 @@ from src.models.deployment import (
     DeploymentWithFile,
     ReadDeployment,
 )
+from src.models.models import ORMModelConfig
 from src.schemas.schemas import DataProject
 
 if TYPE_CHECKING:  # pragma: no cover
