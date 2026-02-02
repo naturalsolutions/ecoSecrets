@@ -20,5 +20,6 @@ class Sites(SiteBase, table=True):
         back_populates="sites", sa_relationship_kwargs={"lazy": "raise"}
     )
 
+
 class ReadSite(SiteBase):
     id: int

@@ -28,8 +28,10 @@ class Devices(DeviceBase, table=True):
         back_populates="devices", sa_relationship_kwargs={"lazy": "raise"}
     )
 
+
 class ReadDevice(DeviceBase):
     id: int
+
 
 class DeviceMenu(DeviceBase):
     id: int

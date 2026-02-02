@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.site import SiteBase, ReadSite
+from src.models.site import ReadSite, SiteBase
 from src.services import site
 
 router = APIRouter(
