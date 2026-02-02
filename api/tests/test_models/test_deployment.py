@@ -4,7 +4,7 @@ from src.models.deployment import Deployments
 
 
 def test_model(db, deployment, file_object):
-    query = db.query(Deployments).options(joinedload(Deployments.Files))
+    query = db.query(Deployments).options(joinedload(Deployments.files))
     query2 = db.query(Deployments)
     assert query
 
