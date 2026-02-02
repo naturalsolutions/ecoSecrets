@@ -6,7 +6,6 @@ from sqlmodel import Session
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.deployment import (
-    Deployments,
     DeploymentWithFile,
     DeploymentWithTemplateSequence,
     NewDeploymentWithTemplateSequence,
@@ -22,13 +21,13 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[Deployments])
+@router.get("/", response_model=List[ReadDeployment])
 def read_deployments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     deployments = deployment.get_deployments(db, skip=skip, limit=limit)
     return deployments
 
 
-@router.get("/{deployment_id}", response_model=Deployments)
+@router.get("/{deployment_id}", response_model=ReadDeployment)
 def read_deployment(deployment_id: int, db: Session = Depends(get_db)):
     db_deployment = deployment.get_deployment(db, deployment_id=deployment_id)
     if db_deployment is None:
@@ -36,7 +35,7 @@ def read_deployment(deployment_id: int, db: Session = Depends(get_db)):
     return db_deployment
 
 
-@router.post("/", response_model=Deployments)
+@router.post("/", response_model=ReadDeployment)
 def create_deployment(
     new_deployment: NewDeploymentWithTemplateSequence, db: Session = Depends(get_db)
 ):
@@ -54,12 +53,12 @@ def update_deployment(
     return deployment.update_deployment(db=db, deployment=data_deployment)
 
 
-@router.delete("/{deployment_id}", response_model=Deployments)
+@router.delete("/{deployment_id}", response_model=ReadDeployment)
 def delete_deployment(deployment_id: int, db: Session = Depends(get_db)):
     return deployment.delete_deployment(db=db, id=deployment_id)
 
 
-@router.get("/project/{project_id}", response_model=List[Deployments])
+@router.get("/project/{project_id}", response_model=List[DeploymentWithFile])
 def read_project_deployments(project_id: int, db: Session = Depends(get_db)):
     return deployment.get_project_deployments(db=db, id=project_id)
 

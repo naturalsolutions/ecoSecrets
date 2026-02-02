@@ -19,3 +19,6 @@ class Sites(SiteBase, table=True):
     deployments: Optional[List["Deployments"]] = Relationship(
         back_populates="sites", sa_relationship_kwargs={"lazy": "raise"}
     )
+
+class ReadSite(SiteBase):
+    id: int
