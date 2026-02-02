@@ -11,7 +11,7 @@ def test_read_projects(client, project, deployment, db, admin_headers):
     response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
-    content = response.json()
+    content = response.model_dump_json()
 
 
 def test_read_project(client, project, admin_headers):
@@ -21,7 +21,7 @@ def test_read_project(client, project, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.json()
+    content = response.model_dump_json()
     assert project.name == content["name"]
     assert project.id == content["id"]
 
@@ -33,21 +33,21 @@ def test_read_projects_with_deployments(client, deployment, db, admin_headers):
     assert response.status_code == status.HTTP_200_OK
     assert get_project(db, project_id=deployment.project_id)
 
-    content = response.json()
+    content = response.model_dump_json()
     first_deploy = [
         one_content["deployments"][0]
         for one_content in content
         if len(one_content["deployments"]) > 0
         and one_content["deployments"][0]["id"] == deployment.id
     ][0]
-    assert set(deployment.dict().keys()) == set(first_deploy.keys())
+    assert set(deployment.model_dump().keys()) == set(first_deploy.keys())
 
     for date_attr in ("start_date", "end_date"):
         current_date = first_deploy.pop(date_attr)
         assert compare_date(current_date, getattr(deployment, date_attr))
 
     for key, value in first_deploy.items():
-        assert deployment.dict()[key] == value, key
+        assert deployment.model_dump()[key] == value, key
 
 
 def test_create_project(client, db, admin_headers):
@@ -61,7 +61,7 @@ def test_create_project(client, db, admin_headers):
     }
 
     response = client.post(url, json=project, headers=admin_headers)
-    content = response.json()
+    content = response.model_dump_json()
     assert response.status_code == status.HTTP_200_OK
 
     assert get_project(db=db, project_id=content["id"])
@@ -89,7 +89,7 @@ def test_update_project(client, project, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.json()
+    content = response.model_dump_json()
     assert content["name"] == data["name"]
     assert content["id"] == project.id
 
@@ -100,7 +100,7 @@ def test_delete_project(client, project, db, admin_headers):
     response = client.delete(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
-    content = response.json()
+    content = response.model_dump_json()
     assert content["name"] == project.name
     assert content["id"] == project.id
 

@@ -9,9 +9,9 @@ class SiteBase(SQLModel):
     name: str
     latitude: float
     longitude: float
-    habitat: Optional[str]
-    description: Optional[str]
-    image: Optional[str]
+    habitat: Optional[str] = None
+    description: Optional[str] = None
+    image: Optional[str] = None
 
 
 class Sites(SiteBase, table=True):

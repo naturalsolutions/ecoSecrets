@@ -15,5 +15,6 @@ class User(UserBase):
     is_active: bool
     # items: List[Item] = []
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }

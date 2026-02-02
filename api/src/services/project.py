@@ -44,7 +44,7 @@ def get_project_by_name(db: Session, name_project: str):
 
 
 def create_project(db: Session, project: ProjectBase):
-    db_project = Projects(**project.dict())
+    db_project = Projects(**project.model_dump())
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
@@ -126,7 +126,7 @@ def get_informations(db: Session, id: int):
     if not rows:
         raise HTTPException(status_code=404, detail="Project not found")
     project = rows[0]
-    project_data = project.dict()
+    project_data = project.model_dump()
     media_number = 0
     nb_treated_media = 0
     deploys = [
@@ -145,7 +145,7 @@ def get_informations(db: Session, id: int):
     for d in project.deployments:
         media_number += len(d.files)
         nb_treated_media += number_treated_media(d.files)
-    project_data = project.dict()
+    project_data = project.model_dump()
     project_data["deployments"] = deploys
     annotation_percentage = annotation_percentage_project(media_number, nb_treated_media)
     project_data["stats"] = {
@@ -216,7 +216,7 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
             annotation_percentage=annotation_percentage,
             url=url,
         )
-        result.append(stats.dict())
+        result.append(stats.model_dump(exclude_none=True))
     return result
 
 

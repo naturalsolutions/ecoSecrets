@@ -60,7 +60,7 @@ def fetch_site_thumbnail(site_id: int, db: Session = Depends(get_db)):
     current_site = site.get_site(db=db, site_id=site_id)
     res = []
     print(current_site)
-    new_f = current_site.dict()
+    new_f = current_site.model_dump()
     if current_site.image != None:
         url = s3.get_url(current_site.image)
         new_f["url"] = url

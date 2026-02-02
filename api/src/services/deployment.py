@@ -31,7 +31,7 @@ def get_deployment_by_name(db: Session, name_deployment: str):
 
 def create_deployment(db: Session, deployment: NewDeploymentWithTemplateSequence):
     field = "template_sequences"
-    create_data = deployment.dict()
+    create_data = deployment.model_dump()
     tmp_deployment = {**create_data, field: []}
 
     for template in create_data[field]:
@@ -54,7 +54,7 @@ def update_deployment(db: Session, deployment: DeploymentWithTemplateSequence):
     db_deployment = db.query(Deployments).filter(Deployments.id == deployment.id).first()
 
     obj_data = jsonable_encoder(db_deployment)
-    update_data = deployment.dict()
+    update_data = deployment.model_dump()
     for field in update_data:
         if field in obj_data:
             setattr(db_deployment, field, update_data[field])

@@ -2,7 +2,7 @@ import uuid as uuid_pkg
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, List, Optional
 
-from pydantic import AnyHttpUrl
+from pydantic import AnyHttpUrl, ConfigDict
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Column, Field, Relationship, SQLModel
 
@@ -18,13 +18,23 @@ class BaseFiles(SQLModel):
     extension: str
     bucket: str
     import_date: datetime
-    date: Optional[datetime]
+    date: Optional[datetime] = None
+    
+    model_config = ConfigDict(
+        from_attributes=True,
+        arbitrary_types_allowed=True,
+        json_encoders={
+            datetime: lambda v: (
+                v.strftime("%Y-%m-%dT%H:%M:%SZ")
+                if v.tzinfo and v.tzinfo.utcoffset(v) == timedelta(0)
+                else v.isoformat()
+            )
+        },
+    )
 
     @property
     def minio_filename(self):
         return f"{self.hash}.{self.extension}"
-
-    # url: str
 
 
 class Files(BaseFiles, table=True):
@@ -37,11 +47,9 @@ class Files(BaseFiles, table=True):
     hash: str = Field(index=True)
     name: str = Field(index=True)
     import_date: Optional[datetime] = Field(default_factory=datetime.utcnow)
-    megadetector_id: Optional[int] = Field(foreign_key="megadetector.id")
-    deepfaune_id: Optional[int] = Field(foreign_key="deepfaune.id")
     deployment_id: int = Field(foreign_key="deployments.id")
-    treated: bool = Field(default=False)
-    date: Optional[datetime]
+    treated: Optional[bool] = Field(default=False)
+    date: Optional[datetime] = None
     annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default=[])
     deployment: "Deployments" = Relationship(back_populates="files")
 
@@ -54,14 +62,8 @@ class CreateDeviceFile(BaseFiles):
     device_id: int
 
 
-class ReadFiles(Files):
+class ReadFiles(BaseFiles):
+    id: uuid_pkg.UUID
+    annotations: Optional[List[dict]]=[]
+    treated: Optional[bool]= None
     url: Optional[AnyHttpUrl] = ""
-
-    class Config:
-        json_encoders = {
-            datetime: lambda v: (
-                v.strftime("%Y-%m-%dT%H:%M:%SZ")
-                if v.tzinfo and v.tzinfo.utcoffset(v) == timedelta(0)
-                else v.isoformat()
-            )
-        }

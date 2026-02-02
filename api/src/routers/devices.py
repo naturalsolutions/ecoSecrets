@@ -57,7 +57,7 @@ def read_menu_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get
 def fetch_device_thumbnail(device_id: int, db: Session = Depends(get_db)):
     current_device = device.get_device(db=db, device_id=device_id)
     res = []
-    new_f = current_device.dict()
+    new_f = current_device.model_dump()
     if current_device.image != None:
         url = s3.get_url(current_device.image)
         new_f["url"] = url

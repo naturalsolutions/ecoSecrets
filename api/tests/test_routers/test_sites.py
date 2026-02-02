@@ -19,7 +19,7 @@ def test_read_site(client, site, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.json()
+    content = response.model_dump_json()
     assert site.name == content["name"]
     assert site.id == content["id"]
 
@@ -54,7 +54,7 @@ def test_update_site(client, site, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.json()
+    content = response.model_dump_json()
     assert content["name"] == data["name"]
     assert content["id"] == site.id
 
@@ -65,7 +65,7 @@ def test_delete_site(client, site, db, admin_headers):
     response = client.delete(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
-    content = response.json()
+    content = response.model_dump_json()
     assert content["name"] == site.name
     assert content["id"] == site.id
 

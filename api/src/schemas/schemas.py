@@ -1,7 +1,7 @@
 from datetime import date
+from typing import Optional
 
 from pydantic import BaseModel
-from sqlmodel import Field
 
 
 class Annotation(BaseModel):
@@ -33,17 +33,19 @@ class DataProject(BaseModel):
     annotation_percentage: float
 
 
-class StatsProject(DataProject):
-    id: str
+class StatsProject(BaseModel):
+    id: int
     name: str
-    status: str = Field(default=None)
-    start_date: date = Field(default=None)
-    end_date: date = Field(default=None)
+    status: Optional[str] = None
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
     deployment_number: int
     site_number: int
     device_number: int
-    targeted_species: str = Field(default=None)
-    url: str = Field(default=None)
+    targeted_species: Optional[str] = None
+    url: Optional[str] = None
+    media_number: int
+    annotation_percentage: float
 
 
 class FirstUntreated(BaseModel):

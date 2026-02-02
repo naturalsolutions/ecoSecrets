@@ -71,7 +71,7 @@ def get_user(username: str, password: str):
     # Get Token to have the proper object: OIDCUser
     token: KeycloakToken = idp.user_login(username=username, password=password)
     decoded_token = idp._decode_token(token=token.access_token, audience="account")
-    return OIDCUser.parse_obj(decoded_token)
+    return OIDCUser.model_validate(decoded_token)
 
 
 @fixture(scope="session")

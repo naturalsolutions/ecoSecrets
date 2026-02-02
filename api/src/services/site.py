@@ -16,7 +16,7 @@ def get_site_by_name(db: Session, name_site: str):
 
 
 def create_site(db: Session, site: SiteBase):
-    db_site = Sites(**site.dict())
+    db_site = Sites(**site.model_dump())
     db.add(db_site)
     db.commit()
     db.refresh(db_site)

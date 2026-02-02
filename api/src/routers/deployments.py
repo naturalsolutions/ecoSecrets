@@ -89,7 +89,7 @@ def read_device_deployments(
 def fetch_deployment_thumbnail(deployment_id: int, db: Session = Depends(get_db)):
     current_deployment = deployment.get_deployment(db=db, deployment_id=deployment_id)
     res = []
-    new_f = current_deployment.dict()
+    new_f = current_deployment.model_dump()
     if current_deployment.image != None:
         url = s3.get_url(current_deployment.image)
         new_f["url"] = url

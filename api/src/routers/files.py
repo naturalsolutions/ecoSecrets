@@ -34,7 +34,7 @@ def get_files(db: Session = Depends(get_db)):
     List_files = files.get_files(db)
     res = []
     for f in List_files:
-        new_f = f.dict()
+        new_f = f.model_dump()
         url = s3.get_url(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)
@@ -315,7 +315,7 @@ def read_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
     List_files = files.get_deployment_files(db=db, id=deployment_id)
     res = []
     for f in List_files:
-        new_f = f.dict()
+        new_f = f.model_dump()
         url = s3.get_url(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)

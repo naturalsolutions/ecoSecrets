@@ -10,7 +10,7 @@ from src.services.device import create_device
 def device(db):
     name = "test"
     model = "panasonic"
-    purchase_date = datetime.now()
+    purchase_date = datetime.now().date()
     price = 1520.2
     description = "description"
     detection_area = 150.0

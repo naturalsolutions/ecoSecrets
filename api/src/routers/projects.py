@@ -88,7 +88,7 @@ def get_first_untreated_file(project_id: int, db: Session = Depends(get_db)):
 def fetch_project_thumbnail(project_id: int, db: Session = Depends(get_db)):
     current_project = project.get_project(db=db, project_id=project_id)
     res = []
-    new_f = current_project.dict()
+    new_f = current_project.model_dump()
     if current_project.image != None:
         url = s3.get_url(current_project.image)
         new_f["url"] = url

@@ -13,11 +13,9 @@ from src.models.device import DeviceBase
 from src.models.models import Roles
 from src.models.project import ProjectBase
 from src.models.site import SiteBase
-from src.schemas.user import UserCreate
 from src.services import deployment, device, files, project, site, user
-from src.utils import file_as_bytes
 
-DATABASE_URL = settings.DB_URL
+DATABASE_URL = str(settings.DB_URL)
 
 engine = create_engine(DATABASE_URL, echo=True)
 

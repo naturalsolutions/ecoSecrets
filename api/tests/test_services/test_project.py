@@ -6,8 +6,8 @@ from src.services.project import create_project, get_informations, get_projects,
 
 def test_create_project(db):
     name = "1rst project"
-    creation_date = datetime.now()
-    end_date = datetime.now()
+    creation_date = datetime.now().date()
+    end_date = datetime.now().date()
     description = "description"
     status = "status"
     project = ProjectBase(

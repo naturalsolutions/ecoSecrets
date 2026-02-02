@@ -16,10 +16,11 @@ sqlalchemy-utils = "*"
 exif = "*"
 pillow = "*"
 alembic = ">=1.13,<2.0"
-pydantic = {extras = ["dotenv"], version = ">=1.10.13,<2.0"}
+pydantic = {extras = ["dotenv"], version = "2.6"}
 python-magic = "*"
 fastapi-keycloak = "==1.0.10"
 starlette = ">=0.27,<0.28"
+pydantic-settings = "~=2.2"
 
 [dev-packages]
 httpx = ">=0.23.0"

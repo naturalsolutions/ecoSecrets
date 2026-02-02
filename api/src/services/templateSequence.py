@@ -15,7 +15,7 @@ def get_template_sequence_by_mode(db: Session, mode: str, skip: int = 0, limit: 
 
 
 def post_template_sequence(db: Session, sequence: TemplateSequence):
-    db_sequence = TemplateSequence(**sequence.dict())
+    db_sequence = TemplateSequence(**sequence.model_dump())
     db.add(db_sequence)
     db.commit()
     db.refresh(db_sequence)

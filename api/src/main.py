@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import settings
 from src.connectors.database import init_db
-from src.connectors.s3 import get_bucket_name, init_bucket, remove_bucket
+from src.connectors.s3 import init_bucket
 from src.keycloak.idp import idp
 from src.routers import deployments, devices, files, home, projects, sites, templateSequences, users
 
