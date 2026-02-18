@@ -33,10 +33,10 @@ const ProjectForm = ({ setModifyState }) => {
     React.useState<ProjectSheet>(projectSheetData);
 
   const [startDate, setStartDate] = React.useState<Date | null>(
-    projectSheetData.start_date
+    projectSheetData.start_date ? new Date(projectSheetData.start_date) : null
   );
   const [endDate, setEndDate] = React.useState<Date | null>(
-    projectSheetData.end_date
+    projectSheetData.end_date ? new Date(projectSheetData.end_date) : null
   );
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
@@ -134,7 +134,7 @@ const ProjectForm = ({ setModifyState }) => {
                   format="dd/MM/yyyy"
                   label={capitalize(t("projects.start_date"))}
                   value={startDate}
-                  onChange={(startDate) => {
+                  onChange={(startDate: Date | null) => {
                     setStartDate(startDate);
                     handleChangeDate("start_date", startDate);
                   }}
@@ -155,7 +155,7 @@ const ProjectForm = ({ setModifyState }) => {
                   format="dd/MM/yyyy"
                   label={capitalize(t("projects.end_date"))}
                   value={endDate}
-                  onChange={(endDate) => {
+                  onChange={(endDate: Date | null) => {
                     setEndDate(endDate);
                     handleChangeDate("end_date", endDate);
                   }}
