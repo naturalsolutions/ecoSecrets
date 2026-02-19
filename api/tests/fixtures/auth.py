@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.fixture(scope="session")
 def admin_headers():
     """
@@ -16,6 +17,7 @@ def basic_headers():
     Can be used with TestClient.get(..., headers=basic_headers)
     """
     return {"Authorization": "Bearer test-basic"}
+
 
 @pytest.fixture(scope="session")
 def admin_user():
@@ -41,4 +43,3 @@ def basic_user():
         "email": "basic@ecosecrets.fr",
         "realm_access": {"roles": []},
     }
-

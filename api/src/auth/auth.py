@@ -1,26 +1,25 @@
-from functools import lru_cache
 import logging
+from functools import lru_cache
 from typing import Annotated
-from src.config import settings
 
 import httpx
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from authlib.jose import JsonWebToken, JsonWebKey
+from authlib.jose import JsonWebKey, JsonWebToken
 from authlib.jose.errors import JoseError
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from src.config import settings
 
 KEYCLOAK_URL = settings.KEYCLOAK_CLIENT_URL.rstrip("/")
 REALM = settings.KEYCLOAK_REALM
 CLIENT_ID = settings.KEYCLOAK_CLIENT_ID
-KEYCLOAK_SERVER_URL=settings.KEYCLOAK_SERVER_URL
+KEYCLOAK_SERVER_URL = settings.KEYCLOAK_SERVER_URL
 
 ISSUER = f"{KEYCLOAK_URL}/realms/{REALM}"
 JWKS_URL = f"{KEYCLOAK_SERVER_URL}/realms/{REALM}/protocol/openid-connect/certs"
 
 security = HTTPBearer()
 jwt = JsonWebToken(["RS256"])
-
 
 
 @lru_cache(maxsize=1)
@@ -34,8 +33,8 @@ def get_jwks():
     return JsonWebKey.import_key_set(jwks)
 
 
-
 logger = logging.getLogger(__name__)
+
 
 def verify_token(token: str):
     try:
@@ -64,6 +63,7 @@ def verify_token(token: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e),
         )
+
 
 def get_current_token(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)],
