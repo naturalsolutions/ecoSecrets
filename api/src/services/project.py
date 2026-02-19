@@ -63,8 +63,6 @@ def update_project(db: Session, project: ProjectBase, id: int):
     db_project.referential = project.referential
     db_project.timezone = project.timezone
     db_project.image = project.image
-    db_project.owner_id = project.owner_id
-    db_project.contact_id = project.contact_id
     db.commit()
     db.refresh(db_project)
     return db_project

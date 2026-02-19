@@ -12,8 +12,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState, useEffect } from "react";
 import { useMainContext } from "../../contexts/mainContext";
-import { Deployments } from "../../client/models/Deployments";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { ReadDeployment } from "../../client";
 
 interface ObjectBase {
   id: number;
@@ -32,7 +32,7 @@ const Filters = (props) => {
   } = useMainContext();
   const [start_date, setStartDate] = useState<Date | null>(null);
   const [end_date, setEndDate] = useState<Date | null>(null);
-  const [name, setName] = useState<Deployments | undefined | null>(null);
+  const [name, setName] = useState<ReadDeployment | undefined | null>(null);
   const [sNname, setSName] = useState<ObjectBase | undefined | null>(null);
   const [dName, setDName] = useState<ObjectBase | undefined | null>(null);
   const [siteList, setSiteList] = useState<ObjectBase[]>([]);

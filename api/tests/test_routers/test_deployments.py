@@ -21,7 +21,7 @@ def test_read_deployment(client, deployment, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     assert deployment.name == content["name"]
     assert deployment.id == content["id"]
 
@@ -68,7 +68,7 @@ def test_update_deployment(client, site, device, project, deployment, admin_head
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     assert content["name"] == data["name"]
     assert content["id"] == deployment.id
 
@@ -79,7 +79,7 @@ def test_delete_deployment(client, deployment, db, admin_headers):
     response = client.delete(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
-    content = response.model_dump_json()
+    content = response.json()
     assert content["name"] == deployment.name
     assert content["id"] == deployment.id
 

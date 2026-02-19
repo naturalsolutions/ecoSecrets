@@ -73,7 +73,7 @@ def test_update_annotations(client, file_object, deployment, db, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     assert content["id"] == str(file_object.id)
     db.expire_all()  ## Prevent SQLAlchemy from caching
 
@@ -90,7 +90,7 @@ def test_get_files(client, file_object, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
 
     # assert file_object.json() in content
 
@@ -106,7 +106,6 @@ def test_display_file(client, db, file_object, admin_headers):
     url = app.url_path_for("display_file")
 
     response = client.get(url, params={"name": file_object.minio_filename}, headers=admin_headers)
-    print(response.model_dump_json())
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -120,10 +119,10 @@ def test_upload_file(client, deployment, pillow_image, db, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     # f.json() dumps json in a string format but we want it in a
     # dict format so json.loads. f.dict() returns a dict but keeps
     # some values as objects such as datetime or uuid...
-    list_files = [json.loads(f.model_dump_json()) for f in get_files(db=db)]
+    list_files = [json.loads(f.json()) for f in get_files(db=db)]
 
     assert content in list_files

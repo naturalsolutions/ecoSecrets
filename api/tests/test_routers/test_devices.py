@@ -11,7 +11,7 @@ def test_read_devices(client, device, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     # assert device.dict() in content
 
 
@@ -59,7 +59,7 @@ def test_update_device(client, device, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     assert content["name"] == data["name"]
     assert content["id"] == device.id
 
@@ -70,7 +70,7 @@ def test_delete_device(client, device, db, admin_headers):
     response = client.delete(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
-    content = response.model_dump_json()
+    content = response.json()
     assert content["name"] == device.name
     assert content["id"] == device.id
 

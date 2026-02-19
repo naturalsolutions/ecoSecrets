@@ -11,7 +11,7 @@ def test_read_projects(client, project, deployment, db, admin_headers):
     response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
-    content = response.model_dump_json()
+    content = response.json()
 
 
 def test_read_project(client, project, admin_headers):
@@ -21,7 +21,7 @@ def test_read_project(client, project, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     assert project.name == content["name"]
     assert project.id == content["id"]
 
@@ -33,7 +33,7 @@ def test_read_projects_with_deployments(client, deployment, db, admin_headers):
     assert response.status_code == status.HTTP_200_OK
     assert get_project(db, project_id=deployment.project_id)
 
-    content = response.model_dump_json()
+    content = response.json()
     first_deploy = [
         one_content["deployments"][0]
         for one_content in content
@@ -61,7 +61,7 @@ def test_create_project(client, db, admin_headers):
     }
 
     response = client.post(url, json=project, headers=admin_headers)
-    content = response.model_dump_json()
+    content = response.json()
     assert response.status_code == status.HTTP_200_OK
 
     assert get_project(db=db, project_id=content["id"])
@@ -89,7 +89,7 @@ def test_update_project(client, project, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
-    content = response.model_dump_json()
+    content = response.json()
     assert content["name"] == data["name"]
     assert content["id"] == project.id
 
@@ -100,7 +100,7 @@ def test_delete_project(client, project, db, admin_headers):
     response = client.delete(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
-    content = response.model_dump_json()
+    content = response.json()
     assert content["name"] == project.name
     assert content["id"] == project.id
 

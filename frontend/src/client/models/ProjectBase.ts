@@ -5,15 +5,13 @@
 export type ProjectBase = {
     name: string;
     creation_date: string;
-    start_date?: string;
-    end_date?: string;
-    protocol?: string;
-    acquisition_framework?: string;
-    targeted_species?: string;
-    referential?: string;
-    timezone?: string;
-    image?: string;
-    owner_id?: number;
-    contact_id?: number;
+    start_date?: (string | null);
+    end_date?: (string | null);
+    protocol?: (string | null);
+    acquisition_framework?: (string | null);
+    targeted_species?: (string | null);
+    referential?: (string | null);
+    timezone?: (string | null);
+    image?: (string | null);
 };
 

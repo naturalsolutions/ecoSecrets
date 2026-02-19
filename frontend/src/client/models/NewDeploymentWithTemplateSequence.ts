@@ -2,21 +2,21 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { TemplateSequence } from './TemplateSequence';
+import type { TemplateSequenceRead } from './TemplateSequenceRead';
 
 export type NewDeploymentWithTemplateSequence = {
     name: string;
     start_date: string;
-    end_date?: string;
+    end_date?: (string | null);
     site_id: number;
     device_id: number;
-    height?: number;
-    support?: string;
-    bait?: string;
-    feature?: string;
-    description?: string;
-    image?: string;
+    height?: (number | null);
+    support?: (string | null);
+    bait?: (string | null);
+    feature?: (string | null);
+    description?: (string | null);
+    image?: (string | null);
     project_id: number;
-    template_sequences?: Array<TemplateSequence>;
+    template_sequences?: (Array<TemplateSequenceRead> | null);
 };
 

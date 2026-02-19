@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ReadSite } from '../models/ReadSite';
 import type { SiteBase } from '../models/SiteBase';
-import type { Sites } from '../models/Sites';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -14,13 +14,13 @@ export class SitesService {
      * Read Sites
      * @param skip
      * @param limit
-     * @returns Sites Successful Response
+     * @returns ReadSite Successful Response
      * @throws ApiError
      */
     public static readSitesSitesGet(
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<Array<Sites>> {
+    ): CancelablePromise<Array<ReadSite>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/sites/',
@@ -38,12 +38,12 @@ export class SitesService {
     /**
      * Create Site
      * @param requestBody
-     * @returns Sites Successful Response
+     * @returns ReadSite Successful Response
      * @throws ApiError
      */
     public static createSiteSitesPost(
         requestBody: SiteBase,
-    ): CancelablePromise<Sites> {
+    ): CancelablePromise<ReadSite> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/sites/',
@@ -84,12 +84,12 @@ export class SitesService {
     /**
      * Read Site
      * @param siteId
-     * @returns Sites Successful Response
+     * @returns ReadSite Successful Response
      * @throws ApiError
      */
     public static readSiteSitesSiteIdGet(
         siteId: number,
-    ): CancelablePromise<Sites> {
+    ): CancelablePromise<ReadSite> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/sites/{site_id}',
@@ -107,13 +107,13 @@ export class SitesService {
      * Update Site
      * @param siteId
      * @param requestBody
-     * @returns Sites Successful Response
+     * @returns ReadSite Successful Response
      * @throws ApiError
      */
     public static updateSiteSitesSiteIdPut(
         siteId: number,
         requestBody: SiteBase,
-    ): CancelablePromise<Sites> {
+    ): CancelablePromise<ReadSite> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/sites/{site_id}',

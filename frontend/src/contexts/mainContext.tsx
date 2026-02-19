@@ -1,5 +1,4 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
-import { Deployments } from "../client/models/Deployments";
 import { ProjectWithDeployment } from "../client/models/ProjectWithDeployment";
 import { ProjectsService } from "../client/services/ProjectsService";
 import { Stats } from "../client/models/Stats";
@@ -9,12 +8,13 @@ import { ProjectSheet } from "../client/models/ProjectSheet";
 import {
   DeploymentsService,
   DeploymentWithTemplateSequence,
-  Devices,
   DevicesService,
+  ReadDeployment,
+  ReadDevice,
+  ReadSite,
   SequencesService,
-  Sites,
   SitesService,
-  TemplateSequence,
+  TemplateSequenceRead,
 } from "../client";
 import { DeviceMenu } from "../client/models/DeviceMenu";
 
@@ -30,7 +30,7 @@ export const useMainContext = () => useContext(MainContext);
 const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [projects, setProjects] = useState<ProjectWithDeployment[]>([]);
   const [currentProject, setCurrentProject] = useState<number | null>(null);
-  const [deployments, setDeployments] = useState<Deployments[]>([]);
+  const [deployments, setDeployments] = useState<ReadDeployment[]>([]);
   const [currentDeployment, setCurrentDeployment] = useState<number | null>(
     null
   );
@@ -39,14 +39,14 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [globalStats, setGlobalStats] = useState<Stats>();
   const [projectsStats, setProjectsStats] = useState<StatsProject[]>();
   const [projectSheetData, setProjectSheetData] = useState<ProjectSheet>();
-  const [devices, setDevices] = useState<Devices[]>([]);
-  const [sites, setSites] = useState<Sites[]>([]);
+  const [devices, setDevices] = useState<ReadDevice[]>([]);
+  const [sites, setSites] = useState<ReadSite[]>([]);
   const [currentSite, setCurrentSite] = useState<number | null>(null);
   const [deviceMenu, setDeviceMenu] = useState<DeviceMenu[]>([]);
   const [currentDevice, setCurrentDevice] = useState<number | null>(null);
-  const [autoTemplates, setAutoTemplates] = useState<TemplateSequence[]>();
+  const [autoTemplates, setAutoTemplates] = useState<TemplateSequenceRead[]>();
   const [triggerTemplates, setTriggerTemplates] =
-    useState<TemplateSequence[]>();
+    useState<TemplateSequenceRead[]>();
 
   const updateAutoTemplates = () => {
     SequencesService.readTemplateSequencesSequencesGet("automatic")
@@ -163,7 +163,7 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     return projects.find((p) => p.id === currentProject);
   };
 
-  const site = (): Sites | undefined => {
+  const site = (): ReadSite | undefined => {
     return sites.find((s) => s.id === currentSite);
   };
 

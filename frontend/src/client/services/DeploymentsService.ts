@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Deployments } from '../models/Deployments';
 import type { DeploymentWithFile } from '../models/DeploymentWithFile';
 import type { DeploymentWithTemplateSequence } from '../models/DeploymentWithTemplateSequence';
 import type { NewDeploymentWithTemplateSequence } from '../models/NewDeploymentWithTemplateSequence';
@@ -17,13 +16,13 @@ export class DeploymentsService {
      * Read Deployments
      * @param skip
      * @param limit
-     * @returns Deployments Successful Response
+     * @returns ReadDeployment Successful Response
      * @throws ApiError
      */
     public static readDeploymentsDeploymentsGet(
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<Array<Deployments>> {
+    ): CancelablePromise<Array<ReadDeployment>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/',
@@ -41,12 +40,12 @@ export class DeploymentsService {
     /**
      * Create Deployment
      * @param requestBody
-     * @returns Deployments Successful Response
+     * @returns ReadDeployment Successful Response
      * @throws ApiError
      */
     public static createDeploymentDeploymentsPost(
         requestBody: NewDeploymentWithTemplateSequence,
-    ): CancelablePromise<Deployments> {
+    ): CancelablePromise<ReadDeployment> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/deployments/',
@@ -62,12 +61,12 @@ export class DeploymentsService {
     /**
      * Read Deployment
      * @param deploymentId
-     * @returns Deployments Successful Response
+     * @returns ReadDeployment Successful Response
      * @throws ApiError
      */
     public static readDeploymentDeploymentsDeploymentIdGet(
         deploymentId: number,
-    ): CancelablePromise<Deployments> {
+    ): CancelablePromise<ReadDeployment> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/{deployment_id}',
@@ -105,12 +104,12 @@ export class DeploymentsService {
     /**
      * Delete Deployment
      * @param deploymentId
-     * @returns Deployments Successful Response
+     * @returns ReadDeployment Successful Response
      * @throws ApiError
      */
     public static deleteDeploymentDeploymentsDeploymentIdDelete(
         deploymentId: number,
-    ): CancelablePromise<Deployments> {
+    ): CancelablePromise<ReadDeployment> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/deployments/{deployment_id}',
@@ -127,12 +126,12 @@ export class DeploymentsService {
     /**
      * Read Project Deployments
      * @param projectId
-     * @returns Deployments Successful Response
+     * @returns DeploymentWithFile Successful Response
      * @throws ApiError
      */
     public static readProjectDeploymentsDeploymentsProjectProjectIdGet(
         projectId: number,
-    ): CancelablePromise<Array<Deployments>> {
+    ): CancelablePromise<Array<DeploymentWithFile>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/deployments/project/{project_id}',

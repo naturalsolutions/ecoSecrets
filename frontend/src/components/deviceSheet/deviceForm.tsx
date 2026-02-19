@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMainContext } from "../../contexts/mainContext";
-import { Devices, DevicesService } from "../../client";
+import { ReadDevice, DevicesService } from "../../client";
 import { useTranslation } from "react-i18next";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
@@ -29,7 +29,7 @@ import ThumbnailDeviceComponent from "../ThumbnailDeviceComponent";
 const DeviceForm = () => {
   const { t } = useTranslation();
   const { device, updateDeviceMenu } = useMainContext();
-  const [deviceData, setDeviceData] = React.useState<Devices>(device());
+  const [deviceData, setDeviceData] = React.useState<ReadDevice>(device());
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);

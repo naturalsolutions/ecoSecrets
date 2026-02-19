@@ -47,12 +47,11 @@ services:
       - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=${API_ROOT_PATH:-/api/v1}
     environment:
       - KEYCLOAK_ADMIN_CLIENT_SECRET=${KEYCLOAK_ADMIN_CLIENT_SECRET}
-      - KEYCLOAK_CALLBACK_URI=${KEYCLOAK_CALLBACK_URI:-http://api:8000/callback}
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-geonature-annotation}
       - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
       - KEYCLOAK_REALM=${KEYCLOAK_REALM:-geonature-annotation}
       - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL:-http://keycloak:8080/auth}
-      - KEYCLOAK_TOKEN_URI=${KEYCLOAK_TOKEN_URI}
+      - KEYCLOAK_CLIENT_URL=${KEYCLOAK_CLIENT_URL:-http://keycloak:8080/auth}
 
   taxapi:
     <<: *project_defaults

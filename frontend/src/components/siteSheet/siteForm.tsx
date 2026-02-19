@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMainContext } from "../../contexts/mainContext";
-import { Sites, SitesService } from "../../client";
+import { ReadSite, SitesService } from "../../client";
 import { useTranslation } from "react-i18next";
 import Map from "../Map";
 import ButtonValidate from "../common/buttonValidate";
@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 const SiteForm = () => {
   const { t } = useTranslation();
   const { site, updateSites } = useMainContext();
-  const [siteData, setSiteData] = React.useState<Sites>(site());
+  const [siteData, setSiteData] = React.useState<ReadSite>(site());
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);

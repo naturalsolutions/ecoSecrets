@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type DeviceMenu = {
+export type ReadDevice = {
     name: string;
     model?: (string | null);
     purchase_date?: (string | null);
@@ -13,7 +13,5 @@ export type DeviceMenu = {
     operating_life?: (number | null);
     image?: (string | null);
     id: number;
-    nb_images: number;
-    last_image_date?: (string | null);
 };
 
