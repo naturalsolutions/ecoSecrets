@@ -120,7 +120,7 @@ services:
       retries: 3      
       start_period: 60s
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data_pg18:/var/lib/postgresql
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-dbpassword}
       POSTGRES_DB: ${DB_NAME:-annotation}
@@ -168,7 +168,7 @@ services:
       - traefik.http.routers.minio.rule=${TRAEFIK_ROUTER_RULE_MINIO:-PathPrefix(`/miniobucket`)}
 
 volumes:
-  db_data:
+  db_data_pg18:
   minio_data:
 
 networks:
