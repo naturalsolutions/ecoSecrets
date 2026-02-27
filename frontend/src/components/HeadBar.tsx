@@ -55,16 +55,13 @@ const HeadBar = () => {
               justifyContent="flex-start"
             >
               <Grid>
-                <Link to={`/`} style={{ textDecoration: "none" }}>
                   <img
                     src={
-                      process.env.PUBLIC_URL +
                       "/assets/ecosecrets_logo_full_light.svg"
                     }
                     width="135"
                     height="30"
                   />
-                </Link>
               </Grid>
             </Grid>
           </Grid>
