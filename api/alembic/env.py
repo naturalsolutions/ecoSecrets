@@ -15,28 +15,6 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-
-from src.models.deployment import Deployments  # noqa
-from src.models.device import Devices  # noqa
-from src.models.file import Files  # noqa
-from src.models.models import (  # noqa
-    Deepfaune,
-    ExifKeyModel,
-    Groups,
-    GroupsUsers,
-    Megadetector,
-    Roles,
-    Sequences,
-    Sequences_Files,
-    TemplateSequence,
-    Users,
-)
-from src.models.project import Projects  # noqa
-from src.models.site import Sites  # noqa
 
 target_metadata = SQLModel.metadata
 
@@ -92,7 +70,7 @@ def run_migrations_online() -> None:
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
-        url=url,
+        url=str(url),
     )
 
     with connectable.connect() as connection:

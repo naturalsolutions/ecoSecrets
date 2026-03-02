@@ -2,13 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Sites = {
+export type ReadSite = {
     name: string;
     latitude: number;
     longitude: number;
-    habitat?: string;
-    description?: string;
-    image?: string;
-    id?: number;
+    habitat?: (string | null);
+    description?: (string | null);
+    image?: (string | null);
+    id: number;
 };
 

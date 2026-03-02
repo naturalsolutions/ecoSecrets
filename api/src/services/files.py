@@ -58,7 +58,7 @@ def get_deployment_files_with_filters(
     files = query.all()
     res = []
     for f in files:
-        new_f = f.dict()
+        new_f = f.model_dump()
         url = s3.get_url(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)
@@ -88,7 +88,7 @@ def delete_media_deployment(db: Session, name: str):
 
 
 def create_file(db: Session, file: CreateFiles):
-    db_file = Files(**file.dict(), annotations=[])
+    db_file = Files(**file.model_dump(), annotations=[])
     db.add(db_file)
     db.commit()
     db.refresh(db_file)
@@ -96,7 +96,7 @@ def create_file(db: Session, file: CreateFiles):
 
 
 def create_file_device(db: Session, file: CreateDeviceFile):
-    db_file = CreateDeviceFile(**file.dict(), annotations=[])
+    db_file = CreateDeviceFile(**file.model_dump(), annotations=[])
     db.add(db_file)
     db.commit()
     db.refresh(db_file)
@@ -112,7 +112,7 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
         )
 
     if data.annotations:
-        annotation = [d.dict() for d in data.annotations.annotations]
+        annotation = [d.model_dump() for d in data.annotations.annotations]
 
         if data.annotations.id_group:
             if annotation:

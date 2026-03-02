@@ -1,34 +1,38 @@
 from datetime import date
 from typing import TYPE_CHECKING, List, Optional
 
-from pydantic import validator
+from pydantic import field_validator
 from sqlmodel import Field, Relationship, SQLModel
 
-from src.models.deployment import DeploymentForProjectSheet, Deployments, DeploymentWithFile
+from src.models.deployment import (
+    DeploymentForProjectSheet,
+    Deployments,
+    DeploymentWithFile,
+    ReadDeployment,
+)
+from src.models.models import ORMModelConfig
 from src.schemas.schemas import DataProject
 
 if TYPE_CHECKING:  # pragma: no cover
     from .deployment import Deployments
 
 
-class ProjectBase(SQLModel):
+class ProjectBase(ORMModelConfig, SQLModel):
     name: str
     creation_date: date
-    start_date: Optional[date]
-    end_date: Optional[date]
-    protocol: Optional[str]
-    acquisition_framework: Optional[str]
-    targeted_species: Optional[str]
-    referential: Optional[str]
-    timezone: Optional[str]
-    image: Optional[str]
-    owner_id: Optional[int] = Field(foreign_key="users.id")
-    contact_id: Optional[int] = Field(foreign_key="users.id")
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
+    protocol: Optional[str] = None
+    acquisition_framework: Optional[str] = None
+    targeted_species: Optional[str] = None
+    referential: Optional[str] = None
+    timezone: Optional[str] = None
+    image: Optional[str] = None
 
-    @validator("name")
+    @field_validator("name")
     def check_storage_type(cls, value):
         if len(value) < 2:
-            raise ValueError("Name project must be greater than > 2 characters")
+            raise ValueError("Name project must be greater than 2 characters")
         return value
 
 
@@ -44,13 +48,13 @@ class ReadProject(ProjectBase):
 
 
 class ProjectWithDeployment(ReadProject):
-    deployments: Optional[List[Deployments]]
+    deployments: Optional[List[ReadDeployment]] = None
 
 
 class ProjectWithDeploymentAndFiles(ReadProject):
-    deployments: Optional[List[DeploymentWithFile]]
+    deployments: Optional[List[DeploymentWithFile]] = None
 
 
 class ProjectSheet(ReadProject):
-    deployments: List[DeploymentForProjectSheet]
+    deployments: List[DeploymentForProjectSheet] = None
     stats: DataProject

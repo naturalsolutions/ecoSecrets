@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Devices, DevicesService, FilesService } from "../client";
+import { DevicesService, FilesService, ReadDevice } from "../client";
 import { useMainContext } from "../contexts/mainContext";
 
 import ThumbnailComponent from "./ThumbnailComponent";
@@ -8,7 +8,7 @@ const ThumbnailDeviceComponent = () => {
   const { device } = useMainContext();
   const [thumbnail, setThumbnail] = useState<any>(null);
   const [modifyState, setModifyState] = useState<boolean>(false);
-  const [deviceData, setDeviceData] = useState<Devices>(device());
+  const [deviceData, setDeviceData] = useState<ReadDevice>(device());
   const [file, setFile] = useState<any>(null);
 
   useEffect(() => {

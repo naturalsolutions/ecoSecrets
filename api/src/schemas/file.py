@@ -22,7 +22,7 @@ class File(SQLModel):
 
 class AnnotationData(BaseModel):
     annotations: List[Annotation]
-    id_group: Optional[str]
+    id_group: Optional[str] = None
     group_observations_id_to_update: Optional[List[str]] = []
     group_observations_id_to_individualize: Optional[List[str]] = []
 
@@ -32,8 +32,8 @@ class MetadataData(BaseModel):
 
 
 class UpdateFile(BaseModel):
-    metadata: Optional[MetadataData]
-    annotations: Optional[AnnotationData]
+    metadata: Optional[MetadataData] = None
+    annotations: Optional[AnnotationData] = None
     deployment_id: int
 
 
@@ -55,7 +55,7 @@ class FilterParams(BaseModel):
         """Transforme les valeurs en dictionnaire utilisable par SQLAlchemy."""
         taxonomy_filters = {}
         date_ranges = {}
-        for key, value in self.dict(exclude_none=True).items():
+        for key, value in self.model_dump(exclude_none=True).items():
             if value not in [None, ""]:
                 if key in ["start_date", "end_date"] and value:
                     try:

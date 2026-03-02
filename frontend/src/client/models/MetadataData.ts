@@ -3,6 +3,6 @@
 /* eslint-disable */
 
 export type MetadataData = {
-    date?: string;
+    date?: (string | null);
 };
 

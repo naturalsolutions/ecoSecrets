@@ -3,7 +3,7 @@
 /* eslint-disable */
 import type { DeviceBase } from '../models/DeviceBase';
 import type { DeviceMenu } from '../models/DeviceMenu';
-import type { Devices } from '../models/Devices';
+import type { ReadDevice } from '../models/ReadDevice';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -15,13 +15,13 @@ export class DevicesService {
      * Read Devices
      * @param skip
      * @param limit
-     * @returns Devices Successful Response
+     * @returns ReadDevice Successful Response
      * @throws ApiError
      */
     public static readDevicesDevicesGet(
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<Array<Devices>> {
+    ): CancelablePromise<Array<ReadDevice>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/devices/',
@@ -39,12 +39,12 @@ export class DevicesService {
     /**
      * Create Device
      * @param requestBody
-     * @returns Devices Successful Response
+     * @returns ReadDevice Successful Response
      * @throws ApiError
      */
     public static createDeviceDevicesPost(
         requestBody: DeviceBase,
-    ): CancelablePromise<Devices> {
+    ): CancelablePromise<ReadDevice> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/devices/',
@@ -60,12 +60,12 @@ export class DevicesService {
     /**
      * Read Device
      * @param deviceId
-     * @returns Devices Successful Response
+     * @returns ReadDevice Successful Response
      * @throws ApiError
      */
     public static readDeviceDevicesDeviceIdGet(
         deviceId: number,
-    ): CancelablePromise<Devices> {
+    ): CancelablePromise<ReadDevice> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/devices/{device_id}',
@@ -83,13 +83,13 @@ export class DevicesService {
      * Update Device
      * @param deviceId
      * @param requestBody
-     * @returns Devices Successful Response
+     * @returns ReadDevice Successful Response
      * @throws ApiError
      */
     public static updateDeviceDevicesDeviceIdPut(
         deviceId: number,
         requestBody: DeviceBase,
-    ): CancelablePromise<Devices> {
+    ): CancelablePromise<ReadDevice> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/devices/{device_id}',

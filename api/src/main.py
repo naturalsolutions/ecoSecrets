@@ -3,10 +3,10 @@ import os
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.auth.auth import get_current_token
 from src.config import settings
 from src.connectors.database import init_db
-from src.connectors.s3 import get_bucket_name, init_bucket, remove_bucket
-from src.keycloak.idp import idp
+from src.connectors.s3 import init_bucket
 from src.routers import deployments, devices, files, home, projects, sites, templateSequences, users
 
 ROOT_PATH = settings.API_ROOT_PATH
@@ -16,15 +16,15 @@ app = FastAPI(
     swagger_ui_parameters={"persistAuthorization": True},
 )  # dependencies=[Depends(get_query_token)]
 
-USER_DEPENDS = Depends(idp.get_current_user())
-app.include_router(users.router, dependencies=[USER_DEPENDS])
-app.include_router(files.router, dependencies=[USER_DEPENDS])
-app.include_router(projects.router, dependencies=[USER_DEPENDS])
-app.include_router(deployments.router, dependencies=[USER_DEPENDS])
-app.include_router(sites.router, dependencies=[USER_DEPENDS])
-app.include_router(devices.router, dependencies=[USER_DEPENDS])
-app.include_router(home.router, dependencies=[USER_DEPENDS])
-app.include_router(templateSequences.router, dependencies=[USER_DEPENDS])
+TOKEN_DEPENDS = Depends(get_current_token)
+app.include_router(users.router, dependencies=[TOKEN_DEPENDS])
+app.include_router(files.router, dependencies=[TOKEN_DEPENDS])
+app.include_router(projects.router, dependencies=[TOKEN_DEPENDS])
+app.include_router(deployments.router, dependencies=[TOKEN_DEPENDS])
+app.include_router(sites.router, dependencies=[TOKEN_DEPENDS])
+app.include_router(devices.router, dependencies=[TOKEN_DEPENDS])
+app.include_router(home.router, dependencies=[TOKEN_DEPENDS])
+app.include_router(templateSequences.router, dependencies=[TOKEN_DEPENDS])
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,7 +33,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-idp.add_swagger_config(app)
 
 
 @app.on_event("startup")

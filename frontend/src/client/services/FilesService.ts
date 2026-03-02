@@ -9,7 +9,7 @@ import type { Body_upload_files_files_upload_files__deployment_id__post } from '
 import type { Body_upload_files_files_upload_project__project_id__post } from '../models/Body_upload_files_files_upload_project__project_id__post';
 import type { Body_upload_files_files_upload_site__site_id__post } from '../models/Body_upload_files_files_upload_site__site_id__post';
 import type { Body_upload_zip_files_upload_zip__deployment_id__post } from '../models/Body_upload_zip_files_upload_zip__deployment_id__post';
-import type { Files } from '../models/Files';
+import type { ReadFiles } from '../models/ReadFiles';
 import type { UpdateFile } from '../models/UpdateFile';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -37,13 +37,13 @@ export class FilesService {
      * Update Annotations
      * @param fileId
      * @param requestBody
-     * @returns Files Successful Response
+     * @returns ReadFiles Successful Response
      * @throws ApiError
      */
     public static updateAnnotationsFilesAnnotationFileIdPatch(
         fileId: string,
         requestBody: UpdateFile,
-    ): CancelablePromise<Files> {
+    ): CancelablePromise<ReadFiles> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/files/annotation/{file_id}',
@@ -78,13 +78,13 @@ export class FilesService {
         deploymentId: number,
         skip?: number,
         limit: number = 100,
-        species?: string,
-        family?: string,
-        genus?: string,
-        classe?: string,
-        order?: string,
-        startDate?: string,
-        endDate?: string,
+        species?: (string | null),
+        family?: (string | null),
+        genus?: (string | null),
+        classe?: (string | null),
+        order?: (string | null),
+        startDate?: (string | null),
+        endDate?: (string | null),
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',

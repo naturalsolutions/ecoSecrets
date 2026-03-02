@@ -3,8 +3,13 @@ from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
-from src.models.file import Files
-from src.models.models import DeploymentTemplateSequenceCorrespondance, TemplateSequence
+from src.models.file import Files, ReadFiles
+from src.models.models import (
+    DeploymentTemplateSequenceCorrespondance,
+    ORMModelConfig,
+    TemplateSequence,
+    TemplateSequenceRead,
+)
 
 if TYPE_CHECKING:  # pragma: no cover
     from .device import Devices
@@ -12,21 +17,21 @@ if TYPE_CHECKING:  # pragma: no cover
     from .site import Sites
 
 
-class DeploymentEssentials(SQLModel):
+class DeploymentEssentials(ORMModelConfig, SQLModel):
     name: str
     start_date: datetime
-    end_date: Optional[datetime]
+    end_date: Optional[datetime] = None
     site_id: int = Field(foreign_key="sites.id")
     device_id: int = Field(foreign_key="devices.id")
 
 
 class DeploymentBase(DeploymentEssentials):
-    height: Optional[float]
-    support: Optional[str]
-    bait: Optional[str]
-    feature: Optional[str]
-    description: Optional[str]
-    image: Optional[str]
+    height: Optional[float] = None
+    support: Optional[str] = None
+    bait: Optional[str] = None
+    feature: Optional[str] = None
+    description: Optional[str] = None
+    image: Optional[str] = None
     project_id: int = Field(foreign_key="projects.id")
 
 
@@ -44,10 +49,8 @@ class Deployments(DeploymentBase, table=True):
         back_populates="deployments", sa_relationship_kwargs={"lazy": "raise"}
     )
     template_sequences: Optional[List["TemplateSequence"]] = Relationship(
-        back_populates="deployments",
-        link_model=DeploymentTemplateSequenceCorrespondance,
+        back_populates="deployments", link_model=DeploymentTemplateSequenceCorrespondance
     )
-    # mode:  Field(foreign_key = "users.id")
 
 
 class ReadDeployment(DeploymentBase):
@@ -55,18 +58,18 @@ class ReadDeployment(DeploymentBase):
 
 
 class DeploymentWithFile(ReadDeployment):
-    files: Optional[List[Files]]
+    files: Optional[List[ReadFiles]] = None
 
 
 class DeploymentWithTemplateSequence(ReadDeployment):
-    template_sequences: Optional[List[TemplateSequence]]
+    template_sequences: Optional[List["TemplateSequenceRead"]] = None
 
 
 class NewDeploymentWithTemplateSequence(DeploymentBase):
-    template_sequences: Optional[List[TemplateSequence]]
+    template_sequences: Optional[List["TemplateSequenceRead"]] = None
 
 
 class DeploymentForProjectSheet(DeploymentEssentials):
     id: int
-    site_name: Optional[str]
-    device_name: Optional[str]
+    site_name: Optional[str] = None
+    device_name: Optional[str] = None

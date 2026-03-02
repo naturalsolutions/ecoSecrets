@@ -16,7 +16,7 @@ from sqlmodel import Session, select
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import CreateFiles, Files, ReadFiles
+from src.models.file import CreateFiles, ReadFiles
 from src.schemas.file import FilterParams, UpdateFile
 from src.services import dependencies, deployment, device, files, project, site
 from src.utils import check_mime, file_as_bytes
@@ -34,14 +34,14 @@ def get_files(db: Session = Depends(get_db)):
     List_files = files.get_files(db)
     res = []
     for f in List_files:
-        new_f = f.dict()
+        new_f = f.model_dump()
         url = s3.get_url(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)
     return res
 
 
-@router.patch("/annotation/{file_id}", response_model=Files)
+@router.patch("/annotation/{file_id}", response_model=ReadFiles)
 def update_annotations(file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)):
     return files.update_annotations(db, file_id=file_id, data=data)
 
@@ -319,7 +319,7 @@ def read_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
     List_files = files.get_deployment_files(db=db, id=deployment_id)
     res = []
     for f in List_files:
-        new_f = f.dict()
+        new_f = f.model_dump()
         url = s3.get_url(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)

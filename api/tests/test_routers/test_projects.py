@@ -40,14 +40,14 @@ def test_read_projects_with_deployments(client, deployment, db, admin_headers):
         if len(one_content["deployments"]) > 0
         and one_content["deployments"][0]["id"] == deployment.id
     ][0]
-    assert set(deployment.dict().keys()) == set(first_deploy.keys())
+    assert set(deployment.model_dump().keys()) == set(first_deploy.keys())
 
     for date_attr in ("start_date", "end_date"):
         current_date = first_deploy.pop(date_attr)
         assert compare_date(current_date, getattr(deployment, date_attr))
 
     for key, value in first_deploy.items():
-        assert deployment.dict()[key] == value, key
+        assert deployment.model_dump()[key] == value, key
 
 
 def test_create_project(client, db, admin_headers):

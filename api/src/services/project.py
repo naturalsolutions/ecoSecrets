@@ -19,7 +19,11 @@ from src.services import deployment
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
     return (
         db.query(Projects)
-        .options(joinedload("deployments").options(joinedload("files")))
+        .options(
+            joinedload(Projects.deployments).joinedload(  # on passe l'attribut de classe
+                Deployments.files
+            )  # idem pour le niveau suivant
+        )
         .order_by(Projects.creation_date.desc())
         .offset(skip)
         .limit(limit)
@@ -40,7 +44,7 @@ def get_project_by_name(db: Session, name_project: str):
 
 
 def create_project(db: Session, project: ProjectBase):
-    db_project = Projects(**project.dict())
+    db_project = Projects(**project.model_dump())
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
@@ -59,8 +63,6 @@ def update_project(db: Session, project: ProjectBase, id: int):
     db_project.referential = project.referential
     db_project.timezone = project.timezone
     db_project.image = project.image
-    db_project.owner_id = project.owner_id
-    db_project.contact_id = project.contact_id
     db.commit()
     db.refresh(db_project)
     return db_project
@@ -122,7 +124,7 @@ def get_informations(db: Session, id: int):
     if not rows:
         raise HTTPException(status_code=404, detail="Project not found")
     project = rows[0]
-    project_data = project.dict()
+    project_data = project.model_dump()
     media_number = 0
     nb_treated_media = 0
     deploys = [
@@ -141,7 +143,7 @@ def get_informations(db: Session, id: int):
     for d in project.deployments:
         media_number += len(d.files)
         nb_treated_media += number_treated_media(d.files)
-    project_data = project.dict()
+    project_data = project.model_dump()
     project_data["deployments"] = deploys
     annotation_percentage = annotation_percentage_project(media_number, nb_treated_media)
     project_data["stats"] = {
@@ -212,7 +214,7 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
             annotation_percentage=annotation_percentage,
             url=url,
         )
-        result.append(stats.dict())
+        result.append(stats.model_dump(exclude_none=True))
     return result
 
 

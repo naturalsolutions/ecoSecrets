@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ThumbnailComponent from "./ThumbnailComponent";
-import { FilesService, Sites, SitesService } from "../client";
+import { FilesService, ReadSite, SitesService } from "../client";
 import { useMainContext } from "../contexts/mainContext";
 
 const ThumbnailSitesComponent = () => {
@@ -8,7 +8,7 @@ const ThumbnailSitesComponent = () => {
   const [file, setFile] = useState<any>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [modifyState, setModifyState] = useState<boolean>(false);
-  const [actualSite, setActualSite] = useState<Sites | null>(null);
+  const [actualSite, setActualSite] = useState<ReadSite | null>(null);
 
   useEffect(() => {
     setActualSite(site());

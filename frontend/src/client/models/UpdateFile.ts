@@ -6,8 +6,8 @@ import type { AnnotationData } from './AnnotationData';
 import type { MetadataData } from './MetadataData';
 
 export type UpdateFile = {
-    metadata?: MetadataData;
-    annotations?: AnnotationData;
+    metadata?: (MetadataData | null);
+    annotations?: (AnnotationData | null);
     deployment_id: number;
 };
 

@@ -1,7 +1,7 @@
 export type DeploymentForDeviceSheet = {
     name: string;
     start_date: string;
-    end_date?: string;
+    end_date?: string | null;
     site_id: number;
     device_id: number;
     id: number;

@@ -106,7 +106,6 @@ def test_display_file(client, db, file_object, admin_headers):
     url = app.url_path_for("display_file")
 
     response = client.get(url, params={"name": file_object.minio_filename}, headers=admin_headers)
-    print(response.json())
 
     assert response.status_code == status.HTTP_200_OK
 

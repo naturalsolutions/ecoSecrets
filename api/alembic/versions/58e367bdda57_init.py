@@ -8,7 +8,7 @@ Create Date: 2022-09-20 07:39:04.764590
 
 import sqlalchemy as sa
 import sqlmodel
-from sqlalchemy.dialects import postgresql
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 
 from alembic import op
 
@@ -191,13 +191,13 @@ def upgrade() -> None:
     op.create_index(op.f("ix_deployments_id"), "deployments", ["id"], unique=False)
     op.create_table(
         "files",
-        sa.Column("annotations", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
+        sa.Column("annotations", JSONB(astext_type=sa.Text()), nullable=True),
         sa.Column("hash", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("extension", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("bucket", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("date", sa.DateTime(), nullable=True),
-        sa.Column("id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
+        sa.Column("id", UUID(as_uuid=True), nullable=False),
         sa.Column("megadetector_id", sa.Integer(), nullable=True),
         sa.Column("deepfaune_id", sa.Integer(), nullable=True),
         sa.Column("deployment_id", sa.Integer(), nullable=False),
@@ -233,7 +233,7 @@ def upgrade() -> None:
         "sequences_files",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("sequence_id", sa.Integer(), nullable=False),
-        sa.Column("file_id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
+        sa.Column("file_id", UUID(as_uuid=True), nullable=False),
         sa.ForeignKeyConstraint(
             ["file_id"],
             ["files.id"],

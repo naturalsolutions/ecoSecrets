@@ -4,14 +4,13 @@
 
 export type DeviceBase = {
     name: string;
-    model?: string;
-    purchase_date?: string;
-    price?: number;
-    description?: string;
-    detection_area?: number;
-    status?: string;
-    operating_life?: number;
-    image?: string;
-    exif_id?: number;
+    model?: (string | null);
+    purchase_date?: (string | null);
+    price?: (number | null);
+    description?: (string | null);
+    detection_area?: (number | null);
+    status?: (string | null);
+    operating_life?: (number | null);
+    image?: (string | null);
 };
 

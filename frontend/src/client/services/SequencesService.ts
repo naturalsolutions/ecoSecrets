@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { TemplateSequence } from '../models/TemplateSequence';
+import type { TemplateSequenceRead } from '../models/TemplateSequenceRead';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -14,14 +14,14 @@ export class SequencesService {
      * @param mode
      * @param skip
      * @param limit
-     * @returns TemplateSequence Successful Response
+     * @returns TemplateSequenceRead Successful Response
      * @throws ApiError
      */
     public static readTemplateSequencesSequencesGet(
         mode: string,
         skip?: number,
         limit: number = 100,
-    ): CancelablePromise<Array<TemplateSequence>> {
+    ): CancelablePromise<Array<TemplateSequenceRead>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/sequences/',
@@ -40,12 +40,12 @@ export class SequencesService {
     /**
      * Create Template Sequence
      * @param requestBody
-     * @returns TemplateSequence Successful Response
+     * @returns TemplateSequenceRead Successful Response
      * @throws ApiError
      */
     public static createTemplateSequenceSequencesPost(
-        requestBody: TemplateSequence,
-    ): CancelablePromise<TemplateSequence> {
+        requestBody: TemplateSequenceRead,
+    ): CancelablePromise<TemplateSequenceRead> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/sequences/',

@@ -24,7 +24,7 @@ def get_device_by_name(db: Session, name_device: str):
 
 
 def create_device(db: Session, device: DeviceBase):
-    db_device = Devices(**device.dict())
+    db_device = Devices(**device.model_dump())
     db.add(db_device)
     db.commit()
     db.refresh(db_device)
@@ -74,7 +74,7 @@ def get_menu_devices(db: Session, skip: int = 0, limit: int = 100):
     db_devices = db.query(Devices).order_by(Devices.id).offset(skip).limit(limit).all()
     devices = []
     for d in db_devices:
-        device = d.dict()
+        device = d.model_dump()
         deployments = deployment.get_device_deployments(
             db=db, device_id=d.id, skip=skip, limit=limit
         )
