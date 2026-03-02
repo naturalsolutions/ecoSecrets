@@ -6,6 +6,7 @@ from typing import List
 
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
+from sqlalchemy.orm import aliased
 from sqlalchemy.orm.attributes import flag_modified
 from sqlmodel import Session
 
@@ -123,7 +124,6 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
             # update annotation for the current image displayed
             db_file.annotations = annotation
 
-        if not data.annotations.id_group:
             # update the observations of the group's media
             db_files = get_deployment_files(db=db, id=data.deployment_id)
             for file in db_files:
@@ -149,31 +149,38 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
                         file.annotations = file_annotation
                         flag_modified(file, "annotations")
 
+        db_file.treated = True
     if data.metadata:
         db_file.date = datetime.fromisoformat(data.metadata.date.replace("Z", "+00:00"))
 
-    db_file.treated = True
     db.commit()
     db.refresh(db_file)
     return db_file
 
 
 def delete_file(db: Session, file_id: str):
-    db_file = db.query(Files).filter(Files.id == file_id).first()
+    f = aliased(Files)
+    f2 = aliased(Files)
 
-    if not db_file:
+    db_files = db.query(f2).select_from(f).join(f2, f.hash == f2.hash).filter(f.id == file_id).all()
+
+    if not db_files:
         raise ValueError("File not found")
 
-    filename = f"{db_file.hash}.{db_file.extension}"
+    target = db_files[0]
+    filename = f"{target.hash}.{target.extension}"
 
     try:
         s3.delete_file_obj(filename)
     except (BotoCoreError, ClientError) as e:
         print(f"Error deleting file from S3: {e}")
         return None
-    db.delete(db_file)
+
+    for file_obj in db_files:
+        db.delete(file_obj)
+
     db.commit()
-    return db_file
+    return db_files
 
 
 def deleteAllFilesDeployment(db: Session, id: int):

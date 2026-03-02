@@ -20,8 +20,8 @@ const GoAnnotation = (props) => {
         });
     };
     return (
-        props.nb_media != 0 && props.annotation_percentage < 100 ? (
-            props.page == 'home' ?
+        props.nb_media !== 0 && props.annotation_percentage < 100 ? (
+            props.page === 'home' ?
             <IconButton edge="end" aria-label="add" onClick={goAnnotation}>
                 <ArrowForwardIcon/>
             </IconButton> :

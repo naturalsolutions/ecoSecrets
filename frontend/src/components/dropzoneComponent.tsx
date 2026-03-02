@@ -14,10 +14,10 @@ export default function DropzoneComponent(props) {
           <div {...getRootProps()}>
             <input {...getInputProps()} />
             <Grid container direction="column" alignItems="center">
-              <Grid item>
+              <Grid>
                 <CameraAltIcon fontSize="large" />
               </Grid>
-              <Grid item>{props.sentence(props.text)}</Grid>
+              <Grid>{props.sentence(props.text)}</Grid>
             </Grid>
           </div>
         </section>

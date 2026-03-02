@@ -1,15 +1,5 @@
 import { FC } from "react";
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { List, ListItem, ListItemButton} from "@mui/material";
 import { Link } from "react-router-dom";
 
 const pages = [
@@ -22,8 +12,6 @@ const pages = [
 const Drawer: FC<{}> = () => {
   return (
     <div>
-      {/* <Toolbar />
-      <Divider /> */}
       <List>
         {pages.map((page, index) => (
           <ListItem key={page.label} disablePadding>
@@ -33,16 +21,6 @@ const Drawer: FC<{}> = () => {
           </ListItem>
         ))}
       </List>
-      {/* <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
     </div>
   );
 };

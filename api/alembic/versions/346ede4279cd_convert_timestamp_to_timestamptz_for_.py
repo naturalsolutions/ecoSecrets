@@ -19,18 +19,14 @@ depends_on = None
 
 
 def upgrade():
-    op.execute(
-        """
+    op.execute("""
             ALTER TABLE files 
             ALTER COLUMN date TYPE TIMESTAMPTZ USING date AT TIME ZONE 'UTC';
-         """
-    )
+         """)
 
 
 def downgrade():
-    op.execute(
-        """
+    op.execute("""
             ALTER TABLE files 
             ALTER COLUMN date TYPE TIMESTAMP USING date AT TIME ZONE 'UTC';
-        """
-    )
+        """)

@@ -25,7 +25,7 @@ const ObservationTab: FC<ObservationTabProps> = ({
     index
 }) => {
     const { t } = useTranslation();
-    const { observations, annotated, treated, checked, handleCheckChange, gridView } = useAnnotationContext();
+    const { observations, status, checked, handleCheckChange, gridView } = useAnnotationContext();
 
     return(
         <TabPanel 
@@ -34,24 +34,27 @@ const ObservationTab: FC<ObservationTabProps> = ({
         >
             <span className="info-annotation-ctn">
                 { !gridView && <ButtonDeleteMedia /> }
-                { !gridView && ( treated ?
+                { !gridView && status === "processed" && 
                     <ButtonStatus 
                         icon={ <CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} /> } 
                         title={ capitalize(t("annotations.media_processed_manually")) } 
                         stylClassButton="valid" 
-                    /> : (
-                    annotated ?
+                    />
+                }
+                { !gridView && status === "being processed" && 
                     <ButtonStatus 
                         icon={ <HelpRoundedIcon sx={{ color: "#FF9800" }} /> } 
                         title={ capitalize(t("observations.not_saved")) } 
                         stylClassButton="info" 
-                    /> :
+                    />
+                }
+                { !gridView && status === "not processed" && 
                     <ButtonStatus 
                         icon={ <HelpRoundedIcon sx={{ color: "#F44336" }} /> } 
                         title={ capitalize(t("annotations.media_not_processed")) } 
                         stylClassButton="warning" 
                     />
-                ))}
+                }
             <FormControlLabel
                 id="checkbox-empty-control"
                 control={

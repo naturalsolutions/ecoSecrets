@@ -1,5 +1,4 @@
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { Stack, Typography} from "@mui/material";
 import { useEffect } from "react";
@@ -23,29 +22,33 @@ const SiteSheet = () => {
     }, []);
 
     return (
-        site() !== undefined ? (
-        <Stack 
+        site() !== undefined 
+        ? <Stack 
             direction="column"
             spacing={3}
         >
             <AppBar position="static" color='transparent'>
                 <Toolbar variant="dense">
-                <Grid
-                    container
-                >
-                    <Typography variant="h6" component="div" sx={{ mr: 1 }}>
-                        {site().name}
-                    </Typography>
-                    
-                </Grid>
-                    <SiteModale/>
+                    <Grid
+                        container
+                        direction="row" 
+                        sx={{ justifyContent: 'space-between', alignItems: 'center', flexGrow: 1 }}
+                    >
+                        <Typography variant="h6" component="div" sx={{ mr: 1 }}>
+                            {site().name}
+                        </Typography>
+                        <SiteModale/>
+                    </Grid>
                 </Toolbar>
             </AppBar>
+            
             <Typography variant="h4" color="#000000" component="div">
                 {capitalize(t("sites.sheet"))}
             </Typography>
+
             < SiteForm/>
-        </Stack> ) : <div>{capitalize(t("sites.no_sheet"))}</div>
+        </Stack> 
+        : <div>{capitalize(t("sites.no_sheet"))}</div>
     );
 };
 export default SiteSheet;

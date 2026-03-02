@@ -41,7 +41,6 @@ const AnnotationImageDisplay = () => {
   return (
     <>
       <Grid
-        item
         alignItems="center"
         justifyContent="center"
         className="boxImage"

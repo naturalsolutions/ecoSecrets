@@ -6,14 +6,12 @@ import {
   Divider,
   Grid,
   IconButton,
-  MenuItem,
   Stack,
   TextField,
-  Typography,
   capitalize,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState } from "react";
 import { DeviceBase, DevicesService } from "../../client";
@@ -96,7 +94,7 @@ export default function DeviceModal() {
         <Divider />
         <DialogContent>
           <Grid container spacing={3}>
-            <Grid item lg={12} md={12} xs={12}>
+            <Grid size={{ lg: 12, md: 12, xs: 12 }}>
               <TextField
                 required
                 id="name"
@@ -108,7 +106,7 @@ export default function DeviceModal() {
                 variant="filled"
               />
             </Grid>
-            <Grid item lg={6} md={6} xs={12}>
+            <Grid size={{ lg: 6, md: 6, xs: 12 }}>
               <TextField
                 label={capitalize(t("devices.model"))}
                 variant="filled"
@@ -117,23 +115,23 @@ export default function DeviceModal() {
                 onChange={(e) => handleFormChange("model", e)}
               />
             </Grid>
-            <Grid item lg={6} md={6} xs={6}>
+            <Grid size={{ lg: 6, md: 6, xs: 6 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  inputFormat="dd/MM/yyyy"
+                  format="dd/MM/yyyy"
                   label={capitalize(t("devices.purchase_date"))}
-                  value={device?.purchase_date || null}
+                  value={device?.purchase_date ? new Date(device.purchase_date) : null}
                   onChange={(purchaseDate) => {
                     purchaseDate &&
                       handleFormChange("purchase_date", new Date(purchaseDate));
                   }}
-                  renderInput={(params) => (
-                    <TextField {...params} variant="filled" />
-                  )}
+                  slotProps={{
+                    textField: { variant: "filled" },
+                  }}
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item lg={6} md={6} xs={6}>
+            <Grid size={{ lg: 6, md: 6, xs: 6 }}>
               <TextField
                 label={`${capitalize(t("devices.operating_life"))} (h)`}
                 id="operating_life"
@@ -144,7 +142,7 @@ export default function DeviceModal() {
                 onChange={(e) => handleFormChange("operating_life", e)}
               />
             </Grid>
-            <Grid item lg={6} md={6} xs={6}>
+            <Grid size={{ lg: 6, md: 6, xs: 6 }}>
               <TextField
                 label={`${capitalize(t("devices.price"))} (€)`}
                 name="price"
@@ -156,7 +154,7 @@ export default function DeviceModal() {
                 onChange={(e) => handleFormChange("price", e)}
               />
             </Grid>
-            <Grid item lg={12} md={12} xs={6}>
+            <Grid size={{ lg: 12, md: 12, xs: 6 }}>
               <TextField
                 label={`${capitalize(t("devices.detection_area"))} (m)`}
                 id="detection_area"
@@ -167,7 +165,7 @@ export default function DeviceModal() {
                 onChange={(e) => handleFormChange("detection_area", e)}
               />
             </Grid>
-            <Grid item lg={12} md={12} xs={12}>
+            <Grid size={{ lg: 12, md: 12, xs: 12 }}>
               <TextField
                 id="description"
                 name="description"

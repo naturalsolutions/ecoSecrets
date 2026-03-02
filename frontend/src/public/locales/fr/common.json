@@ -13,7 +13,7 @@
     "metadata": "métadonnées",
     "unknown_image": "image inconnue",
     "delete": "supprimer le média du deploiement",
-    "delete_desc": "etes vous sûr de vouloir supprimer ce média ?",
+    "delete_desc": "Ce média sera supprimé de l'ensemble des déploiements où il a été importé. Etes vous sûr de vouloir supprimer ce média ?",
     "modal_title": "modification d'observations initialement créées à partir de groupes d'annotation",
     "modal_content": "sélectionner les observations qui doivent se répercuter à tous les médias du groupe d'annotation :",
     "modal_note": "attention : Si une observation n'est pas sélectionnée, elle ne sera plus liée à celle des autres médias.",
@@ -69,8 +69,9 @@
     "historic_message": "Ce dispositif n'a jamais été déployé"
   },
   "languageSelector": {
-    "en": "English",
-    "fr": "Français"
+    "en": "English (Anglais)",
+    "fr": "Français (Français)" ,
+    "cs": "Čeština (Tchèque)"
   },
   "header": {
     "user_doc": "Guide utilisateur"
@@ -169,7 +170,7 @@
     "classe": "classe",
     "family": "famille",
     "genus": "genre",
-    "life_stage": "stade biologique",
+    "life_stage": "stade de vie",
     "number": "nombre d'individus",
     "order": "ordre",
     "sex": "sexe",

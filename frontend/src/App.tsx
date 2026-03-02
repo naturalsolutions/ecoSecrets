@@ -2,12 +2,11 @@ import "./App.css";
 import Main from "./pages/main";
 import Deployment from "./pages/deployment";
 import Annotation from "./pages/annotation";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainContextProvider from "./contexts/mainContext";
 import ProjectSheet from "./pages/projectSheet";
 import DeploymentSheet from "./pages/deploymentSheet";
 import DeviceMenuPage from "./pages/deviceMenu";
-import DeviceSheet from "./components/deviceSheet/deviceSheetMain";
 import DeviceSheetPage from "./pages/deviceSheet";
 import { theme } from "./theme";
 import { LinearProgress, ThemeProvider } from "@mui/material";
@@ -20,7 +19,6 @@ import SnackContextProvider from "./contexts/snackContext";
 import { AuthContext } from "./contexts/AuthContextProvider";
 import { useContext } from "react";
 import FilesContextProvider from "./contexts/filesContext";
-;
 
 // Env var processed by nginx
 OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
@@ -28,10 +26,8 @@ OpenAPI.BASE = window._env_.REACT_APP_API_PATH || "/api/v1";
 function App() {
   const authContext = useContext(AuthContext);
 
-  if (!authContext.isAuthenticated) {
-    return <LinearProgress color="primary" />;
-  } else {
-    return (
+  return (
+    authContext.keycloakReady && authContext.isAuthenticated ? (
       <MainContextProvider>
         <FilesContextProvider>
           <SnackContextProvider>
@@ -60,6 +56,12 @@ function App() {
                       element={<Deployment />}
                     ></Route>
                     <Route
+                      path="/project/:projectId/deployment/:deploymentId"
+                      element={
+                        <Navigate replace to="details" />
+                      }
+                    ></Route>
+                    <Route
                       path="/project/:projectId/deployment/:deploymentId/details"
                       element={<DeploymentSheet number={0} />}
                     ></Route>
@@ -83,8 +85,8 @@ function App() {
           </SnackContextProvider>
         </FilesContextProvider>
       </MainContextProvider>
-    );
-  }
+   ) : <LinearProgress color="primary" />
+  );
 }
 
 export default App;

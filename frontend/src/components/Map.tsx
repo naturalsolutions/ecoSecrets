@@ -1,4 +1,3 @@
-import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 const Map = (props) => {

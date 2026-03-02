@@ -21,10 +21,9 @@ export function AnnotationContextProvider({ children }) {
     useFilesContext();
     const [observations, setObservations] = useState<Annotation[]>([]);
     const [metadata, setMetadata] = useState<MetadataData>();
-    const [annotated, setAnnotated] = useState<undefined | boolean>(undefined);
-    const [treated, setTreated] = useState<undefined | boolean>(undefined);
+    const [status, setStatus] = useState<undefined | string>(undefined);
     const [isMinimalObservation, setIsMinimalObservation] = useState(
-      observations?.length == 0
+      observations?.length === 0
     );
     const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
     const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState({state: false, text: ""});
@@ -32,12 +31,13 @@ export function AnnotationContextProvider({ children }) {
     const [selectedMedias, setSelectedMedias] = useState<any[]>([]);
     const [annotationButtonDisabled, setAnnotationButtonDisabled] = useState(false);
 
+    const [tabValue, setTabValue] = useState(0);
+    
     const [idGroup, setIdGroup] = useState<string>("");
     const [modifiedObservationGroup, setModifiedObservationGroup] = useState<Annotation[]>([]);
     const [openAnnotationGroupModale, setOpenAnnotationGroupModale] = useState(false);
     const [selectedGroupedObservation, setSelectedGroupedObservation] = useState<string[]>([]);
     const [unselectedGroupedObservation, setUnselectedGroupedObservation] = useState<string[]>([]);
-    const [confirmedSave, setConfirmedSave] = useState(true);
 
     const fieldsMandatory = useMemo(() => (["species", "genus", "family", "order", "classe"]), []);
     const observationTemplate = useMemo(() => ({ id: "", id_annotation: "", id_group: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 }), []);
@@ -61,6 +61,7 @@ export function AnnotationContextProvider({ children }) {
                 updateUrl(files[ind - 1].id);
             }
         });
+        setIsMinimalObservation(true);
     };
 
     const next = () => {
@@ -71,87 +72,66 @@ export function AnnotationContextProvider({ children }) {
                 updateUrl(files[ind + 1].id);
             }
         });
+        setIsMinimalObservation(true);
     };
 
     const lastOrFirstImage = (indice) => {
-        if (indice == 'first') {
+        if (indice === 'first') {
             setCurrentImage(files[0].id);
             updateUrl(files[0].id);
         }
-        if (indice == 'last') {
+        if (indice === 'last') {
             setCurrentImage(files[files.length - 1].id);
             updateUrl(files[files.length - 1].id);
         }
     };
 
-    const save = () => {
+    const save = () =>{
         if (!gridView) {
-            // Some modified observations are related to a group.
-            // The user must select the ones whose values will be applied to all members of the group.
-            // The unselected observations will only be modified for the current media,
-            // and the observation will be individualized for this media, separate from the group.
-            if(!confirmedSave) {
-                if(modifiedObservationGroup.length > 0) {
-                    setOpenAnnotationGroupModale(true);
-                };
+            if(modifiedObservationGroup.length > 0) {
+                setOpenAnnotationGroupModale(true);
             };
-
-            // None of the modified observations are related to a group,
-            // or the IDs have been selected by the user.
-            // In this case, saving is allowed.
-            if(confirmedSave) {
-                saveforamedia();
-            };
-        };
-
-        if(gridView && selectedMedias.length > 0) {
-            selectedMedias.map((item) => {
+            if(modifiedObservationGroup.length === 0) {
                 FilesService
-                .updateAnnotationsFilesAnnotationFileIdPatch(item.id, { annotations: { annotations:  observations, id_group: idGroup }, deployment_id: currentDeployment} )
+                .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, { annotations: { annotations:  observations, id_group: idGroup }, deployment_id: currentDeployment} )
                 .then(res => {
                     updateListFile();
+                    next();
                 })
                 .catch((err) => {
                     console.log("Error during annotation saving.");
                     console.log(err);
                 });
-            });
-            setObservations([]);
+            };
         };
 
-        if (gridView && selectedMedias.length === 0) {
-            setOpenSaveErrorDialog({state: true, text: capitalize(t("annotations.cannot_save_no_media_selected"))});
-        };
-    };
+        if(gridView) {
+            let selectedMediaNumber = selectedMedias.length;
 
-    const saveforamedia = () => {
-        let annotationData = {
-            annotations: observations,
-            id_group: idGroup,
-            group_observations_id_to_update: selectedGroupedObservation, 
-            group_observations_id_to_individualize: unselectedGroupedObservation
+            if (selectedMediaNumber === 0) {
+                setOpenSaveErrorDialog({state: true, text: capitalize(t("annotations.cannot_save_no_media_selected"))});
+            };
+
+            if (selectedMediaNumber > 0) {
+                selectedMedias.map((item) => {
+                    FilesService
+                    .updateAnnotationsFilesAnnotationFileIdPatch(item.id, { annotations: { annotations:  observations, id_group: idGroup }, deployment_id: currentDeployment} )
+                    .then(res => {
+                        updateListFile();
+                    })
+                    .catch((err) => {
+                        console.log("Error during annotation saving.");
+                        console.log(err);
+                    });
+                });
+                setObservations([]);
+            }
         };
-        FilesService
-            .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
-              annotations: annotationData,
-              deployment_id: currentDeployment
-            })
-            .then(res => {
-                updateListFile();
-                updateConfirmedSave(false);
-            })
-            .catch((err) => {
-                console.log("Error during annotation saving.");
-                console.log(err);
-            });
     };
 
     const saveandnext = () => {
         if (isMinimalObservation) {
             save();
-            if (!gridView && confirmedSave) {
-                next();
-            };
             if (gridView) {
                 setSelectedMedias([]);
             };
@@ -161,26 +141,16 @@ export function AnnotationContextProvider({ children }) {
         };
     };
 
-    const updateConfirmedSave = (bool: boolean) => {
-        setConfirmedSave(bool);
-    };
-
-    useEffect(() => {
-        if (confirmedSave) {
-            saveforamedia();
-            next();
-        }
-    }, [confirmedSave]);
-
     const handleAddObservation = () => {
         if (isMinimalObservation) {
-            observationTemplate.id = uuidv4();
-            setObservations([...observations, {...observationTemplate, id_group: idGroup}]);
+            const newObs = { ...observationTemplate, id: uuidv4(), id_group: idGroup };
+            setObservations([...observations, newObs]);
         };
         if (checked) {
             setChecked(false);
         };
         setIsMinimalObservation(false);
+        setStatus("being processed");
     };
 
     const handleDeleteObservation = (id: string) => {
@@ -189,18 +159,24 @@ export function AnnotationContextProvider({ children }) {
         i !== -1 && tmp_obs.splice(i, 1);
         i !== -1 && setObservations(tmp_obs);
         i === observations.length - 1 && setIsMinimalObservation(true);
+        setChecked(tmp_obs?.length === 0);
+        setStatus("being processed");
     };
 
     const handleCheckChange = () => {
-        if (!checked) {
+        const newChecked = !checked;
+
+        setChecked(newChecked);
+        setStatus("being processed");
+
+        if (newChecked) {
             setObservations([]);
             setIsMinimalObservation(true);
         };
-        if (checked) {
-            setObservations([...observations, observationTemplate]);
+        if (!newChecked) {
+            setObservations([{ ...observationTemplate, id: uuidv4(), id_group: idGroup }]);
             setIsMinimalObservation(false);
         };
-        setChecked(!checked);
     };
 
     const handleFormChange = (id: string, params: string, value: string) => {
@@ -219,11 +195,11 @@ export function AnnotationContextProvider({ children }) {
 
                 if (ob["id_group"] && params !== "comments" && !modifiedObservationGroup.map(observation => observation.id).includes(id)) {
                     setModifiedObservationGroup([...modifiedObservationGroup, ob])
-                    setConfirmedSave(false);
                 };
             }
-        })
+        });
         setObservations(tmp_obs);
+        setStatus("being processed");
     };
 
     useEffect(() => {
@@ -237,38 +213,21 @@ export function AnnotationContextProvider({ children }) {
     useEffect(() => {
         (async () => {
             if (!gridView) {
-                image() && setObservations(image().annotations);
-                image() && setTreated(image().treated);
-                image() && setMetadata({ date: image().date });
-            }
-        })();
-    }, [files, currentImage]);
+                if(tabValue === 0) {
+                    const img = image();
+                    const data = img?.annotations?.map(item => ({ ...item })) ?? [];
 
-    useEffect(() => {
-        (async () => {
-            setChecked(observations?.length === 0);
-        })();
-    }, [observations]);
-
-    useEffect(() => {
-        let fieldToCheck: string[] = [];
-        for (var i = 0; i < observations?.length; i++) {
-            for (const property in observations[i]) { 
-                if (fieldsMandatory.includes(property)) {
-                    fieldToCheck.push(observations[i][property])
+                    if (img) {
+                        img && setObservations(data);
+                        img && setChecked(data?.length === 0);
+                        img && setStatus(img.treated ? "processed" : "not processed");
+                        img && setMetadata({ date: img.date });
+                    }
                 }
             }
-        };
-        const result = fieldToCheck.some(element => {
-            if (element !== '') {
-                return true
-            } else {
-                return false
-            }
-        });
-        setAnnotated(result)
-    }, [handleCheckChange]);
-    
+        })();
+    }, [files, currentImage, gridView, tabValue]);
+
     useEffect(() => {
         if (gridView) {
             setIdGroup(uuidv4());
@@ -289,16 +248,15 @@ export function AnnotationContextProvider({ children }) {
         <AnnotationContext.Provider 
             value={{
                 observations, setObservations,
-                annotated, setAnnotated,
-                treated, setTreated,
+                status, setStatus,
                 isMinimalObservation, setIsMinimalObservation,
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
+                tabValue, setTabValue,
                 gridView, setGridView,
                 selectedMedias, setSelectedMedias,
                 openAnnotationGroupModale, setOpenAnnotationGroupModale,
                 annotationButtonDisabled, setAnnotationButtonDisabled,
-                confirmedSave, setConfirmedSave, updateConfirmedSave,
                 modifiedObservationGroup, setModifiedObservationGroup,
                 selectedGroupedObservation, setSelectedGroupedObservation,
                 unselectedGroupedObservation, setUnselectedGroupedObservation,

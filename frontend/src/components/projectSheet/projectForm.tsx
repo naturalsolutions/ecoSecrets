@@ -7,8 +7,6 @@ import {
   Stack,
   TextField,
   Typography,
-  Button,
-  MenuItem,
   Dialog,
   DialogTitle,
   Divider,
@@ -16,38 +14,24 @@ import {
   DialogActions,
   Alert,
   AlertTitle,
-  Box,
   Collapse,
   IconButton,
   capitalize,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMainContext } from "../../contexts/mainContext";
-import { FilesService, ProjectSheet, ProjectsService } from "../../client";
-import DropzoneComponent from "../dropzoneComponent";
+import { ProjectSheet, ProjectsService } from "../../client";
 import { useTranslation } from "react-i18next";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
 import ButtonCancel from "../common/buttonCancel";
-import { useState, useEffect } from "react";
 
-const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
+const ProjectForm = ({ setModifyState }) => {
   const { t } = useTranslation();
   const { projectSheetData, updateProjectSheetData } = useMainContext();
   const [projectData, setProjectData] =
     React.useState<ProjectSheet>(projectSheetData);
-  const protocoles = ["Protocole A", "Protocole B", "Protocole C"];
-  const species = [
-    "Loup",
-    "Coccinelle",
-    "Ours",
-    "Chamois",
-    "Chevreuil",
-    "Cerf",
-    "Marmotte",
-    "Renard",
-    "Aigle",
-  ];
+
   const [startDate, setStartDate] = React.useState<Date | null>(
     projectSheetData.start_date
   );
@@ -57,7 +41,6 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);
-  const [oldImage, setOldImage] = useState(null);
 
   const handleFormChange = (
     params: string,
@@ -104,7 +87,6 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
   };
 
   return (
-    <Stack>
       <Stack spacing={2} justifyContent="center">
         <Collapse in={success}>
           <Alert
@@ -128,75 +110,80 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
         </Collapse>
 
         <form key={projectSheetData.id}>
-          <Stack direction="row" spacing={15}>
-            <Grid container spacing={3}>
-              {modified ? (
-                <Grid item lg={12} xs={12}>
-                  <TextField
-                    id="name"
-                    name="name"
-                    label={capitalize(t("main.name"))}
-                    value={projectData.name}
-                    onChange={(e) => handleFormChange("name", e)}
-                    fullWidth
-                    required
-                    variant="filled"
-                  />
-                </Grid>
-              ) : (
-                <></>
-              )}
+          <Grid container spacing={3}>
 
-              <Grid item lg={3} xs={12} className="datePicker">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    disabled={!modified}
-                    inputFormat="dd/MM/yyyy"
-                    label={capitalize(t("projects.start_date"))}
-                    value={startDate}
-                    onChange={(startDate) => {
-                      setStartDate(startDate);
-                      handleChangeDate("start_date", startDate);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} variant="filled" />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item lg={3} xs={12} className="datePicker">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    disabled={!modified}
-                    inputFormat="dd/MM/yyyy"
-                    label={capitalize(t("projects.end_date"))}
-                    value={endDate}
-                    onChange={(endDate) => {
-                      setEndDate(endDate);
-                      handleChangeDate("end_date", endDate);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} variant="filled" />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item lg={12} xs={12}>
+            { modified && 
+              <Grid size={12}>
                 <TextField
-                  id="protocol"
-                  name="protocol"
-                  label={capitalize(t("projects.protocol_methods"))}
-                  variant="filled"
-                  value={projectData.protocol}
-                  onChange={(e) => handleFormChange("protocol", e)}
-                  disabled={!modified}
-                  multiline
-                  rows={2}
+                  id="name"
+                  name="name"
+                  label={capitalize(t("main.name"))}
+                  value={projectData.name}
+                  onChange={(e) => handleFormChange("name", e)}
                   fullWidth
+                  required
+                  variant="filled"
                 />
               </Grid>
+            } 
+
+            <Grid size={{ lg: 6, xs: 12 }} className="datePicker">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  disabled={!modified}
+                  format="dd/MM/yyyy"
+                  label={capitalize(t("projects.start_date"))}
+                  value={startDate}
+                  onChange={(startDate) => {
+                    setStartDate(startDate);
+                    handleChangeDate("start_date", startDate);
+                  }}
+                  slotProps={{
+                    textField: {
+                      variant: "filled",
+                      fullWidth: true,
+                      error: false,
+                    },
+                  }}
+                />
+              </LocalizationProvider>
             </Grid>
-          </Stack>
+            <Grid size={{ lg: 6, xs: 12 }} className="datePicker">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  disabled={!modified}
+                  format="dd/MM/yyyy"
+                  label={capitalize(t("projects.end_date"))}
+                  value={endDate}
+                  onChange={(endDate) => {
+                    setEndDate(endDate);
+                    handleChangeDate("end_date", endDate);
+                  }}
+                  slotProps={{
+                    textField: {
+                      variant: "filled",
+                      fullWidth: true,
+                      error: false,
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+            </Grid>
+            <Grid size={{ lg: 12, xs: 12 }}>
+              <TextField
+                id="protocol"
+                name="protocol"
+                label={capitalize(t("projects.protocol_methods"))}
+                variant="filled"
+                value={projectData.protocol}
+                onChange={(e) => handleFormChange("protocol", e)}
+                disabled={!modified}
+                multiline
+                rows={2}
+                fullWidth
+              />
+            </Grid>
+          </Grid>
         </form>
         <Stack direction="row" spacing={3} justifyContent="flex-end">
           <ButtonModify
@@ -234,7 +221,6 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
           </Dialog>
         </Stack>
       </Stack>
-    </Stack>
   );
 };
 export default ProjectForm;

@@ -1,19 +1,20 @@
-import React, { useState, useEffect, FC } from "react";
-import { Box, TextField, capitalize } from "@mui/material";
+import { useState, useEffect, FC, useRef } from "react";
+import { Box, capitalize } from "@mui/material";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import frLocale from "date-fns/locale/fr";
+import { fr } from "date-fns/locale/fr";
+import InputMask from "react-input-mask";
 import { useTranslation } from "react-i18next";
 
-export interface DateRange {
+export interface DateRangeValues {
   start_date: Date | null;
   end_date: Date | null;
 }
 
 interface DateRangeProps {
-  onChange: (dateRange: DateRange) => void;
+  onChange: (dateRange: DateRangeValues) => void;
   reset?: boolean;
-  initValues?: DateRange;
+  initValues?: DateRangeValues;
 }
 const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
   const { t } = useTranslation();
@@ -21,15 +22,17 @@ const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
     start_date: null,
     end_date: null,
   };
-  const [dateRange, setDateRange] = useState<DateRange>(
+  const [dateRange, setDateRange] = useState<DateRangeValues>(
     initValues ? initValues : defaultValues
   );
+  const isResetting = useRef(false);
 
   const handleChange = (key, value) => {
     setDateRange({ ...dateRange, [key]: value });
   };
 
   const onReset = () => {
+    isResetting.current = true;
     setDateRange(defaultValues);
     onChange(defaultValues);
   };
@@ -42,6 +45,16 @@ const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
     onChange(dateRange);
   };
 
+  useEffect(() => {
+    if (isResetting.current) {
+      isResetting.current = false;
+      return;
+    }
+    if (dateRange.start_date instanceof Date || dateRange.end_date instanceof Date) {
+      onChange(dateRange);
+    }
+  }, [dateRange]);
+
   return (
     <Box
       sx={{
@@ -51,18 +64,38 @@ const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
         width: "100%",
       }}
     >
-      <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
+      <LocalizationProvider
+        dateAdapter={AdapterDateFns}
+        adapterLocale={fr}
+      >
         <DateTimePicker
           label={capitalize(t("projects.start_date"))}
           value={dateRange.start_date}
           onChange={(date) => handleChange("start_date", date)}
           onClose={onClose}
+          onAccept={onClose}
           onError={(error) => console.log("Erreur de saisie :", error)}
-          inputFormat="dd/MM/yyyy HH:mm:ss"
+          format="dd/MM/yyyy HH:mm:ss"
           ampm={false}
-          renderInput={(params) => (
-            <TextField {...params} size="small" sx={{ width: "215px" }} />
-          )}
+          slotProps={{
+            textField: {
+              size: "small",
+              sx: { width: "215px" },
+              InputProps: {
+                inputComponent: (props) => {
+                  const { inputRef, ...other } = props;
+                  return (
+                    <InputMask
+                      mask="99/99/9999 99:99:99"
+                      {...other}
+                      ref={inputRef}
+                      maskChar="_"
+                    />
+                  );
+                },
+              },
+            },
+          }}
         />
 
         <DateTimePicker
@@ -70,11 +103,27 @@ const DateRange: FC<DateRangeProps> = ({ onChange, reset, initValues }) => {
           value={dateRange.end_date}
           onChange={(date) => handleChange("end_date", date)}
           onClose={onClose}
-          inputFormat="dd/MM/yyyy HH:mm:ss"
+          format="dd/MM/yyyy HH:mm:ss"
           ampm={false}
-          renderInput={(params) => (
-            <TextField {...params} size="small" sx={{ width: "215px" }} />
-          )}
+          slotProps={{
+            textField: {
+              size: "small",
+              sx: { width: "215px" },
+              InputProps: {
+                inputComponent: (props) => {
+                  const { inputRef, ...other } = props;
+                  return (
+                    <InputMask
+                      mask="99/99/9999 99:99:99"
+                      {...other}
+                      ref={inputRef}
+                      maskChar="_"
+                    />
+                  );
+                },
+              },
+            },
+          }}
         />
       </LocalizationProvider>
     </Box>

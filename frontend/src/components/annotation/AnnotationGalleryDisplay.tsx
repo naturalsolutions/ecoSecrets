@@ -1,6 +1,8 @@
 import { IconButton, ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
-import { useFilesContext } from "../../contexts/filesContext";
 import { useState } from "react";
+import { capitalize } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useFilesContext } from "../../contexts/filesContext";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ButtonGoAnnotation from "../common/ButtonGoAnnotation";
 import { useAnnotationContext } from "../../contexts/annotationContext";
@@ -14,6 +16,9 @@ const AnnotationGalleryDisplay = () => {
     display: "block",
     width: "100%",
   };
+
+  const { t } = useTranslation();
+  
   const { files } = useFilesContext();
   const { selectedMedias, setSelectedMedias } = useAnnotationContext();
   
@@ -69,8 +74,10 @@ const AnnotationGalleryDisplay = () => {
     }
   };
 
-  const displayAnnotation = (data) => {
-    return data
+  const displayAnnotation = (media) => {
+    if (media.annotations.length === 0 && media.treated) return capitalize(t("annotations.empty_media"))
+
+    return media.annotations
       .map((item) => {
         let taxonomicInfo = getFinestTaxonomicLevel(item);
         return `${taxonomicInfo} (${item.number})`;
@@ -104,7 +111,7 @@ const AnnotationGalleryDisplay = () => {
           )}
           {hoveredMedia === item.id && (
             <ImageListItemBar
-              subtitle={ displayAnnotation(item.annotations) }
+              subtitle={ displayAnnotation(item) }
               sx={{
                 "& .MuiImageListItemBar-subtitle": { fontSize: "0.7rem", whiteSpace: "normal", wordWrap: "break-word" }
               }}

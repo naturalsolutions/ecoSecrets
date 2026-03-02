@@ -51,7 +51,7 @@ const MediaFilters = () => {
         alignItems="center"
         sx={{ width: "100%", flexWrap: "wrap" }}
       >
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Grid size={{ lg: 3, md: 4, sm: 6, xs: 12 }}>
           <DateRange
             onChange={updateFilters}
             reset={reset}
@@ -66,7 +66,7 @@ const MediaFilters = () => {
         <InputTaxo rank="family" reset={reset} />
         <InputTaxo rank="genus" reset={reset} />
         <InputTaxo rank="species" reset={reset} />
-        <Grid item>
+        <Grid>
           <Tooltip title={capitalize(t("filters.refresh"))} arrow>
             <IconButton
               aria-label="reset"

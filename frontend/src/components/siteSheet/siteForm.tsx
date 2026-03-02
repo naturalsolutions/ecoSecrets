@@ -85,15 +85,15 @@ const SiteForm = () => {
       direction="row"
       spacing={2}
     >
-      <Grid item lg={5} md={5} sm={12} xs={12} height={300}>
+      <Grid size={{ lg: 5, md: 5, sm: 12, xs: 12 }} sx={{ height: 300 }}>
         <Map position={position} zoom={3} />
       </Grid>
-      <Grid item lg={2} md={3} sm={12} xs={12}>
+      <Grid size={{ lg: 2, md: 3, sm: 12, xs: 12 }}>
         <ThumbnailSitesComponent />
       </Grid>
-      <Grid item lg={5} md={4} sm={12} xs={12}>
+      <Grid size={{ lg: 5, md: 4, sm: 12, xs: 12 }}>
         <Stack direction="column" spacing={2}>
-          <Grid item>
+          <Grid>
             <Collapse in={success}>
               <Alert
                 severity="success"
@@ -119,7 +119,7 @@ const SiteForm = () => {
           <form key={siteData.id}>
             <Grid container spacing={2}>
               {modified && (
-                <Grid item lg={12} md={12} xs={12}>
+                <Grid size={{ lg: 12, md: 12, xs: 12 }}>
                   <TextField
                     required
                     id="name"
@@ -132,7 +132,7 @@ const SiteForm = () => {
                   />
                 </Grid>
               )}
-              <Grid item lg={6} md={6} xs={12}>
+              <Grid size={{ lg: 6, md: 6, xs: 12 }}>
                 <TextField
                   disabled={!modified}
                   label={capitalize(t("sites.latitude"))}
@@ -144,7 +144,7 @@ const SiteForm = () => {
                   onChange={(e) => handleFormChange("latitude", e)}
                 />
               </Grid>
-              <Grid item lg={6} md={6} xs={12}>
+              <Grid size={{ lg: 6, md: 6, xs: 12 }}>
                 <TextField
                   disabled={!modified}
                   label={capitalize(t("sites.longitude"))}
@@ -156,7 +156,7 @@ const SiteForm = () => {
                   onChange={(e) => handleFormChange("longitude", e)}
                 />
               </Grid>
-              <Grid item lg={12} md={12} xs={12}>
+              <Grid size={{ lg: 12, md: 12, xs: 12 }}>
                 <TextField
                   disabled={!modified}
                   label={capitalize(t("main.description"))}
