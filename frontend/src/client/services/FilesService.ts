@@ -71,12 +71,12 @@ export class FilesService {
      * @param order
      * @param startDate
      * @param endDate
-     * @returns ReadFiles Successful Response
+     * @returns any Successful Response
      * @throws ApiError
      */
     public static getFilesWithFiltersFilesFiltersDeploymentIdGet(
         deploymentId: number,
-        skip?: (number | null),
+        skip?: number,
         limit: number = 100,
         species?: (string | null),
         family?: (string | null),
@@ -85,7 +85,7 @@ export class FilesService {
         order?: (string | null),
         startDate?: (string | null),
         endDate?: (string | null),
-    ): CancelablePromise<Array<ReadFiles>> {
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/files/filters/{deployment_id}',
