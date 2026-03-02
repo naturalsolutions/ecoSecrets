@@ -4,8 +4,9 @@ import zipfile
 import pandas as pd
 import requests
 from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
 
-app = FastAPI()
+app = FastAPI(default_response_class=ORJSONResponse)
 
 FILE_URL = "https://github.com/naturalsolutions/ecoSecrets/raw/refs/heads/dev/nomenclapi/nomenclatures_SINP_mai2023.zip"
 FILENAMES = {
@@ -31,7 +32,7 @@ def download_and_parse_data():
                         df["LABEL"] = df["LABEL"].str.capitalize()
                     if ncol == 4:
                         df.columns = ["TYPE", "LABEL", "CODE", "PRECISION"]
-                        df["TYPE"] = df["TYPE"].fillna(method="ffill")
+                        df["TYPE"] = df["TYPE"].ffill()
                         df["LABEL"] = df["TYPE"].str.capitalize() + df["LABEL"].fillna(
                             ""
                         ).astype(str).apply(
@@ -59,19 +60,13 @@ async def root():
 def get_data(key: str):
     if key in FILENAMES.keys():
         return data[key]
-    return "Error: not supported"
+    return {"error": "not supported"}
 
 
 @app.get("/nomenclapi/{key}/{value}")
-def get_data(key: str, value: str):
-    ## exact match for CODE et contain for LABEL
-    # subdata = data[key]
-    # var = "LABEL"
-    # if value.isdigit():
-    #     var = "CODE"
-    #     value = int(value)
-    #     next((item for item in subdata if item.get(var) == value), None)
-    # return [item for item in subdata if value in str(item.get(var, ""))]
+def get_data_value(key: str, value: str):
+    if key not in FILENAMES.keys():
+        return {"error": "not supported"}
 
     # contain for CODE and LABEL
     subdata = data[key]
