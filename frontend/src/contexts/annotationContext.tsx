@@ -17,7 +17,7 @@ export function AnnotationContextProvider({ children }) {
 
     const { projects, currentDeployment, setCurrentDeployment, setCurrentProject } = 
     useMainContext();
-    const { image, updateListFile, currentImage, setCurrentImage, files } =
+    const { image, updateListFile, currentImage, setCurrentImage, files, paginationFiles, imagePerPage } =
     useFilesContext();
     const [observations, setObservations] = useState<Annotation[]>([]);
     const [metadata, setMetadata] = useState<MetadataData>();
@@ -52,37 +52,78 @@ export function AnnotationContextProvider({ children }) {
         window.history.pushState({}, "", url);
     };
 
-    const previous = () => {
-        files.forEach((f, i) => {
-            if (f.id === currentImage) {
-                let ind = i === 0 ? (i = files.length) : i;
-                setCurrentImage(files[ind - 1].id);
-
-                updateUrl(files[ind - 1].id);
+    const previous = async () => {
+        const index = files.findIndex(f => f.id === currentImage);
+        if (index === -1) return;
+        if (index === 0) {
+            if (paginationFiles.currentPage > 1) {
+                await updateListFile(
+                    (paginationFiles.currentPage - 2) * imagePerPage,
+                    { idx: imagePerPage-1, projectId:params.projectId, deploymentId: params.deploymentId }
+                );
+    
+                setIsMinimalObservation(true);
+                return;
             }
-        });
-        setIsMinimalObservation(true);
-    };
-
-    const next = () => {
-        files.forEach((f, i) => {
-            if (f.id === currentImage) {
-                let ind = i === files.length - 1 ? -1 : i;
-                setCurrentImage(files[ind + 1].id);
-                updateUrl(files[ind + 1].id);
-            }
-        });
-        setIsMinimalObservation(true);
-    };
-
-    const lastOrFirstImage = (indice) => {
-        if (indice === 'first') {
-            setCurrentImage(files[0].id);
-            updateUrl(files[0].id);
+            setIsMinimalObservation(true);
+            return;
         }
-        if (indice === 'last') {
-            setCurrentImage(files[files.length - 1].id);
-            updateUrl(files[files.length - 1].id);
+        const prevImage = files[index - 1];
+        setCurrentImage(prevImage.id);
+        updateUrl(prevImage.id);
+        setIsMinimalObservation(true);
+    };
+    
+
+    const next = async () => {
+        const index = files.findIndex(f => f.id === currentImage);
+        if (index === -1) return;
+        if (index === files.length - 1) {
+            if (paginationFiles.currentPage < paginationFiles.totalPages) {
+                await updateListFile(
+                    (paginationFiles.currentPage +1 -1) *imagePerPage,
+                    { idx: 0, projectId:params.projectId, deploymentId: params.deploymentId }
+                );
+                setIsMinimalObservation(true);
+                return;
+            }
+            setIsMinimalObservation(true);
+            return;
+        }
+        const nextImage = files[index + 1];
+        setCurrentImage(nextImage.id);
+        updateUrl(nextImage.id);
+    
+        setIsMinimalObservation(true);
+    };
+    
+
+    const lastOrFirstImage = async (position: 'first' | 'last') => {
+        if (files.length === 0) return;
+        if (position === 'first') {
+            if (paginationFiles.currentPage > 1 || files[0].id !== currentImage) {
+                await updateListFile(
+                    0,
+                    { idx: 0, projectId:params.projectId, deploymentId: params.deploymentId}
+                );
+            } else {
+                setCurrentImage(files[0].id);
+                updateUrl(files[0].id);
+            }
+            setIsMinimalObservation(true);
+            return;
+        }
+    
+        if (position === 'last') {
+            if (paginationFiles.currentPage < paginationFiles.totalPages || files[files.length - 1].id !== currentImage) {
+                const lastPageSkip = (paginationFiles.totalPages - 1) * imagePerPage;
+                await updateListFile(lastPageSkip, { idx: imagePerPage-1, projectId:params.projectId, deploymentId: params.deploymentId });
+            } else {
+                setCurrentImage(files[files.length - 1].id);
+                updateUrl(files[files.length - 1].id);
+            }
+            setIsMinimalObservation(true);
+            return;
         }
     };
 
@@ -95,7 +136,7 @@ export function AnnotationContextProvider({ children }) {
                 FilesService
                 .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, { annotations: { annotations:  observations, id_group: idGroup }, deployment_id: currentDeployment} )
                 .then(res => {
-                    updateListFile();
+                    updateListFile((paginationFiles.currentPage -1) *imagePerPage); 
                     next();
                 })
                 .catch((err) => {
@@ -117,7 +158,7 @@ export function AnnotationContextProvider({ children }) {
                     FilesService
                     .updateAnnotationsFilesAnnotationFileIdPatch(item.id, { annotations: { annotations:  observations, id_group: idGroup }, deployment_id: currentDeployment} )
                     .then(res => {
-                        updateListFile();
+                        updateListFile((paginationFiles.currentPage -1) *imagePerPage);
                     })
                     .catch((err) => {
                         console.log("Error during annotation saving.");

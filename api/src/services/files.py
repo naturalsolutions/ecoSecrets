@@ -51,6 +51,8 @@ def get_deployment_files_with_filters(
     elif end_date:
         query = query.filter(Files.date <= end_date)
 
+    total_items = query.count()
+
     query = query.order_by(Files.name).offset(skip).limit(limit)
 
     files = query.all()
@@ -60,7 +62,12 @@ def get_deployment_files_with_filters(
         url = s3.get_url(f"{f.hash}.{f.extension}")
         new_f["url"] = url
         res.append(new_f)
-    return res
+    return {
+        "data": res,
+        "total_items": total_items,
+        "current_page": (skip // limit) + 1,
+        "total_pages": (total_items + limit - 1) // limit,
+    }
 
 
 def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 10000):
