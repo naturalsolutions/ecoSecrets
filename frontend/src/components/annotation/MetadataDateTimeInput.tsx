@@ -20,7 +20,7 @@ interface MetadataDateTimeInputProps {
 const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
   const { t } = useTranslation();
   const { currentDeployment } = useMainContext();
-  const { currentImage, files, updateListFile } = useFilesContext();
+  const { currentImage, files, updateListFile, paginationFiles, imagePerPage } = useFilesContext();
   const [date, setDate] = useState<Date | null>(props.date);
   const [toSave, setToSave] = useState<boolean>(false);
 
@@ -44,7 +44,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
     })
       .then((res) => {
         setToSave(false);
-        updateListFile();
+        updateListFile((paginationFiles.currentPage -1) *imagePerPage);
       })
       .catch((err) => {
         console.log("Error during metadata saving.");
@@ -58,7 +58,8 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
   };
 
   useEffect(() => {
-    setDate(files.find((item) => item.id === props.id).date);
+    const file = files.find((item) => item.id === currentImage);
+    setDate(file.date ? new Date(file.date) : null);
   }, [files, currentImage]);
 
   return (
@@ -77,7 +78,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
         <DateTimePicker
           label={capitalize(t("medias.date_time_field"))}
           value={date}
-          onChange={(newValue) => update(newValue)}
+          onChange={(newValue: Date | null) => update(newValue)}
           ampm={false}
           format="dd/MM/yyyy HH:mm:ss"
           onError={(error) => {

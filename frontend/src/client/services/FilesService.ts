@@ -62,6 +62,8 @@ export class FilesService {
     /**
      * Get Files With Filters
      * @param deploymentId
+     * @param skip
+     * @param limit
      * @param species
      * @param family
      * @param genus
@@ -69,11 +71,13 @@ export class FilesService {
      * @param order
      * @param startDate
      * @param endDate
-     * @returns ReadFiles Successful Response
+     * @returns any Successful Response
      * @throws ApiError
      */
     public static getFilesWithFiltersFilesFiltersDeploymentIdGet(
         deploymentId: number,
+        skip?: number,
+        limit: number = 100,
         species?: (string | null),
         family?: (string | null),
         genus?: (string | null),
@@ -81,7 +85,7 @@ export class FilesService {
         order?: (string | null),
         startDate?: (string | null),
         endDate?: (string | null),
-    ): CancelablePromise<Array<ReadFiles>> {
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/files/filters/{deployment_id}',
@@ -89,6 +93,8 @@ export class FilesService {
                 'deployment_id': deploymentId,
             },
             query: {
+                'skip': skip,
+                'limit': limit,
                 'species': species,
                 'family': family,
                 'genus': genus,
