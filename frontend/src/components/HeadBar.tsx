@@ -18,6 +18,12 @@ const HeadBar = () => {
   const [openImport, setOpenImport] = useState(false);
   const open = Boolean(anchorEl);
   const { logout } = useContext(AuthContext);
+  const accountURL =
+    window._env_.REACT_APP_KEYCLOAK_CLIENT_URL +
+    "/realms/" +
+    window._env_.REACT_APP_KEYCLOAK_CLIENT_REALM +
+    "/account/#/personal-info";
+
   const openImportModale = () => {
     setOpenImport(true);
   };
@@ -37,9 +43,9 @@ const HeadBar = () => {
     logout();
     handleClose();
   };
-
+  
   function toAccountKeycloack(): void {
-    window.open('/auth/realms/geonature-annotation/account/#/personal-info', '_blank');
+    window.open(accountURL, "_blank");
   }
 
   return (
