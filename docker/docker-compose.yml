@@ -137,15 +137,16 @@ services:
       KC_DB_USERNAME: ${DB_USER:-dbuser}
       KC_DB_PASSWORD: ${DB_PASSWORD:-dbpassword}
       KC_HOSTNAME_STRICT: "false"
+      KC_HEALTH_ENABLED: "true"
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: cat /proc/net/tcp | grep '00000000:1F90 00000000:0000' || exit 1
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
       interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 80s
+      retries: 5
+      start_period: 120s
     labels:
       - traefik.enable=true
       - traefik.http.routers.keycloak.rule=${TRAEFIK_ROUTER_RULE_KEYCLOAK:-PathPrefix(`/auth`)}

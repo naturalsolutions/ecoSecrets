@@ -1,13 +1,13 @@
-# 1. Install dependencies only when needed
+# 1️⃣ Dépendances
 FROM node:lts-alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat 
+
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# 2. Rebuild the source code only when needed
+# 2️⃣ Build
 FROM node:lts-alpine AS development
 
 RUN apk add --no-cache curl
@@ -31,10 +31,10 @@ EXPOSE 3000
 
 CMD ["npm", "start"]
 
-# 3. Production image, copy all the files and run next
+# 3️⃣ Production Nginx
 FROM nginx:1.23.2-alpine AS production
 
-COPY --chown=nginx:nginx --from=development /app/build/ /usr/share/nginx/html
+COPY --chown=nginx:nginx --from=development /app/dist/ /usr/share/nginx/html
 
 WORKDIR /usr/share/nginx/html/
 COPY ./window_env.sh .
