@@ -20,7 +20,7 @@ interface MetadataDateTimeInputProps {
 const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
   const { t } = useTranslation();
   const { currentDeployment } = useMainContext();
-  const { currentImage, files, updateListFile } = useFilesContext();
+  const { currentImage, files, updateListFile, paginationFiles, imagePerPage } = useFilesContext();
   const [date, setDate] = useState<Date | null>(props.date);
   const [toSave, setToSave] = useState<boolean>(false);
 
@@ -44,7 +44,7 @@ const MetadataDateTimeInput: FC<MetadataDateTimeInputProps> = (props) => {
     })
       .then((res) => {
         setToSave(false);
-        updateListFile();
+        updateListFile((paginationFiles.currentPage -1) *imagePerPage);
       })
       .catch((err) => {
         console.log("Error during metadata saving.");

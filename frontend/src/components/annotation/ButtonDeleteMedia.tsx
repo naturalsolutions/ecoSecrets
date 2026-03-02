@@ -16,13 +16,13 @@ const ButtonDeleteMedia = () => {
     const { t } = useTranslation();
 
     const { next } = useAnnotationContext();
-    const { currentImage, updateListFile } = useFilesContext();
+    const { currentImage, updateListFile, paginationFiles,imagePerPage } = useFilesContext();
 
     const [open, setOpen] = useState(false);
 
     const save = () => {
       FilesService.deleteFileFilesDeleteFileIdDelete(currentImage).then((res) => {
-        updateListFile();
+        updateListFile((paginationFiles.currentPage -1) *imagePerPage);
         setOpen(false);
         next();
       }).catch((err) => console.error("Erreur:", err));
