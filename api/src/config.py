@@ -4,12 +4,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     API_ROOT_PATH: str = "/api/v1"
-    DB_URL: PostgresDsn = "postgresql://annotation:password@db/annotation"
+    DB_URL: PostgresDsn = "postgresql://ecosecrets:password@db/ecosecrets"
 
     KEYCLOAK_ADMIN_CLIENT_SECRET: str = "YLhpMEhYeN8CpdWClLgWZetxUEPD2u03"
     KEYCLOAK_CLIENT_ID: str = "backend"
     KEYCLOAK_CLIENT_SECRET: str = "Rm414Jw6krdbjhjpmHDBxCkof7RjguS0"
-    KEYCLOAK_REALM: str = "geonature-annotation"
+    KEYCLOAK_REALM: str = "ecosecrets"
     KEYCLOAK_SERVER_URL: str = "http://keycloak:8080/auth"
     KEYCLOAK_CLIENT_URL: str = "http://keycloak:8080/auth"
 

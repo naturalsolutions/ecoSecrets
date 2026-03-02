@@ -10,7 +10,7 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --certificatesresolvers.le.acme.email=geonature@natural-solutions.eu
+      - --certificatesresolvers.le.acme.email=${EMAIL}
       - --certificatesresolvers.le.acme.tlschallenge=true
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
       - --accesslog
