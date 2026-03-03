@@ -72,7 +72,7 @@ Edit freely this `.env` file to change credentials for instance. Here are the ma
 - `MINIO_ROOT_USER` : the name you want for the Minio user
 - `MINIO_ROOT_PASSWORD` : the password you want for the Minio user
 
-In the current version (`0.1.1`), you can't modify the `APP_USER` and the `APP_PASSWORD` directly in this file. You will be able to modify the admin password trough Keycloak later on.
+In the current version, you can't modify the `APP_USER` and the `APP_PASSWORD` directly in this file. You will be able to modify the admin password trough Keycloak later on.
 
 ### Launching
 
