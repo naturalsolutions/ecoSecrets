@@ -113,7 +113,7 @@ services:
     <<: *project_defaults
     image: ${DB_IMAGE-registry.gitlab.com/natural-solutions/geonature/annotation:db-latest}
     healthcheck:      
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-annotation} -h 127.0.0.1"]     
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-ecosecrets} -h 127.0.0.1"]     
       interval: 10s      
       timeout: 5s      
       retries: 3      
@@ -133,11 +133,13 @@ services:
     command: start-dev --import-realm
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-annotation}?currentSchema=${KC_DB_SCHEMA:-keycloak}
+      KC_DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-ecosecrets}?currentSchema=${KC_DB_SCHEMA:-keycloak}
       KC_DB_USERNAME: ${DB_USER:-dbuser}
       KC_DB_PASSWORD: ${DB_PASSWORD:-dbpassword}
       KC_HOSTNAME_STRICT: "false"
       KC_HEALTH_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
+      KC_HTTP_ENABLED: true
     depends_on:
       db:
         condition: service_healthy
