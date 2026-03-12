@@ -86,7 +86,7 @@ build_frontend_production:
 build_db_production:
   stage: build
   script:
-    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     - docker build -t ${CI_REGISTRY_IMAGE}:db-latest ./db
     - docker push ${CI_REGISTRY_IMAGE}:db-latest
   only:
