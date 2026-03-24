@@ -1,6 +1,6 @@
 import hashlib
 import os
-from datetime import datetime as dt
+from datetime import date
 from pathlib import Path
 
 import magic
@@ -19,7 +19,7 @@ DATABASE_URL = str(settings.DB_URL)
 
 engine = create_engine(DATABASE_URL, echo=True)
 
-date = dt.today()
+date = date.today()
 
 
 def init_db():
