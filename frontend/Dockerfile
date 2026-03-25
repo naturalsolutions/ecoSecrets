@@ -29,8 +29,6 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
-
 # 3️⃣ Production Nginx
 FROM nginx:1.23.2-alpine AS production
 
